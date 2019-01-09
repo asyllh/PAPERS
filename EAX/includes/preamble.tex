@@ -1,0 +1,97 @@
+%---- PREAMBLE ----%
+
+% Allows separate files to be used in the main file
+\usepackage{subfiles}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmicbreak}{\State \textbf{break}}
+\newcommand{\Break}{\algorithmicbreak}
+\renewcommand{\algorithmicreturn}{\State \textbf{return}}
+\newcommand{\algorithmicto}{\textbf{ to }}
+\newcommand{\To}{\algorithmicto}
+\newcommand{\algorithmictrue}{\textbf{true}}
+\newcommand{\True}{\algorithmictrue}
+\newcommand{\algorithmicfalse}{\textbf{false}}
+\newcommand{\False}{\algorithmicfalse}
+%\newcommand{\IndStatex}[1][1]{\Statex\hspace{6mm}}
+%\newcommand{\IndIndStatex}[1][1]{\Statex\hspace{12mm}}
+
+% Contains advanced math extensions
+\usepackage{amsmath}
+
+% Introduces the *proof* environment and the \theoremstyle command
+%\usepackage{amsthm}
+
+% Adds new symbols to be used in math mode, e.g. \mathbb
+\usepackage{amssymb}
+
+% To declare multiple authors
+%\usepackage{authblk}
+
+% Provides extra comands as well as optimisation for producing tables
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+% Allows customisation of appearance and placements for figures/tables etc.
+\usepackage{caption}
+
+% Adds support for arbitrarily-deep nested lists
+\usepackage[inline]{enumitem}
+
+% Improves the interface for defining floating objects such as figures/tables
+\usepackage{float}
+
+%\usepackage{fullpage}
+
+% For easy management of document margins and the document page size
+\usepackage[a4paper]{geometry}
+
+% Allows insertion of graphic files within a document
+\usepackage{graphicx}
+
+% Manage links within the document or to any URL when you compile in PDF
+\usepackage{hyperref} 
+\usepackage[dvipsnames]{xcolor}
+\colorlet{myBlue}{RoyalBlue!35!Cerulean}
+\colorlet{myRed}{Red}
+%\hypersetup{
+%	colorlinks,
+%	linkcolor={black},
+%	citecolor={black},
+%	urlcolor={black}
+%}
+
+% Successor of amsmath
+\usepackage{mathtools}
+
+% No indentation, space between paragraphs
+%\usepackage{parskip}
+
+%Include standalone .tex files
+\usepackage{standalone}
+
+% Define multiple floats (figures/tables) within one environment with individual captions 1a, 1b etc
+\usepackage{subcaption}
+
+\usepackage{tabularx}
+
+\usepackage{tikz}
+
+\usepackage{wrapfig}
+
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+%Theorem style
+%\theoremstyle{plain}% default
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+%\newtheorem{definition}{Definition}
+
+%\theoremstyle{definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{exmp}{Example}[section]
