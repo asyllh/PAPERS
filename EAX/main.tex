@@ -21,36 +21,74 @@
 
 \section{Introduction}
 \begin{itemize}
-	\item 
+	\item Define CSP, single strip problem and multi-strip problem (SCSPP)
+	\item Cite previous Heuristics paper, follow on
+	\item Lit review
+	\item Describe rest of paper, AHC single strip for CSP, Evolutionary Algorithm and Postopt
+	\item Two phase approach, cite vertex colouring paper
 \end{itemize}
 
 \section{AHC}
 \begin{itemize}
-	\item 
+	\item Condensed version of algorithm from previous paper
+	\item Set notation and terms to be used throughout paper
 \end{itemize}
 
 \section{Evolutionary Algorithm}
 \begin{itemize}
-	\item Incorporates AHC in subproblem in local search procedure
-	\item Two different crossover operators
-	\item Local search pair pair, pair sin, sin sin, move sin
-	\item Repair procedure
-	\item Population, one from FFD, others from FFR
-	\item Fitness function
-	\item Mutation
-	\item AHC preliminary checks
-	\item Save strips to use in dlx
+	\item Create initial population, one solution using MFFD$^+$, the rest using MFFR$^+$
+	\item Each solution in population is also mutated and local search is applied
+	\item Choose two parent solutions from population
+	\item Apply one of two recombination operators
+	\item Paragraph for each operator, GGA and GPX'
+	\item Explain why GPX cannot be used, cite Lewis paper
+	\item Describe repair procedure using MFFD$^+$
+	\item Section explaining Local Search, PairPair, PairSin, SinSin, MoveSin
+	\item Note the use of feasPacking/infeasPacking sets to aid the search
+	\item Reduces the number of times AHC needs to be called, for each group of items AHC should only be called once
+	\item Preliminary check before calling AHC
+	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
+	\item Keep track of best fitness/best solution/time at each iteration, if better solution found then write to file, produce graph
+	\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase
+	\item Number of items - 100, 500
+	\item Time limit for EA - 10 minutes
+	\item Width of strips - 2500, 5000
+	\item Recombination operators - GGA, GPX', GPN
+	\item GGA $1 < i < j < |\mathcal{S}_2|$ unlike in Rhyd paper to ensure that offspring has strips from both parents
+	\item Types of instances - artificial, real
+	
+	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
+	\item Each of these sets will then be run 4 times using different arguments - strip width = 2500 and 5000, and either GGA or GPX'
+	\item Overall there will be 16 types of outputs from EA
+	
+	\item In EA output file to compare:
+	\begin{itemize}
+		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
+		\item Number of strips in best solution found
+		\item Number of iterations of EA within the given time limit
+		\item Fitness value of the best solution found
+		\item If best solution found is equivalent to the lowerbound
+	\end{itemize}	
+	
 \end{itemize}
 
 \section{Post-optimization}
 \begin{itemize}
-	\item Exact cover
-	\item DLX
+	\item Exact cover formulation, NP-hard, state the IP, describe DLX
+	\item Use strips in feasPacking for post opt
+	\item Compare with EA output - is a better solution found, or a solution with the same number of strips but a better fitness value?
+	\item Is the post opt phase able to find a solution equal to the lowerbound?
+	\item Post opt will only ever find a solution equal to or better than the solution found in EA, never worse
+	\item Execution time
 \end{itemize}
 
 \section{Experimental Results}
 \begin{itemize}
-	\item Artifical and real instances
+	\item Proportion of instances where best solution EA == lowerbound
+	\item Proportion of instance where best solution post opt better than EA, and/or == lowerbound
+	\item Comparison between GGA and GPX', artificial and real instance types, different strip widths and number of items
+	\item check timestamps from EA output file - which type is able to reach a better solution at a faster rate?
+	\item Differences in number of strips in best solution found in EA using different arguments
 \end{itemize}
 
 \section{Conclusion}
