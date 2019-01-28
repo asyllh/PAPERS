@@ -28,11 +28,44 @@
 	\item Two phase approach, cite vertex colouring paper
 \end{itemize}
 
+
+\section{Notation}
+\begin{itemize}
+	\item $\tau$ - constraint value (minimum scoring distance)
+	\item $\mathcal{I}$ - set of items, $|\mathcal{I}| = n$ 
+	\item $H$ - height of items
+	\item $i$ - index of each item $i \in \mathcal{I}$
+	\item $w_i$ - width of item $i$
+	\item $a_i, b_i$ - score widths of each item $i$, $a_i \leq b_i$, $a_i + b_i < w_i$
+	\item $(a_i, b_i)$ - regular orientation of item $i$, smaller score width on LHS
+	\item $(b_i, a_i)$ - rotated orientation of item $i$, smaller score width on RHS
+	\item \textbf{rhs}($i$) + \textbf{lhs}($i+1$) $\geq \tau$ - vicinal sum constraint
+	\item $W$ - strip width
+	\item $\mathcal{M}$ - instance of the COP, cardinality $n$
+	\item $\mathcal{T}$ - feasible solution of instance $\mathcal{M}$ of the COP
+	\item $G$ - graph modelling instance $\mathcal{M}$ of the COP
+	\item $V$ - vertex set, $|V| = 2n + 2$, includes dominating vertices
+	\item $B$ - set of edges between partners, $|B| = n+1$, perfect matching
+	\item $p : V \to V$ - bijective function associating each vertex with its partner, $p(v_i) = v_j$
+	\item $R$ - set of edges between vertices than meet VSC and are not partners
+	\item $m : V \to V$ - bijective function associating each vertex with its match, $m(v_i) = v_j$
+	\item $G'$ - spanning subgraph, $G' = (V, B \cup R')$, 2-regular graph
+	\item $C_1, C_2,..., C_l$ - components of $G'$
+	\item $l$ - number of components of $G'$
+	\item $R_1, R_2,...$ - sets produced by BR
+	\item $\mathcal{R}^* = \{R_{1}^{*}, R_{2}^{*},...\}$ - collection of sets produced by MBR
+	\item $\mathcal{S} = \{S_1, S_2,...,S_k\}$ - feasible solution to the SCSPP
+	\item $t$ - theoretical minimum, $t = \ceil*{\sum_{i=1}^{n}w_i / W}$, lower bound for $k$
+	\item $k$ - fewest number of strips required to pack all items feasibly
+	\item $q$ - solution quality, $q = |\mathcal{S}| / t$
+\end{itemize}
+
 \section{AHC}
 \begin{itemize}
 	\item Condensed version of algorithm from previous paper
 	\item Set notation and terms to be used throughout paper
 \end{itemize}
+
 
 \section{Evolutionary Algorithm}
 \begin{itemize}
@@ -69,8 +102,42 @@
 		\item Fitness value of the best solution found
 		\item If best solution found is equivalent to the lowerbound
 	\end{itemize}	
-	
+
 \end{itemize}
+
+\begin{algorithm}
+\caption{\textsc{EvolutionaryAlgorithm} \textit{pop}, $\mathcal{S}_X, \mathcal{S}_Y$, \textit{offspring}}
+\begin{algorithmic}
+	\State Choose two solutions k and l randomly from \textit{pop}
+	\State $\mathcal{S}_X$ = $pop[k]$ //parent1
+	\State $\mathcal{S}_Y$ = $pop[l]$ //parent2
+	\State parent1Fit = Fitness($\mathcal{S}_X$)
+	\State parent2Fit = Fitness($\mathcal{S}_Y$)
+	\Run Crossover Operator with $\mathcal{S}_X$ and $\mathcal{S}_Y$, \Output $offspring$
+	\State $feasPacking \gets feasPacking + offspring$
+	\State offFit = Fitness($offspring$)
+	\If{$parent1Fit < parent2Fit$}
+		\State replace pop[k] with offspring
+	\ElsIf{$parent1Fit > parent2Fit$}
+		\State replace pop[l] with offspring
+	\ElsIf{$parent1Fit == parent2Fit$}
+		\State $r$ = random value between 0 and 1
+		\If{$r < 0.5$}
+			\State replace pop[k] with offspring
+		\ElsIf{$r >= 0.5$}
+			\State replace pop[l] with offspring
+		\EndIf		
+	\EndIf	
+\end{algorithmic}	
+\end{algorithm}	
+
+\begin{algorithm}
+	\caption{\textsc{LocalSearch}}
+	\begin{algorithmic}
+		\State local search
+	\end{algorithmic}	
+\end{algorithm}
+
 
 \section{Post-optimization}
 \begin{itemize}
