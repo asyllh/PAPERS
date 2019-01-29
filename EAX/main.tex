@@ -11,10 +11,6 @@
 \author{Jonathan M. Thompson}
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 
-\begin{abstract}
-
-\end{abstract}	
-
 \end{frontmatter}
 
 %--------------------------------------------------------------------
@@ -64,7 +60,7 @@
 	\item $k$ - fewest number of strips required to pack all items feasibly
 	\item $q$ - solution quality, $q = |\mathcal{S}| / t$
 	\item $A(S) = \sum_{i \in S}w_i$ - strip capacity/area, total width of all items on strip $S$
-	\item $\mathcal{F}$ - the set of all item combinations that can be feasibly packed onto a single strip
+	\item $\mathcal{F}$ - the set of all item combinations that can be feasibly packed onto a single strip, i.e the items' total width does not exceed strip width and there exists an ordering of the items such that the vicinal sum constraint is met between all adjacent items
 	\item $\mathcal{S}_X, \mathcal{S}_Y$ - feasible sub-solutions that together make up a full solution
 \end{itemize}
 
@@ -167,10 +163,6 @@ MoveSin:
 
 
 
-
-
-
-
 \begin{algorithm}
 \caption{\textsc{EvolutionaryAlgorithm} \textit{pop}, $\mathcal{S}_X, \mathcal{S}_Y$, \textit{offspring}}
 \begin{algorithmic}
@@ -203,6 +195,23 @@ MoveSin:
 		\State local search
 	\end{algorithmic}	
 \end{algorithm}
+
+\begin{table}[h!]
+	\centering
+	\caption{Results for $W=2500$}
+	\begin{tabular}{cccccccccccccc}\toprule
+		& & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$} \\
+		\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11} \cmidrule{13-14}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$ && Strips & TMin$\%$ && Strips & TMin$\%$\\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - && - & - && - & -\\
+		r,100 & 20 & tmin & - & - && - & - && - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & - && - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & - && - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:n=500}
+\end{table}
 
 
 \section{Post-optimization}
