@@ -1,0 +1,344 @@
+\documentclass{elsarticle}
+
+\input{includes/preamble.tex}
+
+\begin{document}
+	
+\begin{frontmatter}
+\title{An Evolutionary Algorithm for the Score-Constrained Strip-Packing Problem}
+\author{Asyl L. Hawa}
+\author{Rhyd Lewis}
+\author{Jonathan M. Thompson}
+\address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
+
+\end{frontmatter}
+
+%--------------------------------------------------------------------
+
+\section{Introduction}
+\begin{itemize}
+	\item Define COP, single strip problem and multi-strip problem (SCSPP)
+	\item Vicinal sum constraint
+	\item Cite Goulimis, previous Heuristics paper, follow on
+	\item Lit review, Lewis TSP method
+	\item Formal definitions of SCSPP and subproblem
+	\item BPP special case of SCSPP where $\tau = 0$, hence SCSPP NP-hard
+	\item Need to decide which items to pack on which strips and how the items should be packed, different orientations, s.t. minimum scoring distance met
+	\item Show that sub-problem can be seen as an instance of COP, minimum scoring distance = vicinal sum constraint
+	\item Describe rest of paper, AHC single strip for COP, Evolutionary Algorithm and Postopt
+	\item Two phase approach, cite vertex colouring paper
+\end{itemize}
+
+
+\section{Notation}
+\begin{itemize}
+	\item $\tau$ - constraint value (minimum scoring distance)
+	\item $\mathcal{I}$ - set of items, $|\mathcal{I}| = n$ 
+	\item $H$ - height of items
+	\item $i$ - index of each item $i \in \mathcal{I}$
+	\item $w_i$ - width of item $i$
+	\item $a_i, b_i$ - score widths of each item $i$, $a_i \leq b_i$, $a_i + b_i < w_i$
+	\item $(a_i, b_i)$ - regular orientation of item $i$, smaller score width on LHS
+	\item $(b_i, a_i)$ - rotated orientation of item $i$, smaller score width on RHS
+	\item \textbf{rhs}($i$) + \textbf{lhs}($i+1$) $\geq \tau$ - vicinal sum constraint
+	\item $W$ - strip width
+	\item $\mathcal{M}$ - instance of the COP, cardinality $n$
+	\item $\mathcal{T}$ - feasible solution of instance $\mathcal{M}$ of the COP
+	\item $G$ - graph modelling instance $\mathcal{M}$ of the COP
+	\item $V$ - vertex set, $|V| = 2n + 2$, includes dominating vertices
+	\item $B$ - set of edges between partners, $|B| = n+1$, perfect matching
+	\item $p : V \to V$ - bijective function associating each vertex with its partner, $p(v_i) = v_j$
+	\item $R$ - set of edges between vertices than meet VSC and are not partners
+	\item $m : V \to V$ - bijective function associating each vertex with its match, $m(v_i) = v_j$
+	\item $G'$ - spanning subgraph, $G' = (V, B \cup R')$, 2-regular graph
+	\item $C_1, C_2,..., C_l$ - components of $G'$
+	\item $l$ - number of components of $G'$
+	\item $R_1, R_2,...$ - sets produced by BR
+	\item $\mathcal{R}^* = \{R_{1}^{*}, R_{2}^{*},...\}$ - collection of sets produced by MBR
+	\item $\mathcal{S} = \{S_1, S_2,...,S_k\}$ - feasible solution to the SCSPP
+	\item $t$ - theoretical minimum, $t = \ceil*{\sum_{i=1}^{n}w_i / W}$, lower bound for $k$
+	\item $k$ - fewest number of strips required to pack all items feasibly
+	\item $q$ - solution quality, $q = |\mathcal{S}| / t$
+	\item $A(S) = \sum_{i \in S}w_i$ - strip capacity/area, total width of all items on strip $S$
+	\item $\mathcal{F}$ - the set of all item combinations that can be feasibly packed onto a single strip, i.e the items' total width does not exceed strip width and there exists an ordering of the items such that the vicinal sum constraint is met between all adjacent items
+	\item $\mathcal{S}_X, \mathcal{S}_Y$ - feasible sub-solutions that together make up a full solution
+\end{itemize}
+
+\section{AHC}
+\begin{itemize}
+	\item Condensed version of algorithm from previous paper
+	\item Set notation and terms to be used throughout paper
+	\item Theorem/Proof polynomial time $O(n^2)$
+	\item Alternating Hamiltonian cycle NP-hard generalises Ham cycle problem, but special graph structure means solution can be found in polynomial time
+	\item Pseudocode/brief overview of AHC algorithm in steps
+	\item Preliminary checks - these were not included in previous paper, speed
+\end{itemize}
+
+\section{SCSPP}
+\begin{itemize}
+	\item Equations feasible candidate solution
+\end{itemize}
+
+\begin{table}[h!]
+	\centering
+	\caption{Results for $W=2500$}
+	\begin{tabular}{cccccccc}\toprule
+		& & &\multicolumn{2}{c}{MFFD} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
+		\cmidrule{4-5} \cmidrule{7-8}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$\\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - \\
+		r,100 & 20 & tmin & - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:MFFD2500}
+\end{table}
+
+
+\section{Evolutionary Algorithm}
+\begin{itemize}
+	\item Create initial population, one solution using MFFD$^+$, the rest using MFFR$^+$
+	\item Each solution in population is also mutated and local search is applied
+	\item Choose two parent solutions from population
+	\item Apply one of two recombination operators
+	\item Paragraph for each operator, GGA, GPX', and GPN
+	\item Explain why GPX cannot be used, cite Lewis paper
+	\item Describe repair procedure using MFFD$^+$
+	\item Section explaining Local Search, PairPair, PairSin, SinSin, MoveSin
+	\item Note the use of feasPacking/infeasPacking sets to aid the search
+	\item Reduces the number of times AHC needs to be called, for each group of items AHC should only be called once
+	\item Preliminary check before calling AHC
+	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
+	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
+\end{itemize}
+
+\section{CreateInitPop}
+\begin{itemize}
+	\item Run MFFPlus with items in decreasing order once
+	\item Run Mutation to mutate soln
+	\item Add soln to population
+	\item Run MFFPlus with items in random order multiple times
+	\item Run Mutation to mutate each soln
+	\item Add each soln to population
+\end{itemize}
+
+\section{MFFPlus}
+\begin{itemize}
+	\item PreAHCMFFP
+\end{itemize}
+
+\section{PreAHCMFFP}
+\begin{itemize}
+	\item AHC
+\end{itemize}
+
+\section{Mutation}
+\begin{itemize}
+	\item PermuteStrips
+	\item LocalSearch
+\end{itemize}
+
+\section{LocalSearch}
+\begin{itemize}
+	\item PermuteStrips x2
+	\item PairPair
+	\item PairSin
+	\item SinSin
+	\item MoveSin
+	\item MFFPlus partial
+\end{itemize}
+
+\section{PairPair/PairSin/SinSin/MoveSin}
+\begin{itemize}
+	\item SearchPackingsLS
+\end{itemize}
+
+\section{SearchPackingsLS}
+\begin{itemize}
+	\item PreAHCLS
+\end{itemize}
+
+\section{PreAHCLS}
+\begin{itemize}
+	\item AHC
+\end{itemize}
+
+\section{AHC}
+\begin{itemize}
+	\item InitInstance
+	\item MCM
+	\item MPS
+	\item BR
+	\item MBR
+	\item CP
+\end{itemize}
+
+\section{GGA}
+\begin{itemize}
+	\item PermuteStrips Y
+	\item Mutation
+	\item MFFPlus partial
+	\item LocalSearch
+\end{itemize}
+
+\section{GPX'}
+\begin{itemize}
+	\item Mutation
+	\item MFFPlus partial
+	\item LocalSearch
+\end{itemize}
+
+\section{GPN}
+\begin{itemize}
+	\item Mutation
+	\item MFFPlus partial
+	\item LocalSearch
+\end{itemize}
+
+
+\section{Problem Instances}
+\begin{itemize}
+	\item Types of instances - artificial, real
+	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
+	\item Each of these sets will then be run 6 times using different arguments - strip width = 2500 and 5000, and either GGA, GPX', or GPN
+	\item Overall there will be 24 types of outputs from EA
+	\item In EA output file to compare:
+	\begin{itemize}
+		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
+		\item Number of strips in best solution found
+		\item Number of iterations of EA within the given time limit
+		\item Fitness value of the best solution found
+		\item If best solution found is equivalent to the lowerbound
+	\end{itemize}
+	\item Keep track of best fitness/best solution/time at each iteration, if better solution found then write to file, produce graph
+\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase
+\item Number of items - 100, 500
+\item Time limit for EA - 10 minutes
+\item Width of strips - 2500, 5000
+\item Recombination operators - GGA, GPX', GPN
+\end{itemize}
+
+\section{Local Search}
+Operates on a pair of feasible sub-solutions $\mathcal{S}_X$ and $\mathcal{S}_Y$ that together makeup a feasible solution. That is, $(\bigcup_{S_x \in \mathcal{S}_X} S_x) \cup (\bigcup_{S_y \in \mathcal{S}_Y} S_y) = \mathcal{I}$, and $(\bigcup_{S_x \in \mathcal{S}_X} S_x) \cap (\bigcup_{S_y \in \mathcal{S}_Y} S_y) = \emptyset$.
+
+For each $S_x \in \mathcal{S}_X$ and $S_y \in \mathcal{S}_Y$:
+
+PairPair:
+\begin{itemize}
+	\item If $\exists$ pairs of items $i,j \in S_x$ and $k, l \in S_y$ s.t.:
+	\item $w_i + w_j < w_k + w_l$, and
+	\item $((S_x \cup \{k, l\}) - \{i, j\}) \in \mathcal{F}$ and
+	\item $((S_y \cup \{i, j\}) - \{k, l\}) \in \mathcal{F}$
+	\item then move items $i, j$ from $S_x$ to $S_y$ and move items $k, l$ from $S_y$ to $S_x$	
+\end{itemize}
+
+PairSin:
+\begin{itemize}
+	\item If $\exists$ pairs of items $i,j \in S_x$ and item $k \in S_y$ s.t.:
+	\item $w_i + w_j \leq w_k$, and
+	\item $((S_x \cup \{k\}) - \{i, j\}) \in \mathcal{F}$ and
+	\item $((S_y \cup \{i, j\}) - \{k\}) \in \mathcal{F}$
+	\item then move items $i, j$ from $S_x$ to $S_y$ and move item $k$ from $S_y$ to $S_x$	
+\end{itemize}
+
+SinSin:
+\begin{itemize}
+	\item If $\exists$ item $i \in S_x$ and item $k \in S_y$ s.t.:
+	\item $w_i < w_k$, and
+	\item $((S_x \cup \{k\}) - \{i\}) \in \mathcal{F}$ and
+	\item $((S_y \cup \{i\}) - \{k\}) \in \mathcal{F}$
+	\item then move item $i$ from $S_x$ to $S_y$ and move item $k$ from $S_y$ to $S_x$	
+\end{itemize}
+
+MoveSin:
+\begin{itemize}
+	\item If $\exists$ item $k \in S_y$ s.t.:
+	\item $(S_x \cup \{k\}) \in \mathcal{F}$ and
+	\item $(S_y - \{k\}) \in \mathcal{F}$
+	\item then move item $k$ from $S_y$ to $S_x$	
+\end{itemize}
+
+
+
+\begin{algorithm}
+\caption{\textsc{EvolutionaryAlgorithm} \textit{pop}, $\mathcal{S}_X, \mathcal{S}_Y$, \textit{offspring}}
+\begin{algorithmic}
+	\State Choose two solutions k and l randomly from \textit{pop}
+	\State $\mathcal{S}_X$ = $pop[k]$ //parent1
+	\State $\mathcal{S}_Y$ = $pop[l]$ //parent2
+	\State parent1Fit = Fitness($\mathcal{S}_X$)
+	\State parent2Fit = Fitness($\mathcal{S}_Y$)
+	\Run Crossover Operator with $\mathcal{S}_X$ and $\mathcal{S}_Y$, \Output $offspring$
+	\State $feasPacking \gets feasPacking + offspring$
+	\State offFit = Fitness($offspring$)
+	\If{$parent1Fit < parent2Fit$}
+		\State replace pop[k] with offspring
+	\ElsIf{$parent1Fit > parent2Fit$}
+		\State replace pop[l] with offspring
+	\ElsIf{$parent1Fit == parent2Fit$}
+		\State $r$ = random value between 0 and 1
+		\If{$r < 0.5$}
+			\State replace pop[k] with offspring
+		\ElsIf{$r >= 0.5$}
+			\State replace pop[l] with offspring
+		\EndIf		
+	\EndIf	
+\end{algorithmic}	
+\end{algorithm}	
+
+\begin{algorithm}
+	\caption{\textsc{LocalSearch}}
+	\begin{algorithmic}
+		\State local search
+	\end{algorithmic}	
+\end{algorithm}
+
+\begin{table}[h!]
+	\centering
+	\caption{Results for $W=2500$}
+	\begin{tabular}{ccccccccccc}\toprule
+		& & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
+		\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$ && Strips & TMin$\%$ \\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - && - & -\\
+		r,100 & 20 & tmin & - & - && - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:EA2500}
+\end{table}
+
+
+\section{Post-optimization}
+\begin{itemize}
+	\item Exact cover formulation, NP-hard, state the IP, describe DLX
+	\item Use strips in feasPacking for post opt
+	\item Compare with EA output - is a better solution found, or a solution with the same number of strips but a better fitness value?
+	\item Is the post opt phase able to find a solution equal to the lowerbound?
+	\item Post opt will only ever find a solution equal to or better than the solution found in EA, never worse
+	\item Execution time
+\end{itemize}
+
+\section{Experimental Results}
+\begin{itemize}
+	\item Proportion of instances where best solution EA == lowerbound
+	\item Proportion of instance where best solution post opt better than EA, and/or == lowerbound
+	\item Comparison between GGA and GPX', artificial and real instance types, different strip widths and number of items
+	\item check timestamps from EA output file - which type is able to reach a better solution at a faster rate?
+	\item Differences in number of strips in best solution found in EA using different arguments
+\end{itemize}
+
+\section{Conclusion}
+\begin{itemize}
+	\item Could use selected packings rather than all packings
+\end{itemize}
+
+
+\section*{References}
+\bibliography{bibliography}
+
+\end{document}
