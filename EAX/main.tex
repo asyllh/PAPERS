@@ -10,7 +10,6 @@
 \author{Rhyd Lewis}
 \author{Jonathan M. Thompson}
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
-
 \end{frontmatter}
 
 %--------------------------------------------------------------------
@@ -29,27 +28,74 @@
 	\item Two phase approach, cite vertex colouring paper
 \end{itemize}
 
-
-
 \section{AHC}
 \begin{itemize}
 	\item Condensed version of algorithm from previous paper
 	\item Set notation and terms to be used throughout paper
+	\item change partner bijective function $p:V \to V$ to $b : V \to V$ to match set $B$?
 	\item Theorem/Proof polynomial time $O(n^2)$
 	\item Alternating Hamiltonian cycle NP-hard generalises Ham cycle problem, but special graph structure means solution can be found in polynomial time
 	\item Pseudocode/brief overview of AHC algorithm in steps
+	\item Keep store of feasible/infeasible packings, check these first before running ahc
 	\item Preliminary checks - these were not included in previous paper, speed
 \end{itemize}
 
-\section{SCSPP}
+\section{Heuristics for the SCSPP}
 \begin{itemize}
 	\item Equations feasible candidate solution
-	\item State why MFFD$^+$ has disadvantages
+	\item lowerbound, optimal solution
+	\item Describe MFFD and MFFD$^+$ heuristics
+	\item State advantages and disadvantages
+	\item Problem instances
+	\item artificial and real instances
+	\item Tables of comparisons
+\end{itemize}
+
+\begin{table}[h!]
+	\centering
+	\caption{MFFD vs MFFD$^+$ - Results for $W=2500$}
+	\begin{tabular}{cccccccc}\toprule
+		& & &\multicolumn{2}{c}{MFFD} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
+		\cmidrule{4-5} \cmidrule{7-8}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$\\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - \\
+		r,100 & 20 & tmin & - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:MFFD2500}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\caption{MFFD vs MFFD$^+$ - Results for $W=5000$}
+	\begin{tabular}{cccccccc}\toprule
+		& & &\multicolumn{2}{c}{MFFD} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
+		\cmidrule{4-5} \cmidrule{7-8}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$\\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - \\
+		r,100 & 20 & tmin & - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:MFFD5000}
+\end{table}
+
+\begin{itemize}
+	\item Although MFFD$^+$ better than MFFD, still disadvantages
+	\item Initially all items in decreasing order, may be a better ordering
+	\item only packing one item at a time, one item may not be feasible on a strip but if two were packed at the same time could be feasible
+	\item explain benefit of using Evolutionary algorithm, lead on to next section
 \end{itemize}
 
 
 \section{Evolutionary Algorithm}
 \begin{itemize}
+	\item Only MFFD$^+$ used in EA
 	\item Create initial population, one solution using MFFD$^+$, the rest using MFFR$^+$
 	\item Each solution in population is also mutated and local search is applied
 	\item Choose two parent solutions from population
@@ -64,7 +110,6 @@
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
 	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
 \end{itemize}
-
 
 
 \section{Problem Instances}
@@ -83,22 +128,88 @@
 	\end{itemize}
 	\item Keep track of best fitness/best solution/time at each iteration, if better solution found then write to file, produce graph
 \item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase
+\item number of solution in initial population = 25
 \item Number of items - 100, 500
-\item Time limit for EA - 10 minutes
+\item Time limit for EA - 5 minutes
 \item Width of strips - 2500, 5000
 \item Recombination operators - GGA, GPX', GPN
 \end{itemize}
 
 
+\begin{table}[h!]
+	\centering
+	\caption{xOver comparisons - Results for $W=2500$}
+	\begin{tabular}{ccccccccccc}\toprule
+		& & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
+		\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$ && Strips & TMin$\%$ \\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - && - & -\\
+		r,100 & 20 & tmin & - & - && - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:EA2500}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\caption{xOver comparisons - Results for $W=5000$}
+	\begin{tabular}{ccccccccccc}\toprule
+		& & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
+		\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11}
+		Inst & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$ && Strips & TMin$\%$ \\ \midrule	
+		a,100 & 100 & tmin & - & - && - & - && - & -\\
+		r,100 & 20 & tmin & - & - && - & - && - & -\\
+		\midrule
+		a,500 & 500 & tmin & - & - && - & - && - & -\\
+		r,500 & 20 & tmin & - & - && - & - && - & -\\
+		\bottomrule
+	\end{tabular}	
+	\label{table:EA5000}
+\end{table}
+
+
 \section{Post-optimization}
 \begin{itemize}
 	\item Exact cover formulation, NP-hard, state the IP, describe DLX
+	\item cite Knuth dancing steps
 	\item Use strips in feasPacking for post opt
 	\item Compare with EA output - is a better solution found, or a solution with the same number of strips but a better fitness value?
 	\item Is the post opt phase able to find a solution equal to the lowerbound?
 	\item Post opt will only ever find a solution equal to or better than the solution found in EA, never worse
 	\item Execution time
+	\item Set cover problem is optimisation problem, find min number of sets
+	\item exact cover problem is decision problem, does a set exist
+	\item however since we add every item on its own strip to feasPacking, we know that a set exists
+	\item problem is to find minimum number of strips that covers all items and contains every item exactly once
+	\item $A = (a_{ij})$ - $m$ x $n$ matrix
+	\item $M = \{1, 2,..., m\}$ - rows of the matrix, each row $i \in M$ is a strip
+	\item $N = \{1, 2,...,n\}$ - columns of the matrix, each column $j \in N$ is an item
+	\item $(a_{ij}) = 1$ iff item $j$ is on strip $i$
+	\item Say that row $i$ covers column $j$ if $a_{ij} = 1$
+	\item Find the smallest number of strips $S \subseteq M$ that contains every item exactly once, i.e. union of strips $= \mathcal{I}$ and intersection $= \emptyset$
+	\item Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$	
 \end{itemize}
+\[x_i =
+\begin{cases} 
+	1 & \text{if } i \in S \\
+	0 & \text{otherwise} 
+\end{cases}
+\]
+
+\begin{align*}
+	\text{minimise} &\sum_{i \in M} x_i \\
+	\text{subject to} &\sum_{i \in M} a_{ij} x_i = 1 \hspace{5mm} \forall j \in N \\
+	&x_i \in \{0,1\} \hspace{5mm} \forall i \in M
+\end{align*}
+
+\section{Xpress}
+\begin{itemize}
+	\item Xpress mosel model
+\end{itemize}
+
 
 \section{Experimental Results}
 \begin{itemize}
