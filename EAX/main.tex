@@ -17,6 +17,7 @@
 \section{Introduction}
 \begin{itemize}
 	\item Define COP, single strip problem and multi-strip problem (SCSPP)
+	\item Other examples of where COP is used
 	\item Vicinal sum constraint
 	\item Cite Goulimis, previous Heuristics paper, follow on
 	\item Lit review, Lewis TSP method
@@ -39,8 +40,8 @@
 \begin{itemize}
 	\item Condensed version of algorithm from previous paper
 	\item Set notation and terms to be used throughout paper
-	\item change partner bijective function $p:V \to V$ to $b : V \to V$ to match set $B$?
 	\item Theorem/Proof polynomial time $O(n^2)$
+	\item Hamiltonian cycle characteristics, NP-hard, Karp 21 NP-Complete problem (both direct and undirected), complexity
 	\item Alternating Hamiltonian cycle NP-hard generalises Ham cycle problem, but special graph structure means solution can be found in polynomial time
 	\item Pseudocode/brief overview of AHC algorithm in steps
 	\item Keep store of feasible/infeasible packings, check these first before running ahc
@@ -52,6 +53,23 @@
 	\item Proposition alt ham cycle generalises ham cycle
 	\item Alt ham cycle definition
 	\item MBR types, check that Beckers method is redundant
+	\item Add dominating vertices to help produce Ham cycle, remove at end, outer score widths ignored
+	\item Theorem MCM guarantee $O(n \lg n)$
+\end{itemize}
+
+\section{AHC}
+\begin{itemize}
+	\item Graph $G = (V, B \cup R)$
+	\item Run MCM, produce $R'$
+	\item if $|R'| < n+1$, infeasible, end
+	\item Subgraph $G = (V, B \cup R')$, components $C_1, C_2,...,C_l$
+	\item If $l = 1$, feasible, end
+	\item Run BR, produce sets $R_1, R_2,...$
+	\item If no sets produced, infeasible, end
+	\item Else if $\exists$ a set such that $|R_i| = l$, connecting procedure, feasible, end
+	\item Run MBR (provided BR produced more than one set)
+	\item If valid collection $\mathcal{R}^*$ produced, connecting procedure, feasible, end
+	\item Else infeasible, end
 \end{itemize}
 
 \section{Heuristics for the SCSPP}
@@ -61,6 +79,7 @@
 	\item Equations feasible candidate solution
 	\item Combination of third and fourth conditions for feasible solution equivalent to $\mathcal{F}$, set of all feasible strips
 	\item lowerbound, optimal solution, theoretical minimum
+	\item theoretical min less accurate
 	\item Describe MFFD and MFFD$^+$ heuristics
 	\item State advantages and disadvantages
 	\item Difference between SCSPP and BPP
@@ -78,31 +97,59 @@
 	\item $w_i \in [150,1000]$
 	\item Time it takes to run heuristics
 	\item Tables of comparisons
+	\item State that there are 20 types on average for real instances (no longer in table)
 \end{itemize}
 
 \begin{table}[h!]
 	\centering
-	\caption{MFFD vs MFFD$^+$}
-	\begin{tabular}{cccccccc}\toprule
-		& & &\multicolumn{2}{c}{MFFD} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
-		\cmidrule{4-5} \cmidrule{7-8}
-		Instance & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$\\ \midrule	
-		a,100,2500 & 100 & tmin & - & - && - & - \\
-		r,100,2500 & 20 & tmin & - & - && - & -\\
+\caption{MFFD vs MFFD$^+$}
+\begin{threeparttable}
+\begin{tabular}{cccccccccccc}\toprule
+	& & & \multicolumn{4}{c}{MFFD} &\phantom{a}& \multicolumn{4}{c}{MFFD$^+$}\\
+	\cmidrule{4-7} \cmidrule{9-12}
+	Instance & $W$ & $t$ & $|\mathcal{S}|$\tnote{1} & $\# t$ & $q$ & $f(\mathcal{S})$ && $|\mathcal{S}|$ & $\# t$ & $q$ & $f(\mathcal{S})$\\ \midrule	
+	a,100 & 2500 & 23.323 & 30.754 & 0 & 1.320 & 0.686 && 28.457 & 26 & 1.221 & 0.771 \\
+	a,100 & 5000 & 11.922 & 23.583 & 0 & 1.982 & 0.412 && 19.881 & 7 & 1.670 & 0.543  \\
+	\midrule
+	a,500 & 2500 & 114.942 & 140.206 & 0 & 1.220 & 0.781 && 132.647 & 0 & 1.154 & 0.842 \\
+	a,500 & 5000 & 57.722 & 103.209 & 0 & 1.789 & 0.499 && 89.544 & 0 & 1.552 & 0.609 \\
+	\midrule
+	\midrule
+	r,100 & 2500 & 23.473 & 37.069 & 5 & 1.600 & 0.549 && 35.419 & 16 & 1.523 & 0.597 \\
+	r,100 & 5000 & 11.981 & 32.348 & 1 & 2.731 & 0.288 && 29.611 & 5 & 2.497 & 0.347 \\
+	\midrule
+	r,500 & 2500 & 115.239 & 184.106 & 0 & 1.612 & 0.552 && 177.249 & 0 & 1.551 & 0.593 \\
+	r,500 & 5000 & 57.865 & 163.819 & 0 & 2.860 & 0.279 && 153.416 & 0 & 2.678 & 0.322 \\
+	\bottomrule
+\end{tabular}
+\begin{tablenotes}
+	\item[1] Mean from 1000 instances
+\end{tablenotes}	
+\end{threeparttable}	
+\label{table:MFFD}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{average number of items per strip - MFFD vs MFFD$^+$}
+	\begin{tabular}{ccccc}\toprule
+		Instance & $W$ & items/lb & MFFD & MFFD$^+$ \\ \midrule	
+		a,100 & 2500 & 4.288 & 3.252 & 3.514 \\
+		a,100 & 5000 & 8.388 & 4.240 & 5.030 \\
 		\midrule
-		a,500,2500 & 500 & tmin & - & - && - & -\\
-		r,500,2500 & 20 & tmin & - & - && - & -\\
+		a,500 & 2500 & 4.350 & 3.566 & 3.769 \\
+		a,500 & 5000 & 8.662 & 4.845 & 5.584 \\
 		\midrule
 		\midrule
-		a,100,5000 & 100 & tmin & - & - && - & - \\
-		r,100,5000 & 20 & tmin & - & - && - & -\\
+		r,100 & 2500 & 4.260 & 2.698 & 2.823 \\
+		r,100 & 5000 & 8.347 & 3.091 & 3.377 \\
 		\midrule
-		a,500,5000 & 500 & tmin & - & - && - & -\\
-		r,500,5000 & 20 & tmin & - & - && - & -\\
+		r,500 & 2500 & 4.339 & 2.716 & 2.821 \\
+		r,500 & 5000 & 8.641 & 3.052 & 3.259 \\
 		\bottomrule
 	\end{tabular}	
-	\label{table:MFFD}
 \end{table}
+
 
 \begin{itemize}
 	\item Although MFFD$^+$ better than MFFD, still disadvantages
@@ -127,6 +174,7 @@
 	\item Preliminary check before calling AHC
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
 	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
+	\item Fitness $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ Falkenaur 1998
 \end{itemize}
 
 \subsection{Experimental Results - EA}
@@ -155,22 +203,22 @@
 \begin{table}[h!]
 	\centering
 	\caption{xOver comparisons}
-	\begin{tabular}{ccccccccccc}\toprule
-		& & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
-		\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11}
-		Instance & Types &TMin & Strips & TMin$\%$ && Strips & TMin$\%$ && Strips & TMin$\%$ \\ \midrule	
-		a,100,2500 & 100 & tmin & - & - && - & - && - & -\\
-		r,100,2500 & 20 & tmin & - & - && - & - && - & -\\
+	\begin{tabular}{cccccccccccc}\toprule
+		& & & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
+		\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
+		Instance & $W$ & $t$ && $|\mathcal{S}|$ & $t\%$ && $|\mathcal{S}|$ & $t\%$ && $|\mathcal{S}|$ & $t\%$ \\ \midrule	
+		a,100 & 2500 & $t$ && EA121 & - && EA122 & - && EA123 & -\\
+		a,100 & 5000 & $t$ && EA151 & - && EA152 & - && EA153 & -\\
 		\midrule
-		a,500,2500 & 500 & tmin & - & - && - & - && - & -\\
-		r,500,2500 & 20 & tmin & - & - && - & - && - & -\\
+		a,500 & 2500 & $t$ && EA521 & - && EA522 & - && EA523 & -\\
+		a,500 & 5000 & $t$ && EA551 & - && EA552 & - && EA553 & -\\
 		\midrule
 		\midrule
-		a,100,5000 & 100 & tmin & - & - && - & - && - & -\\
-		r,100,5000 & 20 & tmin & - & - && - & - && - & -\\
+		r,100 & 2500 & $t$ && ER121 & - && ER122 & - && ER123 & -\\
+		r,100 & 5000 & $t$ && ER151 & - && ER152 & - && ER153 & -\\
 		\midrule
-		a,500,5000 & 500 & tmin & - & - && - & - && - & -\\
-		r,500,5000 & 20 & tmin & - & - && - & - && - & -\\
+		r,500 & 2500 & $t$ && ER521 & - && ER522 & - && ER523 & -\\
+		r,500 & 5000 & $t$ && ER551 & - && ER552 & - && ER553 & -\\
 		\bottomrule
 	\end{tabular}	
 	\label{table:EA}
