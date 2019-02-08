@@ -30,7 +30,7 @@
 	\item Pack strips from left to right
 	\item $|\mathcal{I}| = n$
 	\item Minimum scoring distance $\tau$ approx 70mm in industry
-	\item $\frac{n^2}{2} 2^n$ distinct arrangements
+	\item $\frac{n!}{2} 2^n$ distinct arrangements
 	\item Combinatorial explosion
 	\item COP infinite width, strips given fixed width
 	\item Outer score widths ignored
@@ -84,6 +84,17 @@
 	\item State advantages and disadvantages
 	\item Difference between SCSPP and BPP
 \end{itemize}
+
+For an instance of the SCSPP, a feasible solution is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
+\begin{subequations}
+	\begin{align}
+	\bigcup\nolimits_{i=1}^{|\mathcal{S}|} S_i &= \mathcal{I}, \label{eqn:packall}\\[3pt]
+	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1, 2, ..., |\mathcal{S}|\}, \hspace{2mm} i \neq j, \label{eqn:nooverlap} \\[3pt]
+	\sum\nolimits_{i=1}^{|S_j|}w_i & \leq W \hspace{3mm} \forall \hspace{1mm} S_j \in \mathcal{S}, \label{eqn:capacity} \\[3pt]
+	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau \hspace {5mm} \forall \hspace{1mm} i \in \{1, 2, ..., |S_j|-1\}, \hspace{2mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
+	\end{align}
+\end{subequations}
+
 
 \subsection{Experimental Results - Heuristics}
 \begin{itemize}
