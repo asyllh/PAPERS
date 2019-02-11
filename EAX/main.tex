@@ -15,26 +15,48 @@
 %--------------------------------------------------------------------
 
 \section{Introduction}
+
+A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths $w_i \in \mathbb{Z}^+$ are to be packed on a strip from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical lines, called score lines, in predetermined places. The distance between each score line and the edge of the item are score widths, $a_i, b_i \in \mathbb{Z}^+$. Once the items are packed onto the strip, a pair of knives on a bar simultaneously cut along the score lines of two adjacent items to aid the folding process. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance''. Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the problem involves packing the items onto the strip in such a way that the sum of all adjacent score widths exceeds the minimum scoring distance, as stated in the following definition:
+
+\begin{definition}
+	\label{defn:subprob}
+	Let $\mathcal{I}$ be a set of items with widths $w_i \in \mathbb{Z}^+$, score widths $a_i, b_i \in \mathbb{Z}^+$, and equal height $H$. Given a minimum scoring distance $\tau$, the Score-Constrained Packing Sub-Problem (SCPSP) involves finding an arrangement of the items in $\mathcal{I}$ such that the sum of every pair of adjacent score widths is greater than or equal to $\tau$.
+\end{definition}
+
+
+
 \begin{itemize}
 	\item Define COP, single strip problem and multi-strip problem (SCSPP)
 	\item Other examples of where COP is used
-	\item Vicinal sum constraint
 	\item Cite Goulimis, previous Heuristics paper, follow on
 	\item Lit review, Lewis TSP method
-	\item Formal definitions of SCSPP and subproblem
 	\item BPP special case of SCSPP where $\tau = 0$, hence SCSPP NP-hard
 	\item Need to decide which items to pack on which strips and how the items should be packed, different orientations, s.t. minimum scoring distance met
 	\item Show that sub-problem can be seen as an instance of COP, minimum scoring distance = vicinal sum constraint
 	\item Describe rest of paper, AHC single strip for COP, Evolutionary Algorithm and Postopt
 	\item Two phase approach, cite vertex colouring paper
-	\item Pack strips from left to right
-	\item $|\mathcal{I}| = n$
 	\item Minimum scoring distance $\tau$ approx 70mm in industry
-	\item $\frac{n!}{2} 2^n$ distinct arrangements
-	\item Combinatorial explosion
+	\item $\frac{n!}{2} 2^n$ distinct arrangement, combinatorial explosion
 	\item COP infinite width, strips given fixed width
 	\item Outer score widths ignored
 \end{itemize}
+
+\begin{definition}
+	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},..., \{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
+	\begin{equation}
+		\label{eqn:vsc}
+		\emph{\textbf{rhs}}(i) + \emph{\textbf{lhs}}(i+1) \geq \tau \hspace{5mm} \forall \hspace{1mm} i \in \{1,2,..., n-1\},
+	\end{equation}
+	where \emph{\textbf{lhs}($i$)} and \emph{\textbf{rhs}($i$)} denote the left- and right-hand values of the $i$th tuple. The inequality is referred to as the \emph{vicinal sum constraint}.
+\end{definition}
+
+For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, we have a solution $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$
+
+\begin{definition}
+	Let $\mathcal{I}$ be a set of $n$ rectangular items of height $H$ with varying widths $w_i \in \mathbb{Z}^+$ and score widths $a_i, b_i \in \mathbb{Z}^+$ for each item $i \in \mathcal{I}$. Given a minimum scoring distance $\tau \in \mathbb{Z}^+$, the Score-Constrained Strip-Packing Problem (SCSPP) consists of finding the minimum number of strips of height $H$ and width $W$ required to pack all items in $\mathcal{I}$ such that the sum of every pair of adjacent score widths is greater than or equal to $\tau$ and no strip is overfilled.
+\end{definition}
+
+In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section 3 will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section 4, along with results from rigorous experiments.  
 
 \section{Solving the COP}
 \begin{itemize}
@@ -57,6 +79,11 @@
 	\item Theorem MCM guarantee $O(n \lg n)$
 \end{itemize}
 
+\begin{definition}
+	\label{defn:althamcycle}
+	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of one of two sets, $B$ or $R$. $G$ contains an alternating Hamiltonian cycle if there exists a Hamiltonian cycle such that successive edges alternate between sets $B$ and $R$.
+\end{definition}
+
 \section{AHC}
 \begin{itemize}
 	\item Graph $G = (V, B \cup R)$
@@ -72,17 +99,15 @@
 	\item Else infeasible, end
 \end{itemize}
 
+
 \section{Heuristics for the SCSPP}
 \begin{itemize}
 	\item SCSPP at least as hard as BPP, NP-hard
-	\item Why heuristics
-	\item Equations feasible candidate solution
-	\item Combination of third and fourth conditions for feasible solution equivalent to $\mathcal{F}$, set of all feasible strips
+	\item Why heuristics?
 	\item lowerbound, optimal solution, theoretical minimum
 	\item theoretical min less accurate
-	\item Describe MFFD and MFFD$^+$ heuristics
-	\item State advantages and disadvantages
-	\item Difference between SCSPP and BPP
+	\item State advantages and disadvantages of MFFD and MFFD$^+$
+	\item Differences between SCSPP and BPP
 \end{itemize}
 
 For an instance of the SCSPP, a feasible solution is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
@@ -94,6 +119,13 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau \hspace {5mm} \forall \hspace{1mm} i \in \{1, 2, ..., |S_j|-1\}, \hspace{2mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
 	\end{align}
 \end{subequations}
+
+\subsection{Heuristics}
+\begin{itemize}
+	\item For both heuristics, if current item is placed on a new strip, it is placed in a regular orientation - smaller score width on the left-most side of the strip.
+	\item MFFD - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.
+	\item MFFD$^+$ - if item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.
+\end{itemize}
 
 
 \subsection{Experimental Results - Heuristics}
@@ -175,7 +207,7 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 	\item Create initial population, one solution using MFFD$^+$, the rest using MFFR$^+$
 	\item Each solution in population is also mutated and local search is applied
 	\item Choose two parent solutions from population
-	\item Apply one of two recombination operators
+	\item Apply one of three recombination operators
 	\item Paragraph for each operator, GGA, GPX', and GPN
 	\item Explain why GPX cannot be used, cite Lewis paper
 	\item Describe repair procedure using MFFD$^+$
@@ -184,8 +216,30 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 	\item Reduces the number of times AHC needs to be called, for each group of items AHC should only be called once
 	\item Preliminary check before calling AHC
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
-	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
 	\item Fitness $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ Falkenaur 1998
+\end{itemize}
+
+\subsection{Crossover Operator}
+\begin{itemize}
+	\item May have duplicate or missing items
+	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used (Lewis and Holborn paper)
+	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
+	\item If missing items, repair procedure, then local search
+	\item GGA - Permute strips of second parent solution, then choose two strips randomly, add all strips between two chosen strips (including chosen strips) and add to offspring. Then from first parent, only add strips to offspring containing items that are not in offspring. Repair procedure on missing items, if any.
+	\item GPX' - Alternate between parent solutions, add fullest strip to offspring, delete strips from other parent containing items in offspring. Continue until $min(|\mathcal{S}_X|,|\mathcal{S}_Y|)-1$ strips in offspring. Repair procedure on missing items, if any. Initially, if both parents have fullest strip, break ties randomly.
+	\item GPN - Operates in the same manner as GPX', except chose strip containing the most items. Initially, if both parents have strip containing same number of max items, choose the parent whose strip is the fullest. If equal for both strips, choose randomly.
+	\item Once offspring produced, mutate and apply local search before replacing worst parent.
+\end{itemize}
+
+\subsection{Local Search}
+\begin{itemize}
+	\item Takes in two feasible partial solutions, produces one feasible solution
+	\item Initially permute the strips of both solutions
+	\item Attempt to swap pairs of items, a pair of items with a single item, swap single items, or move an item, repeat until no changes
+	\item Apply MFFD$^+$ on any items not packed
+	\item When swapping/moving items, AHC is used on the sub-problems
+	\item Also keep track of feasible/infeasible arrangements, check these sets first before running AHC
+	\item Therefore for any collection of items AHC is only called once (or not at all if preliminary checks failed)
 \end{itemize}
 
 \subsection{Experimental Results - EA}
