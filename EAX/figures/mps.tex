@@ -7,63 +7,68 @@
 \begin{document}
 	
 \begin{tikzpicture}
-%\draw [help lines] (-1,-1) grid (25, 12);
+%\draw [help lines] (-1,-1) grid (16, 12);
 
 %\draw [white] (4, -2.65) -- (12, -2.65);
 
-\draw [ultra thick, myBlue] (4,0) -- (7,2);
-\draw [ultra thick, myBlue] (4,7) -- (7,5);
-\draw [ultra thick, myBlue] (1,2) -- (1,5);
+\draw [ultra thick, myBlue] (0,0) -- (3.5,0);
+\draw [ultra thick, myBlue] (0,3.5) -- (3.5,3.5);
 
-\draw [ultra thick, myBlue] (10,2) -- (12,0);
-\draw [ultra thick, myBlue] (15,0) -- (17,2);
-\draw [ultra thick, myBlue] (15,7) -- (17,5);
-\draw [ultra thick, myBlue] (12,7) -- (10,5);
+\draw [ultra thick, myBlue] (9.5,0) -- (13,0);
+\draw [ultra thick, myBlue] (9.5,3.5) -- (13,3.5);
 
-\draw [myRed] (4,0) -- (1,2);
-\draw [myRed] (4,7) -- (1,5);
-\draw [myRed] (7,5) -- (7,2);
+\draw [ultra thick, myBlue] (5,11) -- (8,11);
+\draw [ultra thick, myBlue] (5,5) -- (3.25,8);
+\draw [ultra thick, myBlue] (8,5) -- (9.75,8);
 
-\draw [myRed] (10,2) -- (10,5);
-\draw [myRed] (12,7) -- (15,7);
-\draw [myRed] (17,5) -- (17,2);
-\draw [myRed] (15,0) -- (12,0);
+\draw [myRed] (0,0) -- (0,3.5);
+\draw [myRed] (3.5,0) -- (3.5,3.5);
 
-\draw [fill=white, thick] (4,0) circle [radius = 0.1];
-\draw [fill=white, thick] (1,2) circle [radius = 0.1];
-\draw [fill=white, thick] (7,2) circle [radius = 0.1];
-\draw [fill=white, thick] (1,5) circle [radius = 0.1];
-\draw [fill=white, thick] (7,5) circle [radius = 0.1];
-\draw [fill=white, thick] (4,7) circle [radius = 0.1];
+\draw [myRed] (9.5,0) -- (9.5,3.5);
+\draw [myRed] (13,0) -- (13,3.5);
 
-\draw [fill=white, thick] (10,2) circle [radius = 0.1];
-\draw [fill=white, thick] (10,5) circle [radius = 0.1];
-\draw [fill=white, thick] (17,2) circle [radius = 0.1];
-\draw [fill=white, thick] (17,5) circle [radius = 0.1];
-\draw [fill=white, thick] (12,0) circle [radius = 0.1];
-\draw [fill=white, thick] (12,7) circle [radius = 0.1];
-\draw [fill=white, thick] (15,0) circle [radius = 0.1];
-\draw [fill=white, thick] (15,7) circle [radius = 0.1];
+\draw [myRed] (5,5) -- (8,5);
+\draw [myRed] (3.25,8) -- (5,11);
+\draw [myRed] (9.75,8) -- (8,11);
+
+\draw [fill=white, thick] (0,0) circle [radius = 0.1];
+\draw [fill=white, thick] (3.5,0) circle [radius = 0.1];
+\draw [fill=white, thick] (0,3.5) circle [radius = 0.1];
+\draw [fill=white, thick] (3.5,3.5) circle [radius = 0.1];
+
+\draw [fill=white, thick] (9.5,0) circle [radius = 0.1];
+\draw [fill=white, thick] (13,0) circle [radius = 0.1];
+\draw [fill=white, thick] (13,3.5) circle [radius = 0.1];
+\draw [fill=white, thick] (9.5,3.5) circle [radius = 0.1];
+
+\draw [fill=white, thick] (5,5) circle [radius = 0.1];
+\draw [fill=white, thick] (3.25,8) circle [radius = 0.1];
+\draw [fill=white, thick] (8,5) circle [radius = 0.1];
+\draw [fill=white, thick] (9.75,8) circle [radius = 0.1];
+\draw [fill=white, thick] (5,11) circle [radius = 0.1];
+\draw [fill=white, thick] (8,11) circle [radius = 0.1];
 
 
-\node [below] at (4,-0.1) {\huge{$v_2$}};
-\node [left] at (1,2) {\huge{$v_{13}$}};
-\node [left] at (1,5) {\huge{$v_{14}$}};
-\node [above] at (4,7) {\huge{$v_1$}};
-\node [right] at (7,5) {\huge{$v_3$}};
-\node [right] at (7,2) {\huge{$v_{12}$}};
+\node [below] at (0,0) {\huge{$v_6$}};
+\node [above] at (0,3.5) {\huge{$v_9$}};
+\node [below] at (3.5,0) {\huge{$v_4$}};
+\node [above] at (3.5,3.5) {\huge{$v_{11}$}};
 
-\node [below] at (15,-0.1) {\huge{$v_8$}};
-\node [below] at (12,-0.1) {\huge{$v_7$}};
-\node [left] at (10,2) {\huge{$v_4$}};
-\node [left] at (10,5) {\huge{$v_{11}$}};
-\node [above] at (12,7) {\huge{$v_6$}};
-\node [above] at (15,7) {\huge{$v_{10}$}};
-\node [right] at (17,5) {\huge{$v_5$}};
-\node [right] at (17,2) {\huge{$v_9$}};
+\node [below] at (9.5,0) {\huge{$v_{10}$}};
+\node [above] at (9.5,3.5) {\huge{$v_5$}};
+\node [below] at (13,0) {\huge{$v_7$}};
+\node [above] at (13,3.5) {\huge{$v_8$}};
 
-\node at (4,3.5) {\huge{$C_1$}};
-\node at (13.5, 3.5) {\huge{$C_2$}};
+\node [below] at (5,5) {\huge{$v_3$}};
+\node [left] at (3.25,8) {\huge{$v_1$}};
+\node [above] at (5,11) {\huge{$v_{14}$}};
+\node [above] at (8,11) {\huge{$v_{13}$}};
+\node [right] at (9.75,8) {\huge{$v_2$}};
+\node [below] at (8,5) {\huge{$v_{12}$}};
+
+\node at (6.5,8) {\huge{$C_1$}};
+\node at (1.75,1.75) {\huge{$C_2$}};
+\node at (11.25, 1.75) {\huge{$C_3$}};
 
 
 
