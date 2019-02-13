@@ -56,26 +56,45 @@ For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, 
 	Let $\mathcal{I}$ be a set of $n$ rectangular items of height $H$ with varying widths $w_i \in \mathbb{Z}^+$ and score widths $a_i, b_i \in \mathbb{Z}^+$ for each item $i \in \mathcal{I}$. Given a minimum scoring distance $\tau \in \mathbb{Z}^+$, the Score-Constrained Strip-Packing Problem (SCSPP) consists of finding the minimum number of strips of height $H$ and width $W$ required to pack all items in $\mathcal{I}$ such that the sum of every pair of adjacent score widths is greater than or equal to $\tau$ and no strip is overfilled.
 \end{definition}
 
+\begin{figure}	
+	\centering
+	\begin{subfigure}[h]{0.45\textwidth}
+		\includestandalone[width=\textwidth]{figures/items}
+		\label{fig:items}
+	\end{subfigure} 
+	\begin{subfigure}[h]{0.75\textwidth}
+		\includestandalone[width=\textwidth]{figures/itemsaligned}
+		\label{fig:itemsaligned}
+	\end{subfigure}
+	\caption{Example of a single strip-packing problem and a corresponding solution with $\tau = 7$.}
+	\label{fig:items/aligned}
+\end{figure}
+
 In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section 3 will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section 4, along with results from rigorous experiments.  
 
-\section{Solving the COP}
-\begin{itemize}
-	\item Condensed version of algorithm from previous paper
-	\item Theorem/Proof polynomial time $O(n^2)$
-	\item Hamiltonian cycle characteristics, NP-hard, Karp 21 NP-Complete problem (both direct and undirected), complexity
-	\item Pseudocode/brief overview of AHC algorithm in steps
-	\item Preliminary checks - these were not included in previous paper, speed
-	\item MBR types, check that Beckers method is redundant
-	\item Add dominating vertices to help produce Ham cycle, remove at end, outer score widths ignored
-	\item Theorem MCM guarantee $O(n \lg n)$
-\end{itemize}
+\section{AHC}
+
+From the instance $\mathcal{M}$ of the COP, we produce a graph $G$ consisting of $2n$ vertices, one for each element of $\mathcal{M}$, in non-increasing order. An extra pair of dominating vertices are added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains edges between vertices that are partners (that is, whose values make up a pair in $\mathcal{M}$); and $R$, which contains edges between vertices whose values add up to greater than or equal to $\tau$, and that are not partners.
+
+\textcolor{OrangeRed}{THRESHOLD GRAPH FIGURE}
+
+A Hamiltonian cycle on a graph $G$ is a cycle that visits every vertex of $G$ exactly once. From this, we define a specific type of Hamiltonian cycle:
 
 \begin{definition}
 	\label{defn:althamcycle}
 	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of one of two sets, $B$ or $R$. $G$ contains an alternating Hamiltonian cycle if there exists a Hamiltonian cycle such that successive edges alternate between sets $B$ and $R$.
 \end{definition}
 
-\section{AHC}
+Due to the manner in which $G$ is constructed, it can be seen that the edges in $R$ represents all possible pairings of values from different pairs that meet the vicinal sum constraint. All pairs of elements must be present in the final solution, and so the edges in $B$ cannot be altered or removed. Clearly, an alternating Hamiltonian cycle on $G$ corresponds to a feasible ordering $\mathcal{T}$. Therefore, our task involves finding a matching $R' \subseteq R$ that, together with the edges in $B$, forms an alternating Hamiltonian cycle on $G$.
+
+The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''.
+
+BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. BR continues through the list creating these sets until the penultimate edge has been reached. 
+
+
+
+
+
 \begin{itemize}
 	\item Preliminary check
 	\item Model instance graphically, graph $G$ has $2n+2$ vertices, including 2 extra dominating vertices (which will be removed at the end) and two edge sets, $B$ and $R$
@@ -91,6 +110,28 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
 \end{itemize}
 
+\begin{itemize}
+	\item Condensed version of algorithm from previous paper
+	\item Theorem/Proof polynomial time $O(n^2)$
+	\item Hamiltonian cycle characteristics, NP-hard, Karp 21 NP-Complete problem (both direct and undirected), complexity
+	\item Pseudocode/brief overview of AHC algorithm in steps
+	\item Preliminary checks - these were not included in previous paper, speed
+	\item MBR types, check that Beckers method is redundant
+	\item Add dominating vertices to help produce Ham cycle, remove at end, outer score widths ignored
+	\item Theorem MCM guarantee $O(n \lg n)$
+\end{itemize}
+
+\begin{figure}[H]	
+	\centering
+	\begin{subfigure}[h]{0.4\textwidth}
+		\includestandalone[width=\textwidth]{figures/matching}
+	\end{subfigure} \quad
+	\begin{subfigure}[h]{0.4\textwidth}
+		\includestandalone[width=\textwidth]{figures/mps}
+	\end{subfigure}
+	\caption{Subgraph $G'= (V, B \cup R')$ created after MCM. When in planar form, it is clear that $l = 2$.}
+	\label{fig:mps}
+\end{figure}
 
 \section{Heuristics for the SCSPP}
 \begin{itemize}
@@ -259,10 +300,10 @@ For our experiments, we produced two different types of instances: ``artificial'
 		& & & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
 		\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
 		Instance & $W$ & $t$ && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$ \\ \midrule	
-		a,100 & 2500 & 23.323 && 23.483 & 931 && 23.357 & 977 && EA123 & -\\
+		a,100 & 2500 & 23.323 && 23.483 & 931 && 23.357 & 977 && 23.372 & 966 \\
 		a,100 & 5000 & 11.922 && EA151 & - && EA152 & - && EA153 & -\\
 		\midrule
-		a,500 & 2500 & 114.942 && EA521 & - && EA522 & - && EA523 & -\\
+		a,500 & 2500 & 114.942 && 116.681 & 264 && 117.041 & 213 && 116.604 & 277 \\
 		a,500 & 5000 & 57.722 && EA551 & - && EA552 & - && EA553 & -\\
 		\midrule
 		\midrule
