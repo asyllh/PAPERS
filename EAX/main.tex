@@ -134,14 +134,6 @@ BR searches for an edge whose lower-indexed vertex is adjacent to the next edge'
 \end{figure}
 
 \section{Heuristics for the SCSPP}
-\begin{itemize}
-	\item SCSPP at least as hard as BPP, NP-hard
-	\item Why heuristics?
-	\item lowerbound, optimal solution, theoretical minimum
-	\item theoretical min less accurate
-	\item State advantages and disadvantages of MFFD and MFFD$^+$
-	\item Differences between SCSPP and BPP
-\end{itemize}
 
 For an instance of the SCSPP, a feasible solution is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
 \begin{subequations}
@@ -152,6 +144,15 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau \hspace {5mm} \forall \hspace{1mm} i \in \{1, 2, ..., |S_j|-1\}, \hspace{2mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
 	\end{align}
 \end{subequations}
+
+\begin{itemize}
+	\item SCSPP at least as hard as BPP, NP-hard
+	\item Why heuristics?
+	\item lowerbound, optimal solution, theoretical minimum
+	\item theoretical min less accurate
+	\item State advantages and disadvantages of MFFD and MFFD$^+$
+	\item Differences between SCSPP and BPP
+\end{itemize}
 
 \subsection{Heuristics}
 \begin{itemize}
@@ -229,6 +230,8 @@ For our experiments, we produced two different types of instances: ``artificial'
 \end{itemize}
 
 \section{Evolutionary Algorithm}
+Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
+
 \begin{itemize}
 	\item Only MFFD$^+$ used in EA
 	\item Create initial population, one solution using MFFD$^+$, the rest using MFFR$^+$
@@ -239,13 +242,13 @@ For our experiments, we produced two different types of instances: ``artificial'
 	\item Explain why GPX cannot be used, cite Lewis paper
 	\item Describe repair procedure using MFFD$^+$
 	\item Section explaining Local Search, PairPair, PairSin, SinSin, MoveSin
-	\item Every time AHC is called, if a solution is found, this is stored in a feasible packings set, else if no solution found, items stored in an infeasible packings set.
-	\item Note the use of feasPacking/infeasPacking sets to aid the search
-	\item Reduces the number of times AHC needs to be called, for each group of items AHC should only be called once
 	\item Preliminary check before calling AHC
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
 	\item Fitness $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ Falkenaur 1998
 \end{itemize}
+
+\subsection{Mutation}
+Take candidate solution, permute strips, select a random number of strips from the solution to insert into partial solution $\mathcal{S}_X$, and the rest into $\mathcal{S}_Y$. Apply local search on $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce a single feasible solution.
 
 \subsection{Crossover Operator}
 \begin{itemize}
@@ -259,6 +262,9 @@ For our experiments, we produced two different types of instances: ``artificial'
 	\item Once offspring produced, mutate and apply local search before replacing worst parent.
 \end{itemize}
 
+(GGA) The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips in $\mathcal{S}_2$ are selected randomly. These strips, along with all strips in between, are inserted into the offspring solution $\mathcal{S}$. The operator then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Any items that are not in $\mathcal{S}$ are used to created a feasible partial solution $\mathcal{S}'$ using MFFD$^+$. Local search is then used on $\mathcal{S}$ and $\mathcal{S}'$ to produce a full offspring solution.
+
+
 \subsection{Local Search}
 \begin{itemize}
 	\item Takes in two feasible partial solutions, produces one feasible solution
@@ -268,6 +274,7 @@ For our experiments, we produced two different types of instances: ``artificial'
 	\item When swapping/moving items, AHC is used on the sub-problems
 	\item Also keep track of feasible/infeasible arrangements, check these sets first before running AHC
 	\item Therefore for any collection of items AHC is only called once (or not at all if preliminary checks failed)
+	\item Unlike Lewis/Falkenauer, order matters, so need to use AHC
 \end{itemize}
 
 \subsection{Experimental Results - EA}
@@ -362,7 +369,7 @@ For our experiments, we produced two different types of instances: ``artificial'
 	\item Could use selected packings rather than all packings
 \end{itemize}
 
-
+\cite{becker2010}, \cite{becker2015}, \cite{coffman1978}, \cite{coffman1984}, \cite{dosa2007} \cite{eilon1971} \cite{falkenauer1992} \cite{falkenauer1996}, \cite{garey1972}, \cite{garey1979}, \cite{garraffa2016}, \cite{gilmore1961}, \cite{gilmore1963}, \cite{goulimis2004}, \cite{haggkvist1977}, \cite{hawa2018}, \cite{hung1978}, \cite{johnson1973}, \cite{johnson1974fast}, \cite{johnson1974worst}, \cite{karp1972}, \cite{knuth2000}, \cite{korf2002}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2011}, \cite{lewis2017}, \cite{mahadev1994}, \cite{mahadev1995}, \cite{malaguti2008}, \cite{martello1990a}, \cite{martello1990b}, \cite{quiroz2015}
 
 \bibliographystyle{elsarticle-num}
 \bibliography{includes/bibliography}
