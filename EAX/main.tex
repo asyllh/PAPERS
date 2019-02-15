@@ -36,7 +36,7 @@ A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and v
 	\item Describe rest of paper, AHC single strip for COP, Evolutionary Algorithm and Postopt
 	\item Two phase approach, cite vertex colouring paper
 	\item Minimum scoring distance $\tau$ approx 70mm in industry
-	\item $\frac{n!}{2} 2^n$ distinct arrangement, combinatorial explosion
+	\item $2^{n-1} n!$ distinct arrangement, combinatorial explosion
 	\item COP infinite width, strips given fixed width
 	\item Outer score widths ignored
 \end{itemize}
@@ -245,6 +245,8 @@ Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, contain
 	\item Preliminary check before calling AHC
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
 	\item Fitness $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ Falkenaur 1998
+	\item Set $\mathcal{F}$ is set of all subsets of items $\mathcal{I}' \subseteq \mathcal{I}$ that can produce a feasible ordering.
+	\item A feasible solution or strip means that the solution/strip abides by all constraints.
 \end{itemize}
 
 \subsection{Mutation}
@@ -253,7 +255,7 @@ Take candidate solution, permute strips, select a random number of strips from t
 \subsection{Crossover Operator}
 \begin{itemize}
 	\item May have duplicate or missing items
-	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used (Lewis and Holborn paper)
+	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used \cite{lewis2017}
 	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
 	\item If missing items, repair procedure, then local search
 	\item GGA - Permute strips of second parent solution, then choose two strips randomly, add all strips between two chosen strips (including chosen strips) and add to offspring. Then from first parent, only add strips to offspring containing items that are not in offspring. Repair procedure on missing items, if any.
@@ -264,21 +266,45 @@ Take candidate solution, permute strips, select a random number of strips from t
 
 (GGA) The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips in $\mathcal{S}_2$ are selected randomly. These strips, along with all strips in between, are inserted into the offspring solution $\mathcal{S}$. The operator then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Any items that are not in $\mathcal{S}$ are used to created a feasible partial solution $\mathcal{S}'$ using MFFD$^+$. Local search is then used on $\mathcal{S}$ and $\mathcal{S}'$ to produce a full offspring solution.
 
+(GPX') Starting with the parent solution containing the fullest strip, the operator inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. GPX' repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring.
+
+GPN performs in the same manner as GPX', instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
 
 \subsection{Local Search}
 \begin{itemize}
-	\item Takes in two feasible partial solutions, produces one feasible solution
+	\item Based on dominance criterion of \cite{martello1990b}
+	\item If strip $S_1$ dominates $S_2$, then a solution containing $S_1$ will not have more strips than a solution containing $S_2$
+	\item Well-filled strips with larger items are always preferrable over less-filled strips with smaller items \cite{levine2004}
+	\item HGGA \cite{falkenauer1996} searches locally for dominant strips by replacing items in the strips with larger free items. At the same time, the free items are replaced by smaller items from the strips, which makes it easier to place them back into the solution afterwards
+	\item Aim is to move items between (\cite{lewis2009} uses full solutions, not partial) the solutions in such a way that the ``fullness'' of each strip in $\mathcal{S}_1$ increases, while the number of items within each strip does not. This operator also moves smaller items into $\mathcal{S}_2$, useful, smaller items easier to pack than larger items.
+	\item Items are interchanged between strips such that wastage within strips in $\mathcal{S}$ decreases, while the number of items in each strip in $\mathcal{S}$ remains the same or also decreases. \cite{lewis2017}
 	\item Initially permute the strips of both solutions
-	\item Attempt to swap pairs of items, a pair of items with a single item, swap single items, or move an item, repeat until no changes
-	\item Apply MFFD$^+$ on any items not packed
-	\item When swapping/moving items, AHC is used on the sub-problems
-	\item Also keep track of feasible/infeasible arrangements, check these sets first before running AHC
-	\item Therefore for any collection of items AHC is only called once (or not at all if preliminary checks failed)
-	\item Unlike Lewis/Falkenauer, order matters, so need to use AHC
+	\item Moves items between partial solutions in four stages
+	\item Swap pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$
+	\item Swap a pair of items from a strip in $\mathcal{S}_X$ with a single item from a strip in $\mathcal{S}_Y$
+	\item Swap individual items from strips in $\mathcal{S}_X$ and $\mathcal{S}_Y$
+	\item Move an item from a strip in $\mathcal{S}_Y$ to a strip in $\mathcal{S}_X$
+	\item Stages 1-3: width of item(s) from $\mathcal{S}_X$ must be less than the width of item(s) from $\mathcal{S}_Y$
+	\item Clearly at each stage the swap/move can only be performed if the strips remain feasible (i.e. not overfilled and feasible ordering of the items)
+	\item Therefore at each stage an instance of the subproblem occurs
+	\item Once a swap/move has been performed (once a stage has completed), the procedure moves on to the next stage.
+	\item This method is repeated until all four stages have been executed with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$
+	\item MFFD$^+$ is applied to all items in $\mathcal{S}_Y$ to produce a feasible partial solution.
+	\item This partial solution, together with the strips in $\mathcal{S}_X$, form a full solution $\mathcal{S}$
+	\item \cite{lewis2009}, \cite{levine2004}, \cite{falkenauer1996}, \cite{martello1990b}
+	\item Repeating process creates different subsets of items on each strip, different feasible combinations
+	\item Different subsets of items on each strip means more possibility to move item(s)
+	\item E.g. could be that an item from $\mathcal{S}_Y$ can't be moved to a strip in $\mathcal{S}_X$ because there is no feasible ordering of the items on the strip including the item from $\mathcal{S}_Y$. By repeating local search, it could create a different subset of items on the strip that could produce a feasible ordering with an item from $\mathcal{S}_Y$. - rewrite
+	\item Could be that there is a feasible ordering of the items on the strip in $\mathcal{S}_X$ (including the new items from $\mathcal{S}_Y$ and without the items being moved), but there is no feasible ordering of the items on the strip in $\mathcal{S}_Y$ (which includes the items from the strip in $\mathcal{S}_X$ and excludes the items being swapped). Then the items cannot be swapped, because both strips from $\mathcal{S}_X$ and $\mathcal{S}_Y$ must be feasible. 
+	\item This means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check)
 \end{itemize}
+
+
+
 
 \subsection{Experimental Results - EA}
 \begin{itemize}
+	\item Same instances used for heuristics used for EA
 	\item Types of instances - artificial, real
 	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
 	\item Each of these sets will then be run 6 times using different arguments - strip width = 2500 and 5000, and either GGA, GPX', or GPN
@@ -368,6 +394,16 @@ Take candidate solution, permute strips, select a random number of strips from t
 \begin{itemize}
 	\item Could use selected packings rather than all packings
 \end{itemize}
+
+\section{Notes}
+\begin{itemize}
+	\item ``Grouping problems involve a collection of ``items'' that are to be divided into a number of groups, subject to certain constraint'' \cite{lewis2009}
+	\item ``Order Dependent Minimum Grouping Problems'' \cite{lewis2009}
+	\item ``The term feasible is used exclusively to describe any candidate solution in which no problem-specific constraints are being violated'' \cite{lewis2009}
+	\item ``An optimal solution for an ODMPG is thus any solution that uses $\chi$ feasible groups to contain the $n$ items'' \cite{lewis2009}
+	\item ``An optimal solution can always be represented by a permutation of the items, since we can always generate such a permutation \textit{from} an optimal solution'' \cite{lewis2009}
+	\item ``Note that none of the algorithms considered in this comparison ever allow a bin to be over-filled in a candidate solution, thus any group $g$ will always have $F(g) \leq C$'' \cite{lewis2009}
+\end{itemize}	
 
 \cite{becker2010}, \cite{becker2015}, \cite{coffman1978}, \cite{coffman1984}, \cite{dosa2007} \cite{eilon1971} \cite{falkenauer1992} \cite{falkenauer1996}, \cite{garey1972}, \cite{garey1979}, \cite{garraffa2016}, \cite{gilmore1961}, \cite{gilmore1963}, \cite{goulimis2004}, \cite{haggkvist1977}, \cite{hawa2018}, \cite{hung1978}, \cite{johnson1973}, \cite{johnson1974fast}, \cite{johnson1974worst}, \cite{karp1972}, \cite{knuth2000}, \cite{korf2002}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2011}, \cite{lewis2017}, \cite{mahadev1994}, \cite{mahadev1995}, \cite{malaguti2008}, \cite{martello1990a}, \cite{martello1990b}, \cite{quiroz2015}
 
