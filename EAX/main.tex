@@ -271,7 +271,17 @@ Take candidate solution, permute strips, select a random number of strips from t
 GPN performs in the same manner as GPX', instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
 
 \subsection{Local Search}
+Our local search method attempts to move items between two feasible partial solutions, $\mathcal{S}_X$ and $\mathcal{S}_Y$, in four stages: \begin{enumerate*}[label={(\arabic*)}]
+	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$;
+	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with an individual item from a strip in $\mathcal{S}_Y$;
+	\item swapping individual items from strips in $\mathcal{S}_X$ and $\mathcal{S}_Y$; and
+	\item moving an item from a strip in $\mathcal{S}_Y$ to a strip in $\mathcal{S}_X$.
+\end{enumerate*} 
+During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must exceed the width of the item(s) from $\mathcal{S}_X$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}_Y$, generating a new feasible partial solution $\mathcal{S}_Y'$. The strips in $\mathcal{S}_Y'$, along with the strips in $\mathcal{S}_X$, are inserted into $\mathcal{S}$ to form a full feasible solution.
+
 \begin{itemize}
+	\item If stage four completed then reduce number of strips in $\mathcal{S}_Y$ by 1.
+	\item MFFD$^+$ on $\mathcal{S}_Y$ to create $\mathcal{S}_Y'$, means that $|\mathcal{S}_Y'| \leq |\mathcal{S}_Y|$.
 	\item Based on dominance criterion of \cite{martello1990b}
 	\item If strip $S_1$ dominates $S_2$, then a solution containing $S_1$ will not have more strips than a solution containing $S_2$
 	\item Well-filled strips with larger items are always preferrable over less-filled strips with smaller items \cite{levine2004}
@@ -279,18 +289,9 @@ GPN performs in the same manner as GPX', instead selecting strips containing the
 	\item Aim is to move items between (\cite{lewis2009} uses full solutions, not partial) the solutions in such a way that the ``fullness'' of each strip in $\mathcal{S}_1$ increases, while the number of items within each strip does not. This operator also moves smaller items into $\mathcal{S}_2$, useful, smaller items easier to pack than larger items.
 	\item Items are interchanged between strips such that wastage within strips in $\mathcal{S}$ decreases, while the number of items in each strip in $\mathcal{S}$ remains the same or also decreases. \cite{lewis2017}
 	\item Initially permute the strips of both solutions
-	\item Moves items between partial solutions in four stages
-	\item Swap pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$
-	\item Swap a pair of items from a strip in $\mathcal{S}_X$ with a single item from a strip in $\mathcal{S}_Y$
-	\item Swap individual items from strips in $\mathcal{S}_X$ and $\mathcal{S}_Y$
-	\item Move an item from a strip in $\mathcal{S}_Y$ to a strip in $\mathcal{S}_X$
-	\item Stages 1-3: width of item(s) from $\mathcal{S}_X$ must be less than the width of item(s) from $\mathcal{S}_Y$
 	\item Clearly at each stage the swap/move can only be performed if the strips remain feasible (i.e. not overfilled and feasible ordering of the items)
 	\item Therefore at each stage an instance of the subproblem occurs
 	\item Once a swap/move has been performed (once a stage has completed), the procedure moves on to the next stage.
-	\item This method is repeated until all four stages have been executed with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$
-	\item MFFD$^+$ is applied to all items in $\mathcal{S}_Y$ to produce a feasible partial solution.
-	\item This partial solution, together with the strips in $\mathcal{S}_X$, form a full solution $\mathcal{S}$
 	\item \cite{lewis2009}, \cite{levine2004}, \cite{falkenauer1996}, \cite{martello1990b}
 	\item Repeating process creates different subsets of items on each strip, different feasible combinations
 	\item Different subsets of items on each strip means more possibility to move item(s)
@@ -298,8 +299,6 @@ GPN performs in the same manner as GPX', instead selecting strips containing the
 	\item Could be that there is a feasible ordering of the items on the strip in $\mathcal{S}_X$ (including the new items from $\mathcal{S}_Y$ and without the items being moved), but there is no feasible ordering of the items on the strip in $\mathcal{S}_Y$ (which includes the items from the strip in $\mathcal{S}_X$ and excludes the items being swapped). Then the items cannot be swapped, because both strips from $\mathcal{S}_X$ and $\mathcal{S}_Y$ must be feasible. 
 	\item This means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check)
 \end{itemize}
-
-
 
 
 \subsection{Experimental Results - EA}
