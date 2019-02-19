@@ -96,6 +96,16 @@
 	\label{table:MFFD2500}
 \end{table}
 
+\section{Notes}
+\begin{itemize}
+	\item ``Grouping problems involve a collection of ``items'' that are to be divided into a number of groups, subject to certain constraint'' \cite{lewis2009}
+	\item ``Order Dependent Minimum Grouping Problems'' \cite{lewis2009}
+	\item ``The term feasible is used exclusively to describe any candidate solution in which no problem-specific constraints are being violated'' \cite{lewis2009}
+	\item ``An optimal solution for an ODMPG is thus any solution that uses $\chi$ feasible groups to contain the $n$ items'' \cite{lewis2009}
+	\item ``An optimal solution can always be represented by a permutation of the items, since we can always generate such a permutation \textit{from} an optimal solution'' \cite{lewis2009}
+	\item ``Note that none of the algorithms considered in this comparison ever allow a bin to be over-filled in a candidate solution, thus any group $g$ will always have $F(g) \leq C$'' \cite{lewis2009}
+\end{itemize}
+
 
 \section{Evolutionary Algorithm}
 \begin{itemize}
@@ -112,6 +122,17 @@
 	\item Preliminary check before calling AHC
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
 	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
+\end{itemize}
+
+\begin{itemize}
+	\item Create 25 candidate solutions for initial population, one solution using MFFD$^+$, the others using MFFR$^+$ (items sorted in random order as opposed to decreasing order of widths), each solution is mutated before being inserted into the population.
+	\item Each iteration of EA, two parent solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ are chosen from the population at random, crossover operator used to create single offspring solution $\mathcal{S}$, which is then mutated before replacing the least fit parent solution in the population (breaking ties randomly).
+	\item Fitness function $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ \cite{falkenauer1992}, $A(S) = \sum_{i \in S} w_i$ - ``fullness''/total width of all items on strip $S$, value between 0 and 1, closer to 1 = better packing, =1 means all strips are filled to capacity, perfect packing.
+	\item Although two solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ may contain the same number of strips/have the same size, fitness value identifies which solution contains a better packing of the items - distinguish between two solutions of the same size.
+	\item Not only considering how many strips required to pack all items, but how those items are packed onto the strips (optimise how the strips are packed).
+	\item Better packed strips means full capacity of strip is taken advantage of, reduce waste material on strips, plus nearly empty strips can be used to accommodate more items, or waste material can be reused.
+	\item If the strips are packed well, fewer strips required, else if strips are not packed well, extra strips required to pack items that cannot be packed onto strips already being used.
+	\item Take into account vicinal sum constraint - there may be two strips that are roughly equally filled, however even though it may seem that the items could be shuffled so that more are on one strip (thus a better packing), it may not be possible due to the constraint - not taken into account in other applications of this fitness value, however will still use this fitness value as our aim is to produce the best packing possible given the constraint.
 \end{itemize}
 
 \section{CreateInitPop}
@@ -141,6 +162,26 @@
 \end{itemize}
 
 \section{LocalSearch}
+\begin{itemize}
+	\item If stage four completed then reduce number of strips in $\mathcal{S}_Y$ by 1.
+	\item MFFD$^+$ on $\mathcal{S}_Y$ to create $\mathcal{S}_Y'$, means that $|\mathcal{S}_Y'| \leq |\mathcal{S}_Y|$.
+	\item Based on dominance criterion of \cite{martello1990l}
+	\item If strip $S_1$ dominates $S_2$, then a solution containing $S_1$ will not have more strips than a solution containing $S_2$
+	\item Well-filled strips with larger items are always preferrable over less-filled strips with smaller items \cite{levine2004}
+	\item HGGA \cite{falkenauer1996} searches locally for dominant strips by replacing items in the strips with larger free items. At the same time, the free items are replaced by smaller items from the strips, which makes it easier to place them back into the solution afterwards
+	\item Aim is to move items between (\cite{lewis2009} uses full solutions, not partial) the solutions in such a way that the ``fullness'' of each strip in $\mathcal{S}_1$ increases, while the number of items within each strip does not. This operator also moves smaller items into $\mathcal{S}_2$, useful, smaller items easier to pack than larger items.
+	\item Items are interchanged between strips such that wastage within strips in $\mathcal{S}$ decreases, while the number of items in each strip in $\mathcal{S}$ remains the same or also decreases. \cite{lewis2017}
+	\item Initially permute the strips of both solutions
+	\item Clearly at each stage the swap/move can only be performed if the strips remain feasible (i.e. not overfilled and feasible ordering of the items)
+	\item Therefore at each stage an instance of the subproblem occurs
+	\item Once a swap/move has been performed (once a stage has completed), the procedure moves on to the next stage.
+	\item \cite{lewis2009}, \cite{levine2004}, \cite{falkenauer1996}, \cite{martello1990l}
+	\item Repeating process creates different subsets of items on each strip, different feasible combinations
+	\item Different subsets of items on each strip means more possibility to move item(s)
+	\item E.g. could be that an item from $\mathcal{S}_Y$ can't be moved to a strip in $\mathcal{S}_X$ because there is no feasible ordering of the items on the strip including the item from $\mathcal{S}_Y$. By repeating local search, it could create a different subset of items on the strip that could produce a feasible ordering with an item from $\mathcal{S}_Y$. - rewrite
+	\item Could be that there is a feasible ordering of the items on the strip in $\mathcal{S}_X$ (including the new items from $\mathcal{S}_Y$ and without the items being moved), but there is no feasible ordering of the items on the strip in $\mathcal{S}_Y$ (which includes the items from the strip in $\mathcal{S}_X$ and excludes the items being swapped). Then the items cannot be swapped, because both strips from $\mathcal{S}_X$ and $\mathcal{S}_Y$ must be feasible. 
+	\item This means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check)
+\end{itemize}
 \begin{itemize}
 	\item PermuteStrips x2
 	\item PairPair
@@ -338,7 +379,7 @@ MoveSin:
 \end{itemize}
 
 
-\section*{References}
-\bibliography{bibliography}
+\bibliographystyle{elsarticle-num}
+\bibliography{includes/bibliography}
 
 \end{document}
