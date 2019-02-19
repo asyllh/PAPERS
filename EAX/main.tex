@@ -12,34 +12,33 @@
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 \end{frontmatter}
 
+\begin{comment}
+1. Introduction - sec:intro
+2. AHC - sec:ahc
+3. Heuristics for the SCSPP - sec:scspp
+3a. Heuristics - sub:heuristics
+3b. Experimental Results - Heuristics - sub:expheuristics
+4. EA - sec:ea
+4a. Mutation - sub:mutation
+4b. Crossover Operators - sub:xover
+4c. Local Search - sub:localsearch
+4d. EA Process - sub:eaframework
+4e. Experimental Results - EA - sub:expea
+5. Postoptimisation - sec:postopt
+5a. Experimental Results - Postoptimisation - sub:exppostopt
+6. Conclusion - sec:conclusion
+\end{comment}
+
 %--------------------------------------------------------------------
 
 \section{Introduction}
-
+\label{sec:intro}
 A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths $w_i \in \mathbb{Z}^+$ are to be packed on a strip from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical lines, called score lines, in predetermined places. The distance between each score line and the edge of the item are score widths, $a_i, b_i \in \mathbb{Z}^+$. Once the items are packed onto the strip, a pair of knives on a bar simultaneously cut along the score lines of two adjacent items to aid the folding process. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance''. Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the problem involves packing the items onto the strip in such a way that the sum of all adjacent score widths exceeds the minimum scoring distance, as stated in the following definition:
 
 \begin{definition}
 	\label{defn:subprob}
 	Let $\mathcal{I}$ be a set of items with widths $w_i \in \mathbb{Z}^+$, score widths $a_i, b_i \in \mathbb{Z}^+$, and equal height $H$. Given a minimum scoring distance $\tau$, the Score-Constrained Packing Sub-Problem (SCPSP) involves finding an arrangement of the items in $\mathcal{I}$ such that the sum of every pair of adjacent score widths is greater than or equal to $\tau$.
 \end{definition}
-
-
-
-\begin{itemize}
-	\item Define COP, single strip problem and multi-strip problem (SCSPP)
-	\item Other examples of where COP is used
-	\item Cite Goulimis, previous Heuristics paper, follow on
-	\item Lit review, Lewis TSP method
-	\item BPP special case of SCSPP where $\tau = 0$, hence SCSPP NP-hard
-	\item Need to decide which items to pack on which strips and how the items should be packed, different orientations, s.t. minimum scoring distance met
-	\item Show that sub-problem can be seen as an instance of COP, minimum scoring distance = vicinal sum constraint
-	\item Describe rest of paper, AHC single strip for COP, Evolutionary Algorithm and Postopt
-	\item Two phase approach, cite vertex colouring paper
-	\item Minimum scoring distance $\tau$ approx 70mm in industry
-	\item $2^{n-1} n!$ distinct arrangement, combinatorial explosion
-	\item COP infinite width, strips given fixed width
-	\item Outer score widths ignored
-\end{itemize}
 
 \begin{definition}
 	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},..., \{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
@@ -72,11 +71,26 @@ For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, 
 
 In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section 3 will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section 4, along with results from rigorous experiments.  
 
+\begin{itemize}
+	\item Define COP, single strip problem and multi-strip problem (SCSPP)
+	\item Other examples of where COP is used
+	\item Cite Goulimis, previous Heuristics paper, follow on
+	\item Lit review, Lewis TSP method
+	\item BPP special case of SCSPP where $\tau = 0$, hence SCSPP NP-hard
+	\item Need to decide which items to pack on which strips and how the items should be packed, different orientations, s.t. minimum scoring distance met
+	\item Show that sub-problem can be seen as an instance of COP, minimum scoring distance = vicinal sum constraint
+	\item Describe rest of paper, AHC single strip for COP, Evolutionary Algorithm and Postopt
+	\item Two phase approach, cite vertex colouring paper
+	\item Minimum scoring distance $\tau$ approx 70mm in industry
+	\item $2^{n-1} n!$ distinct arrangement, combinatorial explosion
+	\item COP infinite width, strips given fixed width
+	\item Outer score widths ignored
+\end{itemize}
+
+
 \section{AHC}
-
-From the instance $\mathcal{M}$ of the COP, we produce a graph $G$ consisting of $2n$ vertices, one for each element of $\mathcal{M}$, in non-increasing order. An extra pair of dominating vertices are added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains edges between vertices that are partners (that is, whose values make up a pair in $\mathcal{M}$); and $R$, which contains edges between vertices whose values add up to greater than or equal to $\tau$, and that are not partners.
-
-\textcolor{OrangeRed}{THRESHOLD GRAPH FIGURE}
+\label{sec:ahc}
+From the instance $\mathcal{M}$ of the COP, we produce a graph $G$ consisting of $2n$ vertices, one for each element of $\mathcal{M}$, in non-increasing order. An extra pair of dominating vertices are added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains edges between vertices that are partners (that is, whose values make up a pair in $\mathcal{M}$); and $R$, which contains edges between vertices whose values add up to greater than or equal to $\tau$, and that are not partners. \textcolor{OrangeRed}{THRESHOLD GRAPH FIGURE}
 
 A Hamiltonian cycle on a graph $G$ is a cycle that visits every vertex of $G$ exactly once. From this, we define a specific type of Hamiltonian cycle:
 
@@ -91,9 +105,17 @@ The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $
 
 BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. BR continues through the list creating these sets until the penultimate edge has been reached. 
 
-
-
-
+\begin{figure}[H]	
+	\centering
+	\begin{subfigure}[h]{0.4\textwidth}
+		\includestandalone[width=\textwidth]{figures/matching}
+	\end{subfigure} \quad
+	\begin{subfigure}[h]{0.4\textwidth}
+		\includestandalone[width=\textwidth]{figures/mps}
+	\end{subfigure}
+	\caption{Subgraph $G'= (V, B \cup R')$ created after MCM. When in planar form, it is clear that $l = 2$.}
+	\label{fig:mps}
+\end{figure}
 
 \begin{itemize}
 	\item Preliminary check
@@ -108,9 +130,6 @@ BR searches for an edge whose lower-indexed vertex is adjacent to the next edge'
 	\item If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.
 	\item Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.
 	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
-\end{itemize}
-
-\begin{itemize}
 	\item Condensed version of algorithm from previous paper
 	\item Theorem/Proof polynomial time $O(n^2)$
 	\item Hamiltonian cycle characteristics, NP-hard, Karp 21 NP-Complete problem (both direct and undirected), complexity
@@ -121,20 +140,8 @@ BR searches for an edge whose lower-indexed vertex is adjacent to the next edge'
 	\item Theorem MCM guarantee $O(n \lg n)$
 \end{itemize}
 
-\begin{figure}[H]	
-	\centering
-	\begin{subfigure}[h]{0.4\textwidth}
-		\includestandalone[width=\textwidth]{figures/matching}
-	\end{subfigure} \quad
-	\begin{subfigure}[h]{0.4\textwidth}
-		\includestandalone[width=\textwidth]{figures/mps}
-	\end{subfigure}
-	\caption{Subgraph $G'= (V, B \cup R')$ created after MCM. When in planar form, it is clear that $l = 2$.}
-	\label{fig:mps}
-\end{figure}
-
 \section{Heuristics for the SCSPP}
-
+\label{sec:scspp}
 For an instance of the SCSPP, a feasible solution is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
 \begin{subequations}
 	\begin{align}
@@ -155,20 +162,15 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 \end{itemize}
 
 \subsection{Heuristics}
+\label{sub:heuristics}
 \begin{itemize}
 	\item For both heuristics, if current item is placed on a new strip, it is placed in a regular orientation - smaller score width on the left-most side of the strip.
 	\item MFFD - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.
 	\item MFFD$^+$ - if item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.
 \end{itemize}
 
-
 \subsection{Experimental Results - Heuristics}
-\begin{itemize}
-	\item Time it takes to run heuristics
-	\item Tables of comparisons
-	\item State that there are 20 types on average for real instances (no longer in table)
-\end{itemize}
-
+\label{sub:expheuristics}
 For our experiments, we produced two different types of instances: ``artificial'' instances, which contain items of varying widths and score widths; and ``real'' instances, which have multiple items of the same dimension. For each type 1000 instances were generated using sets of 100 and 500 items, giving a total of 4000 problem instances. For all instances, the minimum scoring distance $\tau$ was set to 70mm - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. To compare our heuristics, we use two different strips widths, 2500 and 5000.
 
 \begin{table}[h!]
@@ -221,8 +223,10 @@ For our experiments, we produced two different types of instances: ``artificial'
 	\end{tabular}	
 \end{table}
 
-
 \begin{itemize}
+	\item Time it takes to run heuristics
+	\item Tables of comparisons
+	\item State that there are 20 types on average for real instances (no longer in table)
 	\item Although MFFD$^+$ better than MFFD, still disadvantages
 	\item Initially all items in decreasing order, may be a better ordering
 	\item only packing one item at a time, one item may not be feasible on a strip but if two were packed at the same time could be feasible
@@ -230,6 +234,7 @@ For our experiments, we produced two different types of instances: ``artificial'
 \end{itemize}
 
 \section{Evolutionary Algorithm}
+\label{sec:ea}
 Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
 
 \begin{itemize}
@@ -250,9 +255,17 @@ Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, contain
 \end{itemize}
 
 \subsection{Mutation}
+\label{sub:mutation}
 Take candidate solution, permute strips, select a random number of strips from the solution to insert into partial solution $\mathcal{S}_X$, and the rest into $\mathcal{S}_Y$. Apply local search on $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce a single feasible solution.
 
 \subsection{Crossover Operator}
+\label{sub:xover}
+(GGA) The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips in $\mathcal{S}_2$ are selected randomly. These strips, along with all strips in between, are inserted into the offspring solution $\mathcal{S}$. The operator then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Any items that are not in $\mathcal{S}$ are used to created a feasible partial solution $\mathcal{S}'$ using MFFD$^+$. Local search is then used on $\mathcal{S}$ and $\mathcal{S}'$ to produce a full offspring solution.
+
+(GPX') Starting with the parent solution containing the fullest strip, the operator inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. GPX' repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring.
+
+GPN performs in the same manner as GPX', instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
+
 \begin{itemize}
 	\item May have duplicate or missing items
 	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used \cite{lewis2017}
@@ -264,13 +277,8 @@ Take candidate solution, permute strips, select a random number of strips from t
 	\item Once offspring produced, mutate and apply local search before replacing worst parent.
 \end{itemize}
 
-(GGA) The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips in $\mathcal{S}_2$ are selected randomly. These strips, along with all strips in between, are inserted into the offspring solution $\mathcal{S}$. The operator then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Any items that are not in $\mathcal{S}$ are used to created a feasible partial solution $\mathcal{S}'$ using MFFD$^+$. Local search is then used on $\mathcal{S}$ and $\mathcal{S}'$ to produce a full offspring solution.
-
-(GPX') Starting with the parent solution containing the fullest strip, the operator inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. GPX' repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring.
-
-GPN performs in the same manner as GPX', instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
-
 \subsection{Local Search}
+\label{sub:localsearch}
 Our local search method attempts to move items between two feasible partial solutions, $\mathcal{S}_X$ and $\mathcal{S}_Y$, in four stages: \begin{enumerate*}[label={(\arabic*)}]
 	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$;
 	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with an individual item from a strip in $\mathcal{S}_Y$;
@@ -279,51 +287,42 @@ Our local search method attempts to move items between two feasible partial solu
 \end{enumerate*} 
 During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must exceed the width of the item(s) from $\mathcal{S}_X$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}_Y$, generating a new feasible partial solution $\mathcal{S}_Y'$. The strips in $\mathcal{S}_Y'$, along with the strips in $\mathcal{S}_X$, are inserted into $\mathcal{S}$ to form a full feasible solution.
 
+This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_1$ \emph{dominates} a strip $S_2$, then a solution containing $S_1$ will have no more strips than a solution containing $S_2$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}_X$, the ``fullness'' of the strips increase, whilst the number of items per strip is maintained or decreases, improving the quality of the strips in $\mathcal{S}_X$. Simultaneously, items moved into $\mathcal{S}_Y$ are smaller, and therefore easier to repack onto strips in $\mathcal{S}_X$ during stage (4). Variations of this method can be seen in \cite{falkenauer1996}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2017}, however the addition of the vicinal sum constraint results in fewer changed than seen in these previous implementations. By iterating the stages, we create numerous distinct subsets of items on the strips, generating more possibilities for feasible orderings of items.
+
 \begin{itemize}
 	\item If stage four completed then reduce number of strips in $\mathcal{S}_Y$ by 1.
 	\item MFFD$^+$ on $\mathcal{S}_Y$ to create $\mathcal{S}_Y'$, means that $|\mathcal{S}_Y'| \leq |\mathcal{S}_Y|$.
-	\item Based on dominance criterion of \cite{martello1990b}
-	\item If strip $S_1$ dominates $S_2$, then a solution containing $S_1$ will not have more strips than a solution containing $S_2$
 	\item Well-filled strips with larger items are always preferrable over less-filled strips with smaller items \cite{levine2004}
-	\item HGGA \cite{falkenauer1996} searches locally for dominant strips by replacing items in the strips with larger free items. At the same time, the free items are replaced by smaller items from the strips, which makes it easier to place them back into the solution afterwards
-	\item Aim is to move items between (\cite{lewis2009} uses full solutions, not partial) the solutions in such a way that the ``fullness'' of each strip in $\mathcal{S}_1$ increases, while the number of items within each strip does not. This operator also moves smaller items into $\mathcal{S}_2$, useful, smaller items easier to pack than larger items.
-	\item Items are interchanged between strips such that wastage within strips in $\mathcal{S}$ decreases, while the number of items in each strip in $\mathcal{S}$ remains the same or also decreases. \cite{lewis2017}
 	\item Initially permute the strips of both solutions
-	\item Clearly at each stage the swap/move can only be performed if the strips remain feasible (i.e. not overfilled and feasible ordering of the items)
-	\item Therefore at each stage an instance of the subproblem occurs
-	\item Once a swap/move has been performed (once a stage has completed), the procedure moves on to the next stage.
-	\item \cite{lewis2009}, \cite{levine2004}, \cite{falkenauer1996}, \cite{martello1990b}
-	\item Repeating process creates different subsets of items on each strip, different feasible combinations
-	\item Different subsets of items on each strip means more possibility to move item(s)
-	\item E.g. could be that an item from $\mathcal{S}_Y$ can't be moved to a strip in $\mathcal{S}_X$ because there is no feasible ordering of the items on the strip including the item from $\mathcal{S}_Y$. By repeating local search, it could create a different subset of items on the strip that could produce a feasible ordering with an item from $\mathcal{S}_Y$. - rewrite
-	\item Could be that there is a feasible ordering of the items on the strip in $\mathcal{S}_X$ (including the new items from $\mathcal{S}_Y$ and without the items being moved), but there is no feasible ordering of the items on the strip in $\mathcal{S}_Y$ (which includes the items from the strip in $\mathcal{S}_X$ and excludes the items being swapped). Then the items cannot be swapped, because both strips from $\mathcal{S}_X$ and $\mathcal{S}_Y$ must be feasible. 
 	\item This means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check)
 \end{itemize}
 
+\subsection{EA Process}
+\label{sub:eaframework}
+The algorithm begins by producing 25 candidate solutions for the initial population, one using MFFD$^+$, the rest using MFFR$^+$ (that, is, the same method as MFFD$^+$ with the items in a random order). These solutions are mutated before being inserted into the population. An iteration of the EA involves selecting two parent solution, $\mathcal{S}_1$ and $\mathcal{S}_2$ from the population at random, applying a crossover operator to produce an offspring solution $\mathcal{S}$, then mutating this offspring before replacing the least fit of the two parents in the population (break ties randomly footnote). 
+
+A fitness function is used to calculate a fitness value to determine the quality of a solution, as opposed to simply relying on the number of strips within the solution. The reason for this is twofold: firstly, given two candidate solutions of equal size, it is impossible to determine the better solution based on the number of strips alone. Secondly, we note that the quality of a solution not only depends on the number of strips used, but \emph{how} the items are packed onto the strip. Recall that strips that are ``fuller'' are preferrable over less filled strips, even if they contain more items. Thus, we consider a strip whose capacity is taken advantage of to be a ``better packed'' strip, reducing the amount of waste material. This may result in a strip in the solution that is nearly empty, which is beneficial as it allows further items to be packed, or the residual material could be used for other means. This type of packing is desirable over a packing of strips that are only half full, requiring more strips than necessary to pack all of the items. 
+
+We therefore make use of the following function to calculate the fitness of a solution $\mathcal{S}$:
+
+\begin{equation}
+	f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}
+\end{equation}
+\noindent where $A(S) = \sum_{i \in S} w_i$ is the total width of all items on a strip $S$. This function produces a fitness value between 0 and 1. The higher the fitness, the better the quality of the packing of items in the solution.
+
+\begin{itemize}
+	\item Create 25 candidate solutions for initial population, one solution using MFFD$^+$, the others using MFFR$^+$ (items sorted in random order as opposed to decreasing order of widths), each solution is mutated before being inserted into the population.
+	\item Each iteration of EA, two parent solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ are chosen from the population at random, crossover operator used to create single offspring solution $\mathcal{S}$, which is then mutated before replacing the least fit parent solution in the population (breaking ties randomly).
+	\item Fitness function $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ \cite{falkenauer1992}, $A(S) = \sum_{i \in S} w_i$ - ``fullness''/total width of all items on strip $S$, value between 0 and 1, closer to 1 = better packing, =1 means all strips are filled to capacity, perfect packing.
+	\item Although two solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ may contain the same number of strips/have the same size, fitness value identifies which solution contains a better packing of the items - distinguish between two solutions of the same size.
+	\item Not only considering how many strips required to pack all items, but how those items are packed onto the strips (optimise how the strips are packed).
+	\item Better packed strips means full capacity of strip is taken advantage of, reduce waste material on strips, plus nearly empty strips can be used to accommodate more items, or waste material can be reused.
+	\item If the strips are packed well, fewer strips required, else if strips are not packed well, extra strips required to pack items that cannot be packed onto strips already being used.
+	\item Take into account vicinal sum constraint - there may be two strips that are roughly equally filled, however even though it may seem that the items could be shuffled so that more are on one strip (thus a better packing), it may not be possible due to the constraint - not taken into account in other applications of this fitness value, however will still use this fitness value as our aim is to produce the best packing possible given the constraint.
+\end{itemize}
 
 \subsection{Experimental Results - EA}
-\begin{itemize}
-	\item Same instances used for heuristics used for EA
-	\item Types of instances - artificial, real
-	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
-	\item Each of these sets will then be run 6 times using different arguments - strip width = 2500 and 5000, and either GGA, GPX', or GPN
-	\item Overall there will be 24 types of outputs from EA
-	\item In EA output file to compare:
-	\begin{itemize}
-		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
-		\item Number of strips in best solution found
-		\item Number of iterations of EA within the given time limit
-		\item Fitness value of the best solution found
-		\item If best solution found is equivalent to the lowerbound
-	\end{itemize}
-	\item Keep track of best fitness/best solution/time at each iteration, if better solution found then write to file, produce graph
-	\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase
-	\item number of solution in initial population = 25
-	\item Number of items - 100, 500
-	\item Time limit for EA - 5 minutes
-	\item Width of strips - 2500, 5000
-	\item Recombination operators - GGA, GPX', GPN
-\end{itemize}
+\label{sub:expea}
 
 \begin{table}[h!]
 	\centering
@@ -349,7 +348,32 @@ During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must excee
 	\label{table:EA}
 \end{table}
 
+\begin{itemize}
+	\item Same instances used for heuristics used for EA
+	\item Types of instances - artificial, real
+	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
+	\item Each of these sets will then be run 6 times using different arguments - strip width = 2500 and 5000, and either GGA, GPX', or GPN
+	\item Overall there will be 24 types of outputs from EA
+	\item In EA output file to compare:
+	\begin{itemize}
+		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
+		\item Number of strips in best solution found
+		\item Number of iterations of EA within the given time limit
+		\item Fitness value of the best solution found
+		\item If best solution found is equivalent to the lowerbound
+	\end{itemize}
+	\item Keep track of best fitness/best solution/time at each iteration, if better solution found then write to file, produce graph
+	\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase
+	\item number of solution in initial population = 25
+	\item Number of items - 100, 500
+	\item Time limit for EA - 5 minutes
+	\item Width of strips - 2500, 5000
+	\item Recombination operators - GGA, GPX', GPN
+\end{itemize}
+
+
 \section{Postoptimisation}
+\label{sec:postopt}
 \begin{itemize}
 	\item Exact cover formulation, NP-hard, state the IP, describe DLX
 	\item cite Knuth dancing steps
@@ -385,26 +409,20 @@ During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must excee
 \end{align*}
 
 \subsection{Experimental Results - Postoptimisation}
+\label{sub:exppostopt}
 \begin{itemize}
 	\item
 \end{itemize}
 
 \section{Conclusion}
+\label{sec:conclusion}
 \begin{itemize}
 	\item Could use selected packings rather than all packings
 \end{itemize}
 
-\section{Notes}
-\begin{itemize}
-	\item ``Grouping problems involve a collection of ``items'' that are to be divided into a number of groups, subject to certain constraint'' \cite{lewis2009}
-	\item ``Order Dependent Minimum Grouping Problems'' \cite{lewis2009}
-	\item ``The term feasible is used exclusively to describe any candidate solution in which no problem-specific constraints are being violated'' \cite{lewis2009}
-	\item ``An optimal solution for an ODMPG is thus any solution that uses $\chi$ feasible groups to contain the $n$ items'' \cite{lewis2009}
-	\item ``An optimal solution can always be represented by a permutation of the items, since we can always generate such a permutation \textit{from} an optimal solution'' \cite{lewis2009}
-	\item ``Note that none of the algorithms considered in this comparison ever allow a bin to be over-filled in a candidate solution, thus any group $g$ will always have $F(g) \leq C$'' \cite{lewis2009}
-\end{itemize}	
+	
 
-\cite{becker2010}, \cite{becker2015}, \cite{coffman1978}, \cite{coffman1984}, \cite{dosa2007} \cite{eilon1971} \cite{falkenauer1992} \cite{falkenauer1996}, \cite{garey1972}, \cite{garey1979}, \cite{garraffa2016}, \cite{gilmore1961}, \cite{gilmore1963}, \cite{goulimis2004}, \cite{haggkvist1977}, \cite{hawa2018}, \cite{hung1978}, \cite{johnson1973}, \cite{johnson1974fast}, \cite{johnson1974worst}, \cite{karp1972}, \cite{knuth2000}, \cite{korf2002}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2011}, \cite{lewis2017}, \cite{mahadev1994}, \cite{mahadev1995}, \cite{malaguti2008}, \cite{martello1990a}, \cite{martello1990b}, \cite{quiroz2015}
+\cite{becker2010}, \cite{becker2015}, \cite{coffman1978}, \cite{coffman1984}, \cite{dosa2007} \cite{eilon1971} \cite{falkenauer1992} \cite{falkenauer1996}, \cite{garey1972}, \cite{garey1979}, \cite{garraffa2016}, \cite{gilmore1961}, \cite{gilmore1963}, \cite{goulimis2004}, \cite{haggkvist1977}, \cite{hawa2018}, \cite{hung1978}, \cite{johnson1973}, \cite{johnson1974fast}, \cite{johnson1974worst}, \cite{karp1972}, \cite{knuth2000}, \cite{korf2002}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2011}, \cite{lewis2017}, \cite{mahadev1994}, \cite{mahadev1995}, \cite{malaguti2008}, \cite{martello1990k}, \cite{martello1990l}, \cite{quiroz2015}
 
 \bibliographystyle{elsarticle-num}
 \bibliography{includes/bibliography}
