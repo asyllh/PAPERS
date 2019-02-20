@@ -27,6 +27,12 @@
 	\item Show that sub-problem can be seen as an instance of COP, minimum scoring distance = vicinal sum constraint
 	\item Describe rest of paper, AHC single strip for COP, Evolutionary Algorithm and Postopt
 	\item Two phase approach, cite vertex colouring paper
+	\item Minimum scoring distance $\tau$ approx 70mm in industry
+	\item $2^{n-1} n!$ distinct arrangement, combinatorial explosion
+	\item COP infinite width, strips given fixed width
+	\item Outer score widths ignored
+	\item Items that cannot be packed can be run through machine individually but extra time/cost
+	\item Grouping problem ODMPG 
 \end{itemize}
 
 
@@ -72,11 +78,55 @@
 	\item Alternating Hamiltonian cycle NP-hard generalises Ham cycle problem, but special graph structure means solution can be found in polynomial time
 	\item Pseudocode/brief overview of AHC algorithm in steps
 	\item Preliminary checks - these were not included in previous paper, speed
+	\item Preliminary check
+	\item Model instance graphically, graph $G$ has $2n+2$ vertices, including 2 extra dominating vertices (which will be removed at the end) and two edge sets, $B$ and $R$
+	\item $B$ = set of edges between vertices that are partners (that make up a pair in the instance $\mathcal{M}$), ``blue'' edges. $R$ - set of edges between vertices that are not partners and whose values add up to $\geq \tau$
+	\item Define Alt ham cycle.
+	\item Aim - to find set of edges $R' \subseteq R$ that forms an alternating hamiltonian cycle with the edges in $B$
+	\item Alt ham cycle NP-hard as it generalises Ham cycle propostion (proof), but structure of these graphs means can solve in polynomial time
+	\item MCM - match each vertex with largest possible vertex, create set $R'$. If $|R'| < n+1$, no solution exists, not enough edges to form cycle, end. Else if $|R'| = n+1$, i.e. matching, then $G' = (V, B \cup R')$ is 2-reg graph, consists of cycles $C_1,...,C_l$.
+	\item If $l = 1$, then $G'$ is alt ham cycle, solution found, end (remove dom vertices). Else we need to find edges from $R\backslash R'$ that can act as bridges between the components and join them together into a single cycle. 
+	\item Use BR to find these edges. List edges in order, go through to find edges that meet specific conditions. Continue until penultimate edge reached. BR produces sets $R_1, R_2,...$
+	\item If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.
+	\item Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.
+	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
+	\item Condensed version of algorithm from previous paper
+	\item Theorem/Proof polynomial time $O(n^2)$
+	\item Hamiltonian cycle characteristics, NP-hard, Karp 21 NP-Complete problem (both direct and undirected), complexity
+	\item Pseudocode/brief overview of AHC algorithm in steps
+	\item Preliminary checks - these were not included in previous paper, speed
+	\item MBR types, check that Beckers method is redundant
+	\item Add dominating vertices to help produce Ham cycle, remove at end, outer score widths ignored
+	\item Theorem MCM guarantee $O(n \lg n)$
 \end{itemize}
 
 \section{SCSPP}
 \begin{itemize}
 	\item Equations feasible candidate solution
+	\item SCSPP at least as hard as BPP, NP-hard
+	\item Why heuristics?
+	\item lowerbound, optimal solution, theoretical minimum
+	\item theoretical min less accurate
+	\item State advantages and disadvantages of MFFD and MFFD$^+$
+	\item Differences between SCSPP and BPP
+\end{itemize}
+
+\subsection{Heuristics}
+\begin{itemize}
+	\item For both heuristics, if current item is placed on a new strip, it is placed in a regular orientation - smaller score width on the left-most side of the strip.
+	\item MFFD - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.
+	\item MFFD$^+$ - if item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.
+\end{itemize}
+
+\subsection{Experimental Results - Heuristics}
+\begin{itemize}
+	\item Time it takes to run heuristics
+	\item Tables of comparisons
+	\item State that there are 20 types on average for real instances (no longer in table)
+	\item Although MFFD$^+$ better than MFFD, still disadvantages
+	\item Initially all items in decreasing order, may be a better ordering
+	\item only packing one item at a time, one item may not be feasible on a strip but if two were packed at the same time could be feasible
+	\item explain benefit of using Evolutionary algorithm, lead on to next section
 \end{itemize}
 
 \begin{table}[h!]
@@ -122,6 +172,9 @@
 	\item Preliminary check before calling AHC
 	\item Once offspring is produced, calculate fitness of parents and offspring, replace worst parent with offspring in population
 	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
+	\item Fitness $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ Falkenaur 1998
+	\item Set $\mathcal{F}$ is set of all subsets of items $\mathcal{I}' \subseteq \mathcal{I}$ that can produce a feasible ordering.
+	\item A feasible solution or strip means that the solution/strip abides by all constraints.
 \end{itemize}
 
 \begin{itemize}
@@ -135,33 +188,19 @@
 	\item Take into account vicinal sum constraint - there may be two strips that are roughly equally filled, however even though it may seem that the items could be shuffled so that more are on one strip (thus a better packing), it may not be possible due to the constraint - not taken into account in other applications of this fitness value, however will still use this fitness value as our aim is to produce the best packing possible given the constraint.
 \end{itemize}
 
-\section{CreateInitPop}
+\subsection{xover}
 \begin{itemize}
-	\item Run MFFPlus with items in decreasing order once
-	\item Run Mutation to mutate soln
-	\item Add soln to population
-	\item Run MFFPlus with items in random order multiple times
-	\item Run Mutation to mutate each soln
-	\item Add each soln to population
+	\item May have duplicate or missing items
+	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used \cite{lewis2017}
+	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
+	\item If missing items, repair procedure, then local search
+	\item GGA - Permute strips of second parent solution, then choose two strips randomly, add all strips between two chosen strips (including chosen strips) and add to offspring. Then from first parent, only add strips to offspring containing items that are not in offspring. Repair procedure on missing items, if any.
+	\item GPX' - Alternate between parent solutions, add fullest strip to offspring, delete strips from other parent containing items in offspring. Continue until $min(|\mathcal{S}_X|,|\mathcal{S}_Y|)-1$ strips in offspring. Repair procedure on missing items, if any. Initially, if both parents have fullest strip, break ties randomly.
+	\item GPN - Operates in the same manner as GPX', except chose strip containing the most items. Initially, if both parents have strip containing same number of max items, choose the parent whose strip is the fullest. If equal for both strips, choose randomly.
+	\item Once offspring produced, mutate and apply local search before replacing worst parent.
 \end{itemize}
 
-\section{MFFPlus}
-\begin{itemize}
-	\item PreAHCMFFP
-\end{itemize}
-
-\section{PreAHCMFFP}
-\begin{itemize}
-	\item AHC
-\end{itemize}
-
-\section{Mutation}
-\begin{itemize}
-	\item PermuteStrips
-	\item LocalSearch
-\end{itemize}
-
-\section{LocalSearch}
+\subsection{LocalSearch}
 \begin{itemize}
 	\item If stage four completed then reduce number of strips in $\mathcal{S}_Y$ by 1.
 	\item MFFD$^+$ on $\mathcal{S}_Y$ to create $\mathcal{S}_Y'$, means that $|\mathcal{S}_Y'| \leq |\mathcal{S}_Y|$.
@@ -182,64 +221,9 @@
 	\item Could be that there is a feasible ordering of the items on the strip in $\mathcal{S}_X$ (including the new items from $\mathcal{S}_Y$ and without the items being moved), but there is no feasible ordering of the items on the strip in $\mathcal{S}_Y$ (which includes the items from the strip in $\mathcal{S}_X$ and excludes the items being swapped). Then the items cannot be swapped, because both strips from $\mathcal{S}_X$ and $\mathcal{S}_Y$ must be feasible. 
 	\item This means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check)
 \end{itemize}
-\begin{itemize}
-	\item PermuteStrips x2
-	\item PairPair
-	\item PairSin
-	\item SinSin
-	\item MoveSin
-	\item MFFPlus partial
-\end{itemize}
-
-\section{PairPair/PairSin/SinSin/MoveSin}
-\begin{itemize}
-	\item SearchPackingsLS
-\end{itemize}
-
-\section{SearchPackingsLS}
-\begin{itemize}
-	\item PreAHCLS
-\end{itemize}
-
-\section{PreAHCLS}
-\begin{itemize}
-	\item AHC
-\end{itemize}
-
-\section{AHC}
-\begin{itemize}
-	\item InitInstance
-	\item MCM
-	\item MPS
-	\item BR
-	\item MBR
-	\item CP
-\end{itemize}
-
-\section{GGA}
-\begin{itemize}
-	\item PermuteStrips Y
-	\item Mutation
-	\item MFFPlus partial
-	\item LocalSearch
-\end{itemize}
-
-\section{GPX'}
-\begin{itemize}
-	\item Mutation
-	\item MFFPlus partial
-	\item LocalSearch
-\end{itemize}
-
-\section{GPN}
-\begin{itemize}
-	\item Mutation
-	\item MFFPlus partial
-	\item LocalSearch
-\end{itemize}
 
 
-\section{Problem Instances}
+\subsection{Problem Instances}
 \begin{itemize}
 	\item Types of instances - artificial, real
 	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
@@ -260,47 +244,6 @@
 \item Width of strips - 2500, 5000
 \item Recombination operators - GGA, GPX', GPN
 \end{itemize}
-
-\section{Local Search}
-Operates on a pair of feasible sub-solutions $\mathcal{S}_X$ and $\mathcal{S}_Y$ that together makeup a feasible solution. That is, $(\bigcup_{S_x \in \mathcal{S}_X} S_x) \cup (\bigcup_{S_y \in \mathcal{S}_Y} S_y) = \mathcal{I}$, and $(\bigcup_{S_x \in \mathcal{S}_X} S_x) \cap (\bigcup_{S_y \in \mathcal{S}_Y} S_y) = \emptyset$.
-
-For each $S_x \in \mathcal{S}_X$ and $S_y \in \mathcal{S}_Y$:
-
-PairPair:
-\begin{itemize}
-	\item If $\exists$ pairs of items $i,j \in S_x$ and $k, l \in S_y$ s.t.:
-	\item $w_i + w_j < w_k + w_l$, and
-	\item $((S_x \cup \{k, l\}) - \{i, j\}) \in \mathcal{F}$ and
-	\item $((S_y \cup \{i, j\}) - \{k, l\}) \in \mathcal{F}$
-	\item then move items $i, j$ from $S_x$ to $S_y$ and move items $k, l$ from $S_y$ to $S_x$	
-\end{itemize}
-
-PairSin:
-\begin{itemize}
-	\item If $\exists$ pairs of items $i,j \in S_x$ and item $k \in S_y$ s.t.:
-	\item $w_i + w_j \leq w_k$, and
-	\item $((S_x \cup \{k\}) - \{i, j\}) \in \mathcal{F}$ and
-	\item $((S_y \cup \{i, j\}) - \{k\}) \in \mathcal{F}$
-	\item then move items $i, j$ from $S_x$ to $S_y$ and move item $k$ from $S_y$ to $S_x$	
-\end{itemize}
-
-SinSin:
-\begin{itemize}
-	\item If $\exists$ item $i \in S_x$ and item $k \in S_y$ s.t.:
-	\item $w_i < w_k$, and
-	\item $((S_x \cup \{k\}) - \{i\}) \in \mathcal{F}$ and
-	\item $((S_y \cup \{i\}) - \{k\}) \in \mathcal{F}$
-	\item then move item $i$ from $S_x$ to $S_y$ and move item $k$ from $S_y$ to $S_x$	
-\end{itemize}
-
-MoveSin:
-\begin{itemize}
-	\item If $\exists$ item $k \in S_y$ s.t.:
-	\item $(S_x \cup \{k\}) \in \mathcal{F}$ and
-	\item $(S_y - \{k\}) \in \mathcal{F}$
-	\item then move item $k$ from $S_y$ to $S_x$	
-\end{itemize}
-
 
 
 \begin{algorithm}
@@ -371,6 +314,25 @@ MoveSin:
 	\item Comparison between GGA and GPX', artificial and real instance types, different strip widths and number of items
 	\item check timestamps from EA output file - which type is able to reach a better solution at a faster rate?
 	\item Differences in number of strips in best solution found in EA using different arguments
+	\item Exact cover formulation, NP-hard, state the IP, describe DLX
+	\item cite Knuth dancing steps
+	\item Use strips in feasPacking for post opt
+	\item Compare with EA output - is a better solution found, or a solution with the same number of strips but a better fitness value?
+	\item Is the post opt phase able to find a solution equal to the lowerbound?
+	\item Post opt will only ever find a solution equal to or better than the solution found in EA, never worse
+	\item Execution time
+	\item Set cover problem is optimisation problem, find min number of sets
+	\item exact cover problem is decision problem, does a set exist
+	\item however since we add every item on its own strip to feasPacking, we know that a set exists
+	\item problem is to find minimum number of strips that covers all items and contains every item exactly once
+	\item $A = (a_{ij})$ - $m$ x $n$ matrix
+	\item $M = \{1, 2,..., m\}$ - rows of the matrix, each row $i \in M$ is a strip
+	\item $N = \{1, 2,...,n\}$ - columns of the matrix, each column $j \in N$ is an item
+	\item $(a_{ij}) = 1$ iff item $j$ is on strip $i$
+	\item Say that row $i$ covers column $j$ if $a_{ij} = 1$
+	\item Find the smallest number of strips $S \subseteq M$ that contains every item exactly once, i.e. union of strips $= \mathcal{I}$ and intersection $= \emptyset$
+	\item Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$
+	\item Xpress mosel model
 \end{itemize}
 
 \section{Conclusion}
