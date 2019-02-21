@@ -57,11 +57,11 @@ For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, 
 
 \begin{figure}	
 	\centering
-	\begin{subfigure}[h]{0.45\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
 		\includestandalone[width=\textwidth]{figures/items}
 		\label{fig:items}
 	\end{subfigure} 
-	\begin{subfigure}[h]{0.75\textwidth}
+	\begin{subfigure}[h]{0.65\textwidth}
 		\includestandalone[width=\textwidth]{figures/itemsaligned}
 		\label{fig:itemsaligned}
 	\end{subfigure}
@@ -93,12 +93,19 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 	\item Call the two phase process EAX?
 	\item Polynomial-time algorithm for COP Hawa \cite{hawa2018}.
 	\item Describe rest of paper/layout.
+	\item Example instance $\mathcal{M}$ uses constraint value $\tau = 7$.
 \end{itemize}
 
 
 \section{AHC}
 \label{sec:ahc}
-From the instance $\mathcal{M}$ of the COP, we produce a graph $G$ consisting of $2n$ vertices, one for each element of $\mathcal{M}$, in non-decreasing order. An extra pair of dominating vertices is added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains edges between vertices that are partners (that is, whose values make up a pair in $\mathcal{M}$); and $R$, which contains edges between vertices whose values add up to greater than or equal to $\tau$, and that are not partners. \textcolor{OrangeRed}{THRESHOLD GRAPH FIGURE}
+We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex is weighted with the value it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$.
+
+In order to precent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the end of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
+
+If $\mathcal{M}$ has not been decided as infeasible, an extra pair of dominating vertices is added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values form an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The bijective function $p : V \to V$ associates each vertex $v_i \in V$ with its partner, $p(v_i) = v_j$. \textcolor{OrangeRed}{Figure X} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance provided in \textcolor{OrangeRed}{Section 1}. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
+
+
 
 A Hamiltonian cycle on a graph $G$ is a cycle that visits every vertex of $G$ exactly once. From this, we define a specific type of Hamiltonian cycle:
 
@@ -109,36 +116,54 @@ A Hamiltonian cycle on a graph $G$ is a cycle that visits every vertex of $G$ ex
 
 Due to the manner in which $G$ is constructed, it can be seen that the edges in $R$ represents all possible pairings of values from different pairs that meet the vicinal sum constraint. All pairs of elements must be present in the final solution, and so the edges in $B$ cannot be altered or removed. Clearly, an alternating Hamiltonian cycle on $G$ corresponds to a feasible ordering $\mathcal{T}$. Therefore, our task involves finding a matching $R' \subseteq R$ that, together with the edges in $B$, forms an alternating Hamiltonian cycle on $G$.
 
-The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''.
-
-BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. BR continues through the list creating these sets until the penultimate edge has been reached. 
-
 \begin{figure}[H]	
 	\centering
-	\begin{subfigure}[h]{0.4\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
+		\includestandalone[width=\textwidth]{figures/threshold}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.3\textwidth}
 		\includestandalone[width=\textwidth]{figures/matching}
-	\end{subfigure} \quad
-	\begin{subfigure}[h]{0.4\textwidth}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.3\textwidth}
 		\includestandalone[width=\textwidth]{figures/mps}
 	\end{subfigure}
 	\caption{Subgraph $G'= (V, B \cup R')$ created after MCM. When in planar form, it is clear that $l = 2$.}
 	\label{fig:mps}
 \end{figure}
 
+The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''.
+
+BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. BR continues through the list creating these sets until the penultimate edge has been reached. 
+
+\begin{figure}[H]	
+	\centering
+	\begin{subfigure}[h]{0.3\textwidth}
+		\includestandalone[width=\textwidth]{figures/mpsconnect}
+	\end{subfigure} \hspace{15mm} %
+	\begin{subfigure}[h]{0.3\textwidth}
+		\includestandalone[width=\textwidth]{figures/mpscycle}
+	\end{subfigure}
+	\caption{.}
+	\label{fig:mpsconnect}
+\end{figure}
+
 \begin{itemize}
 	\item Exact Polynomial-time algorithm for COP Becker \cite{becker2015} Hawa \cite{hawa2018}.
 	\item Model instance graphically, graph $G$ with $V = \{v_1, ...v_{2n}\}$ vertices, one for each value in $\mathcal{M}$ in non-decreasing order.
 	\item Preliminary checks using elements, explain, speed, Lewis \cite{lewis2011}.
-	\item Add two dominating vertices, will be removed at the end, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices.
+	\item Add two dominating vertices, will be removed at the end, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices, degree $2n+1$
 	\item $B$, blue edges between ``partners'' (values that make up a pair in $\mathcal{M}$), $|B| = n+1$, perfect matching (dominating vertices are partners).
+	\item Footnote dom vertices are partners.
 	\item Bijective function partners, $p : V \to V$, $p(v_i) = v_j$.
 	\item $R$, red edges between vertices whose values add up to $\tau$/meet VSC and are not partners.
 	\item Then we have a graph $G = (V, B \cup R)$ (see figure).
+	\item Can see that using graph helps to see problem cleary.
+	\item Higher-indexed vertices have larger degrees
 	\item Define Ham cycle, formal definition alt Ham cycle.
 	\item $R$ = all possible pairings of values, $B$ cannot be altered, all edges must remain, as each edge represents a pair of values.
 	\item Therefore aim is to find set of edges from $R$ that forms alt Ham cycle with $B$.
-	\item Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time.
-	\item MCM - match each vertex with largest possible vertex, create set $R'$.
+	\item Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time, FNP (function problem extension of the decision problem class NP, not only asking if it exists but what its value is if it does, FNP version of every NP-complete problem is NP-hard).
+	\item MCM - match each vertex with largest possible vertex, create set $R'$. Mahadev \cite{mahadev1994}
 	\item Explain ``matched'', bijective function.
 	\item Swap of partners.
 	\item If $|R'| < n+1$, no solution exists, not enough edges to form cycle, end. Else if $|R'| = n+1$, i.e. matching, then $G' = (V, B \cup R')$ is 2-reg graph, consists of cycles $C_1,...,C_l$.
@@ -255,6 +280,14 @@ For our experiments, we produced two different types of instances: ``artificial'
 \label{sec:ea}
 Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
 
+\begin{itemize}
+	\item Why use an EA? Lit review of EAs in BPP problems, benefits (repeated multiple times, best characteristics of strips/solutions).
+	\item Whenever subproblem occurs, AHC will be used.
+	\item Sets $\mathcal{A}$ and $\mathcal{B}$, subsets of items that produce feasible/infeasible orderings determined by AHC. Search these sets before calling AHC, therefore AHC used at most once for each distinct subset of items $\mathcal{I}' \subseteq \mathcal{I}$.
+	\item Feasible solution $\mathcal{S}$ means solution abides by all constraints.
+	\item First discuss xOver, then local search, then mutation, then whole process.
+\end{itemize}
+
 
 \subsection{Crossover Operator}
 \label{sub:xover}
@@ -263,6 +296,17 @@ Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, contain
 (GPX') Starting with the parent solution containing the fullest strip, the operator inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. GPX' repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring.
 
 GPN performs in the same manner as GPX', instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
+
+\begin{itemize}
+	\item Purpose of recombination/crossover, select best characteristics of each parent solution to form offspring. Missing/duplicate items.
+	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used \cite{lewis2017}
+	\item GGA Falkenauer \cite{falkenauer1992}, permute strips of $\mathcal{S}_2$, select two strips, take all strips between and including these strips and put into offspring solution $\mathcal{S}$. Add from $\mathcal{S}_1$ strips that do not contain items already in offspring. Note, choose strips $1 \leq i < j \leq |\mathcal{S}_2|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_2|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_2$ are in offspring, and prevents all strips from $\mathcal{S}_2$ from being selected, as this would mean that all strips from $\mathcal{S}_1$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has characteristics from both parents.
+	\item GPX', Quiroz \cite{quiroz2015} (check) - Alternate between parent solutions, add fullest strip to offspring, delete strips from other parent containing items in offspring. Continue until $min(|\mathcal{S}_1|,|\mathcal{S}_2|)-1$ strips in offspring. Initially, if both parents have fullest strip, break ties randomly.
+	\item GPN - Operates in the same manner as GPX', except chose strip containing the most items. Initially, if both parents have strip containing same number of max items, choose the parent whose strip is the fullest. If equal for both strips, choose randomly.
+	\item What does each xOver aim to do? Prevent duplicates (by deleting strips from other parent).
+	\item Missing items, apply MFFD$^+$ to produce partial solution $\mathcal{S}_Y$, then apply Local search (described in next section) on offspring and $\mathcal{S}_Y$ to produce full offspring $\mathcal{S}$
+	\item Many missing items in comparison to BPP as cannot delete individual items due to VSC, have to delete entire strips, could contain items not yet in offspring.
+\end{itemize}
 
 
 \subsection{Local Search}
@@ -277,9 +321,32 @@ During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must excee
 
 This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_1$ \emph{dominates} a strip $S_2$, then a solution containing $S_1$ will have no more strips than a solution containing $S_2$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}_X$, the ``fullness'' of the strips increase, whilst the number of items per strip is maintained or decreases, improving the quality of the strips in $\mathcal{S}_X$. Simultaneously, items moved into $\mathcal{S}_Y$ are smaller, and therefore easier to repack onto strips in $\mathcal{S}_X$ during stage (4). Variations of this method can be seen in \cite{falkenauer1996}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2017}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages, we create numerous distinct subsets of items on the strips, generating more possibilities for feasible orderings of items.
 
+\begin{itemize}
+	\item Purpose of local search, takes two partial solutions $\mathcal{S}_X$ and $\mathcal{S}_Y$.
+	\item Initially permute strips.
+	\item 4 stages, 3 swap, 1 move. width of items from $\mathcal{S}_X$ must be less than width of items from $\mathcal{S}_Y$ in first three stages.
+	\item Moves smaller items into $\mathcal{S}_Y$, larger items into $\mathcal{S}_X$.
+	\item If swap/move performed, move onto next stage. Repeat until no changes to either partial solution.
+	\item MFFD$^+$ applied on items in $\mathcal{S}_Y$ to produce partial solution $\mathcal{S}_Y'$. Then strips from $\mathcal{S}_X$ and $\mathcal{S}_Y'$ inserted into $\mathcal{S}$ (this is not necessarily offspring).
+	\item Based on dominance criterion of Martello and Toth \cite{martello1990l}.
+	\item If strip $S_1$ dominates $S_2$, the a solution using $S_1$ will have no more strips than a solution using $S_2$.
+	\item Aim - increase fullness of strips in $\mathcal{S}_X$ while maintaining or decreasing number of items on strips.
+	\item Moves smaller items into $\mathcal{S}_Y$, easier to repack in stage (4).
+	\item Variations of procedure seen in Falkenauer \cite{falkenauer1996}, Lewis \cite{lewis2009} \cite{lewis2017}, Levine \cite{levine2004}.
+	\item VSC makes swaps/moves more difficult, this means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check).
+	\item Repeating process produces different combinations of items, more possibilities to find feasible ordering.
+	\item Well-filled strips with larger items preferable over less-filled strips with smaller items (Levine \cite{levine2004}).
+\end{itemize}
+
 \subsection{Mutation}
 \label{sub:mutation}
 Take candidate solution, permute strips, select a random number of strips from the solution to insert into partial solution $\mathcal{S}_X$, and the rest into $\mathcal{S}_Y$. Apply local search on $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce a single feasible solution.
+
+\begin{itemize}
+	\item Purpose of mutation.
+	\item Permute strips of solution, insert random number of strips into $\mathcal{S}_X$, the rest into $\mathcal{S}_Y$.
+	\item Apply local search using $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce full feasible solution $\mathcal{S}$.
+\end{itemize}
 
 \subsection{EA Process}
 \label{sub:eaframework}
@@ -294,30 +361,8 @@ We therefore make use of the following function to calculate the fitness of a so
 \end{equation}
 \noindent where $A(S) = \sum_{i \in S} w_i$ is the total width of all items on a strip $S$. This function produces a fitness value between 0 and 1. The higher the fitness, the better the quality of the packing of items in the solution.
 
-
 \begin{itemize}
-	\item Only MFFD$^+$ used in EA
-	\item Explain why GPX cannot be used, cite Lewis paper
-	\item Preliminary check before calling AHC
-	\item Set $\mathcal{F}$ is set of all subsets of items $\mathcal{I}' \subseteq \mathcal{I}$ that can produce a feasible ordering.
-	\item A feasible solution or strip means that the solution/strip abides by all constraints.
-	\item xOver:
-	\item May have duplicate or missing items
-	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used \cite{lewis2017}
-	\item GGA $1 \leq i < j \leq |\mathcal{S}_Y|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_Y|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_Y$ are in offspring, and prevents all strips from $\mathcal{S}_Y$ from being selected, as this would mean that all strips from $\mathcal{S}_X$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has strips from both parents.
-	\item If missing items, repair procedure, then local search
-	\item GGA - Permute strips of second parent solution, then choose two strips randomly, add all strips between two chosen strips (including chosen strips) and add to offspring. Then from first parent, only add strips to offspring containing items that are not in offspring. Repair procedure on missing items, if any.
-	\item GPX' - Alternate between parent solutions, add fullest strip to offspring, delete strips from other parent containing items in offspring. Continue until $min(|\mathcal{S}_X|,|\mathcal{S}_Y|)-1$ strips in offspring. Repair procedure on missing items, if any. Initially, if both parents have fullest strip, break ties randomly.
-	\item GPN - Operates in the same manner as GPX', except chose strip containing the most items. Initially, if both parents have strip containing same number of max items, choose the parent whose strip is the fullest. If equal for both strips, choose randomly.
-	\item Once offspring produced, mutate and apply local search before replacing worst parent.
-	\item Local Search:
-	\item If stage four completed then reduce number of strips in $\mathcal{S}_Y$ by 1.
-	\item MFFD$^+$ on $\mathcal{S}_Y$ to create $\mathcal{S}_Y'$, means that $|\mathcal{S}_Y'| \leq |\mathcal{S}_Y|$.
-	\item Well-filled strips with larger items are always preferable over less-filled strips with smaller items \cite{levine2004}
-	\item Initially permute the strips of both solutions
-	\item This means local search takes longer, fewer swaps than seen in \cite{lewis2009}, \cite{lewis2017}, \cite{levine2004}, \cite{falkenauer1996} (check).
-	\item Framework:
-	\item Create 25 candidate solutions for initial population, one solution using MFFD$^+$, the others using MFFR$^+$ (items sorted in random order as opposed to decreasing order of widths), each solution is mutated before being inserted into the population.
+	\item Create candidate solutions for initial population, one solution using MFFD$^+$, the others using MFFR$^+$ (items sorted in random order as opposed to decreasing order of widths), each solution is mutated before being inserted into the population.
 	\item Each iteration of EA, two parent solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ are chosen from the population at random, crossover operator used to create single offspring solution $\mathcal{S}$, which is then mutated before replacing the least fit parent solution in the population (breaking ties randomly).
 	\item Fitness function $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ \cite{falkenauer1992}, $A(S) = \sum_{i \in S} w_i$ - ``fullness''/total width of all items on strip $S$, value between 0 and 1, closer to 1 = better packing, =1 means all strips are filled to capacity, perfect packing.
 	\item Although two solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ may contain the same number of strips/have the same size, fitness value identifies which solution contains a better packing of the items - distinguish between two solutions of the same size.
@@ -326,6 +371,7 @@ We therefore make use of the following function to calculate the fitness of a so
 	\item If the strips are packed well, fewer strips required, else if strips are not packed well, extra strips required to pack items that cannot be packed onto strips already being used.
 	\item Take into account vicinal sum constraint - there may be two strips that are roughly equally filled, however even though it may seem that the items could be shuffled so that more are on one strip (thus a better packing), it may not be possible due to the constraint - not taken into account in other applications of this fitness value, however will still use this fitness value as our aim is to produce the best packing possible given the constraint.
 \end{itemize}
+
 
 \subsection{Experimental Results - EA}
 \label{sub:expea}
@@ -382,7 +428,7 @@ We therefore make use of the following function to calculate the fitness of a so
 \label{sec:postopt}
 \begin{itemize}
 	\item Exact cover formulation, NP-hard, state the IP, describe DLX
-	\item cite Knuth dancing steps
+	\item cite Knuth \cite{knuth2000} dancing steps
 	\item Use strips in feasPacking for post opt
 	\item Compare with EA output - is a better solution found, or a solution with the same number of strips but a better fitness value?
 	\item Is the post opt phase able to find a solution equal to the lowerbound?
