@@ -72,7 +72,7 @@ For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, 
 In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section 3 will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section 4, along with results from rigorous experiments.  
 
 {\color{Orange}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Description of SCSPP, pack from left to right, minimum scoring distance.
 	\item Formal definitions COP, subproblem (single strip problem), SCSPP (multi-strip) problem, vicinal sum constraint.
 	\item Describe other problems using COP - TSP, 2 cities each state?
@@ -116,7 +116,7 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 
 Note that a red edge in $G$ shows two values from different unordered pairs that meet the vicinal sum constraint, and can be ordered adjacent to one another. Therefore, $R$ contains edges that represent to \emph{all} possible feasible pairings of values. It can be seen that an alternating Hamiltonain cycle in $G$ corresponds to a feasible ordering of the elements in $\mathcal{M}$, as the edge from $R$ depict the order of each tuple in $\mathcal{T}$ and the order of the values \emph{within} each tuple. The solution $\mathcal{T}$ must containg all elements from the problem instance $\mathcal{M}$, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Thus, our task is to find a suitable set of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. As $B$ is a perfect matching, it follows that $R'$ must also be a matching, else there will not be enough edges to form the cycle.
 
-Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}. The problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. However, due to the manner in which these graphs are created from instances of the COP, and the requirement that all edges in $B$ must be included, we are able to determine if an alternating Hamiltonian cycle exists, and produce a feasible solution if one does exist, in polynomial time \cite{hawa2018}.
+Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}. The problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. However, due to the manner in which graphs are created from instances of the COP, and the requirement that all edges in $B$ must be included, we are able to determine if an alternating Hamiltonian cycle exists, and produce a feasible solution if one does exist, in polynomial time \cite{hawa2018}.
 
 The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i) = v_j$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
@@ -126,7 +126,7 @@ The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $
 \end{enumerate*} 
 Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$.
 
-If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,...,C_l$, as show in Figure \ref{fig:mcm} and \ref{fig:mps}. Clearly, if $l = 1$, then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connect together to form a single alternating Hamiltonian cycle.
+If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,...,C_l$, as show in Figure \ref{fig:mcm} and \ref{fig:mps}. Clearly, if $l = 1$, then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -175,37 +175,43 @@ BR searches for an edge whose lower-indexed vertex is adjacent to the next edge'
 
 In some cases, more than one set $R_i$ is needed to connect the components.Two sets $R_i$ and $R_j$ are said to``overlap'' if they both contain exactly one edge from the same component of $G'$. A Modified Bridge Recognition (MBR) algorithm finds a collection $\mathcal{R}^*$ of overlapping sets. It initially operates in a similar fashion to BR, creating a set $R^{*}_1$ using the same conditions and adding it to $\mathcal{R}^*$. However, once no more edges can be added to $R^{*}_1$, the edges in $R^{*}_1$ are removed from the list. MBR restarts the search from the beginning of the list to find edges for a new set $R^{*}_2$, with the additional condition that $R^{*}_2$ must overlap with $R^{*}_1$. This process is repeated, creating sets that overlap with ones in $\mathcal{R}^*$. If at any point $\mathcal{R}^*$ contains at least one edge from every component in $G'$, the procedure immediately terminates. The connecting procedure is then applied to each set $R^{*}_i \in \mathcal{R}^*$, combining all components of $G'$ to form a alternating Hamiltonian cycle. If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}.
 
-{\color{Cerulean}
-\begin{itemize}
-	\item \alert{How does this method differ from Becker's?}
+{\color{myLightBlue}
+\begin{itemize}[leftmargin=*]
+	\ialert{How does this method differ from Becker's?}
 	\item Exact Polynomial-time algorithm for COP Becker \cite{becker2015} Hawa \cite{hawa2018}.
-	\item Model instance graphically, graph $G$ with $V = \{v_1, ...v_{2n}\}$ vertices, one for each value in $\mathcal{M}$ in non-decreasing order.
-	\item Preliminary checks using elements, explain, speed, Lewis \cite{lewis2011}.
-	\item Add two dominating vertices, will be removed at the end, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices, degree $2n+1$
-	\item $B$, blue edges between ``partners'' (values that make up a pair in $\mathcal{M}$), $|B| = n+1$, perfect matching (dominating vertices are partners).
+	\idone{Model instance graphically, graph $G$ with $V = \{v_1, ...v_{2n}\}$ vertices, one for each value in $\mathcal{M}$ in non-decreasing order.}
+	\idone{Preliminary checks using elements, explain, speed}, Lewis \cite{lewis2011}.
+	\idone{Add two dominating vertices, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices.}
+	\item Dom vertices will be removed at the end, degree $2n+1$.
+	\idone{$B$, blue edges between ``partners'' (values that make up a pair in $\mathcal{M}$)}, $|B| = n+1$, perfect matching.
 	\item Footnote dom vertices are partners.
-	\item Bijective function partners, $p : V \to V$, $p(v_i) = v_j$.
-	\item $R$, red edges between vertices whose values add up to $\tau$/meet VSC and are not partners.
-	\item Then we have a graph $G = (V, B \cup R)$ (see figure).
+	\idone{Bijective function partners, $p : V \to V$, $p(v_i) = v_j$.}
+	\idone{$R$, red edges between vertices whose values add up to $\tau$/meet VSC and are not partners.}
+	\item Given the bijective function $p:V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, we can denote the set of blue edges as $B = \{(v_i, p(v_i)) : v_i \in V\}$.  
+	\idone{Then we have a graph $G = (V, B \cup R)$ (see figure).}
 	\item Can see that using graph helps to see problem cleary.
-	\item Higher-indexed vertices have larger degrees
-	\item Define Ham cycle, formal definition alt Ham cycle.
-	\item $R$ = all possible pairings of values, $B$ cannot be altered, all edges must remain, as each edge represents a pair of values.
-	\item Therefore aim is to find set of edges from $R$ that forms alt Ham cycle with $B$.
-	\item Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time, FNP (function problem extension of the decision problem class NP, not only asking if it exists but what its value is if it does, FNP version of every NP-complete problem is NP-hard).
-	\item MCM - match each vertex with largest possible vertex, create set $R'$. Mahadev \cite{mahadev1994}
-	\item Explain ``matched'', bijective function.
-	\item Swap of partners.
-	\item If $|R'| < n+1$, no solution exists, not enough edges to form cycle, end. Else if $|R'| = n+1$, i.e. matching, then $G' = (V, B \cup R')$ is 2-reg graph, consists of cycles $C_1,...,C_l$.
-	\item If $l = 1$, then $G'$ is alt ham cycle, solution found, end (remove dom vertices). Else we need to find edges from $R\backslash R'$ that can act as bridges between the components and join them together into a single cycle. 
-	\item Use BR to find these edges. List edges in order, go through to find edges that meet specific conditions. Continue until penultimate edge reached. BR produces sets $R_1, R_2,...$.
-	\item If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.
-	\item Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.
+	\idone{Higher-indexed vertices have larger degrees.}
+	\idone{Define Ham cycle, formal definition alt Ham cycle.}
+	\idone{$R$ = all possible pairings of values}
+	\item $B$ cannot be altered, all edges must remain, as each edge represents a pair of values.
+	\idone{Therefore aim is to find set of edges from $R$ that forms alt Ham cycle with $B$.}
+	\idone{Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time.}
+	\idone{MCM - match each vertex with largest possible vertex, create set $R'$}, Mahadev \cite{mahadev1994}.
+	\idone{Explain ``matched'', bijective function.}
+	\item Can denote $R'$ as $R' = \{(v_i, m(v_i)) : v_i \in V\}$
+	\idone{Swap of partners.}
+	\idone{If $|R'| < n+1$, no solution exists, not enough edges to form cycle, end. Else if $|R'| = n+1$, i.e. matching, then $G' = (V, B \cup R')$ is 2-reg graph, consists of cycles $C_1,...,C_l$.}
+	\idone{If $l = 1$, then $G'$ is alt ham cycle, solution found, end} (remove dom vertices). 
+	\idone{Else we need to find edges from $R\backslash R'$ that can act as bridges between the components and join them together into a single cycle.}
+	\idone{Use BR to find these edges. List edges in order, go through to find edges that meet specific conditions. Continue until penultimate edge reached.} BR produces sets $R_1, R_2,...$.
+	\idone{If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.}
+	\idone{Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.}
 	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
 	\item MBR types, check that Beckers method is redundant.
 	\item This is called the Alternating Hamiltonian Construction (AHC) algorithm.
 \end{itemize}
 }
+
 
 \section{Heuristics for the SCSPP}
 \label{sec:scspp}
@@ -223,7 +229,7 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 \label{sub:heuristics}
 
 {\color{Rhodamine}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Feasible solution $\mathcal{S} = \{S_1,...,S_k\}$ and four conditions.
 	\item SCSPP at least as hard as BPP, NP-hard (SCSPP generalises BPP, assumming $P \neq NP$).
 	\item Cannot find solution in reasonable time, therefore use heuristics, near optimal solutions faster.
@@ -303,7 +309,7 @@ For our experiments, we produced two different types of instances: ``artificial'
 \end{table}
 
 {\color{Rhodamine}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Time it takes to run heuristics.
 	\item Tables of comparisons.
 	\item State that there are 20 types on average for real instances (no longer in table).
@@ -317,7 +323,7 @@ For our experiments, we produced two different types of instances: ``artificial'
 Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
 
 {\color{OrangeRed}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Why use an EA? Lit review of EAs in BPP problems, benefits (repeated multiple times, best characteristics of strips/solutions).
 	\item Whenever subproblem occurs, AHC will be used.
 	\item Sets $\mathcal{A}$ and $\mathcal{B}$, subsets of items that produce feasible/infeasible orderings determined by AHC. Search these sets before calling AHC, therefore AHC used at most once for each distinct subset of items $\mathcal{I}' \subseteq \mathcal{I}$.
@@ -336,7 +342,7 @@ Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, contain
 GPN performs in the same manner as GPX', instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
 
 {\color{OrangeRed}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Purpose of recombination/crossover, select best characteristics of each parent solution to form offspring. Missing/duplicate items.
 	\item Note the differences between BPP and SCSPP, cannot simply remove individual items from strips, may cause the arrangement of remaining items to become infeasible (VSC not met between items)- hence why GPX cannot be used \cite{lewis2017}
 	\item GGA Falkenauer \cite{falkenauer1992}, permute strips of $\mathcal{S}_2$, select two strips, take all strips between and including these strips and put into offspring solution $\mathcal{S}$. Add from $\mathcal{S}_1$ strips that do not contain items already in offspring. Note, choose strips $1 \leq i < j \leq |\mathcal{S}_2|$ \textbf{and} cannot have $i = 1 \land j = |\mathcal{S}_2|$ unlike in Rhyd paper - ensures that at least 2 strips from $\mathcal{S}_2$ are in offspring, and prevents all strips from $\mathcal{S}_2$ from being selected, as this would mean that all strips from $\mathcal{S}_1$ would be deleted from the offspring, and so offspring will not have strips from both parents. Ensures that offspring has characteristics from both parents.
@@ -363,7 +369,7 @@ During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must excee
 This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_1$ \emph{dominates} a strip $S_2$, then a solution containing $S_1$ will have no more strips than a solution containing $S_2$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}_X$, the ``fullness'' of the strips increase, whilst the number of items per strip is maintained or decreases, improving the quality of the strips in $\mathcal{S}_X$. Simultaneously, items moved into $\mathcal{S}_Y$ are smaller, and therefore easier to repack onto strips in $\mathcal{S}_X$ during stage (4). Variations of this method can be seen in \cite{falkenauer1996}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2017}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages, we create numerous distinct subsets of items on the strips, generating more possibilities for feasible orderings of items.
 
 {\color{OrangeRed}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Purpose of local search, takes two partial solutions $\mathcal{S}_X$ and $\mathcal{S}_Y$.
 	\item Initially permute strips.
 	\item 4 stages, 3 swap, 1 move. width of items from $\mathcal{S}_X$ must be less than width of items from $\mathcal{S}_Y$ in first three stages.
@@ -387,7 +393,7 @@ This method is based on the dominance criterion of Martello and Toth \cite{marte
 Take candidate solution, permute strips, select a random number of strips from the solution to insert into partial solution $\mathcal{S}_X$, and the rest into $\mathcal{S}_Y$. Apply local search on $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce a single feasible solution.
 
 {\color{OrangeRed}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Purpose of mutation.
 	\item Permute strips of solution, insert random number of strips into $\mathcal{S}_X$, the rest into $\mathcal{S}_Y$.
 	\item Apply local search using $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce full feasible solution $\mathcal{S}$.
@@ -408,7 +414,7 @@ We therefore make use of the following function to calculate the fitness of a so
 \noindent where $A(S) = \sum_{i \in S} w_i$ is the total width of all items on a strip $S$. This function produces a fitness value between 0 and 1. The higher the fitness, the better the quality of the packing of items in the solution.
 
 {\color{OrangeRed}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Create candidate solutions for initial population, one solution using MFFD$^+$, the others using MFFR$^+$ (items sorted in random order as opposed to decreasing order of widths), each solution is mutated before being inserted into the population.
 	\item Each iteration of EA, two parent solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ are chosen from the population at random, crossover operator used to create single offspring solution $\mathcal{S}$, which is then mutated before replacing the least fit parent solution in the population (breaking ties randomly).
 	\item Fitness function $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ \cite{falkenauer1992}, $A(S) = \sum_{i \in S} w_i$ - ``fullness''/total width of all items on strip $S$, value between 0 and 1, closer to 1 = better packing, =1 means all strips are filled to capacity, perfect packing.
@@ -449,14 +455,14 @@ We therefore make use of the following function to calculate the fitness of a so
 \end{table}
 
 {\color{OrangeRed}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Same instances used for heuristics used for EA
 	\item Types of instances - artificial, real
 	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
 	\item Each of these sets will then be run 6 times using different arguments - strip width = 2500 and 5000, and either GGA, GPX', or GPN
 	\item Overall there will be 24 types of outputs from EA
 	\item In EA output file to compare:
-	\begin{itemize}
+	\begin{itemize}[leftmargin=*]
 		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
 		\item Number of strips in best solution found
 		\item Number of iterations of EA within the given time limit
@@ -478,7 +484,7 @@ We therefore make use of the following function to calculate the fitness of a so
 \label{sec:postopt}
 
 {\color{myGreen}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Exact cover formulation, NP-hard, state the IP, describe DLX
 	\item cite Knuth \cite{knuth2000} dancing steps
 	\item Use strips in feasPacking for post opt
@@ -518,7 +524,7 @@ We therefore make use of the following function to calculate the fitness of a so
 \label{sub:exppostopt}
 
 {\color{myGreen}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item
 \end{itemize}
 }
@@ -527,16 +533,58 @@ We therefore make use of the following function to calculate the fitness of a so
 \label{sec:conclusion}
 
 {\color{Orchid}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item Could use selected packings rather than all packings
 \end{itemize}
 }
 
 	
-
-\cite{becker2010}, \cite{becker2015}, \cite{coffman1978}, \cite{coffman1984}, \cite{dosa2007} \cite{eilon1971} \cite{falkenauer1992} \cite{falkenauer1996}, \cite{garey1972}, \cite{garey1979}, \cite{garraffa2016}, \cite{gilmore1961}, \cite{gilmore1963}, \cite{goulimis2004}, \cite{haggkvist1977}, \cite{hawa2018}, \cite{hung1978}, \cite{johnson1973}, \cite{johnson1974fast}, \cite{johnson1974worst}, \cite{karp1972}, \cite{knuth2000}, \cite{korf2002}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2011}, \cite{lewis2017}, \cite{mahadev1994}, \cite{mahadev1995}, \cite{malaguti2008}, \cite{martello1990k}, \cite{martello1990l}, \cite{quiroz2015}
+%Citations
+%\cite{becker2010},
+%\cite{becker2015},
+%\cite{coffman1978}, 
+%\cite{coffman1984}, 
+%\cite{dosa2007}, 
+%\cite{eilon1971}, 
+%\cite{falkenauer1992}, 
+%\cite{falkenauer1996}, 
+%\cite{garey1972}, 
+%\cite{garey1979}, 
+%\cite{garraffa2016}, 
+%\cite{gilmore1961}, 
+%\cite{gilmore1963}, 
+%\cite{goulimis2004}, 
+%\cite{haggkvist1977}, 
+%\cite{hawa2018}, 
+%\cite{hung1978}, 
+%\cite{johnson1973}, 
+%\cite{johnson1974fast}, 
+%\cite{johnson1974worst}, 
+%\cite{karp1972}, 
+%\cite{knuth2000}, 
+%\cite{korf2002}, 
+%\cite{levine2004}, 
+%\cite{lewis2009}, 
+%\cite{lewis2011}, 
+%\cite{lewis2017}, 
+%\cite{mahadev1994}, 
+%\cite{mahadev1995}, 
+%\cite{malaguti2008}, 
+%\cite{martello1990k}, 
+%\cite{martello1990l}, 
+%\cite{quiroz2015}.
 
 \bibliographystyle{elsarticle-num}
 \bibliography{includes/bibliography}
 
 \end{document}
+
+
+
+
+
+
+
+
+
+
