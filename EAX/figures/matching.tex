@@ -1,8 +1,8 @@
 \documentclass[usenames,dvipsnames,tikz]{standalone}
 \usetikzlibrary{shapes.geometric}
 \usepackage{xcolor}
-\colorlet{myBlue}{RoyalBlue!35!Cerulean}
-\colorlet{myRed}{Red}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
 \usepackage{tikz}
 \usepackage{standalone}
 \begin{document}
@@ -42,9 +42,9 @@
 		++(90-\n*25.71428571:13pt) node {\Large{$v_{\value}$}};
 
 \foreach \m/\n in {1/14, 2/13, 3/12, 4/11, 5/10, 6/9, 7/8}
-	\draw [myRed] (v\n) -- (v\m);
+	\draw [tRed] (v\n) -- (v\m);
 \foreach \m/\n in {1/3, 2/12, 4/6, 5/8, 7/10, 9/11, 13/14}
-	\draw [ultra thick, myBlue] (v\n) -- (v\m);
+	\draw [ultra thick, tBlue] (v\n) -- (v\m);
 \foreach \n in {1,...,14}
 	\fill (90-\n*25.71428571:5cm) coordinate (v\n) circle [radius = 0.13];
 \foreach \n in {1,...,14}

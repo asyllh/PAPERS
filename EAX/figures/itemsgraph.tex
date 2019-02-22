@@ -1,14 +1,16 @@
-\documentclass{standalone}
-\usepackage{tikz}
-\usepackage{standalone}
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+\usetikzlibrary{shapes.geometric}
+\usepackage{xcolor}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
 \begin{document}
 	
 \begin{tikzpicture}
 %\draw [help lines] (-1,-2) grid (11,5);
 
-\draw [cyan, thick] (0.25,3) -- (3.75,3);
-\draw [cyan, thick] (5.75,3) -- (8.65,3);
-\draw [red, thick] (3.6,3) -- (5.75,3);
+\draw [tBlue, thick] (0.25,3) -- (3.75,3);
+\draw [tBlue, thick] (5.75,3) -- (8.65,3);
+\draw [tRed, thick] (3.6,3) -- (5.75,3);
 
 \draw [fill=white, thick] (0.25,3) circle [radius = 0.1];
 \draw [fill=white, thick] (3.6,3) circle [radius = 0.1];
