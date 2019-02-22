@@ -21,8 +21,6 @@
 \newcommand{\True}{\algorithmictrue}
 \newcommand{\algorithmicfalse}{\textbf{false}}
 \newcommand{\False}{\algorithmicfalse}
-%\newcommand{\IndStatex}[1][1]{\Statex\hspace{6mm}}
-%\newcommand{\IndIndStatex}[1][1]{\Statex\hspace{12mm}}
 
 % Contains advanced math extensions
 \usepackage{amsmath}
@@ -58,20 +56,28 @@
 \usepackage{graphicx}
 
 % Manage links within the document or to any URL when you compile in PDF
-\usepackage{hyperref} 
+\usepackage[colorlinks]{hyperref} 
 \usepackage[dvipsnames]{xcolor}
-\colorlet{myBlue}{RoyalBlue!35!Cerulean}
 \definecolor{myLightBlue}{HTML}{0095FF} %00B3FF
+\colorlet{tBlue}{RoyalBlue!35!Cerulean} %tikz color
+\colorlet{tRed}{Red} %tikz color
+\colorlet{myBlue}{RoyalBlue!35!Cerulean}
 \colorlet{myRed}{Red}
 \colorlet{myGreen}{LimeGreen!50!OliveGreen}
-\hypersetup{
-	colorlinks,
-	linkcolor={black},
-	citecolor={black},
-	urlcolor={black}
-}
-\newcommand\alert[1]{{\color{red}#1}}
-\newcommand\done[1]{{\color{gray}#1}}
+\colorlet{myGray}{gray!80!white}
+% The document class `elsarticle` uses the \AtBeginDocument comman to define the colour of all link types as blue, so we use the \AtBeginDocument command again to overwrite the colour settings to the colors we choose. REMEMBER TO REMOVE THIS BEFORE SUBMITTING.
+\AtBeginDocument{% 
+	\hypersetup{
+		linkcolor=Orchid,
+		citecolor=Orchid,
+		urlcolor=black
+	}
+} %end of \AtBeginDocument
+
+\newcommand{\alert}[1]{{\color{myRed}#1}} % \alert{<text>}, makes <text> red, use to highlight things to do, urgent, or revisit.
+\newcommand{\done}[1]{{\color{myGray}#1}} % \done{<text>}, makes <text> gray, use to highlight things that are not required or should be ignored.
+\newcommand{\ialert}[1]{{\color{myRed}\item#1}} % \ialert{<text>}, makes <text> a red bullet point, use for bullet points of things to do, urgent, or revisit.
+\newcommand{\idone}[1]{{\color{myGray}\item#1}} % \idone{<text>}, makes <text> a gray bullet point, use for bullet points that have been completed, that are not required or should be ignored.
 
 % Successor of amsmath
 \usepackage{mathtools}
