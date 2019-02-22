@@ -4,127 +4,100 @@
 \colorlet{myRed}{Red}
 \usepackage{tikz}
 \usepackage{standalone}
-\begin{document}	
+\begin{document}
 	
 \begin{tikzpicture}
-%\draw [help lines] (-1,-1) grid (14, 6);
+%\draw [help lines] (-1,-1) grid (12, 12);
 
-\draw [ultra thick, myBlue] (1,3) -- (2,3);
-\draw [ultra thick, myBlue] (3,3) -- (4,3);
-\draw [ultra thick, myBlue] (5,3) -- (6,3);
-\draw [ultra thick, myBlue] (7,3) -- (8,3);
-\draw [ultra thick, myBlue] (9,3) -- (10,3);
-\draw [ultra thick, myBlue] (11,3) -- (12,3);
+%C1 - blue
+\draw [ultra thick, white] (2.5,9.5) -- (5.5,9.5); %v14 - v13
+\draw [ultra thick, myBlue] (2.5,4.5) -- (1.2,7); %v3 - v1
+\draw [ultra thick, myBlue] (5.5,4.5) -- (6.8,7); %v12 - v2
 
-\draw [myRed] (2,3) -- (3,3);
-\draw [myRed] (4,3) -- (5,3);
-\draw [myRed] (6,3) -- (7,3);
-\draw [myRed] (8,3) -- (9,3);
-\draw [myRed] (10,3) -- (11,3);
+%C2 - blue
+\draw [ultra thick, myBlue] (0,0) -- (2.5,0); %v6 - v4
+\draw [ultra thick, myBlue] (0,2.5) -- (2.5,2.5); %v9 - v11
 
-\draw [fill=white, thick] (1,3) circle [radius = 0.08];
-\draw [fill=white, thick] (2,3) circle [radius = 0.08];
-\draw [fill=white, thick] (3,3) circle [radius = 0.08];
-\draw [fill=white, thick] (4,3) circle [radius = 0.08];
-\draw [fill=white, thick] (5,3) circle [radius = 0.08];
-\draw [fill=white, thick] (6,3) circle [radius = 0.08];
-\draw [fill=white, thick] (7,3) circle [radius = 0.08];
-\draw [fill=white, thick] (8,3) circle [radius = 0.08];
-\draw [fill=white, thick] (9,3) circle [radius = 0.08];
-\draw [fill=white, thick] (10,3) circle [radius = 0.08];
-\draw [fill=white, thick] (11,3) circle [radius = 0.08];
-\draw [fill=white, thick] (12,3) circle [radius = 0.08];
+%C3 - blue
+\draw [ultra thick, myBlue] (5.5,0) -- (8,0); %v10 - v7
+\draw [ultra thick, myBlue] (5.5,2.5) -- (8,2.5); %v5 - v8
 
-\node [above] at (1,3.05) {\large{$v_1$}};
-\node [above] at (2,3.05) {\large{$v_3$}};
-\node [above] at (3,3.05) {\large{$v_{11}$}};
-\node [above] at (4,3.05) {\large{$v_6$}};
-\node [above] at (5,3.05) {\large{$v_{10}$}};
-\node [above] at (6,3.05) {\large{$v_5$}};
-\node [above] at (7,3.05) {\large{$v_9$}};
-\node [above] at (8,3.05) {\large{$v_8$}};
-\node [above] at (9,3.05) {\large{$v_7$}};
-\node [above] at (10,3.05) {\large{$v_4$}};
-\node [above] at (11,3.05) {\large{$v_{12}$}};
-\node [above] at (12,3.05) {\large{$v_2$}};
+%C1 - red
+\draw [white] (2.5,4.5) -- (5.5,4.5); %v3 - v12
+\draw [white] (1.2,7) -- (2.5,9.5); %v1 - v14
+%\draw [myRed] (6.8,7) -- (5.5,9.5); %v2 - v13
 
-\node at (1,2.5) {\large{1}};
-\node at (2,2.5) {\large{2}};
-\node at (3,2.5) {\large{6}};
-\node at (4,2.5) {\large{3}};
-\node at (5,2.5) {\large{5}};
-\node at (6,2.5) {\large{3}};
-\node at (7,2.5) {\large{4}};
-\node at (8,2.5) {\large{4}};
-\node at (9,2.5) {\large{4}};
-\node at (10,2.5) {\large{2}};
-\node at (11,2.5) {\large{7}};
-\node at (12,2.5) {\large{1}};
+%C2 - red
+\draw [myRed] (0,0) -- (0,2.5); %v6 - v9
+%\draw [myRed] (2.5,0) -- (2.5,2.5); %v4 - v11
 
-\node at (1.5,2.37) {,};
-\node at (2.5,2.37) {,};
-\node at (3.5,2.37) {,};
-\node at (4.5,2.37) {,};
-\node at (5.5,2.37) {,};
-\node at (6.5,2.37) {,};
-\node at (7.5,2.37) {,};
-\node at (8.5,2.37) {,};
-\node at (9.5,2.37) {,};
-\node at (10.5,2.37) {,};
-\node at (11.5,2.37) {,};
+%C3 - red
+%\draw [myRed] (5.5,0) -- (5.5,2.5); %v10 - v5
+\draw [myRed] (8,0) -- (8,2.5); %v7 - v8
 
-\node at (0.85,2.5) {\large{(}};
-\node at (2.15,2.5) {\large{)}};
-\node at (2.85,2.5) {\large{(}};
-\node at (4.15,2.5) {\large{)}};
-\node at (4.85,2.5) {\large{(}};
-\node at (6.15,2.5) {\large{)}};
-\node at (6.85,2.5) {\large{(}};
-\node at (8.15,2.5) {\large{)}};
-\node at (8.85,2.5) {\large{(}};
-\node at (10.15,2.5) {\large{)}};
-\node at (10.85,2.5) {\large{(}};
-\node at (12.15,2.5) {\large{)}};
-
-\node at (0.7, 2.5) {\large{$\langle$}};
-\node at (12.3, 2.5) {\large{$\rangle$}};
-
-\node at (0.15, 2.5) {\large{$\mathcal{T} =$}};
+%Connecting edges
+\draw [myRed] (2.5,2.5) -- (2.5,4.5); %v11 - v3
+\draw [myRed] (5.5,2.5) -- (5.5,4.5); %v5 - v12
+\draw [myRed] (2.5,0) -- (5.5,0); %v4 - v10 
 
 
-%\node [below] at (1,3) {1};
-%\node [below] at (2,3) {2};
-%\node [below] at (3,3) {6};
-%\node [below] at (4,3) {3};
-%\node [below] at (5,3) {5};
-%\node [below] at (6,3) {3};
-%\node [below] at (7,3) {4};
-%\node [below] at (8,3) {4};
-%\node [below] at (9,3) {4};
-%\node [below] at (10,3) {2};
-%\node [below] at (11,3) {7};
-%\node [below] at (12,3) {1};
+%C1 - vertices
+\draw [fill=white, thick] (2.5,4.5) circle [radius = 0.1]; %v3
+\draw [fill=white, thick] (5.5,4.5) circle [radius = 0.1]; %v12
+\draw [fill=white, thick] (1.2,7) circle [radius = 0.1]; %v1
+\draw [fill=white, thick] (6.8,7) circle [radius = 0.1]; %v2
+\draw [fill=white, thick, white] (2.5,9.5) circle [radius = 0.1]; %v14
+\draw [fill=white, thick, white] (5.5,9.5) circle [radius = 0.1]; %v13
 
-%\node [above] at (1,3) {$v_1$};
-%\node [above] at (2,3) {$v_3$};
-%\node [above] at (3,3) {$v_{11}$};
-%\node [above] at (4,3) {$v_6$};
-%\node [above] at (5,3) {$v_{10}$};
-%\node [above] at (6,3) {$v_5$};
-%\node [above] at (7,3) {$v_9$};
-%\node [above] at (8,3) {$v_8$};
-%\node [above] at (9,3) {$v_7$};
-%\node [above] at (10,3) {$v_4$};
-%\node [above] at (11,3) {$v_{12}$};
-%\node [above] at (12,3) {$v_2$};
+%C2 - vertices
+\draw [fill=white, thick] (0,0) circle [radius = 0.1]; %v6
+\draw [fill=white, thick] (2.5,0) circle [radius = 0.1]; %v4
+\draw [fill=white, thick] (0,2.5) circle [radius = 0.1]; %v9
+\draw [fill=white, thick] (2.5,2.5) circle [radius = 0.1]; %v11
+
+%C3 - vertices
+\draw [fill=white, thick] (5.5,0) circle [radius = 0.1]; %v10
+\draw [fill=white, thick] (8,0) circle [radius = 0.1]; %v7
+\draw [fill=white, thick] (5.5,2.5) circle [radius = 0.1]; %v5
+\draw [fill=white, thick] (8,2.5) circle [radius = 0.1]; %v8
+
+%------------------
+%C2 - labels
+\node [below] at (0,0) {\textcolor{white}{\Large{$v_6$}}};
+\node [below] at (2.5,0) {\textcolor{white}{\Large\Large{$v_4$}}};
+
+%C3 - labels
+\node [below] at (5.5,0) {\textcolor{white}{\Large{$v_{10}$}}};
+\node [below] at (8,0) {\textcolor{white}{\Large{$v_7$}}};
+%-----------------
+
+%C1 - labels
+\node [left] at (2.5,4.5) {\large{2}}; %v3
+\node [right] at (5.5,4.5) {\large{6}}; %v12
+\node [left] at (1.2,7) {\large{1}}; %v1
+\node [right] at (6.8,7) {\large{1}}; %v2
+\node [above] at (2.5,9.5) {\textcolor{white}{\Large{$v_{14}$}}};
+\node [above] at (5.5,9.5) {\textcolor{white}{\Large{$v_{13}$}}};
+
+%C2 - labels
+\node [below] at (0,0) {\large{3}}; %v6
+\node [below] at (2.5,0) {\large{2}}; %v4
+\node [above] at (0,2.5) {\large{4}}; %v9
+\node [above left] at (2.5,2.5) {\large{5}}; %v11
+
+%C3 - labels
+\node [below] at (5.5,0) {\large{5}}; %v10
+\node [below] at (8,0) {\large{3}}; %v7
+\node [above right] at (5.5,2.5) {\large{2}}; %v5
+\node [above] at (8,2.5) {\large{4}}; %v8
 
 
 
 
-
-
-
-
+%Component labels
+%\node at (4,7) {\huge{$C_1$}};
+%\node at (1.25,1.25) {\huge{$C_2$}};
+%\node at (6.75,1.25) {\huge{$C_3$}};
 
 
 \end{tikzpicture}
