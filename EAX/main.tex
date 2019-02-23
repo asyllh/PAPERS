@@ -41,6 +41,7 @@ A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and v
 \end{definition}
 
 \begin{definition}
+	\label{defn:cop}
 	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},..., \{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
 	\begin{equation}
 		\label{eqn:vsc}
@@ -52,6 +53,7 @@ A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and v
 For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, we have a solution $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$
 
 \begin{definition}
+	\label{defn:scspp}
 	Let $\mathcal{I}$ be a set of $n$ rectangular items of height $H$ with varying widths $w_i \in \mathbb{Z}^+$ and score widths $a_i, b_i \in \mathbb{Z}^+$ for each item $i \in \mathcal{I}$. Given a minimum scoring distance $\tau \in \mathbb{Z}^+$, the Score-Constrained Strip-Packing Problem (SCSPP) consists of finding the minimum number of strips of height $H$ and width $W$ required to pack all items in $\mathcal{I}$ such that the sum of every pair of adjacent score widths is greater than or equal to $\tau$ and no strip is overfilled.
 \end{definition}
 
@@ -105,7 +107,7 @@ We begin by producing a graphical representation of the given instance $\mathcal
 
 In order to precent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the end of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
 
-If $\mathcal{M}$ has not been decided as infeasible, an extra pair of dominating vertices is added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values form an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The bijective function $p : V \to V$ associates each vertex $v_i \in V$ with its partner, $p(v_i) = v_j$. Figure \ref{fig:threshold} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance provided in Section \ref{sec:intro}. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
+If $\mathcal{M}$ has not been decided as infeasible, an extra pair of dominating vertices is added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values form an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The bijective function $p : V \to V$ associates each vertex $v_i \in V$ with its partner $p(v_i)$. Figure \ref{fig:threshold} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance provided in Section \ref{sec:intro}. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
 
 A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
 
@@ -118,7 +120,7 @@ Note that a red edge in $G$ shows two values from different unordered pairs that
 
 Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}. The problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. However, due to the manner in which graphs are created from instances of the COP, and the requirement that all edges in $B$ must be included, we are able to determine if an alternating Hamiltonian cycle exists, and produce a feasible solution if one does exist, in polynomial time \cite{hawa2018}.
 
-The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i) = v_j$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
+The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
 	\item $i \neq 1$;
 	\item $v_{i-1}$ has been matched; and
@@ -126,7 +128,7 @@ The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $
 \end{enumerate*} 
 Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$.
 
-If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,...,C_l$, as show in Figure \ref{fig:mcm} and \ref{fig:mps}. Clearly, if $l = 1$, then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
+If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,...,C_l$, as show in Figure \ref{fig:matching} and \ref{fig:mps}. Clearly, if $l = 1$, then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -138,7 +140,7 @@ If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwis
 	\begin{subfigure}[h]{0.32\textwidth}
 		\includestandalone[width=\textwidth]{figures/matching}
 		\caption{}
-		\label{fig:mcm}
+		\label{fig:matching}
 	\end{subfigure} \hspace{5mm}
 	\begin{subfigure}[h]{0.261\textwidth}
 		\includestandalone[width=\textwidth]{figures/mps}
@@ -146,6 +148,7 @@ If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwis
 		\label{fig:mps}
 	\end{subfigure}
 	\caption{(a) $G = (V, B\cup R)$; (b) $G'=(V, B \cup R')$ produced after MCM; (c) $G'$ in planar form, where it is clear that $G'$ comprises $l = 3$ cyclic components.}
+	\label{fig:mcm}
 \end{figure}
 
 Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. To find such edges, the Bridge Recognition (BR) algorithm is executed.
@@ -180,10 +183,12 @@ In some cases, more than one set $R_i$ is needed to connect the components.Two s
 	\ialert{How does this method differ from Becker's?}
 	\item Exact Polynomial-time algorithm for COP Becker \cite{becker2015} Hawa \cite{hawa2018}.
 	\idone{Model instance graphically, graph $G$ with $V = \{v_1, ...v_{2n}\}$ vertices, one for each value in $\mathcal{M}$ in non-decreasing order.}
-	\idone{Preliminary checks using elements, explain, speed}, Lewis \cite{lewis2011}.
+	\idone{Preliminary checks using elements, explain, speed.}
+	\item Cite Lewis \cite{lewis2011} for preliminary checks.
 	\idone{Add two dominating vertices, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices.}
 	\item Dom vertices will be removed at the end, degree $2n+1$.
-	\idone{$B$, blue edges between ``partners'' (values that make up a pair in $\mathcal{M}$)}, $|B| = n+1$, perfect matching.
+	\idone{$B$, blue edges between ``partners'' (values that make up a pair in $\mathcal{M}$)}.
+	\item $|B| = n+1$, perfect matching.
 	\item Footnote dom vertices are partners.
 	\idone{Bijective function partners, $p : V \to V$, $p(v_i) = v_j$.}
 	\idone{$R$, red edges between vertices whose values add up to $\tau$/meet VSC and are not partners.}
@@ -192,18 +197,20 @@ In some cases, more than one set $R_i$ is needed to connect the components.Two s
 	\item Can see that using graph helps to see problem cleary.
 	\idone{Higher-indexed vertices have larger degrees.}
 	\idone{Define Ham cycle, formal definition alt Ham cycle.}
-	\idone{$R$ = all possible pairings of values}
+	\idone{$R$ = all possible pairings of values.}
 	\item $B$ cannot be altered, all edges must remain, as each edge represents a pair of values.
 	\idone{Therefore aim is to find set of edges from $R$ that forms alt Ham cycle with $B$.}
 	\idone{Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time.}
-	\idone{MCM - match each vertex with largest possible vertex, create set $R'$}, Mahadev \cite{mahadev1994}.
+	\idone{MCM - match each vertex with largest possible vertex, create set $R'$.}
+	\item Cite Mahadev \cite{mahadev1994}.
 	\idone{Explain ``matched'', bijective function.}
-	\item Can denote $R'$ as $R' = \{(v_i, m(v_i)) : v_i \in V\}$
+	\item Can denote $R'$ as $R' = \{(v_i, m(v_i)) : v_i \in V\}$.
 	\idone{Swap of partners.}
 	\idone{If $|R'| < n+1$, no solution exists, not enough edges to form cycle, end. Else if $|R'| = n+1$, i.e. matching, then $G' = (V, B \cup R')$ is 2-reg graph, consists of cycles $C_1,...,C_l$.}
-	\idone{If $l = 1$, then $G'$ is alt ham cycle, solution found, end} (remove dom vertices). 
+	\idone{If $l = 1$, then $G'$ is alt ham cycle, solution found, end.}
 	\idone{Else we need to find edges from $R\backslash R'$ that can act as bridges between the components and join them together into a single cycle.}
-	\idone{Use BR to find these edges. List edges in order, go through to find edges that meet specific conditions. Continue until penultimate edge reached.} BR produces sets $R_1, R_2,...$.
+	\idone{Use BR to find these edges. List edges in order, go through to find edges that meet specific conditions. Continue until penultimate edge reached.} 
+	\item BR produces sets $R_1, R_2,...$.
 	\idone{If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.}
 	\idone{Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.}
 	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
@@ -215,7 +222,7 @@ In some cases, more than one set $R_i$ is needed to connect the components.Two s
 
 \section{Heuristics for the SCSPP}
 \label{sec:scspp}
-For an instance of the SCSPP, a feasible solution is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
+A feasible solution for the SCSPP is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
 \begin{subequations}
 	\begin{align}
 	\bigcup\nolimits_{i=1}^{|\mathcal{S}|} S_i &= \mathcal{I}, \label{eqn:packall}\\[3pt]
@@ -225,28 +232,38 @@ For an instance of the SCSPP, a feasible solution is represented by the set $\ma
 	\end{align}
 \end{subequations}
 
+\noindent As stated in Definition \ref{defn:scspp}, the aim is to minimise $k$. An optimal solution for the SCSPP is a solution consisting of the fewest number of strips $k$ required to feasibly pack all items in $\mathcal{I}$. A basic lower bound for $k$ is the theorectical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$. However, it can be seen that $t$ will not perform as accurately for the SCSPP as it does for the BPP. Consider a set of $n$ items in which the largest score width $b_i < \tau/2$. There are no pairs of items that can be packed alongside one another feasibly, thus $\mathcal{S}$ will require $n$ strips. The theoretical minimum does not consider the effect of the minimum scoring distance on the feasibility of the solution. 
+
+The minimum scoring distance also introduces differences in solutions for the BPP and SCSPP. The obvious difference is that of the ordering and orientation of the items on the strips: unimportant in the BPP, but vital for the feasibility of a solution for the SCSPP. Another distinction arises when attempting to modify solutions. Again, a solution for the BPP remains feasible when an item is removed or a new item is added to a strip (provided the strip can accommodate said item), whereas for the SCSPP this may render a solution infeasible, as the new pairings of score widths may not abide by the vicinal sum constraint.
+
+Equations \eqref{eqn:packall}--\eqref{eqn:capacity} are the necessary conditions for the BPP, and so it follows that the SCSPP is also NP-hard as the SCSPP generalises the BPP. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed.
+
+As the SCSPP is a relatively new problem, little research has been produced. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the well-known first-fit decreasing (FFD) heuristics. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, the smaller score width is on the left-hand side).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily.
+
 \subsection{Heuristics}
 \label{sub:heuristics}
 
 {\color{Rhodamine}
 \begin{itemize}[leftmargin=*]
-	\item Feasible solution $\mathcal{S} = \{S_1,...,S_k\}$ and four conditions.
-	\item SCSPP at least as hard as BPP, NP-hard (SCSPP generalises BPP, assumming $P \neq NP$).
-	\item Cannot find solution in reasonable time, therefore use heuristics, near optimal solutions faster.
+	\idone{Feasible solution $\mathcal{S} = \{S_1,...,S_k\}$ and four conditions.}
+	\idone{SCSPP at least as hard as BPP, NP-hard (SCSPP generalises BPP, assuming $P \neq NP$).}
+	\idone{Cannot find solution in reasonable time, therefore use heuristics, near optimal solutions faster.}
 	\item Lit review, heuristics used for BPP/SPP, FFD, BFD etc., how do these work with SCSPP (or ODMGPs in general).
-	\item Optimal solution requires fewest number of strips $k$ to pack all items.
-	\item Lower bound for $k$ is theoretical minimum $t = \ceil*{\sum_{i=1}^{n}w_i / W}$, Martello \cite{martello1990l}.
-	\item $t$ not accurate for SCSPP, doesn't take into account $\tau$, if $\tau >$ 2x largest score width then $n$ strips required, one for each item, regardless of item widths or strip width $W$.
+	\idone{Optimal solution requires fewest number of strips $k$ to pack all items.}
+	\idone{Lower bound for $k$ is theoretical minimum $t = \ceil*{\sum_{i=1}^{n}w_i / W}$.}
+	\item Lowerbound cite Martello \cite{martello1990l}.
+	\idone{$t$ not accurate for SCSPP, doesn't take into account $\tau$, if $\tau >$ 2x largest score width then $n$ strips required, one for each item, regardless of item widths or strip width $W$.}
 	\item May find optimal solution without knowing, as optimal number of strips for a given problem instance of the SCSPP may be greater than $t$.
 	\item Can we show a solution is optimal? If not, why?
-	\item Differences BPP and SCSPP: (1) Importance of order and orientation of items; (2) Feasibility of strips when adding/removing/rearranging items.
+	\idone{Differences BPP and SCSPP: (1) Importance of order and orientation of items; (2) Feasibility of strips when adding/removing/rearranging items.}
 	\item $\mathcal{F}$ denotes the set of all subsets $\mathcal{I}' \subseteq \mathcal{I}$ of items that can be feasibly packed onto a single strip, i.e. $\sum_{i \in S} w_i \leq W$ and VSC met.
-	\item Heuristics for SCSPP Hawa \cite{hawa2018}, with addition of preliminary checks.
-	\item MFFD - FFD but only place item if score width on end of strip meets VSC with a score width on the item (check both orientations) - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.
-	\item MFFD$^+$ - FFD, incorporates AHC, instead of checking VSC on end of strip, run AHC using all items on strip and current item. If item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.
-	\item If item starts new strip, pack item in regular orientation, i.e. $(a_i, b_i)$, smaller score width on left-hand side.
-	\item MFFD$^+$ can find solution for subset of items, rearrange all items, MFFD cannot, only place items on end.
-	\item MFFD may require extra strips for items even though feasible ordering exists using AHC.
+	\idone{Heuristics for SCSPP Hawa \cite{hawa2018}.} 
+	\item Our implementation of AHC in MFFD$^+$ has the preliminary check, previous paper does not.
+	\idone{MFFD - FFD but only place item if score width on end of strip meets VSC with a score width on the item (check both orientations) - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.}
+	\idone{MFFD$^+$ - FFD, incorporates AHC, instead of checking VSC on end of strip, run AHC using all items on strip and current item. If item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.}
+	\idone{If item starts new strip, pack item in regular orientation, i.e. $(a_i, b_i)$, smaller score width on left-hand side.}
+	\idone{ MFFD$^+$ can find solution for subset of items, rearrange all items, MFFD cannot, only place items on end.}
+	\idone{MFFD may require extra strips for items even though feasible ordering exists using AHC.}
 	\item MFFD$^+$ slower, could be a different ordering of items works better (rather than items in decreasing order of widths), one item at a time might not find feasible ordering, may be that feasible ordering exists when packing multiple items simultaneously.
 	\item Fast greedy heuristics not as good, other methods superior.
 	\item Therefore use evolutionary algorithm (lead on to next section).
