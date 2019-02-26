@@ -250,14 +250,14 @@ As the SCSPP is a relatively new problem, little research has been produced. Som
 	\item Lit review, heuristics used for BPP/SPP, FFD, BFD etc., how do these work with SCSPP (or ODMGPs in general).
 	\idone{Optimal solution requires fewest number of strips $k$ to pack all items.}
 	\idone{Lower bound for $k$ is theoretical minimum $t = \ceil*{\sum_{i=1}^{n}w_i / W}$.}
-	\item Lowerbound cite Martello \cite{martello1990l}.
+	\idone{Lowerbound cite Martello \cite{martello1990l}.}
 	\idone{$t$ not accurate for SCSPP, doesn't take into account $\tau$, if $\tau >$ 2x largest score width then $n$ strips required, one for each item, regardless of item widths or strip width $W$.}
 	\item May find optimal solution without knowing, as optimal number of strips for a given problem instance of the SCSPP may be greater than $t$.
 	\item Can we show a solution is optimal? If not, why?
 	\idone{Differences BPP and SCSPP: (1) Importance of order and orientation of items; (2) Feasibility of strips when adding/removing/rearranging items.}
 	\item $\mathcal{F}$ denotes the set of all subsets $\mathcal{I}' \subseteq \mathcal{I}$ of items that can be feasibly packed onto a single strip, i.e. $\sum_{i \in S} w_i \leq W$ and VSC met.
 	\idone{Heuristics for SCSPP Hawa \cite{hawa2018}.} 
-	\item Our implementation of AHC in MFFD$^+$ has the preliminary check, previous paper does not.
+	\idone{Our implementation of AHC in MFFD$^+$ has the preliminary check, previous paper does not.}
 	\idone{MFFD - FFD but only place item if score width on end of strip meets VSC with a score width on the item (check both orientations) - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.}
 	\idone{MFFD$^+$ - FFD, incorporates AHC, instead of checking VSC on end of strip, run AHC using all items on strip and current item. If item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.}
 	\idone{If item starts new strip, pack item in regular orientation, i.e. $(a_i, b_i)$, smaller score width on left-hand side.}
