@@ -22,8 +22,8 @@ More formally, given a set $\mathcal{I}$ of $n$ distinct items, the aim is to pr
 \begin{subequations}
 	\begin{align}
 	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, \label{eqn:mgppackall}\\[3pt]
-	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1, 2, ...,k\}, \hspace{2mm} i \neq j, \label{eqn:mgpnooverlap} \\[3pt]
-	S_i &\neq \emptyset \hspace{5mm} \forall \hspace{1mm} i\in \{1,2,...,k\}.\label{eqn:mgpallused}
+	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{2mm} i \neq j, \label{eqn:mgpnooverlap} \\[3pt]
+	S_i &\neq \emptyset \hspace{5mm} \forall \hspace{1mm} i\in \{1,2,\dotsc,k\}.\label{eqn:mgpallused}
 	\end{align}
 \end{subequations}
 
@@ -32,7 +32,7 @@ More formally, given a set $\mathcal{I}$ of $n$ distinct items, the aim is to pr
 Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite{hawa2018}:
 \begin{definition}
 	\label{defn:cop}
-	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},..., \{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
+	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
 	\begin{equation}
 	\label{eqn:vsc}
 	\emph{\textbf{rhs}}(i) + \emph{\textbf{lhs}}(i+1) \geq \tau \hspace{5mm} \forall \hspace{1mm} i \in \{1,2,..., n-1\},
@@ -62,7 +62,7 @@ It follows that to find a feasible solution, the ordering \emph{and} the orienta
 The SCSPP is an ODMGP, as not only must we determine which strip to pack each item onto, but also the order and orientation of the items within each strip. Thus, the BPP can be seen as a special case of the SCSPP when $\tau = 0$. Although items can be put through the machine to be scored individually, it takes longer and thus incurs extra costs.
 
 
-In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section 3 will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section 4, along with results from rigorous experiments.  
+In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section~\ref{sec:scspp} will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section~\ref{sec:ea}, along with results from rigorous experiments.  
 
 {\color{Orange}
 \begin{itemize}[leftmargin=*]
@@ -97,11 +97,11 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 
 \section{The Alternating Hamltonian Construction (AHC) algorithm}
 \label{sec:ahc}
-We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex is weighted with the value it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$.
+We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$.
 
-In order to precent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the end of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
+In order to prevent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the end of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
 
-If $\mathcal{M}$ has not been decided as infeasible, an extra pair of dominating vertices is added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values form an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The bijective function $p : V \to V$ associates each vertex $v_i \in V$ with its partner $p(v_i)$. Figure \ref{fig:threshold} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance provided in Section \ref{sec:intro}. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
+If $\mathcal{M}$ has not been decided as infeasible, an extra pair of vertices is added to $G$, which have values equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values make up an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The extra pair of vertices, $v_{2n+1}$ and $v_{2n+2}$ can be seen to be dominating vertices, as their weighted values means they will be adjacent to every other vertex via an edge in $R$, and thus have degrees of $2n+1$.\footnote{Note that the dominating vertices $v_{2n+1}$ and $v_{2n+2}$ are partners.} Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, we can denote the set of edges between partners as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Figure~\ref{fig:threshold} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance provided in Section~\ref{sec:intro}. It can be seen that $|B| = n+1$, hence $B$ is a perfect matching. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
 
 A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
 
@@ -112,9 +112,11 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 
 Note that a red edge in $G$ shows two values from different unordered pairs that meet the vicinal sum constraint, and can be ordered adjacent to one another. Therefore, $R$ contains edges that represent to \emph{all} possible feasible pairings of values. It can be seen that an alternating Hamiltonain cycle in $G$ corresponds to a feasible ordering of the elements in $\mathcal{M}$, as the edge from $R$ depict the order of each tuple in $\mathcal{T}$ and the order of the values \emph{within} each tuple. The solution $\mathcal{T}$ must containg all elements from the problem instance $\mathcal{M}$, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Thus, our task is to find a suitable set of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. As $B$ is a perfect matching, it follows that $R'$ must also be a matching, else there will not be enough edges to form the cycle.
 
+The dominating vertices are used to aid the construction of the alternating Hamiltonian cycle, as they are able to connect to the smallest vertices. Once an alternating Hamiltonian cycle has been produced, the dominating vertices and any incident edges are removed, leaving the smallest vertices as the end points on the path. These vertices correspond to the smallest values in the problem instances, which will be in the outermost positions in the solution $\mathcal{T}$.
+
 Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}. The problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. However, due to the manner in which graphs are created from instances of the COP, and the requirement that all edges in $B$ must be included, we are able to determine if an alternating Hamiltonian cycle exists, and produce a feasible solution if one does exist, in polynomial time \cite{hawa2018}.
 
-The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,...,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
+The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. This set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
 	\item $i \neq 1$;
 	\item $v_{i-1}$ has been matched; and
@@ -122,7 +124,7 @@ The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $
 \end{enumerate*} 
 Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$.
 
-If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,...,C_l$, as show in Figure \ref{fig:matching} and \ref{fig:mps}. Clearly, if $l = 1$, then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
+If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,...,C_l$, as show in Figure~\ref{fig:matching} and~\ref{fig:mps}. Clearly, if $l = 1$, then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -147,7 +149,10 @@ If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwis
 
 Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. To find such edges, the Bridge Recognition (BR) algorithm is executed.
 
-BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. BR continues through the list creating these sets until the penultimate edge has been reached. If BR is unable to produce a set, then clearly no solution exists. Else, if there exists a set $R_i$ that has a cardinality of $l$, then the components of $G'$ can be connected by adding to $R'$, for each edge in $R_i$, the edge from $R \backslash R'$ incident to its lower-indexed vertex and the higher-indexed vertex of the next edge (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure \ref{fig:br}, where BR has produced a single set $R_1 = \{\{v_3, v_{12}\},\{v_4, v_{11}\}, \{v_5, v_{10}\}\}$.
+BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. Once there are no more valid edges to add to $R_1$, BR searches through the list to find another edge to start a set $R_2$. BR continues creating these sets until the penultimate edge has been reached. If BR is unable to produce a set, then clearly no solution exists. Else, if there exists a set $R_i$ that has a cardinality of $l$, then the components of $G'$ can be connected by adding to $R'$, for each edge in $R_i$, the edge from $R \backslash R'$ incident to its lower-indexed vertex and the higher-indexed vertex of the next edge (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BR has produced a single set $R_1 = \{\{v_3, v_{12}\},\{v_4, v_{11}\}, \{v_5, v_{10}\}\}$.
+
+
+In some cases, more than one set $R_i$ is needed to connect the components. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contain exactly one edge from the same component of $G'$. A Modified Bridge Recognition (MBR) algorithm finds a collection $\mathcal{R}^*$ of overlapping sets. It initially operates in a similar fashion to BR, creating a set $R^{*}_1$ using the same conditions and adding it to $\mathcal{R}^*$. However, once no more edges can be added to $R^{*}_1$, the edges in $R^{*}_1$ are removed from the list. MBR restarts the search from the beginning of the list to find edges for a new set $R^{*}_2$, with the additional condition that $R^{*}_2$ must overlap with $R^{*}_1$. This process is repeated, creating sets that overlap with ones in $\mathcal{R}^*$. If at any point $\mathcal{R}^*$ contains at least one edge from every component in $G'$, the procedure immediately terminates. The connecting procedure is then applied to each set $R^{*}_i \in \mathcal{R}^*$, combining all components of $G'$ to form a alternating Hamiltonian cycle. If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}.
 
 \begin{figure}[H]	
 	\centering
@@ -170,8 +175,6 @@ BR searches for an edge whose lower-indexed vertex is adjacent to the next edge'
 	\label{fig:br}
 \end{figure}
 
-In some cases, more than one set $R_i$ is needed to connect the components. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contain exactly one edge from the same component of $G'$. A Modified Bridge Recognition (MBR) algorithm finds a collection $\mathcal{R}^*$ of overlapping sets. It initially operates in a similar fashion to BR, creating a set $R^{*}_1$ using the same conditions and adding it to $\mathcal{R}^*$. However, once no more edges can be added to $R^{*}_1$, the edges in $R^{*}_1$ are removed from the list. MBR restarts the search from the beginning of the list to find edges for a new set $R^{*}_2$, with the additional condition that $R^{*}_2$ must overlap with $R^{*}_1$. This process is repeated, creating sets that overlap with ones in $\mathcal{R}^*$. If at any point $\mathcal{R}^*$ contains at least one edge from every component in $G'$, the procedure immediately terminates. The connecting procedure is then applied to each set $R^{*}_i \in \mathcal{R}^*$, combining all components of $G'$ to form a alternating Hamiltonian cycle. If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}.
-
 {\color{myLightBlue}
 \begin{itemize}[leftmargin=*]
 	\ialert{How does this method differ from Becker's?}
@@ -180,31 +183,31 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 	\idone{Preliminary checks using elements, explain, speed.}
 	\item Cite Lewis \cite{lewis2011} for preliminary checks.
 	\idone{Add two dominating vertices, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices.}
-	\item Dom vertices will be removed at the end, degree $2n+1$.
+	\idone{Dom vertices will be removed at the end.}
+	\idone{degree $2n+1$.}
 	\idone{$B$, blue edges between ``partners'' (values that make up a pair in $\mathcal{M}$)}.
-	\item $|B| = n+1$, perfect matching.
-	\item Footnote dom vertices are partners.
+	\idone{$|B| = n+1$, perfect matching.}
+	\idone{Footnote dom vertices are partners.}
 	\idone{Bijective function partners, $p : V \to V$, $p(v_i) = v_j$.}
 	\idone{$R$, red edges between vertices whose values add up to $\tau$/meet VSC and are not partners.}
-	\item Given the bijective function $p:V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, we can denote the set of blue edges as $B = \{(v_i, p(v_i)) : v_i \in V\}$.  
+	\idone{Given the bijective function $p:V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, we can denote the set of blue edges as $B = \{(v_i, p(v_i)) : v_i \in V\}$.}  
 	\idone{Then we have a graph $G = (V, B \cup R)$ (see figure).}
-	\item Can see that using graph helps to see problem cleary.
 	\idone{Higher-indexed vertices have larger degrees.}
 	\idone{Define Ham cycle, formal definition alt Ham cycle.}
 	\idone{$R$ = all possible pairings of values.}
-	\item $B$ cannot be altered, all edges must remain, as each edge represents a pair of values.
+	\idone{$B$ cannot be altered, all edges must remain, as each edge represents a pair of values.}
 	\idone{Therefore aim is to find set of edges from $R$ that forms alt Ham cycle with $B$.}
 	\idone{Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time.}
 	\idone{MCM - match each vertex with largest possible vertex, create set $R'$.}
 	\item Cite Mahadev \cite{mahadev1994}.
 	\idone{Explain ``matched'', bijective function.}
-	\item Can denote $R'$ as $R' = \{(v_i, m(v_i)) : v_i \in V\}$.
+	\idone{Can denote $R'$ as $R' = \{(v_i, m(v_i)) : v_i \in V\}$.}
 	\idone{Swap of partners.}
 	\idone{If $|R'| < n+1$, no solution exists, not enough edges to form cycle, end. Else if $|R'| = n+1$, i.e. matching, then $G' = (V, B \cup R')$ is 2-reg graph, consists of cycles $C_1,...,C_l$.}
 	\idone{If $l = 1$, then $G'$ is alt ham cycle, solution found, end.}
 	\idone{Else we need to find edges from $R\backslash R'$ that can act as bridges between the components and join them together into a single cycle.}
 	\idone{Use BR to find these edges. List edges in order, go through to find edges that meet specific conditions. Continue until penultimate edge reached.} 
-	\item BR produces sets $R_1, R_2,...$.
+	\idone{BR produces sets $R_1, R_2,...$.}
 	\idone{If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.}
 	\idone{Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.}
 	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
@@ -221,9 +224,9 @@ A feasible solution for the SCSPP is represented by the set $\mathcal{S} = \{S_1
 \begin{subequations}
 	\begin{align}
 	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, \label{eqn:packall}\\[3pt]
-	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1,2,...,k\}, \hspace{2mm} i \neq j, \label{eqn:nooverlap} \\[3pt]
+	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1,2,\dotsc,k\}, \hspace{2mm} i \neq j, \label{eqn:nooverlap} \\[3pt]
 	\sum\nolimits_{i=1}^{|S_j|}w_i & \leq W \hspace{3mm} \forall \hspace{1mm} S_j \in \mathcal{S}, \label{eqn:capacity} \\[3pt]
-	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau \hspace {5mm} \forall \hspace{1mm} i \in \{1, 2, ..., |S_j|-1\}, \hspace{2mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
+	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau \hspace {5mm} \forall \hspace{1mm} i \in \{1, 2,\dotsc,|S_j|-1\}, \hspace{2mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
 	\end{align}
 \end{subequations}
 
@@ -336,7 +339,7 @@ For our experiments, we produced two different types of instances: ``artificial'
 
 \section{Evolutionary Algorithm}
 \label{sec:ea}
-An evolutionary algorithm (EA) is a metaheuristics optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the solutions. Each solution is evaluated based on a given critera, and individuals which are more suited to the environment are gievn more oppportunity to breed, while those which are less so are eliminated.
+An evolutionary algorithm (EA) is a metaheuristics optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the solutions. Each solution is evaluated based on a given critera, and individuals which are more suited to the environment are given more oppportunity to breed, while those which are less so are eliminated.
 
 
 Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
@@ -353,7 +356,7 @@ Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, contain
 
 \subsection{Crossover Operator}
 \label{sub:xover}
-A crossover operator within an EA is used to generate new solutions from an existing population. This is done by taking two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, and combining them to create a new offspring solution. The operator determines which characteristics from each parent should be inherited by the offspring. Thus, the operator attempts to retain the best elements of each parent, with the aim of producing a superior offspring. As described in Section \ref{sec:scspp}, we cannot simply copy individual items from each parent into the offspring, as it may result in an infeasible solution. Our crossover operators are therefore designed to ensure offspring feasibility.
+A crossover operator within an EA is used to generate new solutions from an existing population. This is done by taking two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, and combining them to create a new offspring solution. The operator determines which characteristics from each parent should be inherited by the offspring. Thus, the operator attempts to retain the best elements of each parent, with the aim of producing a superior offspring. As described in Section~\ref{sec:scspp}, we cannot simply copy individual items from each parent into the offspring, as it may result in an infeasible solution. Our crossover operators are therefore designed to ensure offspring feasibility.
 
 The first operator is based on the grouping genetic algorithm (GGA) of Falkenauer \cite{falkenauer1992}. The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips $S_i$ and $S_j$ from $\mathcal{S}_2$ are selected randomly (where $1 \leq i < j \leq |\mathcal{S}_2|$). These strips, along with all strips in between, are inserted into the offspring solution $\mathcal{S}$. The operator then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Note that the strips chosen from $\mathcal{S}_2$ cannot both be the outermost strips, that is, GGA cannot choose $i = 1$ \emph{and} $j = |\mathcal{S}_2|$. This is because doing so would result in all strips from $\mathcal{S}_2$ being copied into the offspring, preventing the addition of any strips from $\mathcal{S}_1$.
 
@@ -384,15 +387,15 @@ In order to maintain feasibility, our operators remove entire strips containing 
 \subsection{Local Search}
 \label{sub:localsearch}
 Our local search method takes in two feasible partial solutions, $\mathcal{S}_X$ and $\mathcal{S}_Y$, permutes the strips of both, and then attempts to move items between the two solutions in four stages: 
-\begin{enumerate*}[label={(\arabic*)}]
-	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$;
-	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with an individual item from a strip in $\mathcal{S}_Y$;
-	\item swapping individual items from strips in $\mathcal{S}_X$ and $\mathcal{S}_Y$; and
-	\item moving an item from a strip in $\mathcal{S}_Y$ to a strip in $\mathcal{S}_X$.
+\begin{enumerate*}[label={(\roman*)}]
+	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$;\label{item:pairpair}
+	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with an individual item from a strip in $\mathcal{S}_Y$;\label{item:pairsin}
+	\item swapping individual items from strips in $\mathcal{S}_X$ and $\mathcal{S}_Y$;\label{item:sinsin} and
+	\item moving an item from a strip in $\mathcal{S}_Y$ to a strip in $\mathcal{S}_X$.\label{item:movesin}
 \end{enumerate*} 
-During stages (1)--(3), the width of the item(s) from $\mathcal{S}_Y$ must exceed the width of the item(s) from $\mathcal{S}_X$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}_Y$, generating a new feasible partial solution $\mathcal{S}_Y'$. The strips in $\mathcal{S}_Y'$, along with the strips in $\mathcal{S}_X$, are inserted into $\mathcal{S}$ to form a full feasible solution.
+During stages \ref{item:pairpair}--\ref{item:sinsin}, the width of the item(s) from $\mathcal{S}_Y$ must exceed the width of the item(s) from $\mathcal{S}_X$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}_Y$, generating a new feasible partial solution $\mathcal{S}_Y'$. The strips in $\mathcal{S}_Y'$, along with the strips in $\mathcal{S}_X$, are inserted into $\mathcal{S}$ to form a full feasible solution.
 
-This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_1$ \emph{dominates} a strip $S_2$, then a solution containing $S_1$ will have no more strips than a solution containing $S_2$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}_X$, the ``fullness'' of the strips increase, whilst the number of items per strip is maintained or decreases, improving the quality of the strips in $\mathcal{S}_X$. Simultaneously, items moved into $\mathcal{S}_Y$ are smaller, and therefore easier to repack onto strips in $\mathcal{S}_X$ during stage (4). Variations of this method can be seen in \cite{falkenauer1996}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2017}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages, we create numerous distinct subsets of items on the strips, generating more possibilities for feasible orderings of items.
+This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_1$ \emph{dominates} a strip $S_2$, then a solution containing $S_1$ will have no more strips than a solution containing $S_2$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}_X$, the ``fullness'' of the strips increase, whilst the number of items per strip is maintained or decreases, improving the quality of the strips in $\mathcal{S}_X$. Simultaneously, items moved into $\mathcal{S}_Y$ are smaller, and therefore easier to repack onto strips in $\mathcal{S}_X$ during stage~\ref{item:movesin}. Variations of this method can be seen in \cite{falkenauer1996}, \cite{levine2004}, \cite{lewis2009}, \cite{lewis2017}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages, we create numerous distinct subsets of items on the strips, generating more possibilities for feasible orderings of items.
 
 {\color{OrangeRed}
 \begin{itemize}[leftmargin=*]
@@ -474,26 +477,19 @@ We therefore make use of the following function to calculate the fitness of a so
 
 {\color{OrangeRed}
 \begin{itemize}[leftmargin=*]
-	\item Same instances used for heuristics used for EA
-	\item Types of instances - artificial, real
-	\item Problem instance generator will produce 1000 instances for four different sets, number of items = 100 and 500 and artificial and real instances, 4000 problem instances in total
-	\item Each of these sets will then be run 6 times using different arguments - strip width = 2500 and 5000, and either GGA, GPX', or GPN
-	\item Overall there will be 24 types of outputs from EA
+	\item Same 4 sets of instances used for heuristics used for EA.
+	\item Run each set 6 times, different combinations of parameters, GGA/GPX'/GPN and strip width 2500 and 5000, 24 combinations total
 	\item In EA output file to compare:
 	\begin{itemize}[leftmargin=*]
 		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
 		\item Number of strips in best solution found
 		\item Number of iterations of EA within the given time limit
 		\item Fitness value of the best solution found
-		\item If best solution found is equivalent to the lowerbound
+		\item solution quality $q = |\mathcal{S}|/t$ (=1 if lower bound met).
 	\end{itemize}
-	\item Keep track of best fitness/best solution/time at each iteration, if better solution found then write to file, produce graph
-	\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase
-	\item number of solution in initial population = 25
-	\item Number of items - 100, 500
-	\item Time limit for EA - 5 minutes
-	\item Width of strips - 2500, 5000
-	\item Recombination operators - GGA, GPX', GPN
+	\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase.
+	\item Number of solution in initial population = 25.
+	\item Time limit for EA - 300 seconds.
 \end{itemize}
 }
 
@@ -501,6 +497,29 @@ We therefore make use of the following function to calculate the fitness of a so
 
 \section{Postoptimisation}
 \label{sec:postopt}
+Given a collection $\mathcal{S}$ of subsets of a set $X$, an \emph{exact cover} is a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ such that each element in $X$ is contained in exactly one subset in $\mathcal{S}^*$.
+
+Consider an $m\times n$ binary matrix $X$. Let $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ be the rows and columns of the matrix respectively. Now, suppose each row $i \in M$ represents a strip, and each column $j \in N$ represents an item. Then, an element of the matrix $x_{ij} = 1$ iff item $j$ is on strip $i$. It can be said in this case that row $i$ \emph{covers} column $j$. Thus, the problem is to find a minimum cardinality subset of rows $S \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in S$. This problem can be formulated as the following integer linear program.
+
+\begin{align*}
+\text{minimise} &\sum_{i \in M} c_i \\
+\text{subject to} &\sum_{i \in M} x_{ij} c_i = 1 \hspace{5mm} \forall j \in N \\
+&c_i \in \{0,1\} \hspace{5mm} \forall i \in M
+\end{align*}
+
+\[c_i =
+\begin{cases} 
+1 & \text{if } i \in S \\
+0 & \text{otherwise} 
+\end{cases}
+\]
+
+
+The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem, and one of Karp's 21 NP-complete problems \cite{karp1972}. However, if we know that an exact cover does indeed exist, we can alter the problem to instead find the smallest subcollection.
+
+Given a set of feasible strips, we can use this to find a solution to the SCSPP. Since the strips provided are already feasible, the complications associated with the vicinal sum constraint are eliminated.
+
+
 
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
@@ -526,18 +545,9 @@ We therefore make use of the following function to calculate the fitness of a so
 \end{itemize}
 }
 
-\[x_i =
-\begin{cases} 
-1 & \text{if } i \in S \\
-0 & \text{otherwise} 
-\end{cases}
-\]
 
-\begin{align*}
-\text{minimise} &\sum_{i \in M} x_i \\
-\text{subject to} &\sum_{i \in M} a_{ij} x_i = 1 \hspace{5mm} \forall j \in N \\
-&x_i \in \{0,1\} \hspace{5mm} \forall i \in M
-\end{align*}
+
+
 
 \subsection{Experimental Results - Postoptimisation}
 \label{sub:exppostopt}
