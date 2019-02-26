@@ -11,23 +11,6 @@
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 \end{frontmatter}
 
-\begin{comment}
-1. Introduction - sec:intro
-2. AHC - sec:ahc
-3. Heuristics for the SCSPP - sec:scspp
-3.1. Heuristics - sub:heuristics
-3.2. Experimental Results - Heuristics - sub:expheuristics
-4. EA - sec:ea
-4.1. Crossover Operators - sub:xover
-4.2. Local Search - sub:localsearch
-4.3. Mutation - sub:mutation
-4.4. EA Process - sub:eaframework
-4.5. Experimental Results - EA - sub:expea
-5. Postoptimisation - sec:postopt
-5.1. Experimental Results - Postoptimisation - sub:exppostopt
-6. Conclusion - sec:conclusion
-\end{comment}
-
 %--------------------------------------------------------------------------------------
 
 \section{Introduction}
@@ -168,17 +151,17 @@ BR searches for an edge whose lower-indexed vertex is adjacent to the next edge'
 
 \begin{figure}[H]	
 	\centering
-	\begin{subfigure}[h]{0.25\textwidth}
+	\begin{subfigure}[h]{0.23\textwidth}
 		\includestandalone[width=\textwidth]{figures/mpsconnect}
 		%\caption{}
 		\label{fig:mpsconnect}
 	\end{subfigure} \hspace{5mm} %
-	\begin{subfigure}[h]{0.25\textwidth}
+	\begin{subfigure}[h]{0.23\textwidth}
 		\includestandalone[width=\textwidth]{figures/mpscycle}
 		% \caption{}
 		\label{fig:mpscycle}
 	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.25\textwidth}
+	\begin{subfigure}[h]{0.23\textwidth}
 		\includestandalone[width=\textwidth]{figures/mpspath}
 		% \caption{}
 		\label{fig:mpspath}
@@ -349,15 +332,17 @@ For our experiments, we produced two different types of instances: ``artificial'
 
 \section{Evolutionary Algorithm}
 \label{sec:ea}
+An evolutionary algorithm (EA) is a metaheuristics optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the solutions. Each solution is evaluated based on a given critera, and individuals which are more suited to the environment are gievn more oppportunity to breed, while those which are less so are eliminated.
+
+
 Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
 
 {\color{OrangeRed}
 \begin{itemize}[leftmargin=*]
 	\item Why use an EA? Lit review of EAs in BPP problems, benefits (repeated multiple times, best characteristics of strips/solutions).
-	\item Whenever subproblem occurs, AHC will be used.
-	\item Sets $\mathcal{A}$ and $\mathcal{B}$, subsets of items that produce feasible/infeasible orderings determined by AHC. Search these sets before calling AHC, therefore AHC used at most once for each distinct subset of items $\mathcal{I}' \subseteq \mathcal{I}$.
+	\idone{Whenever subproblem occurs, AHC will be used.}
+	\idone{Sets $\mathcal{A}$ and $\mathcal{B}$, subsets of items that produce feasible/infeasible orderings determined by AHC. Search these sets before calling AHC, therefore AHC used at most once for each distinct subset of items $\mathcal{I}' \subseteq \mathcal{I}$.}
 	\item Feasible solution $\mathcal{S}$ means solution abides by all constraints.
-	\item First discuss xOver, then local search, then mutation, then whole process.
 \end{itemize}
 }
 
@@ -394,7 +379,7 @@ In order to maintain feasibility, our operators remove entire strips containing 
 
 \subsection{Local Search}
 \label{sub:localsearch}
-Our local search method attempts to move items between two feasible partial solutions, $\mathcal{S}_X$ and $\mathcal{S}_Y$, in four stages: 
+Our local search method takes in two feasible partial solutions, $\mathcal{S}_X$ and $\mathcal{S}_Y$, permutes the strips of both, and then attempts to move items between the two solutions in four stages: 
 \begin{enumerate*}[label={(\arabic*)}]
 	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$;
 	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with an individual item from a strip in $\mathcal{S}_Y$;
@@ -408,7 +393,7 @@ This method is based on the dominance criterion of Martello and Toth \cite{marte
 {\color{OrangeRed}
 \begin{itemize}[leftmargin=*]
 	\idone{Purpose of local search, takes two partial solutions $\mathcal{S}_X$ and $\mathcal{S}_Y$.}
-	\item Initially permute strips.
+	\idone{Initially permute strips.}
 	\idone{4 stages, 3 swap, 1 move. width of items from $\mathcal{S}_X$ must be less than width of items from $\mathcal{S}_Y$ in first three stages.}
 	\idone{Moves smaller items into $\mathcal{S}_Y$, larger items into $\mathcal{S}_X$.}
 	\idone{If swap/move performed, move onto next stage. Repeat until no changes to either partial solution.}
@@ -425,21 +410,11 @@ This method is based on the dominance criterion of Martello and Toth \cite{marte
 }
 
 
-\subsection{Mutation}
-\label{sub:mutation}
-Take candidate solution, permute strips, select a random number of strips from the solution to insert into partial solution $\mathcal{S}_X$, and the rest into $\mathcal{S}_Y$. Apply local search on $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce a single feasible solution.
-
-{\color{OrangeRed}
-\begin{itemize}[leftmargin=*]
-	\item Purpose of mutation.
-	\item Permute strips of solution, insert random number of strips into $\mathcal{S}_X$, the rest into $\mathcal{S}_Y$.
-	\item Apply local search using $\mathcal{S}_X$ and $\mathcal{S}_Y$ to produce full feasible solution $\mathcal{S}$.
-\end{itemize}
-}
-
 \subsection{EA Process}
 \label{sub:eaframework}
-The algorithm begins by producing candidate solutions for the initial population, one using MFFD$^+$, the rest using MFFR$^+$ (that, is, the same method as MFFD$^+$ with the items in a random order). These solutions are mutated before being inserted into the population. An iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a crossover operator to produce an offspring solution $\mathcal{S}$, then mutating this offspring before replacing the least fit of the two parents in the population \alert{(break ties randomly footnote). }
+The algorithm begins by producing candidate solutions for the initial population, one using MFFD$^+$, the rest using MFFR$^+$ (that, is, the same method as MFFD$^+$ with the items in a random order). These solutions are mutated before being inserted into the population. Mutation of a candidate solution $\mathcal{S}$ involves permuting the strips, and inserting a random number of strips from $\mathcal{S}$ into a set $\mathcal{S}_X$, and the rest into a set $\mathcal{S}_Y$. Local search is then executed using these two partial solutions to produce a full solution, which is reinserted into $\mathcal{S}$. 
+
+An iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a crossover operator to produce an offspring solution $\mathcal{S}$, then mutating this offspring before replacing the least fit of the two parents in the population.
 
 A fitness function is used to calculate a fitness value to determine the quality of a solution, as opposed to simply relying on the number of strips within the solution. The reason for this is twofold: firstly, given two candidate solutions of equal size, it is impossible to determine the better solution based on the number of strips alone. Secondly, we note that the quality of a solution not only depends on the number of strips used, but \emph{how} the items are packed onto the strip. Recall that strips that are ``fuller'' are preferrable over less filled strips, even if they contain more items. Thus, we consider a strip whose capacity is taken advantage of to be a ``better packed'' strip, reducing the amount of waste material. This may result in a strip in the solution that is nearly empty, which is beneficial as it allows further items to be packed, or the residual material could be used for other means. This type of packing is desirable over a packing of strips that are only half full, requiring more strips than necessary to pack all of the items. 
 
@@ -457,7 +432,7 @@ We therefore make use of the following function to calculate the fitness of a so
 	\idone{Fitness function $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ \cite{falkenauer1992}.}
 	\idone{$A(S) = \sum_{i \in S} w_i$ - ``fullness''/total width of all items on strip $S$}
 	\idone{value between 0 and 1, closer to 1 = better packing.}
-	\item Although two solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ may contain the same number of strips/have the same size, fitness value identifies which solution contains a better packing of the items - distinguish between two solutions of the same size.
+	\idone{Although two solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ may contain the same number of strips/have the same size, fitness value identifies which solution contains a better packing of the items - distinguish between two solutions of the same size.}
 	\idone{Not only considering how many strips required to pack all items, but how those items are packed onto the strips (optimise how the strips are packed).}
 	\idone{Better packed strips means full capacity of strip is taken advantage of, reduce waste material on strips, plus nearly empty strips can be used to accommodate more items, or waste material can be reused.}
 	\idone{If the strips are packed well, fewer strips required, else if strips are not packed well, extra strips required to pack items that cannot be packed onto strips already being used.}
