@@ -9,6 +9,9 @@
 \author{Rhyd Lewis}
 \author{Jonathan M. Thompson}
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
+\begin{abstract}
+\note{Type of packing problem in which order and orientation of items is important. Paper investigates heuristics, EA, postoptimisation.}
+\end{abstract}	
 \end{frontmatter}
 
 %--------------------------------------------------------------------------------------
@@ -16,14 +19,14 @@
 \section{Introduction}
 \label{sec:intro}
 
-In operational research, many problems involve the grouping or partitioning of elements into subsets. These types of problems can be seen in \alert{examples of grouping problems}.
+In operational research, many problems involve the grouping of elements into subsets. These types of problems can be seen in packing, scheduling, graph colouring, partioning \intro{examples of grouping problems}.
 
 More formally, given a set $\mathcal{I}$ of $n$ distinct items, the aim is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,...,S_k\}$ such that
 \begin{subequations}
 	\begin{align}
-	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, \label{eqn:mgppackall}\\[3pt]
-	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{2mm} i \neq j, \label{eqn:mgpnooverlap} \\[3pt]
-	S_i &\neq \emptyset \hspace{5mm} \forall \hspace{1mm} i\in \{1,2,\dotsc,k\}.\label{eqn:mgpallused}
+	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, \label{eqn:allpacked}\\[3pt]
+	S_i \cap S_j &= \emptyset \hspace{5.6mm} \forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{2mm} i \neq j, \label{eqn:nointersect} \\[3pt]
+	S_i &\in \mathcal{F} \hspace{5mm} \forall \hspace{1mm} i\in \{1,2,\dotsc,k\}.\label{eqn:feasible}
 	\end{align}
 \end{subequations}
 
@@ -42,7 +45,7 @@ Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite
 
 For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a constraint value $\tau = 7$, a possible solution is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. 
 
-One specific application of the COP was seen in a strip-packing problem introduced as an open-combinatorial problem by Goulimis in 2004 \cite{goulimis2004}. A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths $w_i \in \mathbb{Z}^+$ are to be packed on a strip from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical lines, called score lines, in predetermined places. The distance between each score line and the edge of the item are score widths, $a_i, b_i \in \mathbb{Z}^+$. Once the items are packed onto the strip, a pair of knives on a bar simultaneously cut along the score lines of two adjacent items to aid the folding process. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'', which is approximately 70mm in industry.\footnote{\alert{outermost score widths ignored.}} Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the problem involves packing the items onto the strip in such a way that the sum of all adjacent score widths exceeds the minimum scoring distance. Figure~\ref{fig:itemsknife} shows how items are scored simultaneously.
+One specific application of the COP was seen in a strip-packing problem introduced as an open-combinatorial problem by Goulimis in 2004 \cite{goulimis2004}. A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths $w_i \in \mathbb{Z}^+$ are to be packed on a strip from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical lines, called score lines, in predetermined places. The distance between each score line and the edge of the item are score widths, $a_i, b_i \in \mathbb{Z}^+$. Once the items are packed onto the strip, a pair of knives on a bar simultaneously cut along the score lines of two adjacent items to aid the folding process. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'', which is approximately 70mm in industry.Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the problem involves packing the items onto the strip in such a way that the sum of all adjacent score widths exceeds the minimum scoring distance.\footnote{Note that the outermost score widths are not adjacent to any other items and do not need to abide by the vicinal sum constraint.} Figure~\ref{fig:itemsknife} shows how items are scored simultaneously.
 
 \begin{figure}[H]	
 	\centering
@@ -87,7 +90,7 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 	\idone{BPP special case of SCSPP with $\tau = 0$.}
 	\idone{Items can be run through machine individually but extra time/cost.}
 	\item Two phase approach, EA then postopt, Malaguti \cite{malaguti2008}.
-	\item Call the two phase process EAX?
+	\idone{Call the two phase process EAX?}
 	\item Polynomial-time algorithm for COP Hawa \cite{hawa2018}.
 	\item Describe rest of paper/layout.
 \end{itemize}
@@ -171,7 +174,7 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 		% \caption{}
 		\label{fig:mpspath}
 	\end{subfigure}
-	\caption{Bridge Recognition (BR) process of connecting multiple components to produce a single alternating Hamiltonian cycle that corresponds to a solution $\mathcal{T}$. \alert{using set $R_1 = \{\{v_3, v_{12}\}, \{v_4, v_{11}\}, \{v_5, v_{10}\}\}$, dom vertices removed to form path, values in order}}
+	\caption{Bridge Recognition (BR) process of connecting multiple components to produce a single alternating Hamiltonian cycle that corresponds to a solution $\mathcal{T}$. \ahc{using set $R_1 = \{\{v_3, v_{12}\}, \{v_4, v_{11}\}, \{v_5, v_{10}\}\}$, dom vertices removed to form path, values in order}}
 	\label{fig:br}
 \end{figure}
 
@@ -213,6 +216,7 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
 	\item MBR types, check that Beckers method is redundant.
 	\item This is called the Alternating Hamiltonian Construction (AHC) algorithm.
+	\item BR sorts edges of $R'$.
 \end{itemize}
 }
 
@@ -238,9 +242,16 @@ It can be seen that $t$ will not perform as accurately for the SCSPP as it does 
 
 The minimum scoring distance also introduces differences in solutions for the BPP and SCSPP. The obvious difference is that of the ordering and orientation of the items on the strips: unimportant in the BPP, but vital for the feasibility of a solution for the SCSPP. Another distinction arises when attempting to modify solutions. Again, a solution for the BPP remains feasible when an item is removed or a new item is added to a strip (provided the strip can accommodate said item), whereas for the SCSPP this may render a solution infeasible, as the new pairings of score widths may not abide by the vicinal sum constraint.
 
-Equations \eqref{eqn:packall}--\eqref{eqn:capacity} are the necessary conditions for the BPP, and so it follows that the SCSPP is also NP-hard as the SCSPP generalises the BPP. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed.
+As the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed.
 
-As the SCSPP is a relatively new problem, little research has been produced. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the well-known first-fit decreasing (FFD) heuristics. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, the smaller score width is on the left-hand side).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily.
+As the SCSPP is a relatively new problem, little research has been produced. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the well-known first-fit decreasing (FFD) heuristics. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, the smaller score width is on the left-hand side).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdp} illustrates how MFFD$^+$ is able to find a feasible arrangement of items which cannot be found using MFFD.
+
+\begin{figure}[H]	
+	\centering
+	\includestandalone[width=0.85\textwidth]{figures/strips}
+	\caption{Example instance of a subproblem with $\tau = 70$. Using MFFD, the constraint is not fulfilled in either orientation, however MFFD$^+$ is able to find a feasible arrangement.}	
+	\label{fig:mffdvsmffdp}
+\end{figure}
 
 \subsection{Heuristics}
 \label{sub:heuristics}
@@ -362,9 +373,9 @@ The first operator is based on the grouping genetic algorithm (GGA) of Falkenaue
 
 %Any items that are not in $\mathcal{S}$ are used to created a feasible partial solution $\mathcal{S}'$ using MFFD$^+$. Local search is then used on $\mathcal{S}$ and $\mathcal{S}'$ to produce a full offspring solution.
 
-The next operator, \alert{GPX'}, is analogous to that of Quiroz-Castellanos et al. \cite{quiroz2015}. Starting with the parent solution containing the fullest strip,\footnote{For both \alert{GPX'} and \alert{GPN}, ties are broken randomly.} the operator inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. Then, the operator selects the fullest strip from the modified parent, and removes strips from the first parent. GPX' repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring.
+The next operator, \ea{GPX'}, is analogous to that of Quiroz-Castellanos et al. \cite{quiroz2015}. Starting with the parent solution containing the fullest strip,\footnote{For both \ea{GPX'} and \ea{GPN}, in the event that both parents contain the fullest strip or the strip containing the most items, the starting parent solution is chosen at random.} the operator inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. Then, the operator selects the fullest strip from the modified parent, and removes strips from the first parent. GPX' repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring.
 
-Our final operator, \alert{GPN}, performs in the same manner as \alert{GPX'}, instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
+Our final operator, \ea{GPN}, performs in the same manner as \alert{GPX'}, instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items.
 
 In order to maintain feasibility, our operators remove entire strips containing duplicate items, rather than individual items. These strips may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items, and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}_Y$. The partial offspring solution $\mathcal{S}$ and $\mathcal{S}_Y$ are then used as input into a local search procedure to create a full feasible offspring solution.
 
@@ -451,9 +462,11 @@ We therefore make use of the following function to calculate the fitness of a so
 \subsection{Experimental Results - EA}
 \label{sub:expea}
 
+To allow for a fair comparison with the heuristics in Section~\ref{sec:scspp}, we used the same four sets of problem instances for the EA. Each of these four sets is used with six different combinations of crossover operators and strip widths. An initial population of 25 candidate solutions is fixed for all experiments. The EA is set to execute for 300 seconds. Table~\ref{table:ea} shows the output from our experiments.
+
 \begin{table}[h!]
 	\centering
-	\caption{xOver comparisons}
+	\caption{EA comparisons}
 	\begin{tabular}{cccccccccccc}\toprule
 		& & & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
 		\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
@@ -472,7 +485,7 @@ We therefore make use of the following function to calculate the fitness of a so
 		r,500 & 5000 & 57.865 && ER551 & - && ER552 & - && ER553 & -\\
 		\bottomrule
 	\end{tabular}	
-	\label{table:EA}
+	\label{table:ea}
 \end{table}
 
 {\color{OrangeRed}
@@ -519,6 +532,7 @@ The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exi
 
 Given a set of feasible strips, we can use this to find a solution to the SCSPP. Since the strips provided are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
+One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald Knuth \cite{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible strips $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible strips. Instead, we chose to use the set $\mathcal{A}$ created during the EA, which contains feasible strips found during the algorithm.
 
 
 {\color{myGreen}
@@ -534,13 +548,13 @@ Given a set of feasible strips, we can use this to find a solution to the SCSPP.
 	\item exact cover problem is decision problem, does a set exist
 	\item however since we add every item on its own strip to feasPacking, we know that a set exists
 	\item problem is to find minimum number of strips that covers all items and contains every item exactly once
-	\item $A = (a_{ij})$ - $m$ x $n$ matrix
-	\item $M = \{1, 2,..., m\}$ - rows of the matrix, each row $i \in M$ is a strip
-	\item $N = \{1, 2,...,n\}$ - columns of the matrix, each column $j \in N$ is an item
-	\item $(a_{ij}) = 1$ iff item $j$ is on strip $i$
-	\item Say that row $i$ covers column $j$ if $a_{ij} = 1$
-	\item Find the smallest number of strips $S \subseteq M$ that contains every item exactly once, i.e. union of strips $= \mathcal{I}$ and intersection $= \emptyset$
-	\item Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$
+	\idone{$A = (a_{ij})$ - $m$ x $n$ matrix}
+	\idone{$M = \{1, 2,..., m\}$ - rows of the matrix, each row $i \in M$ is a strip}
+	\idone{$N = \{1, 2,...,n\}$ - columns of the matrix, each column $j \in N$ is an item}
+	\idone{$(a_{ij}) = 1$ iff item $j$ is on strip $i$}
+	\idone{Say that row $i$ covers column $j$ if $a_{ij} = 1$}
+	\idone{Find the smallest number of strips $S \subseteq M$ that contains every item exactly once, i.e. union of strips $= \mathcal{I}$ and intersection $= \emptyset$}
+	\idone{Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$}
 	\item Xpress mosel model
 \end{itemize}
 }
