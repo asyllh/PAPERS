@@ -21,16 +21,28 @@
 
 In operational research, many problems involve the grouping of elements into subsets. These types of problems can be seen in packing, scheduling, graph colouring, partioning \intro{examples of grouping problems}.
 
-More formally, given a set $\mathcal{I}$ of $n$ distinct items, the aim is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,...,S_k\}$ such that
+More formally, given a set $\mathcal{I}$ of $n$ elements, the aim is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,...,S_k\}$ such that
 \begin{subequations}
-	\begin{align}
-	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, \label{eqn:allpacked}\\[3pt]
-	S_i \cap S_j &= \emptyset \hspace{5.6mm} \forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{2mm} i \neq j, \label{eqn:nointersect} \\[3pt]
-	S_i &\in \mathcal{F} \hspace{5mm} \forall \hspace{1mm} i\in \{1,2,\dotsc,k\}.\label{eqn:feasible}
-	\end{align}
+	\begin{alignat}{2}
+	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
+	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{1mm} i \neq j, \label{eqn:nointersect}\\[3pt]
+	S_i &\in \mathcal{F} & &\forall \hspace{1mm} i \in \{1,2,\dotsc,k\}.\label{eqn:feasible}
+	\end{alignat}
 \end{subequations}
 
-\noindent Some problems require a solution $\mathcal{S}$ to be partitioned into exactly $k$ subsets, while others have the task of minimising the number of subsets $k$ required to partition the items provided the constraints are met. The latter problems are known as Minimum Grouping Problems (MGPs), named so by Lewis \cite{lewis2009}. A particular area of operational research relying on MGPs is packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items to be packed into the fewest number of containers of a set capacity so that no container is overfilled. This problem is identified as an Order Independent Minimum Grouping Problem (OIMGP). In this paper, however, we will focus on another type of packing problem, Order Dependent Minimum Grouping Problems.
+
+\noindent Conditions \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets, while condition \eqref{eqn:feasible} specifies that each subset must be feasible. The set $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the specific constraint of the given problem.
+
+One particular area of operational research involving grouping are packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items of varying sizes to be packed into the fewest number of containers of fixed capacity. It can be seen that for this problem $\mathcal{F}$ contains all subsets of items whose total size does not cause the bin to be overfilled. Although seemingly simple by definition, the BPP is NP-hard, and is highly researched \intro{rewrite}. From the BPP stems a multitide of packing problems with various adaptations.
+
+An interesting problem related to the BPP is the Trapezoid Packing Problem (TPP) initially investigated by Lewis et al.\cite{lewis2011}. In the roofing industry, trusses are to be cut from wooden boards so that the number of boards used is minimised. These trusses, however, are trapezoidal in shapre, which introduces the additional challenge of minimising the amount of triangular waste material between the trapezoids on each board by rotating and reordering the items.
+
+Another problem is discussed by Garraffa et al.\cite{garraffa2016}, in which rectangular items are to be cut from strips of fixed length. During the cutting process, material is lost due to the type of machine used. The amount of these ``cut losses'' varies between different adjacent items on the strips. In this case, the task involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between adjacent items on each strip does not exceed the capacity of the strip.
+
+Not only do these problems involve deciding which strip each item should be assigned to, but, unlike the BPP, they also consist of determining the order and orientation of the items on each strip.
+
+
+Some problems require a solution $\mathcal{S}$ to be partitioned into exactly $k$ subsets, while others have the task of minimising the number of subsets $k$ required to partition the items provided the constraints are met. The latter problems are known as Minimum Grouping Problems (MGPs), named so by Lewis \cite{lewis2009}. A particular area of operational research relying on MGPs is packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items to be packed into the fewest number of containers of a set capacity so that no container is overfilled. This problem is identified as an Order Independent Minimum Grouping Problem (OIMGP). In this paper, however, we will focus on another type of packing problem, Order Dependent Minimum Grouping Problems.
 
 Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite{hawa2018}:
 \begin{definition}
@@ -38,7 +50,7 @@ Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite
 	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
 	\begin{equation}
 	\label{eqn:vsc}
-	\emph{\textbf{rhs}}(i) + \emph{\textbf{lhs}}(i+1) \geq \tau \hspace{5mm} \forall \hspace{1mm} i \in \{1,2,..., n-1\},
+	\emph{\textbf{rhs}}(i) + \emph{\textbf{lhs}}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,..., n-1\},
 	\end{equation}
 	where \emph{\textbf{lhs}($i$)} and \emph{\textbf{rhs}($i$)} denote the left- and right-hand values of the $i$th tuple. The inequality is referred to as the \emph{vicinal sum constraint}.
 \end{definition}
@@ -226,13 +238,15 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 \label{sec:scspp}
 A feasible solution for the SCSPP is represented by the set $\mathcal{S} = \{S_1, S_2, ..., S_k\}$ such that
 \begin{subequations}
-	\begin{align}
-	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, \label{eqn:packall}\\[3pt]
-	S_i \cap S_j &= \emptyset \hspace{5mm} \forall \hspace{1mm} i, j \in \{1,2,\dotsc,k\}, \hspace{2mm} i \neq j, \label{eqn:nooverlap} \\[3pt]
-	\sum\nolimits_{i=1}^{|S_j|}w_i & \leq W \hspace{3mm} \forall \hspace{1mm} S_j \in \mathcal{S}, \label{eqn:capacity} \\[3pt]
-	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau \hspace {5mm} \forall \hspace{1mm} i \in \{1, 2,\dotsc,|S_j|-1\}, \hspace{2mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
-	\end{align}
+	\begin{alignat}{2}
+	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, & \label{eqn:packall}\\[3pt]
+	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1,2,\dotsc,k\}, \hspace{1mm} i \neq j, \label{eqn:nooverlap} \\[3pt]
+	\sum\nolimits_{i=1}^{|S_j|}w_i &\leq W &\quad &\forall \hspace{1mm} S_j \in \mathcal{S}, \label{eqn:capacity} \\[3pt]
+	\textup{\textbf{rhs}}(i) + \textup{\textbf{lhs}}(i+1) &\geq \tau &\quad &\forall \hspace{1mm} i \in \{1, 2,\dotsc,|S_j|-1\}, \hspace{1mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscstrip}
+	\end{alignat}
 \end{subequations}
+
+
 
 \noindent As stated in Definition \ref{defn:scspp}, the aim is to minimise $k$. An optimal solution for the SCSPP is a solution consisting of the fewest number of strips $k$ required to feasibly pack all items in $\mathcal{I}$. A basic lower bound for $k$ is the theorectical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \cite{martello1990l}. 
 
@@ -514,11 +528,13 @@ Given a collection $\mathcal{S}$ of subsets of a set $X$, an \emph{exact cover} 
 
 Consider an $m\times n$ binary matrix $X$. Let $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ be the rows and columns of the matrix respectively. Now, suppose each row $i \in M$ represents a strip, and each column $j \in N$ represents an item. Then, an element of the matrix $x_{ij} = 1$ iff item $j$ is on strip $i$. It can be said in this case that row $i$ \emph{covers} column $j$. Thus, the problem is to find a minimum cardinality subset of rows $S \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in S$. This problem can be formulated as the following integer linear program.
 
-\begin{align*}
-\text{minimise} &\sum_{i \in M} c_i \\
-\text{subject to} &\sum_{i \in M} x_{ij} c_i = 1 \hspace{5mm} \forall j \in N \\
-&c_i \in \{0,1\} \hspace{5mm} \forall i \in M
-\end{align*}
+\begin{subequations}
+	\begin{alignat}{3}
+		\text{minimise  } &\sum_{i \in M} c_i & \\[3pt]
+		\text{subject to  } &\sum_{i \in M} x_{ij} c_i = 1 &\quad &\forall \hspace{1mm} j \in N \\[3pt]
+		&c_i \in \{0,1\} & &\forall \hspace{1mm} i \in M
+	\end{alignat}
+\end{subequations}
 
 \[c_i =
 \begin{cases} 
