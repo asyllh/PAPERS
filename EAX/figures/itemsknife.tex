@@ -45,17 +45,23 @@
 \node at (10.75,0.75) {\Large{B}};
 \node at (13.85,0.75) {\Large{C}};
 
-%score lines for item A
-\draw [thick, densely dashed] (6.3,0) -- (6.3,1.5);
-\draw [thick, densely dashed] (8.4,0) -- (8.4,1.5);
+%score lines and score width labels for item A
+\draw [thick, densely dashed] (6.15,0) -- (6.15,1.5); %1
+\draw [thick, densely dashed] (8.5,0) -- (8.5,1.5); %5
+\node [below] at (6.075,0) {1};
+\node [below] at (8.75,0) {5};
 
-%score lines for item B
-\draw [thick, densely dashed] (9.6,0) -- (9.6,1.5);
-\draw [thick, densely dashed] (12.25,0) -- (12.25,1.5);
+%score lines and score width labels for item B
+\draw [thick, densely dashed] (9.3,0) -- (9.3,1.5); %3
+\draw [thick, densely dashed] (12.1,0) -- (12.1,1.5); %4
+\node [below] at (9.15,0) {3};
+\node [below] at (12.3,0) {4};
 
-%score lines for item C
-\draw [thick, densely dashed] (12.75,0) -- (12.75,1.5);
-\draw [thick, densely dashed] (15,0) -- (15,1.5);
+%score lines and score width labels for item C
+\draw [thick, densely dashed] (12.7,0) -- (12.7,1.5); %2
+\draw [thick, densely dashed] (14.9,0) -- (14.9,1.5); %6
+\node [below] at (12.6,0) {2};
+\node [below] at (15.2,0) {6};
 
 %------------------
 
@@ -63,21 +69,21 @@
 \draw [thick] (5.9,2) -- (15.6,2);
 
 %knives for items A and B
-\draw [thick] (8.4,1.7) -- (8.4,2.3);
-\draw [thick] (9.6,1.7) -- (9.6,2.3);
+\draw [thick] (8.5,1.7) -- (8.5,2.3);
+\draw [thick] (9.3,1.7) -- (9.3,2.3);
 
 %knives for items B and C
-\draw [thick] (12.25,1.7) -- (12.25,2.3);
-\draw [thick] (12.75,1.7) -- (12.75,2.3);
+\draw [thick] (12.1,1.7) -- (12.1,2.3);
+\draw [thick] (12.7,1.7) -- (12.7,2.3);
 
 
 %constraint label for score widths between items A and B (feasible, >= tau)
-\draw [thick, <->, tBlue] (8.4, 2.4) -- (9.6, 2.4);
-\node [above] at (9,2.5) {\Large{$\geq \tau$}};
+\draw [thick, <->, tBlue] (8.5, 2.4) -- (9.3, 2.4);
+\node [above] at (8.9,2.5) {\Large{$\geq \tau$}};
 
 %constraint label for score widths between items B and C (infeasible, < tau)
-\draw [thick, <->, tRed] (12.25, 2.4) -- (12.75, 2.4);
-\node [above] at (12.5,2.5) {\Large{$< \tau$}};
+\draw [thick, <->, tRed] (12.1, 2.4) -- (12.7, 2.4);
+\node [above] at (12.4,2.5) {\Large{$< \tau$}};
 
 %\draw [<->] (3.5,2.2) -- (4.5,2.2);
 %\node at (4, -.4) {\scriptsize $\geq \tau$};
