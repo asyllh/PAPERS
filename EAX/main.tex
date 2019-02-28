@@ -30,72 +30,56 @@ More formally, given a set $\mathcal{I}$ of $n$ elements, the aim is to produce 
 	\end{alignat}
 \end{subequations}
 
-
 \noindent Conditions \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets, while condition \eqref{eqn:feasible} specifies that each subset must be feasible. The set $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the specific constraint of the given problem.
 
-One particular area of operational research involving grouping are packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items of varying sizes to be packed into the fewest number of containers of fixed capacity. It can be seen that for this problem $\mathcal{F}$ contains all subsets of items whose total size does not cause the bin to be overfilled. Although seemingly simple by definition, the BPP is NP-hard, and is highly researched \intro{rewrite}. From the BPP stems a multitide of packing problems with various adaptations.
+Some problems require a solution $\mathcal{S}$ to be partitioned into exactly $k$ subsets, while others have the task of minimising the number of subsets $k$ required to partition the items provided the constraints are met. The latter problems are known as Minimum Grouping Problems (MGPs), named so by Lewis \cite{lewis2009}. One particular area of operational research involving MGPs are packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items of varying sizes to be packed into the fewest number of containers of fixed capacity. It can be seen that for this problem $\mathcal{F}$ contains all subsets of items whose total size does not cause the bin to be overfilled. Although seemingly simple by definition, the BPP is NP-hard, and has been widely researched. From the BPP stems numerous packing problems with various adaptations.
 
-An interesting problem related to the BPP is the Trapezoid Packing Problem (TPP) initially investigated by Lewis et al.\cite{lewis2011}. In the roofing industry, trusses are to be cut from wooden boards so that the number of boards used is minimised. These trusses, however, are trapezoidal in shapre, which introduces the additional challenge of minimising the amount of triangular waste material between the trapezoids on each board by rotating and reordering the items.
-
-Another problem is discussed by Garraffa et al.\cite{garraffa2016}, in which rectangular items are to be cut from strips of fixed length. During the cutting process, material is lost due to the type of machine used. The amount of these ``cut losses'' varies between different adjacent items on the strips. In this case, the task involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between adjacent items on each strip does not exceed the capacity of the strip.
-
-Not only do these problems involve deciding which strip each item should be assigned to, but, unlike the BPP, they also consist of determining the order and orientation of the items on each strip.
+An interesting problem related to the BPP is the Trapezoid Packing Problem (TPP) initially investigated by Lewis et al.\cite{lewis2011}. In the roofing industry, trusses are to be cut from wooden boards so that the number of boards used is minimised. These trusses, however, are trapezoidal in shape, which introduces the additional challenge of minimising the amount of triangular waste material between the trapezoids on each board by rotating and reordering the items. Another problem is discussed by Garraffa et al.\cite{garraffa2016}, \intro{call it CSP-SDCL} in which rectangular items are to be cut from strips of fixed length. During the cutting process, material is lost due to the type of machine used. The amount of these ``cut losses'' varies between different adjacent items on the strips. In this case, the task involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between adjacent items on each strip does not exceed the capacity of the strip.
 
 
-Some problems require a solution $\mathcal{S}$ to be partitioned into exactly $k$ subsets, while others have the task of minimising the number of subsets $k$ required to partition the items provided the constraints are met. The latter problems are known as Minimum Grouping Problems (MGPs), named so by Lewis \cite{lewis2009}. A particular area of operational research relying on MGPs is packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items to be packed into the fewest number of containers of a set capacity so that no container is overfilled. This problem is identified as an Order Independent Minimum Grouping Problem (OIMGP). In this paper, however, we will focus on another type of packing problem, Order Dependent Minimum Grouping Problems.
-
-Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite{hawa2018}:
-\begin{definition}
-	\label{defn:cop}
-	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
-	\begin{equation}
+A similar problem involving order and orientation is seen in the packaging industry, where flat pieces of cardboard are to be folded into boxes. This strip-packing problem was introduced as an open-combinatorial problem by Goulimis in 2004 \cite{goulimis2004}. A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths are to be packed onto a strip $S$ of height $H$ from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical lines, called score lines, in predetermined places. The distance between each score line and the edge of the item are score widths, $a_i, b_i \in \mathbb{Z}^+$, where $a_i \leq b_i$. Once the items are packed onto the strip, a pair of knives mounted on a bar simultaneously cut along the score lines of two adjacent items to aid the folding process. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$, which is approximately 70mm in industry. Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
+\begin{equation}
 	\label{eqn:vsc}
-	\emph{\textbf{rhs}}(i) + \emph{\textbf{lhs}}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,..., n-1\},
-	\end{equation}
-	where \emph{\textbf{lhs}($i$)} and \emph{\textbf{rhs}($i$)} denote the left- and right-hand values of the $i$th tuple. The inequality is referred to as the \emph{vicinal sum constraint}.
-\end{definition}
+	\textbf{rhs}(i) + \textbf{lhs}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,\dotsc,|S|- 1\},
+\end{equation}
 
-For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a constraint value $\tau = 7$, a possible solution is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. 
+\noindent where \textbf{lhs}($i$) and \textbf{rhs}($i$) denote the left- and right-hand score widths of the $i$th item on the strip. Clearly, if this constraint is met, then the distance between the score lines will be sufficient for the knives to cut appropriately.
 
-One specific application of the COP was seen in a strip-packing problem introduced as an open-combinatorial problem by Goulimis in 2004 \cite{goulimis2004}. A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths $w_i \in \mathbb{Z}^+$ are to be packed on a strip from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical lines, called score lines, in predetermined places. The distance between each score line and the edge of the item are score widths, $a_i, b_i \in \mathbb{Z}^+$. Once the items are packed onto the strip, a pair of knives on a bar simultaneously cut along the score lines of two adjacent items to aid the folding process. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'', which is approximately 70mm in industry.Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the problem involves packing the items onto the strip in such a way that the sum of all adjacent score widths exceeds the minimum scoring distance.\footnote{Note that the outermost score widths are not adjacent to any other items and do not need to abide by the vicinal sum constraint.} Figure~\ref{fig:itemsknife} shows how items are scored simultaneously.
+Each item $i \in \mathcal{I}$ can be packed onto the strip in a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or in a rotated orientation $(b_i, a_i)$, where the item has been rotated $180^{\circ}$ so that the larger score width $b_i$ is on the left-hand side. Thus, the problem involves finding an ordering and orientation of the items on the strip such that the sum of all adjacent score widths is greater than or equal to the minimum scoring distance $\tau$, i.e. the vicinal sum constraint is satisfied.\footnote{Note that the outermost score widths are not adjacent to any other items and do not need to abide by the vicinal sum constraint.} As there are $2^{n-1} n!$ distinct orderings of $n$ items, an increase in the problem size can easily lead to a combinatorial explosion. Figure~\ref{fig:itemsknife} shows how adjacent items are scored simultaneously. Although the vicinal sum constraint is met between items A and B, the full alignment is infeasible as the distance between score lines on items B and C is less than the minimum scoring distance $\tau$. Observe that a feasible alignment of all three items can be obtained by rotating item C.
 
 \begin{figure}[H]	
 	\centering
 	\includestandalone[width=0.75\textwidth]{figures/itemsknife}
-	\caption{Dimensions of an item $i \in \mathcal{I}$ in a regular orientation $(a_i, b_i)$, and an alignment of three items showing feasible and infeasible orderings.}	
+	\caption{Dimensions of an item $i$ marked with dashed score lines, and an example showing both feasible and infeasible alignments of three items to be scored by pairs of knives. In this example the minimum scoring distance $\tau = 7$.}	
 	\label{fig:itemsknife}
 \end{figure}
 
-
-It follows that to find a feasible solution, the ordering \emph{and} the orientation of the items need to be decided. As there are $2^{n-1} n!$ distinct orderings of $n$ items, an increase in the problem size can easily lead to a combinatorial explosion. For this single strip problem, the widths of the items are disregarded, as it is assumed that the set of items will fit onto the given strip. Suppose now, that the strips provided have a fixed finite width (as is common in industy). We can then define the multi-strip version of the problem.
+Notice that for this single-strip problem, the items' widths are ignored as the capacity of the strip $S$ is not provided; thus it is assumed that $S$ is able to accommodate all items in $\mathcal{I}$. Suppose now, as is usual in industry, that the strips have a fixed finite width. A more generalised problem is then formulated as follows:
 
 \begin{definition}
 	\label{defn:scspp}
-	Let $\mathcal{I}$ be a set of $n$ rectangular items of height $H$ with varying widths $w_i \in \mathbb{Z}^+$ and score widths $a_i, b_i \in \mathbb{Z}^+$ for each item $i \in \mathcal{I}$. Given a minimum scoring distance $\tau \in \mathbb{Z}^+$, the Score-Constrained Strip-Packing Problem (SCSPP) consists of finding the minimum number of strips of height $H$ and width $W$ required to pack all items in $\mathcal{I}$ such that the sum of every pair of adjacent score widths is greater than or equal to $\tau$ and no strip is overfilled.
+	Let $\mathcal{I}$ be a set of $n$ rectangular items of height $H$ with varying widths $w_i \in \mathbb{Z}^+$ and score widths $a_i, b_i \in \mathbb{Z}^+$ for each item $i \in \mathcal{I}$. Given a minimum scoring distance $\tau \in \mathbb{Z}^+$, the Score-Constrained Strip-Packing Problem (SCSPP) involves packing all items in $\mathcal{I}$ onto the fewest number of strips of height $H$ and width $W$ such that for all adjacent items the vicinal sum constraint is satisfied and no strip is overfilled.
 \end{definition}
 
-The SCSPP is an ODMGP, as not only must we determine which strip to pack each item onto, but also the order and orientation of the items within each strip. Thus, the BPP can be seen as a special case of the SCSPP when $\tau = 0$. Although items can be put through the machine to be scored individually, it takes longer and thus incurs extra costs.
-
+The BPP can be seen as a special case of the SCSPP when $\tau = 0$. As with the TPP and \intro{CSP}, the SCSPP not only involves deciding which strip each item should be packed onto, but also, unlike the BPP, \emph{how} the items should be packed - that is, determining the order and orientation of items on each strip. One specific difference, however, concerns the feasibility of individual strips. In the TPP, although clearly not optimal, it is still legal to place trapezoids with opposite angles, i.e. `$\backslash$' and `/', alongside one another. Likewise for the \intro{CSP}, two items with a large cut loss between them can still be packed together if necessary. These types of packings are still valid provided the strips are not overfilled. In contrast, the SCSPP includes the strong vicinal sum constraint which if violated immediately renders an alignment of items on a strip infeasible.
 
 In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the COP. Section~\ref{sec:scspp} will explain the difficulties associated with the SCSPP, and analyse bespoke heuristics. An evolutionary algorithm for the SCSPP is detailed in Section~\ref{sec:ea}, along with results from rigorous experiments.  
 
-{\color{Orange}
+{\color{orange}
 \begin{itemize}[leftmargin=*]
 	\item Lit review, Becker \cite{becker2015}, Lewis \cite{lewis2011} (Lewis TSP method), Hawa \cite{hawa2018}, cite Garraffa \cite{garraffa2016}.
 	\idone{MGPs, cite Lewis \cite{lewis2009}, general formula.}
-	\item ODMGPs, hard constraint.
 	\idone{Formal definition COP, vicinal sum constraint.}
-	\item Describe other problems using COP - TSP, 2 cities each state?
 	\idone{Example instance $\mathcal{M}$ of COP and possible solution $\mathcal{T}$ using constraint value $\tau = 7$.}
 	\idone{Description of subproblem, pack from left to right, minimum scoring distance, single strip problem.}
 	\idone{Cite Goulimis \cite{goulimis2004}.}
 	\idone{$a_i, b_i, w_i, \mathcal{I}, \mathcal{I}', W, H, \tau, |\mathcal{I}| = n$.}
 	\idone{$\tau$ = 70mm approx in industry.}
-	\item $(a_i, b_i)$, $(b_i, a_i)$ orientations (regular and rotated).
+	\idone{$(a_i, b_i)$, $(b_i, a_i)$ orientations (regular and rotated).}
 	\idone{Outermost score widths/elements ignored.}
 	\idone{Need to decide order and orientation of items on strip.}
 	\idone{$2^{n-1} n!$ distinct orderings, combinatorial explosion.}
-	\item Show that the subproblem is equivalent to the COP, minimum scoring distance = VSC.
+	\idone{Show that the subproblem is equivalent to the COP, minimum scoring distance = VSC.}
 	\idone{COP/subproblem the strips have infinite width, what if finite width?}
 	\idone{Formal defintion of SCSPP, multistrip problem.}
 	\idone{Need to decide which strip to pack each item, and \emph{how}, i.e. what order and orientation should the items be in.}
@@ -105,6 +89,7 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 	\idone{Call the two phase process EAX?}
 	\item Polynomial-time algorithm for COP Hawa \cite{hawa2018}.
 	\item Describe rest of paper/layout.
+	\idone{TPP/SDCL ordering still feasible, just not optimal, SCSPP ordering may not be feasible.}
 \end{itemize}
 }
 
@@ -112,7 +97,21 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 
 \section{The Alternating Hamltonian Construction (AHC) algorithm}
 \label{sec:ahc}
-We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$.
+
+Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite{hawa2018}:
+\begin{definition}
+	\label{defn:cop}
+	Let $\mathcal{M}$ be a multiset of unordered pairs, $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, $a_i, b_i \in \mathbb{Z}^+$, and let $\mathcal{T}$ be an ordering of the elements of $\mathcal{M}$ such that each element is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that
+	\begin{equation}
+	\label{eqn:cop}
+	\emph{\textbf{rhs}}(i) + \emph{\textbf{lhs}}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,..., n-1\},
+	\end{equation}
+	where \emph{\textbf{lhs}($i$)} and \emph{\textbf{rhs}($i$)} denote the left- and right-hand values of the $i$th tuple. The inequality is referred to as the \emph{vicinal sum constraint}.
+\end{definition}
+
+For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a constraint value $\tau = 7$, a possible solution is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. \ahc{COP equivalent to subproblem/single strip problem.}
+
+\ahc{Exact p-time alg Becker \cite{becker2010} Hawa et al. \cite{hawa2018} extended to find solution.} We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$.
 
 In order to prevent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the end of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
 
@@ -131,7 +130,7 @@ The dominating vertices are used to aid the construction of the alternating Hami
 
 Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}. The problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. However, due to the manner in which graphs are created from instances of the COP, and the requirement that all edges in $B$ must be included, we are able to determine if an alternating Hamiltonian cycle exists, and produce a feasible solution if one does exist, in polynomial time \cite{hawa2018}.
 
-The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. This set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
+The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$. \ahc{Cite Mahadev \cite{mahadev1994}.} MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in $R'$. Pairs of vertices incident to edges in $R'$ are said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. This set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
 	\item $i \neq 1$;
 	\item $v_{i-1}$ has been matched; and
@@ -164,10 +163,10 @@ If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwis
 
 Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. To find such edges, the Bridge Recognition (BR) algorithm is executed.
 
-BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. Once there are no more valid edges to add to $R_1$, BR searches through the list to find another edge to start a set $R_2$. BR continues creating these sets until the penultimate edge has been reached. If BR is unable to produce a set, then clearly no solution exists. Else, if there exists a set $R_i$ that has a cardinality of $l$, then the components of $G'$ can be connected by adding to $R'$, for each edge in $R_i$, the edge from $R \backslash R'$ incident to its lower-indexed vertex and the higher-indexed vertex of the next edge (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BR has produced a single set $R_1 = \{\{v_3, v_{12}\},\{v_4, v_{11}\}, \{v_5, v_{10}\}\}$.
+\ahc{BR sorts edges of $R'$.} BR searches for an edge whose lower-indexed vertex is adjacent to the next edge's higher-indexed vertex, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. Once there are no more valid edges to add to $R_1$, BR searches through the list to find another edge to start a set $R_2$. BR continues creating these sets until the penultimate edge has been reached. If BR is unable to produce a set, then clearly no solution exists. Else, if there exists a set $R_i$ that has a cardinality of $l$, then the components of $G'$ can be connected by adding to $R'$, for each edge in $R_i$, the edge from $R \backslash R'$ incident to its lower-indexed vertex and the higher-indexed vertex of the next edge (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BR has produced a single set $R_1 = \{\{v_3, v_{12}\},\{v_4, v_{11}\}, \{v_5, v_{10}\}\}$.
 
 
-In some cases, more than one set $R_i$ is needed to connect the components. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contain exactly one edge from the same component of $G'$. A Modified Bridge Recognition (MBR) algorithm finds a collection $\mathcal{R}^*$ of overlapping sets. It initially operates in a similar fashion to BR, creating a set $R^{*}_1$ using the same conditions and adding it to $\mathcal{R}^*$. However, once no more edges can be added to $R^{*}_1$, the edges in $R^{*}_1$ are removed from the list. MBR restarts the search from the beginning of the list to find edges for a new set $R^{*}_2$, with the additional condition that $R^{*}_2$ must overlap with $R^{*}_1$. This process is repeated, creating sets that overlap with ones in $\mathcal{R}^*$. If at any point $\mathcal{R}^*$ contains at least one edge from every component in $G'$, the procedure immediately terminates. The connecting procedure is then applied to each set $R^{*}_i \in \mathcal{R}^*$, combining all components of $G'$ to form a alternating Hamiltonian cycle. If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}.
+In some cases, more than one set $R_i$ is needed to connect the components. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contain exactly one edge from the same component of $G'$. A Modified Bridge Recognition (MBR) algorithm finds a collection $\mathcal{R}^*$ of overlapping sets. It initially operates in a similar fashion to BR, creating a set $R^{*}_1$ using the same conditions and adding it to $\mathcal{R}^*$. However, once no more edges can be added to $R^{*}_1$, the edges in $R^{*}_1$ are removed from the list. MBR restarts the search from the beginning of the list to find edges for a new set $R^{*}_2$, with the additional condition that $R^{*}_2$ must overlap with $R^{*}_1$. This process is repeated, creating sets that overlap with ones in $\mathcal{R}^*$. If at any point $\mathcal{R}^*$ contains at least one edge from every component in $G'$, the procedure immediately terminates. The connecting procedure is then applied to each set $R^{*}_i \in \mathcal{R}^*$, combining all components of $G'$ to form a alternating Hamiltonian cycle. If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}. \ahc{This is called the Alternating Hamiltonian Construction (AHC) algorithm, worst-case complexity $O(n^2)$, guaranteed to find solution if one exists in at most $O(n^2)$ where $n$ is the cardinality of $\mathcal{M}$.}
 
 \begin{figure}[H]	
 	\centering
@@ -193,10 +192,10 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 {\color{myLightBlue}
 \begin{itemize}[leftmargin=*]
 	\ialert{How does this method differ from Becker's?}
-	\item Exact Polynomial-time algorithm for COP Becker \cite{becker2015} Hawa \cite{hawa2018}.
+	\idone{Exact Polynomial-time algorithm for COP Becker \cite{becker2015} Hawa \cite{hawa2018}.}
 	\idone{Model instance graphically, graph $G$ with $V = \{v_1, ...v_{2n}\}$ vertices, one for each value in $\mathcal{M}$ in non-decreasing order.}
 	\idone{Preliminary checks using elements, explain, speed.}
-	\item Cite Lewis \cite{lewis2011} for preliminary checks.
+	\idone{Cite Lewis \cite{lewis2011} for preliminary checks.}
 	\idone{Add two dominating vertices, have value equal to $\tau$, therefore $G$ has $2n+2$ vertices.}
 	\idone{Dom vertices will be removed at the end.}
 	\idone{degree $2n+1$.}
@@ -214,7 +213,7 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 	\idone{Therefore aim is to find set of edges from $R$ that forms alt Ham cycle with $B$.}
 	\idone{Ham cycle NP-complete, Karp \cite{karp1972}, alt Ham generalises Ham cycle, Haggkvist \cite{haggkvist1977} proposition, special structure of graphs means can solve in polynomial-time.}
 	\idone{MCM - match each vertex with largest possible vertex, create set $R'$.}
-	\item Cite Mahadev \cite{mahadev1994}.
+	\idone{Cite Mahadev \cite{mahadev1994}.}
 	\idone{Explain ``matched'', bijective function.}
 	\idone{Can denote $R'$ as $R' = \{(v_i, m(v_i)) : v_i \in V\}$.}
 	\idone{Swap of partners.}
@@ -225,10 +224,10 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 	\idone{BR produces sets $R_1, R_2,...$.}
 	\idone{If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.}
 	\idone{Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.}
-	\item Guaranteed to find solution, if one exists, in $O(n^2)$ time.
+	\idone{Guaranteed to find solution, if one exists, in $O(n^2)$ time.}
 	\item MBR types, check that Beckers method is redundant.
-	\item This is called the Alternating Hamiltonian Construction (AHC) algorithm.
-	\item BR sorts edges of $R'$.
+	\idone{This is called the Alternating Hamiltonian Construction (AHC) algorithm.}
+	\idone{BR sorts edges of $R'$.}
 \end{itemize}
 }
 
