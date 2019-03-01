@@ -58,35 +58,51 @@
 % Manage links within the document or to any URL when you compile in PDF
 \usepackage[colorlinks]{hyperref} 
 \usepackage[dvipsnames]{xcolor}
-\definecolor{myLightBlue}{HTML}{0095FF} %00B3FF
+%Tikz colours, used in tikz figures only
 \colorlet{tBlue}{RoyalBlue!35!Cerulean} %tikz color
 \colorlet{tRed}{Red} %tikz color
-\colorlet{myBlue}{RoyalBlue!35!Cerulean}
-\colorlet{myRed}{Red}
+
+%Text colours
+\colorlet{myRed}{Red!50!OrangeRed}
+\definecolor{myOrange}{HTML}{FA7602}
 \definecolor{myGreen}{HTML}{569909}
-%\colorlet{myGreen}{LimeGreen!50!OliveGreen}
-\colorlet{myGray}{gray!80!white}
+\definecolor{myAqua}{HTML}{00B1BA} %02BEB8
+\definecolor{myBlue}{HTML}{0095FF} %00B3FF
+\colorlet{myPurple}{Orchid} 
+\colorlet{myPink}{Rhodamine!65!Lavender}
+\colorlet{myGray}{Gray!90!White}
 
 % The document class `elsarticle` uses the \AtBeginDocument comman to define the colour of all link types as blue, so we use the \AtBeginDocument command again to overwrite the colour settings to the colors we choose. REMEMBER TO REMOVE THIS BEFORE SUBMITTING.
 \AtBeginDocument{% 
 	\hypersetup{
-		linkcolor=Orchid,
-		citecolor=Orchid,
+		linkcolor=myPurple,
+		citecolor=myPurple,
 		urlcolor=black
 	}
 } %end of \AtBeginDocument
 
-\newcommand{\alert}[1]{{\color{myRed}#1}} % \alert{<text>}, makes <text> red, use to highlight things to do, urgent, or revisit.
-\newcommand{\done}[1]{{\color{myGray}#1}} % \done{<text>}, makes <text> gray, use to highlight things that are not required or should be ignored.
-\newcommand{\ialert}[1]{{\color{myRed}\item#1}} % \ialert{<text>}, makes <text> a red bullet point, use for bullet points of things to do, urgent, or revisit.
-\newcommand{\idone}[1]{{\color{myGray}\item#1}} % \idone{<text>}, makes <text> a gray bullet point, use for bullet points that have been completed, that are not required or should be ignored.
+\newcommand{\intro}[1]{{\color{myOrange}#1}} % \intro{<text>}, makes <text> orange, use to highlight things to do, urgent, or revisit in introduction section
 
-\newcommand{\intro}[1]{{\color{orange}#1}} % \intro{<text>}, makes <text> orange, use to highlight things to do, urgent, or revisit in introduction section
-\newcommand{\ahc}[1]{{\color{myLightBlue}#1}} % \ahc{<text>}, makes <text> blue, use to highlight things to do, urgent, or revisit in AHC section
-\newcommand{\scspp}[1]{{\color{Rhodamine}#1}} % \scspp{<text>}, makes <text> pink, use to highlight things to do, urgent, or revisit in SCSPP section
-\newcommand{\ea}[1]{{\color{OrangeRed}#1}} % \ea{<text>}, makes <text> red, use to highlight things to do, urgent, or revisit in EA section
+\newcommand{\ahc}[1]{{\color{myBlue}#1}} % \ahc{<text>}, makes <text> blue, use to highlight things to do, urgent, or revisit in AHC section
+
+\newcommand{\scspp}[1]{{\color{myPink}#1}} % \scspp{<text>}, makes <text> pink, use to highlight things to do, urgent, or revisit in SCSPP section
+
+\newcommand{\ea}[1]{{\color{myRed}#1}} % \ea{<text>}, makes <text> red, use to highlight things to do, urgent, or revisit in EA section
+
 \newcommand{\postopt}[1]{{\color{myGreen}#1}} % \postopt{<text>}, makes <text> green, use to highlight things to do, urgent, or revisit in Postoptimisation section
-\newcommand{\note}[1]{{\color{Orchid}#1}} % \note{<text>}, makes <text> purple, use to highlight things to do, urgent, or revisit in any section
+
+\newcommand{\conc}[1]{{\color{myPurple}#1}} % \conc{<text>}, makes <text> purple, use to highlight things to do, urgent, or revisit in Conclusion section
+
+\newcommand{\note}[1]{{\color{myAqua}#1}} % \note{<text>}, makes <text> turquoise, use to highlight things to do, urgent, or revisit in any section
+
+
+\newcommand{\alert}[1]{{\color{myRed}#1}} % \alert{<text>}, makes <text> red, use to highlight things to do, urgent, or revisit.
+
+\newcommand{\done}[1]{{\color{myGray}#1}} % \done{<text>}, makes <text> gray, use to highlight things that are not required or should be ignored.
+
+\newcommand{\ialert}[1]{{\color{myRed}\item#1}} % \ialert{<text>}, makes <text> a red bullet point, use for bullet points of things to do, urgent, or revisit.
+
+\newcommand{\idone}[1]{{\color{myGray}\item#1}} % \idone{<text>}, makes <text> a gray bullet point, use for bullet points that have been completed, that are not required or should be ignored.
 
 \renewcommand{\idone}[1]{} % hides all \idone bullet points
 
