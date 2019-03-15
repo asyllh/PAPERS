@@ -103,15 +103,11 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 	Let $\mathcal{M}$ be a multiset of unordered pairs of positive integers $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, and let $\mathcal{T}$ be a sequence of the elements of $\mathcal{M}$ in which each pair is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that, between every pair of tuples in the sequence, the sum of adjacent values from different tuples is greater than or equal to $\tau$.
 \end{definition}
 
-\noindent For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a fixed value $\tau = 7$, one possible feasible ordering is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$.
+\noindent For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a fixed value $\tau = 7$, one possible feasible ordering is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. Then, it follows that the requirement for adjacent values to exceed $\tau$ corresponds to the vicinal score constraint \eqref{eqn:vsc}.
 
-It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. Then, it follows that the requirement for adjacent values to exceed $\tau$ corresponds to the vicinal score constraint \eqref{eqn:vsc}.
+We now present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and thus also the SubSCP. The underlying algorithm was originally proposed in \cite{becker2010}, and determines whether a feasible solution exists for a given instance. This was then extended by Hawa et al. \cite{hawa2018} so that if a solution does indeed exist, AHC is able to formulate and present the final solution. This is particularly useful for problems in industry. \ahc{here we introduce further changes to simplify and optimise the algorithm.}
 
-We now present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and thus also the SubSCP. The underlying algorithm was originally proposed in \cite{becker2010}, and determines whether a feasible solution exists for a given instance. This was then extended by Hawa et al. \cite{hawa2018} so that if a solution does indeed exist, AHC is able to formulate and present the final solution. This is particularly useful for problems in industry.
-
-We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value in $\mathcal{M}$ it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$.
-
-In order to prevent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the ends of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
+We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value in $\mathcal{M}$ it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$. In order to prevent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the ends of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
 
 If $\mathcal{M}$ has not been decided as infeasible, an extra pair of vertices is added to $G$, each assigned a value equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values make up an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The extra pair of vertices, $v_{2n+1}$ and $v_{2n+2}$, can be seen to be dominating vertices, as their weighted values means they will be adjacent to every other vertex via an edge in $R$, and thus have degrees of $2n+1$.\footnote{Note that the dominating vertices $v_{2n+1}$ and $v_{2n+2}$ are partners.} Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, we can denote the set of edges between partners as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Figure~\ref{fig:threshold} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance $\mathcal{M}$ of the COP provided in Section~\ref{sec:intro}. It can be seen that $|B| = n+1$, hence $B$ is a perfect matching. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
 
@@ -136,7 +132,7 @@ The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $
 \end{enumerate*} 
 Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$.
 
-If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_l$, as show in Figures~\ref{fig:matching} and~\ref{fig:mps}. Clearly if $l = 1$ then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $l > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
+If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_q$, as show in Figures~\ref{fig:matching} and~\ref{fig:mps}. Clearly if $q = 1$ then $G'$ is an alternating Hamiltonian cycle, and a solution has been found. In the case of $q > 1$, these components must be connected together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -155,20 +151,28 @@ If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwis
 		\caption{}
 		\label{fig:mps}
 	\end{subfigure}
-	\caption{(a) $G = (V, B\cup R)$; (b) $G'=(V, B \cup R')$ produced after MCM; (c) $G'$ in planar form, where it is clear that $G'$ comprises $l = 3$ cyclic components.}
+	\caption{(a) $G = (V, B\cup R)$; (b) $G'=(V, B \cup R')$ produced after MCM; (c) $G'$ in planar form, where it is clear that $G'$ comprises $q = 3$ cyclic components.}
 	\label{fig:mcm}
 \end{figure}
 
-\noindent Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. To find such edges, the Bridge Recognition (BR) algorithm is executed \ahc{which produces a collection $\mathcal{R}$ of edge sets. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contains exactly one edge from the same component of $G'$}.
+\noindent Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. The Bridge-Cover Recognition (BCR) algorithm produces sets of edges that can be used to combine the components of $G'$. A set $R_i$ is said to ``cover'' a component $C_j$ if $R_i$ contains an edge from $C_j$. BCR operates by creating sets of edges from $R'$ that cover all $q$ components of $G'$.
 
-Firstly, the edges in $R'$ are sorted into a list such that the lower-indexed vertices of the edges are in increasing order, and the higher-indexed vertices are in decreasing order. Any edges that cannot be sorted in this manner are removed from the list. Then, BR searches for an edge whose lower-indexed vertex is adjacent to the higher-indexed vertex of the next edge, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. Once there are no more valid edges, $R_1$ is complete, and is added to the collection $\mathcal{R}$. If $|R_1| = l$, then a connecting procedure is executed that uses the edges in $R_1$ to combine all of the components of $G'$ into a single alternating Hamiltonian cycle.
+Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the lower-indexed vertices of the edges are in increasing order, and the higher-indexed vertices are in decreasing order. Any edges that cannot be sorted in this manner are removed from the list. Then, BCR searches through $\mathcal{L}$ for an edge whose lower-indexed vertex is adjacent to the higher-indexed vertex of the next edge via an edge from $R \backslash R'$, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the adjacency condition holds and the succeeding edge is not a member of a component that is already covered by $R_1$. In the event that $R_1 = \emptyset$ there are no suitable edges that can merge the components together, thus there is no feasible solution to the given instance $\mathcal{M}$. However, if $|R_1| = q$ then $R_1$ covers all $q$ components of $G'$, and a connecting procedure is able to use $R_1$ to combine the components into a single alternating Hamiltonian cycle.
 
-Otherwise, the edges in $R_1$ are removed from the list of edges, and the algorithm initiates an iterative procedure to find new sets. In each iteration, BR starts the search from the beginning of the list to find edges to start a new set, with the additional condition that the set must overlap with a set in $\mathcal{R}$. If such a set is created, it is added to $\mathcal{R}$, and BR continues through the list of edges in search of another overlapping set. When the penultimate edge has been assessed, edges that are in sets in $\mathcal{R}$ are removed from the list, and the process restarts. Once every component of $G'$ has at least one edge in $\mathcal{R}$, the procedure immediately terminates. The connecting procedure is the used all on sets in $\mathcal{R}$ to combine the components of $G'$. If, however, no new sets are created during an iteration, and the sets in $\mathcal{R}$ do not \ahc{cover} all components, then it is clear that no more sets exists and thus the components cannot be combined into a single alternating Hamiltonian cycle. Furthermore, if less than two edges remain in the list after an iteration, then no more sets can be created, as at least two edges are required to start a new set. \ahc{If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}. Given an instance $\mathcal{M}$ of cardinality $n$ of the COP, the Alternating Hamiltonian Construction algorithm is able to determine whether a feasible solution exists, and produce the solution if one does indeed exists, in at most $O(n^2)$ time \cite{hawa2018}.}
+Otherwise, $R_1$ is added to a collection $\mathcal{R}$, and the edges in $\mathcal{R}$ are removed from $\mathcal{L}$. An iterative procedure is then used to find overlapping sets. A set $R_i$ ``overlaps'' with $\mathcal{R}$ if $R_i$ covers exactly one component that is covered by $\mathcal{R}$, and all other components covered by $R_i$ are not yet covered by $\mathcal{R}$. During an iteration, BCR searches from the beginning of $\mathcal{L}$ for edges that fulfil the adjacency condition and can form an overlapping set. If such a set is found, BCR adds it to $\mathcal{R}$ and continues through the list in search of another overlapping set. After the penultimate edge has been assessed, edges in $\mathcal{R}$ are removed from $\mathcal{L}$ and the next iteration begins. As soon as $\mathcal{R}$ contains overlapping sets that cover all components of $G'$ the process is immediately terminated. The connecting procedure is then used all on sets $R_i \in \mathcal{R}$ to combine the components of $G'$. If, however, no new sets are created during an iteration, and the sets in $\mathcal{R}$ do not cover all components, then it is clear that no more sets exists and thus the components cannot be combined into a single alternating Hamiltonian cycle. Furthermore, if less than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be created as at least two edges are required to start a new set. \ahc{If the penultimate edge is reached and $\mathcal{R}$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}. Given an instance $\mathcal{M}$ of cardinality $n$ of the COP, the Alternating Hamiltonian Construction algorithm is able to determine whether a feasible solution exists, and produce the solution if one does indeed exists, in at most $O(n^2)$ time \cite{hawa2018}.}
 
-The connecting procedure operates on a set $R_i$ as follows: for each edge in $R_i$ in turn, the edge from $R \backslash R'$ connecting the lower-indexed vertex of the edge to the higher-indexed vertex of the next edge is added to $R'$ (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed. resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BR has produced a single set $R_1 = \{\{v_3, v_{12}\},\{v_4, v_{11}\}, \{v_5, v_{10}\}\}$.
+The connecting procedure operates on a set $R_i$ as follows: for each edge in $R_i$ in turn, the edge from $R \backslash R'$ connecting the lower-indexed vertex of the edge to the higher-indexed vertex of the next edge is added to $R'$ (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BCR has produced a single set $R_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$.
+
+
 
 %Old BR
 \begin{comment}
+To find such edges, the Bridge Recognition (BR) algorithm is executed \ahc{which produces a collection $\mathcal{R}$ of edge sets. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contain exactly one edge from the same component of $G'$}.
+
+This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the conditions hold and the next edge is not in the same component as any of the edges in $R_1$. Once there are no more valid edges, $R_1$ is complete, and is added to the collection $\mathcal{R}$. If $|R_1| = l$, then a connecting procedure is executed that uses the edges in $R_1$ to combine all of the components of $G'$ into a single alternating Hamiltonian cycle.
+
+Otherwise, the edges in $R_1$ are removed from the list of edges, and the algorithm initiates an iterative procedure to find new sets. In each iteration, BR starts the search from the beginning of the list to find edges to start a new set, with the additional condition that the set must overlap with a set in $\mathcal{R}$. If such a set is created, it is added to $\mathcal{R}$, and BR continues through the list of edges in search of another overlapping set. When the penultimate edge has been assessed, edges that are in sets in $\mathcal{R}$ are removed from the list, and the process restarts. Once every component of $G'$ has at least one edge in $\mathcal{R}$, the procedure immediately terminates. 
+
 to add to $R_1$, BR searches through the list to find another edge to start a set $R_2$. BR continues creating these sets until the penultimate edge has been reached. If BR is unable to produce a set, then clearly no solution exists. Else, if there exists a set $R_i$ that has a cardinality of $l$, then the components of $G'$ can be combined by taking the edge from $R\backslash R'$ connecting the lower-indexed vertex of each edge in $R_i$ to the higher-indexed vertex of the next edge, and adding it to $R'$ (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BR has produced a single set $R_1 = \{\{v_3, v_{12}\},\{v_4, v_{11}\}, \{v_5, v_{10}\}\}$.
 
 In some cases, more than one set $R_i$ is needed to connect the components. Two sets $R_i$ and $R_j$ are said to ``overlap'' if they both contain exactly one edge from the same component of $G'$. A Modified Bridge Recognition (MBR) algorithm finds a collection $\mathcal{R}^*$ of overlapping sets. It initially operates in a similar fashion to BR, creating a set $R^{*}_1$ using the same conditions and adding it to $\mathcal{R}^*$. However, once no more edges can be added to $R^{*}_1$, the edges in $R^{*}_1$ are removed from the list. MBR restarts the search from the beginning of the list to find edges for a new set $R^{*}_2$, with the additional condition that $R^{*}_2$ must overlap with $R^{*}_1$. This process is repeated, creating sets that overlap with ones in $\mathcal{R}^*$. If at any point $\mathcal{R}^*$ contains at least one edge from every component in $G'$, the procedure immediately terminates. The connecting procedure is then applied to each set $R^{*}_i \in \mathcal{R}^*$, combining all components of $G'$ to form a alternating Hamiltonian cycle. If the penultimate edge is reached and $\mathcal{R}^*$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}. Given an instance $\mathcal{M}$ of cardinality $n$ of the COP, the Alternating Hamiltonian Construction algorithm is able to determine whether a feasible solution exists, and produce the solution if one does indeed exists, in at most $O(n^2)$ time \cite{hawa2018}.
@@ -176,22 +180,27 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 
 \begin{figure}[H]	
 	\centering
-	\begin{subfigure}[h]{0.23\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
+		\includestandalone[width=\textwidth]{figures/mbrlist2}
+		%\caption{}
+		\label{fig:mbrlist}
+	\end{subfigure} \hspace{7mm} %
+	\begin{subfigure}[h]{0.25\textwidth}
 		\includestandalone[width=\textwidth]{figures/mpsconnect}
 		%\caption{}
 		\label{fig:mpsconnect}
-	\end{subfigure} \hspace{5mm} %
-	\begin{subfigure}[h]{0.23\textwidth}
+	\end{subfigure} \hspace{7mm} %
+	\begin{subfigure}[h]{0.25\textwidth}
 		\includestandalone[width=\textwidth]{figures/mpscycle}
 		% \caption{}
 		\label{fig:mpscycle}
-	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.23\textwidth}
-		\includestandalone[width=\textwidth]{figures/mpspath}
+	\end{subfigure} %\hspace{5mm}
+	%\begin{subfigure}[h]{0.23\textwidth}
+		%\includestandalone[width=\textwidth]{figures/mpspath}
 		% \caption{}
-		\label{fig:mpspath}
-	\end{subfigure}
-	\caption{Bridge Recognition (BR) process of connecting multiple components to produce a single alternating Hamiltonian cycle that corresponds to a solution $\mathcal{T}$. \ahc{using set $R_1 = \{\{v_3, v_{12}\}, \{v_4, v_{11}\}, \{v_5, v_{10}\}\}$, dom vertices removed to form path, values in order}}
+		%\label{fig:mpspath}
+	%\end{subfigure}
+	\caption{Bridge-Cover Recognition (BCR) algorithm connecting multiple components to produce a single alternating Hamiltonian cycle that corresponds to a solution $\mathcal{T}$. \ahc{using set $R_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$, dom vertices removed to form path, values in order}}
 	\label{fig:br}
 \end{figure}
 
@@ -351,7 +360,7 @@ Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \
 \label{table:MFFD}
 \end{table}
 
-% Hidden: Table for SCSPP
+% Hidden: Table - items/strip
 \begin{comment}
 \begin{table}[h!]
 \centering
@@ -364,12 +373,18 @@ Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \
 		a,500 & 2500 & 4.350 & 3.566 & 3.769 \\
 		a,500 & 5000 & 8.662 & 4.845 & 5.584 \\
 		\midrule
+		a,1000 & 2500 & 4.358 & 3.678 & 3.870 \\
+		a,1000 & 5000 & 8.698 & 5.042 & 5.793 \\
+		\midrule
 		\midrule
 		r,100 & 2500 & 4.260 & 2.698 & 2.823 \\
 		r,100 & 5000 & 8.347 & 3.091 & 3.377 \\
 		\midrule
 		r,500 & 2500 & 4.339 & 2.716 & 2.821 \\
 		r,500 & 5000 & 8.641 & 3.052 & 3.259 \\
+		\midrule
+		r,1000 & 2500 & 4.349 & 2.714 & 2.817 \\
+		r,1000 & 5000 & 8.679 & 3.043 & 3.240 \\
 		\bottomrule
 	\end{tabular}	
 \end{table}
@@ -518,12 +533,18 @@ We therefore make use of the following function to calculate the fitness of a so
 		a,500 & 2500 & 114.942 && 116.681 & 264 && 117.041 & 213 && 116.604 & 277 \\
 		a,500 & 5000 & 57.722 && EA551 & - && EA552 & - && EA553 & -\\
 		\midrule
+		a,1000 & 2500 & 229.437 && EA1021 & - && EA1022 & - && EA1023 & -\\
+		a,1000 & 5000 & 114.965 && ER1051 & - && EA1052 & - && EA1053 & -\\
+		\midrule
 		\midrule
 		r,100 & 2500 & 23.473 && ER121 & - && ER122 & - && ER123 & -\\
 		r,100 & 5000 & 11.981 && ER151 & - && ER152 & - && ER153 & -\\
 		\midrule
 		r,500 & 2500 & 115.239 && ER521 & - && ER522 & - && ER523 & -\\
 		r,500 & 5000 & 57.865 && ER551 & - && ER552 & - && ER553 & -\\
+		\midrule
+		r,1000 & 2500 & 229.946 && ER1021 & - && ER1022 & - && ER1023 & -\\
+		r,1000 & 5000 & 115.227 && ER1051 & - && ER1052 & - && ER1053 & -\\
 		\bottomrule
 	\end{tabular}	
 	\label{table:ea}
