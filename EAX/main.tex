@@ -155,15 +155,15 @@ If $R'$ does not contain $n+1$ edges, then no feasible solution exists. Otherwis
 	\label{fig:mcm}
 \end{figure}
 
-\noindent Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. The Bridge-Cover Recognition (BCR) algorithm produces sets of edges that can be used to combine the components of $G'$. A set $R_i$ is said to ``cover'' a component $C_j$ if $R_i$ contains an edge from $C_j$. BCR operates by creating sets of edges from $R'$ that cover all $q$ components of $G'$.
+\noindent Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph. In order to connect the multiple cyclic components of $G'$, we must select edges from $R \backslash R'$ that are able to act as bridges between the components. The Bridge-Cover Recognition (BCR) algorithm produces sets of edges that can be used to combine the components of $G'$. A set $R_i$ is said to ``cover'' a component $C_j$ if $R_i$ contains an edge from $C_j$. BCR operates by creating sets of edges from $R'$ that cover all $q$ components of $G'$. 
+
+In \cite{becker2010}, a procedure was used to find these sets of edges, and they determined whether a feasible solution existed for the given instance. However, for some instances, these sets were unable to connect the components of $G'$ into a single alternating Hamiltonian cycle, instead forming multiple cycles which do not correspond to a feasible solution. An additional procedure was implemented in \cite{hawa2018} that found and produced a feasible solution to these instances. Here, we simplify this method to improve speed and efficiency.
 
 Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the lower-indexed vertices of the edges are in increasing order, and the higher-indexed vertices are in decreasing order. Any edges that cannot be sorted in this manner are removed from the list. Then, BCR searches through $\mathcal{L}$ for an edge whose lower-indexed vertex is adjacent to the higher-indexed vertex of the next edge via an edge from $R \backslash R'$, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R_1$, and succeeding edges are added to $R_1$ provided the adjacency condition holds and the succeeding edge is not a member of a component that is already covered by $R_1$. In the event that $R_1 = \emptyset$ there are no suitable edges that can merge the components together, thus there is no feasible solution to the given instance $\mathcal{M}$. However, if $|R_1| = q$ then $R_1$ covers all $q$ components of $G'$, and a connecting procedure is able to use $R_1$ to combine the components into a single alternating Hamiltonian cycle.
 
-Otherwise, $R_1$ is added to a collection $\mathcal{R}$, and the edges in $\mathcal{R}$ are removed from $\mathcal{L}$. An iterative procedure is then used to find overlapping sets. A set $R_i$ ``overlaps'' with $\mathcal{R}$ if $R_i$ covers exactly one component that is covered by $\mathcal{R}$, and all other components covered by $R_i$ are not yet covered by $\mathcal{R}$. During an iteration, BCR searches from the beginning of $\mathcal{L}$ for edges that fulfil the adjacency condition and can form an overlapping set. If such a set is found, BCR adds it to $\mathcal{R}$ and continues through the list in search of another overlapping set. After the penultimate edge has been assessed, edges in $\mathcal{R}$ are removed from $\mathcal{L}$ and the next iteration begins. As soon as $\mathcal{R}$ contains overlapping sets that cover all components of $G'$ the process is immediately terminated. The connecting procedure is then used all on sets $R_i \in \mathcal{R}$ to combine the components of $G'$. If, however, no new sets are created during an iteration, and the sets in $\mathcal{R}$ do not cover all components, then it is clear that no more sets exists and thus the components cannot be combined into a single alternating Hamiltonian cycle. Furthermore, if less than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be created as at least two edges are required to start a new set. \ahc{If the penultimate edge is reached and $\mathcal{R}$ does not contain sufficient overlapping sets, it can be said with absolute certainty that there does not exist a feasible solution $\mathcal{T}$ for the corresponding COP instance $\mathcal{M}$ \cite{hawa2018}. Given an instance $\mathcal{M}$ of cardinality $n$ of the COP, the Alternating Hamiltonian Construction algorithm is able to determine whether a feasible solution exists, and produce the solution if one does indeed exists, in at most $O(n^2)$ time \cite{hawa2018}.}
+Otherwise, $R_1$ is added to a collection $\mathcal{R}$, and the edges in $\mathcal{R}$ are removed from $\mathcal{L}$. An iterative procedure is then used to find overlapping sets. A set $R_i$ ``overlaps'' with $\mathcal{R}$ if $R_i$ covers exactly one component that is covered by $\mathcal{R}$, and all other components covered by $R_i$ are not yet covered by $\mathcal{R}$. During an iteration, BCR searches from the beginning of $\mathcal{L}$ for edges that fulfil the adjacency condition and can form an overlapping set. If such a set is found, BCR adds it to $\mathcal{R}$ and continues through the list in search of another overlapping set. After the penultimate edge has been assessed, edges in $\mathcal{R}$ are removed from $\mathcal{L}$ and the next iteration begins. As soon as $\mathcal{R}$ contains overlapping sets that cover all components of $G'$ the process is immediately terminated. The connecting procedure is then used all on sets $R_i \in \mathcal{R}$ to combine the components of $G'$. If, however, no new sets are created during an iteration, and the sets in $\mathcal{R}$ do not cover all components, then it is clear that no more sets exists and thus the components cannot be combined into a single alternating Hamiltonian cycle. Furthermore, if less than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be created as at least two edges are required to start a new set. 
 
-The connecting procedure operates on a set $R_i$ as follows: for each edge in $R_i$ in turn, the edge from $R \backslash R'$ connecting the lower-indexed vertex of the edge to the higher-indexed vertex of the next edge is added to $R'$ (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BCR has produced a single set $R_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$.
-
-
+The connecting procedure operates on a set $R_i$ as follows: for each edge in $R_i$ in turn, the edge from $R \backslash R'$ connecting the lower-indexed vertex of the edge to the higher-indexed vertex of the next edge is added to $R'$ (for the last edge, take the first edge in $R_i$ to be the next edge). The edges in $R_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:br}, where BCR has produced a single set $R_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$. Given an instance $\mathcal{M}$ of cardinality $n$ of the COP, the Alternating Hamiltonian Construction algorithm is able to determine whether a feasible solution exists, and produce the solution if one does indeed exists, in at most $O(n^2)$ time \cite{hawa2018}.
 
 %Old BR
 \begin{comment}
@@ -181,7 +181,7 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 \begin{figure}[H]	
 	\centering
 	\begin{subfigure}[h]{0.35\textwidth}
-		\includestandalone[width=\textwidth]{figures/mbrlist2}
+		\includestandalone[width=\textwidth]{figures/bcrandcp}
 		%\caption{}
 		\label{fig:mbrlist}
 	\end{subfigure} \hspace{7mm} %
@@ -204,9 +204,12 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 	\label{fig:br}
 \end{figure}
 
+% Hidden: Bullet point list for AHC, all \idone
+\begin{comment}
 {\color{myBlue}
 \begin{itemize}[leftmargin=*]
-	\ialert{How does this method differ from Becker's?}
+	\item
+	\idone{How does this method differ from Becker's?}
 	\idone{Exact Polynomial-time algorithm for COP Becker \cite{becker2015} Hawa \cite{hawa2018}.}
 	\idone{Model instance graphically, graph $G$ with $V = \{v_1, ...v_{2n}\}$ vertices, one for each value in $\mathcal{M}$ in non-decreasing order.}
 	\idone{Preliminary checks using elements, explain, speed.}
@@ -240,11 +243,12 @@ In some cases, more than one set $R_i$ is needed to connect the components. Two 
 	\idone{If no sets produced, no solution exists, end. Else if $\exists$ set such that $|R_i| = l$, use connecting procedure to join components together, solution found, end.}
 	\idone{Else multiple sets need to be used, run MBR to find two or more sets that overlap correctly. If collection $\mathcal{R}^*$ found, connecting procedure on all sets in collection, solution found, end. Else, no solution exists, end.}
 	\idone{Guaranteed to find solution, if one exists, in $O(n^2)$ time.}
-	\item MBR types, check that Beckers method is redundant.
+	\idone{MBR types, check that Beckers method is redundant.}
 	\idone{This is called the Alternating Hamiltonian Construction (AHC) algorithm.}
 	\idone{BR sorts edges of $R'$.}
 \end{itemize}
 }
+\end{comment}
 
 %--------------------------------------------------------------------------------------
 \section{Heuristics for the SCSPP}
@@ -267,15 +271,26 @@ For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{
 
 The minimum scoring distance also introduces differences in solutions for the BPP and SCSPP. The obvious difference is that of the ordering and orientation of the items on the strips: unimportant in the BPP, but vital for the feasibility of a solution for the SCSPP. Another distinction arises when attempting to modify solutions. Again, a solution for the BPP remains feasible when an item is removed or a new item is added to a strip (provided the strip can accommodate said item), whereas for the SCSPP this may render a solution infeasible, as the new pairings of score widths may not abide by the vicinal sum constraint. Because of these differences, it is apparent that basic heuristics such as FFD used for the BPP cannot be used for the SCSPP, as there is no guarantee that the resulting solution will be feasible. Notice however that these heuristics can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL.
 
+
+\begin{figure}[H]	
+	\centering
+	\includestandalone[width=0.45\textwidth]{figures/bpp}
+	\caption{Example instance of a subproblem with $\tau = 70$. Using MFFD, the constraint is not fulfilled in either orientation, however MFFD$^+$ is able to find a feasible arrangement.}	
+	\label{fig:mffdvsmffdp}
+\end{figure}
+
+
+Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \cite{garey1979}. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed. As the SCSPP is a relatively new problem, \note{little research has been produced - rewrite}. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, \note{the smaller score width is on the left-hand side - rewrite}).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdp} illustrates how MFFD$^+$ is able to find a feasible arrangement of items which cannot be found using MFFD.
+
 \begin{figure}[H]	
 	\centering
 	\begin{subfigure}[h]{0.45\textwidth}
-		\includestandalone[width=\textwidth]{figures/bpp}
-		\caption{FFD}
+		\includestandalone[width=\textwidth]{figures/mffd}
+		\caption{MFFD}
 		\label{fig:ffd}
 	\end{subfigure} \hspace{10mm}
 	\begin{subfigure}[h]{0.45\textwidth}
-		\includestandalone[width=\textwidth]{figures/mffdplus}
+		\includestandalone[width=\textwidth]{figures/mffdplus3}
 		\caption{MFFD$^+$}
 		\label{fig:mffdplus}
 	\end{subfigure}
@@ -284,14 +299,6 @@ The minimum scoring distance also introduces differences in solutions for the BP
 \end{figure}
 
 
-Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \cite{garey1979}. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed. As the SCSPP is a relatively new problem, \note{little research has been produced - rewrite}. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, \note{the smaller score width is on the left-hand side - rewrite}).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdp} illustrates how MFFD$^+$ is able to find a feasible arrangement of items which cannot be found using MFFD.
-
-\begin{figure}[H]	
-	\centering
-	\includestandalone[width=0.85\textwidth]{figures/strips}
-	\caption{Example instance of a subproblem with $\tau = 70$. Using MFFD, the constraint is not fulfilled in either orientation, however MFFD$^+$ is able to find a feasible arrangement.}	
-	\label{fig:mffdvsmffdp}
-\end{figure}
 
 % Hidden: Bullet point list for SCSPP, all \idone 
 \begin{comment}
@@ -323,7 +330,7 @@ Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \
 
 \subsection{Experimental Results - Heuristics}
 \label{sub:expheuristics}
-\noindent For our experiments, we produced two different types of instances: ``artificial'' instances, which contain items of varying widths and score widths; and ``real'' instances, which have multiple items of the same dimension. For each type 1000 instances were generated using sets of 100 and 500 items, giving a total of 4000 problem instances. For all instances, the minimum scoring distance $\tau$ was set to 70mm - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. To compare our heuristics, we use two different strips widths, 2500 and 5000.
+\noindent For our experiments, we produced two different types of instances: ``artificial'' instances, which contain items of varying widths and score widths; and ``real'' instances, which have multiple items of the same dimension. For each type 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. For all instances, the minimum scoring distance $\tau$ was set to 70mm - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. To compare our heuristics, we use two different strips widths, 2500 and 5000.
 
 \begin{table}[h!]
 \centering
@@ -552,8 +559,8 @@ We therefore make use of the following function to calculate the fitness of a so
 
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
-	\item Same 4 sets of instances used for heuristics used for EA.
-	\item Run each set 6 times, different combinations of parameters, GGA/GPX'/GPN and strip width 2500 and 5000, 24 combinations total
+	\item Same 6 sets of instances used for heuristics used for EA.
+	\item Run each set 6 times, different combinations of parameters, GGA/GPX'/GPN and strip width 2500 and 5000, 36 combinations total
 	\item In EA output file to compare:
 	\begin{itemize}[leftmargin=*]
 		\item Proportion of times feasPacking/infeasPacking sets used instead of AHC
