@@ -6,6 +6,22 @@
 \begin{tikzpicture}
 %\draw [help lines] (-1,-2) grid (13,11);
 
+%extra strip in mffd, white out so same dimensions in figure
+\draw [thick, white] (0,9) rectangle (10, 10);
+\draw [thick, white] (6.31,9) -- (6.31,10);
+\draw [thick, white] (9.9,9) -- (9.9,10);
+\filldraw[fill=white, draw=white, thick] (9.9,9) rectangle (10,10);
+\draw [thick, white, densely dashed] (0.48,9) -- (0.48, 10);
+\draw [thick, white, densely dashed] (5.63,9) -- (5.63, 10);
+\draw [thick, white, densely dashed] (6.57,9) -- (6.57, 10);
+\draw [thick, white, densely dashed] (9.53,9) -- (9.53, 10);
+\node at (3.155,9.5) {\textcolor{white}{631}};
+\node at (8.105,9.5) {\textcolor{white}{359}};
+\node [below] at (0.24,9) {\textcolor{white}{48}};
+\node [below] at (5.97,9) {\textcolor{white}{68}};
+\node [below] at (6.44,9) {\textcolor{white}{26}};
+\node [below] at (9.77,9) {\textcolor{white}{37}};
+
 %359, 631 (26-37, 68,48)
 \draw [thick] (0,7.5) rectangle (10, 8.5);
 \draw [thick] (3.59,7.5) -- (3.59, 8.5);
