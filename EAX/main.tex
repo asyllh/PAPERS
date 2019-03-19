@@ -269,36 +269,32 @@ Equations \eqref{eqn:packall}--\eqref{eqn:capacity} are the necessary conditions
 
 For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \cite{martello1990l}. It can be seen that $t$ will not perform as accurately for the SCSPP as it does for the BPP. Consider a set of $n$ items in which the largest score width $b_i < \tau/2$. Then, there are no pairs of items that can be packed alongside one another feasibly, thus $\mathcal{S}$ will require $n$ strips. The theoretical minimum $t$ does not consider the effect of the minimum scoring distance on the feasibility of the solution. \scspp{May find optimal solution without knowing, as optimal number of strips for a given problem instance of the SCSPP may be greater than $t$.}
 
-The minimum scoring distance also introduces differences in solutions for the BPP and SCSPP. The obvious difference is that of the ordering and orientation of the items on the strips: unimportant in the BPP, but vital for the feasibility of a solution for the SCSPP. Another distinction arises when attempting to modify solutions. Again, a solution for the BPP remains feasible when an item is removed or a new item is added to a strip (provided the strip can accommodate said item), whereas for the SCSPP this may render a solution infeasible, as the new pairings of score widths may not abide by the vicinal sum constraint. Because of these differences, it is apparent that basic heuristics such as FFD used for the BPP cannot be used for the SCSPP, as there is no guarantee that the resulting solution will be feasible. Notice however that these heuristics can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL.
-
+The minimum scoring distance also introduces differences in solutions for the BPP and SCSPP. The obvious difference is that of the ordering and orientation of the items on the strips: unimportant in the BPP, but vital for the feasibility of a solution for the SCSPP. Another distinction arises when attempting to modify solutions. Again, a solution for the BPP remains feasible when an item is removed or a new item is added to a strip (provided the strip can accommodate said item), whereas for the SCSPP this may render a solution infeasible, as the new pairings of score widths may not abide by the vicinal sum constraint. Because of these differences, it is apparent that basic heuristics used for the BPP cannot be used for the SCSPP, as there is no guarantee that the final solution will be feasible. Notice however that these heuristics can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL. An example of this is depicted in Figure~\ref{fig:ffd} where FFD has been used for an instance of the SCSPP, producing invalid alignments of items on three of the strips, thus resulting in an entirely infeasible soltution.
 
 \begin{figure}[H]	
 	\centering
-	\includestandalone[width=0.45\textwidth]{figures/bpp}
-	\caption{Example instance of a subproblem with $\tau = 70$. Using MFFD, the constraint is not fulfilled in either orientation, however MFFD$^+$ is able to find a feasible arrangement.}	
-	\label{fig:mffdvsmffdp}
+	\includestandalone[width=0.45\textwidth]{figures/ffd}
+	\caption{Example of an infeasible solution produced using FFD for an instance of the SCSPP. Here, $n = 15$, $W = 1000$, and $\tau = 70$.}	
+	\label{fig:ffd}
 \end{figure}
 
-
-Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \cite{garey1979}. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed. As the SCSPP is a relatively new problem, \note{little research has been produced - rewrite}. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, \note{the smaller score width is on the left-hand side - rewrite}).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdp} illustrates how MFFD$^+$ is able to find a feasible arrangement of items which cannot be found using MFFD.
+\noindent Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \cite{garey1979}. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed. As the SCSPP is a relatively new problem, \note{little research has been produced - rewrite}. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation (that is, \note{the smaller score width is on the left-hand side - rewrite}).} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdplus} compares solutions produced using MFFD and MFFD$^+$ using the same instance of the SCSPP as seen in Figure~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of strips as FFD while still satisfying the vicinal sum constraint.
 
 \begin{figure}[H]	
 	\centering
 	\begin{subfigure}[h]{0.45\textwidth}
 		\includestandalone[width=\textwidth]{figures/mffd}
 		\caption{MFFD}
-		\label{fig:ffd}
+		\label{fig:mffd}
 	\end{subfigure} \hspace{10mm}
 	\begin{subfigure}[h]{0.45\textwidth}
-		\includestandalone[width=\textwidth]{figures/mffdplus3}
+		\includestandalone[width=\textwidth]{figures/mffdplus}
 		\caption{MFFD$^+$}
 		\label{fig:mffdplus}
 	\end{subfigure}
-	\caption{\note{MOVE THIS FIGURE. FFD for BPP vs MFFD$^+$, same 15 items, $W=1000$, $\tau = 70$, using FFD for BPP causes solution to be infeasible (VSC not met), MFFD$^+$ ensures VSC met, also uses same number of strips in this case.}}
-	\label{fig:packing}
+	\caption{Solutions produced using MFFD and MFFD$^+$ using the same instance as in the previous figure.}
+	\label{fig:mffdvsmffdplus}
 \end{figure}
-
-
 
 % Hidden: Bullet point list for SCSPP, all \idone 
 \begin{comment}
@@ -576,7 +572,6 @@ We therefore make use of the following function to calculate the fitness of a so
 }
 
 %--------------------------------------------------------------------------------------
-
 \section{Postoptimisation}
 \label{sec:postopt}
 \noindent Given a collection $\mathcal{S}$ of subsets of a set $X$, an \emph{exact cover} is a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ such that each element in $X$ is contained in exactly one subset in $\mathcal{S}^*$.
