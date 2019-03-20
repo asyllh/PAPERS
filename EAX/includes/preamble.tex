@@ -44,6 +44,9 @@
 % Adds support for arbitrarily-deep nested lists
 \usepackage[inline]{enumitem}
 
+%Support for changing size of font in table footnotes
+\usepackage{etoolbox}
+
 % Improves the interface for defining floating objects such as figures/tables
 \usepackage{float}
 
@@ -121,6 +124,7 @@
 \usepackage{tabularx}
 
 \usepackage{threeparttable}
+\appto\TPTnoteSettings{\footnotesize} % Change font size of table footnotes to footnotesize
 
 \usepackage{tikz}
 
