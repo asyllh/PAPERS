@@ -9,7 +9,7 @@
 \author{Jonathan M. Thompson}
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 \begin{abstract}
-\note{Type of packing problem in which order and orientation of items is important. Paper investigates heuristics, EA, postoptimisation.}
+\note{Type of packing problem in which order and orientation of items is important. Paper investigates heuristics, EA, postoptimisation.} \alert{make sure it says ``vicinal sum constraint'', not ``vicinal score constraint''.}
 \end{abstract}	
 \end{frontmatter}
 
@@ -103,7 +103,7 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 	Let $\mathcal{M}$ be a multiset of unordered pairs of positive integers $\mathcal{M} = \{\{a_1, b_i\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, and let $\mathcal{T}$ be a sequence of the elements of $\mathcal{M}$ in which each pair is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that, between every pair of tuples in the sequence, the sum of adjacent values from different tuples is greater than or equal to $\tau$.
 \end{definition}
 
-\noindent For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a fixed value $\tau = 7$, one possible feasible ordering is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. Then, it follows that the requirement for adjacent values to exceed $\tau$ corresponds to the vicinal score constraint \eqref{eqn:vsc}.
+\noindent For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a fixed value $\tau = 7$, one possible feasible ordering is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. Then, it follows that the requirement for adjacent values to exceed $\tau$ corresponds to the vicinal sum constraint \eqref{eqn:vsc}.
 
 We now present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and thus also the SubSCP. The underlying algorithm was originally proposed in \cite{becker2010}, and determines whether a feasible solution exists for a given instance. This was then extended by Hawa et al. \cite{hawa2018} so that if a solution does indeed exist, AHC is able to formulate and present the final solution. This is particularly useful for problems in industry. Here, we simplify and increase the efficiency and speed of AHC by replacing two of the subprocedures used in the previous version of AHC with a single algorithm.
 
@@ -245,7 +245,7 @@ The connecting procedure operates on a set $R_i$ as follows: for each edge in $R
 	\end{alignat}
 \end{subequations}
 
-\noindent As stated in Definition \ref{defn:scspp}, the aim is to minimise $k$. An optimal solution for the SCSPP is a solution consisting of the fewest number of strips $k$ required to feasibly pack all items in $\mathcal{I}$. In this particular MGP, it can be seen that a strip $S_i \in \mathcal{F}$ if the total width of items on the strip does not exceed the strip's capacity \eqref{eqn:capacity} and the vicinal score constraint is fulfilled \eqref{eqn:vscstrip}. It follows that the SubSCP arises within the SCSPP.
+\noindent As stated in Definition \ref{defn:scspp}, the aim is to minimise $k$. An optimal solution for the SCSPP is a solution consisting of the fewest number of strips $k$ required to feasibly pack all items in $\mathcal{I}$. In this particular MGP, it can be seen that a strip $S_i \in \mathcal{F}$ if the total width of items on the strip does not exceed the strip's capacity \eqref{eqn:capacity} and the vicinal sum constraint is fulfilled \eqref{eqn:vscstrip}. It follows that the SubSCP arises within the SCSPP.
 
 Equations \eqref{eqn:packall}--\eqref{eqn:capacity} are the necessary conditions for the BPP. Although the BPP is simple by definition, finding solutions that meet all conditions can be difficult, and given large instances an exact solution may be impossible to find in a reasonable amount of time. One of the simplest and most well-known heuristics is the First-Fit (FF) heuristic, a greedy online algorithm that packs each item, given in some arbitrary order, into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \cite{lewis2009}. An improvement on FF yields the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \cite{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$
 
@@ -256,7 +256,7 @@ The minimum scoring distance also introduces differences in solutions for the BP
 \begin{figure}[H]	
 	\centering
 	\includestandalone[width=0.45\textwidth]{figures/ffd}
-	\caption{Example of an infeasible solution produced using FFD for an instance of the SCSPP. Here, $n = 15$, $W = 1000$, and $\tau = 70$.}	
+	\caption{Example of an infeasible solution produced using FFD for an instance of the SCSPP. Here, $n = 15$, $W = 1000$, and $\tau = 70$. \scspp{$A(\mathcal{I}) = 5268$, therefore $t = 6$.}}	
 	\label{fig:ffd}
 \end{figure}
 
@@ -382,7 +382,7 @@ Indeed, it may be that optimal solutions were found in many of these instances, 
 %--------------------------------------------------------------------------------------
 \section{Evolutionary Algorithm}
 \label{sec:ea}
-\noindent We now introduce an evolutionary algorithm (EA) for the SCSPP to improve on the results of the previous heuristics. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the solutions. Each solution is evaluated based on a given critera, and individuals which are more suited to the environment are given more oppportunity to breed, while those which are less so are eliminated. EAs have been used for a variety of grouping problems with positive results \cite{lewis2017, falkenauer1996, quiroz2015}.
+\noindent We now introduce an evolutionary algorithm (EA) for the SCSPP to improve on the results of the previous heuristics. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the solutions. Each solution is evaluated based on a given critera, and individuals which are more suited to the environment are given more oppportunity to breed while those which are less so are eliminated. EAs have been used for a variety of grouping problems with positive results \cite{lewis2017, falkenauer1996, quiroz2015}. \ea{Iterative procedure, plus local search and xover, swapping items between strips, better than previous heuristics as repetition means more possible item combinations on strips, EA has the ability to move items between strips.}
 
 Within the EA framework, we investigate three different recombination operators as well as a local search procedure inspired by Martello and Toth \cite{martello1990l}. AHC is also integrated into the EA to solve instances of the SubSCP. Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
 
@@ -403,13 +403,13 @@ Within the EA framework, we investigate three different recombination operators 
 \label{sub:xover}
 \noindent A recombination operator is used to generate new solutions from an existing population. This is done by taking two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, and combining them to create a new offspring solution. The operator determines which characteristics from each parent should be inherited by the offspring. Thus, recombination attempts to retain the best elements of each parent, with the aim of producing a superior offspring. As described in the previous section, we cannot simply copy individual items from each parent into the offspring because the vicinal sum constraint may not be satisfied. Therefore, the operators used in this EA have been designed to ensure offspring feasibility.
 
-The first operator is based on the grouping genetic algorithm (GGA) of Falkenauer \cite{falkenauer1992}. The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips $S_i$ and $S_j$ from $\mathcal{S}_2$ are selected randomly (where $1 \leq i < j \leq |\mathcal{S}_2|$). These strips, along with all strips in between, are inserted into the offspring solution $\mathcal{S}$. GGA then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Note that the strips chosen from $\mathcal{S}_2$ cannot both be the outermost strips, that is, GGA cannot choose $i = 1$ \emph{and} $j = |\mathcal{S}_2|$. This is because doing so would result in all strips from $\mathcal{S}_2$ being copied into the offspring, preventing the addition of any strips from $\mathcal{S}_1$. \ea{What is GGA's aim?}
+The first operator is based on the grouping genetic algorithm (GGA) of Falkenauer \cite{falkenauer1992}. The strips of the second parent solution $\mathcal{S}_2$ are permuted, and two strips $S_i$ and $S_j$ from $\mathcal{S}_2$ are selected randomly (where $1 \leq i < j \leq |\mathcal{S}_2|$). All strips between and including $S_i$ and $S_j$ are inserted into an offspring solution $\mathcal{S}$. GGA then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Note that the strips chosen from $\mathcal{S}_2$ cannot both be the outermost strips, that is, GGA cannot choose both $i = 1$ \emph{and} $j = |\mathcal{S}_2|$, as doing so would result in all strips from $\mathcal{S}_2$ being copied into the offspring, preventing the addition of any strips from $\mathcal{S}_1$. \ea{What is GGA's aim?}
 
-The next operator, \note{GPX'}, is analogous to that of Quiroz-Castellanos et al. \cite{quiroz2015}. Starting with the parent solution containing the fullest strip,\footnote{For both \note{GPX'} and \note{GPN}, in the event that both parents contain the fullest strip or the strip containing the most items, the starting parent solution is chosen at random.} \note{GPX'} inserts this strip into the offspring $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent. Then, the operator selects the fullest strip from the modified parent, and removes strips from the first parent. \note{GPX'} repeats this process, alternating between parents, until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring. \ea{How is \note{GPX'} useful?}
+Another operator implemented is the alternating grouping crossover (AGX), and is analogous to that of Quiroz-Castellanos et al. \cite{quiroz2015}. Starting with the parent solution containing the fullest strip, AGX inserts this strip into an offspring solution $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent.\footnote{For both AGX and AGX', in the event that both parents contain strips with equal maximum fullness/number of items, the initial parent solution is chosen at random.} The operator then inserts the fullest strip from the modified parent into $\mathcal{S}$ and removes strips from the first parent. AGX continues to alternate between parents, selecting the fullest strip $max_{S_j \in \mathcal{S}_p} (A(S_j))$ (where $\mathcal{S}_p$ is the parent solution under consideration, $p \in \{1,2\}$) until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring solution. \ea{How is AGX useful?}
 
-Our final operator, \note{GPN}, performs in the same manner as \note{GPX'}, instead selecting strips containing the most items. This method aims to choose strips containing items that are harder to pack along with other items. 
+Our final operator, AGX', performs in a similar manner to AGX, however rather than choosing the fullest strip to insert into the offspring solution AGX' selects strips containing the most items, $max_{S_j \in \mathcal{S}_p} (|S_j|)$. This method has the ability to preserve strips containing items that are harder to pack along with other items. 
 
-In order to maintain feasibility, the operators remove entire strips containing duplicate items, rather than individual items. These strips may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items, and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}_Y$. The partial offspring solution $\mathcal{S}$ and $\mathcal{S}_Y$ are then used as input into a local search procedure to create a full feasible offspring solution.
+In order to maintain feasibility, the operators remove entire strips containing duplicate items, rather than individual items. These strips may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items, and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}^*$. The partial offspring solution $\mathcal{S}$ and $\mathcal{S}^*$ are then used as input into a local search procedure to create a full feasible offspring solution.
 
 % Hidden: Bullet point list for EA xOver, all \idone
 \begin{comment}
@@ -432,16 +432,16 @@ In order to maintain feasibility, the operators remove entire strips containing 
 
 \subsection{Local Search}
 \label{sub:localsearch}
-\noindent Our local search method takes in two feasible partial solutions, $\mathcal{S}_X$ and $\mathcal{S}_Y$, permutes the strips of both, and then attempts to move items between the two solutions in four stages: 
+\noindent Our local search method takes in two feasible partial solutions, $\mathcal{S}$ and $\mathcal{S}^*$, permutes the strips of both, and then attempts to move items between the two solutions in four stages: 
 \begin{enumerate*}[label={(\roman*)}]
-	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with a pair of items from a strip in $\mathcal{S}_Y$;\label{item:pairpair}
-	\item swapping a pair of items from a strip in $\mathcal{S}_X$ with an individual item from a strip in $\mathcal{S}_Y$;\label{item:pairsin}
-	\item swapping individual items from strips in $\mathcal{S}_X$ and $\mathcal{S}_Y$;\label{item:sinsin} and
-	\item moving an item from a strip in $\mathcal{S}_Y$ to a strip in $\mathcal{S}_X$.\label{item:movesin}
+	\item swapping a pair of items from a strip in $\mathcal{S}$ with a pair of items from a strip in $\mathcal{S}^*$;\label{item:pairpair}
+	\item swapping a pair of items from a strip in $\mathcal{S}$ with an individual item from a strip in $\mathcal{S}^*$;\label{item:pairsin}
+	\item swapping individual items from strips in $\mathcal{S}$ and $\mathcal{S}^*$;\label{item:sinsin} and
+	\item moving an item from a strip in $\mathcal{S}^*$ to a strip in $\mathcal{S}$.\label{item:movesin}
 \end{enumerate*} 
-During stages \ref{item:pairpair}--\ref{item:sinsin}, the width of the item(s) from $\mathcal{S}_Y$ must exceed the width of the item(s) from $\mathcal{S}_X$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}_X$ or $\mathcal{S}_Y$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}_Y$, generating a new feasible partial solution $\mathcal{S}_Y'$. The strips in $\mathcal{S}_Y'$, along with the strips in $\mathcal{S}_X$, are inserted into $\mathcal{S}$ to form a full feasible solution.
+During stages \ref{item:pairpair}--\ref{item:sinsin}, the width of the item(s) from $\mathcal{S}^*$ must exceed the width of the item(s) from $\mathcal{S}$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}$ or $\mathcal{S}^*$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}^*$, generating a new feasible partial solution $\mathcal{S}^{**}$, with $|\mathcal{S}^{**}| \leq |\mathcal{S}^*|$. The strips in $\mathcal{S}^{**}$ are then inserted into $\mathcal{S}$ to form a full feasible solution.
 
-This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_1$ \emph{dominates} a strip $S_2$, then a solution containing $S_1$ will have no more strips than a solution containing $S_2$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}_X$, the ``fullness'' of the strips increase, whilst the number of items per strip is maintained or decreases, improving the quality of the strips in $\mathcal{S}_X$. Simultaneously, items moved into $\mathcal{S}_Y$ are smaller, and therefore easier to repack onto strips in $\mathcal{S}_X$ during stage~\ref{item:movesin}. Variations of this method can be seen in \cite{lewis2009, lewis2017, falkenauer1996, levine2004}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages, we create numerous distinct subsets of items on the strips, generating more possibilities for feasible orderings of items.
+This method is based on the dominance criterion of Martello and Toth \cite{martello1990l}: if a strip $S_x$ \emph{dominates} a strip $S_y$, then a solution containing $S_x$ will have no more strips than a solution containing $S_y$. The local search procedure is in fact a local search for dominating strips. By moving larger items into $\mathcal{S}$, the fullness $A(S_j)$ of the strips  $S_j \in \mathcal{S}$ increases whilst the number of items per strip is maintained or decreases, improving the \ea{quality} of the strips in $\mathcal{S}$. Simultaneously, items moved into $\mathcal{S}^*$ are smaller and therefore easier to repack onto strips in $\mathcal{S}$ during stage~\ref{item:movesin}. Variations of this method can be seen in \cite{lewis2009, lewis2017, falkenauer1996, levine2004}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages, numerous distinct subsets of items on the strips are produced, generating more possibilities for feasible orderings of items.
 
 % Hidden: Bullet point list for EA Local Search, all \idone
 \begin{comment}
@@ -466,20 +466,20 @@ This method is based on the dominance criterion of Martello and Toth \cite{marte
 }
 \end{comment}
 
-\subsection{EA Framework}
+\subsection{Evolutionary Algorithm Framework}
 \label{sub:eaframework}
-\noindent The algorithm begins by producing candidate solutions for the initial population, one using MFFD$^+$, the rest using MFFR$^+$ (that, is, the same method as MFFD$^+$ with the items in a random order). These solutions are mutated before being inserted into the population. Mutation of a candidate solution $\mathcal{S}$ involves permuting the strips, and inserting a random number of strips from $\mathcal{S}$ into a set $\mathcal{S}_X$, and the rest into a set $\mathcal{S}_Y$. Local search is then executed using these two partial solutions to produce a full solution, which is reinserted into $\mathcal{S}$. 
+\noindent Our EA for the SCSPP begins by producing candidate solutions to form an initial population, with one solution created using MFFD$^+$ and the rest using MFFR$^+$ (the same method as MFFD$^+$ with the items in a random order). Each solution is mutated before being inserted into the population. The mutation of a solution $\mathcal{S}$ involves permuting the strips and inserting $1 < r < |\mathcal{S}|$ strips selected randomly from $\mathcal{S}$ into a set $\mathcal{S}^*$. Local search is then executed using these two partial solutions to produce a full feasible solution $\mathcal{S}$. 
 
-An iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a crossover operator to produce an offspring solution $\mathcal{S}$, then mutating this offspring before replacing the least fit of the two parents in the population.
+An iteration of the EA \ea{involves} selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a recombination operator to produce an offspring solution $\mathcal{S}$, then finally mutating $\mathcal{S}$ before replacing the least fit of the two parents in the population.
 
 A fitness function is used to calculate a fitness value to determine the quality of a solution, as opposed to simply relying on the number of strips within the solution. The reason for this is twofold: firstly, given two candidate solutions of equal size, it is impossible to determine the better solution based on the number of strips alone. Secondly, we note that the quality of a solution not only depends on the number of strips used, but \emph{how} the items are packed onto the strip. Recall that strips that are ``fuller'' are preferrable over less filled strips, even if they contain more items. Thus, we consider a strip whose capacity is taken advantage of to be a ``better packed'' strip, reducing the amount of waste material. This may result in a strip in the solution that is nearly empty, which is beneficial as it allows further items to be packed, or the residual material could be used for other means. This type of packing is desirable over a packing of strips that are only half full, requiring more strips than necessary to pack all of the items. \ea{Well-filled strips with larger items preferable over less-filled strips with smaller items (Levine \cite{levine2004}).}
 
 We therefore make use of the following function to calculate the fitness of a solution $\mathcal{S}$: \ea{cite Falkenauer and Delchambre \cite{falkenauer1992}}
 \begin{equation}
-	f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}
+	f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
 \end{equation}
 
-\noindent where \note{$A(S) = \sum_{i \in S} w_i$ is the total width of all items on a strip $S$.} This function produces a fitness value between 0 and 1. The higher the fitness, the better the quality of the packing of items in the solution.
+\noindent where \note{$A(S_j) = \sum_{i \in S_j} w_i$ is the total width of all items on a strip $S_j$.} This function produces a fitness value between 0 and 1. The higher the fitness, the better the quality of the packing of items in the solution.
 
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
@@ -672,74 +672,5 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 
 \bibliographystyle{elsarticle-num}
 \bibliography{includes/bibliography}
-
-% Hidden: Table - items/strip for heuristics
-\begin{comment}
-\begin{table}[h!]
-\centering
-\caption{average number of items per strip - MFFD vs MFFD$^+$}
-\begin{tabular}{ccccc}\toprule
-Instance & $W$ & items/lb & MFFD & MFFD$^+$ \\ \midrule	
-a,100 & 2500 & 4.288 & 3.252 & 3.514 \\
-a,100 & 5000 & 8.388 & 4.240 & 5.030 \\
-\midrule
-a,500 & 2500 & 4.350 & 3.566 & 3.769 \\
-a,500 & 5000 & 8.662 & 4.845 & 5.584 \\
-\midrule
-a,1000 & 2500 & 4.358 & 3.678 & 3.870 \\
-a,1000 & 5000 & 8.698 & 5.042 & 5.793 \\
-\midrule
-\midrule
-r,100 & 2500 & 4.260 & 2.698 & 2.823 \\
-r,100 & 5000 & 8.347 & 3.091 & 3.377 \\
-\midrule
-r,500 & 2500 & 4.339 & 2.716 & 2.821 \\
-r,500 & 5000 & 8.641 & 3.052 & 3.259 \\
-\midrule
-r,1000 & 2500 & 4.349 & 2.714 & 2.817 \\
-r,1000 & 5000 & 8.679 & 3.043 & 3.240 \\
-\bottomrule
-\end{tabular}	
-\end{table}
-
-\begin{table}[h!]
-\centering
-\caption{MFFD vs MFFD$^+$}
-\begin{threeparttable}
-\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{8pt}}}\toprule
-& & & & \multicolumn{4}{c}{MFFD} &\phantom{a}& \multicolumn{4}{c}{MFFD$^+$}\\
-\cmidrule{5-8} \cmidrule{10-13}
-Type, $n$& $W$ & $t$\tnote{1} & $n / t$ & $|\mathcal{S}|$\tnote{2} & $\# t$\tnote{3} & $q$\tnote{4} & $n / |\mathcal{S}|$ && $|\mathcal{S}|$ & $\# t$ & $q$ & $n / |\mathcal{S}|$\\ \midrule	
-a, 100 & 2500 & 23.323 & 4.288 & 30.754 & 0 & 1.320 & 3.252 && 28.457 & 26 & 1.221 & 3.514 \\
-a, 100 & 5000 & 11.922 & 8.388 & 23.583 & 0 & 1.982 & 4.240 && 19.881 & 7 & 1.670 & 5.030 \\
-\midrule
-a, 500 & 2500 & 114.942 & 4.350 & 140.206 & 0 & 1.220 & 3.566 && 132.647 & 0 & 1.154 & 3.769 \\
-a, 500 & 5000 & 57.722 & 8.662 & 103.209 & 0 & 1.789 & 4.845 && 89.544 & 0 & 1.552 & 5.584 \\
-\midrule
-a, 1000 & 2500 & 229.437 & 4.358 & 271.919 & 0 & 1.185 & 3.678 && 258.388 & 0 & 1.126 & 3.870 \\
-a, 1000 & 5000 & 114.965 & 8.698 & 198.325 & 0 & 1.725 & 5.042 && 172.613 & 0 & 1.502 & 5.793 \\
-\midrule
-\midrule
-r, 100 & 2500 & 23.473 & 4.260 & 37.069 & 5 & 1.600 & 2.698 && 35.419 & 16 & 1.523 & 2.823 \\
-r, 100 & 5000 & 11.981 & 8.347 & 32.348 & 1 & 2.731 & 3.091 && 29.611 & 5 & 2.497 & 3.377 \\
-\midrule
-r, 500 & 2500 & 115.239 & 4.339 & 184.106 & 0 & 1.612 & 2.716 && 177.249 & 0 & 1.551 & 2.821 \\
-r, 500 & 5000 & 57.865 & 8.641 & 163.819 & 0 & 2.860 & 3.052 && 153.416 & 0 & 2.678 & 3.259 \\
-\midrule
-r, 1000 & 2500 & 229.946 & 4.349 & 368.453 & 0 & 1.617 & 2.714 && 355.042 & 0 & 1.557 & 2.817 \\
-r, 1000 & 5000 & 115.227 & 8.679 & 328.618 & 0 & 2.882 & 3.043 && 308.642 & 0 & 2.706 & 3.240 \\
-\bottomrule
-\end{tabular}
-\vspace{0.2cm} %
-\begin{tablenotes}
-\item[1] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
-\item[2] Number of strips per solution (mean from 1000 instances).
-\item[3] Number of instances where a solution using $t$ strips was found (from 1000 instances).
-\item[4] $q = |\mathcal{S}| /t$ (mean from 1000 instances).
-\end{tablenotes}	
-\end{threeparttable}	
-\label{table:comparison}
-\end{table}
-\end{comment}
 
 \end{document}
