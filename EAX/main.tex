@@ -9,7 +9,7 @@
 \author{Jonathan M. Thompson}
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 \begin{abstract}
-\note{Type of packing problem in which order and orientation of items is important. Paper investigates heuristics, EA, postoptimisation.} \alert{make sure it says ``vicinal sum constraint'', not ``vicinal score constraint''.}
+\note{Type of packing problem in which order and orientation of items is important. Paper investigates heuristics, EA, postoptimisation.} \alert{make sure it says ``vicinal sum constraint'', not ``vicinal score constraint'', make sure all primes are $'$ not '.}
 \end{abstract}	
 \end{frontmatter}
 
@@ -317,25 +317,25 @@ The minimum scoring distance also introduces differences in solutions for the BP
 \begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{8pt}}}\toprule
 	& & & \multicolumn{3}{c}{MFFD} &\phantom{a}& \multicolumn{3}{c}{MFFD$^+$}\\
 	\cmidrule{4-6} \cmidrule{8-10}
-	Type, $n$& $W$ & $t$\tnote{1} & $|\mathcal{S}|$\tnote{2} & $\# t$\tnote{3} & $q$\tnote{4} && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule	
-	artificial, 100 & 2500 & 23.323 & 30.754 & 0 & 1.320 && 28.457 & 26 & 1.221 \\
-	artificial, 100 & 5000 & 11.922 & 23.583 & 0 & 1.982 && 19.881 & 7 & 1.670  \\
+	Type, $n$ & $W$ & $t$\tnote{1} & $|\mathcal{S}|$\tnote{2} & $\# t$\tnote{3} & $q$\tnote{4} && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule	
+	a, 100 & 2500 & 23.323 & 30.754 & 0 & 1.320 && 28.457 & 26 & 1.221 \\
+	a, 100 & 5000 & 11.922 & 23.583 & 0 & 1.982 && 19.881 & 7 & 1.670  \\
 	\midrule
-	artificial, 500 & 2500 & 114.942 & 140.206 & 0 & 1.220 && 132.647 & 0 & 1.154 \\
-	artificial, 500 & 5000 & 57.722 & 103.209 & 0 & 1.789 && 89.544 & 0 & 1.552 \\
+	a, 500 & 2500 & 114.942 & 140.206 & 0 & 1.220 && 132.647 & 0 & 1.154 \\
+	a, 500 & 5000 & 57.722 & 103.209 & 0 & 1.789 && 89.544 & 0 & 1.552 \\
 	\midrule
-	artificial, 1000 & 2500 & 229.437 & 271.919 & 0 & 1.185 && 258.388 & 0 & 1.126 \\
-	artificial, 1000 & 5000 & 114.965 & 198.325 & 0 & 1.725 && 172.613 & 0 & 1.502 \\
+	a, 1000 & 2500 & 229.437 & 271.919 & 0 & 1.185 && 258.388 & 0 & 1.126 \\
+	a, 1000 & 5000 & 114.965 & 198.325 & 0 & 1.725 && 172.613 & 0 & 1.502 \\
 	\midrule
 	\midrule
-	real, 100 & 2500 & 23.473 & 37.069 & 5 & 1.600 && 35.419 & 16 & 1.523 \\
-	real, 100 & 5000 & 11.981 & 32.348 & 1 & 2.731 && 29.611 & 5 & 2.497 \\
+	r, 100 & 2500 & 23.473 & 37.069 & 5 & 1.600 && 35.419 & 16 & 1.523 \\
+	r, 100 & 5000 & 11.981 & 32.348 & 1 & 2.731 && 29.611 & 5 & 2.497 \\
 	\midrule
-	real, 500 & 2500 & 115.239 & 184.106 & 0 & 1.612 && 177.249 & 0 & 1.551 \\
-	real, 500 & 5000 & 57.865 & 163.819 & 0 & 2.860 && 153.416 & 0 & 2.678 \\
+	r, 500 & 2500 & 115.239 & 184.106 & 0 & 1.612 && 177.249 & 0 & 1.551 \\
+	r, 500 & 5000 & 57.865 & 163.819 & 0 & 2.860 && 153.416 & 0 & 2.678 \\
 	\midrule
-	real, 1000 & 2500 & 229.946 & 368.453 & 0 & 1.617 && 355.042 & 0 & 1.557 \\
-	real, 1000 & 5000 & 115.227 & 328.618 & 0 & 2.882 && 308.642 & 0 & 2.706 \\
+	r, 1000 & 2500 & 229.946 & 368.453 & 0 & 1.617 && 355.042 & 0 & 1.557 \\
+	r, 1000 & 5000 & 115.227 & 328.618 & 0 & 2.882 && 308.642 & 0 & 2.706 \\
 	\bottomrule
 \end{tabular}
 \vspace{0.2cm} %
@@ -407,7 +407,7 @@ The first operator is based on the grouping genetic algorithm (GGA) of Falkenaue
 
 Another operator implemented is the alternating grouping crossover (AGX), and is analogous to that of Quiroz-Castellanos et al. \cite{quiroz2015}. Starting with the parent solution containing the fullest strip, AGX inserts this strip into an offspring solution $\mathcal{S}$, and strips containing items in $\mathcal{S}$ are removed from the other parent.\footnote{For both AGX and AGX', in the event that both parents contain strips with equal maximum fullness/number of items, the initial parent solution is chosen at random.} The operator then inserts the fullest strip from the modified parent into $\mathcal{S}$ and removes strips from the first parent. AGX continues to alternate between parents, selecting the fullest strip $max_{S_j \in \mathcal{S}_p} (A(S_j))$ (where $\mathcal{S}_p$ is the parent solution under consideration, $p \in \{1,2\}$) until $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ strips have been added to the offspring solution. \ea{How is AGX useful?}
 
-Our final operator, AGX', performs in a similar manner to AGX, however rather than choosing the fullest strip to insert into the offspring solution AGX' selects strips containing the most items, $max_{S_j \in \mathcal{S}_p} (|S_j|)$. This method has the ability to preserve strips containing items that are harder to pack along with other items. 
+Our final operator, AGX$'$, performs in a similar manner to AGX, however rather than choosing the fullest strip to insert into the offspring solution AGX$'$ selects strips containing the most items, $max_{S_j \in \mathcal{S}_p} (|S_j|)$. This method has the ability to preserve strips containing items that are harder to pack along with other items. 
 
 In order to maintain feasibility, the operators remove entire strips containing duplicate items, rather than individual items. These strips may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items, and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}^*$. The partial offspring solution $\mathcal{S}$ and $\mathcal{S}^*$ are then used as input into a local search procedure to create a full feasible offspring solution.
 
@@ -481,12 +481,13 @@ We therefore make use of the following function to calculate the fitness of a so
 
 \noindent which assigns higher values to fitter solutions. This function exerts evolutionary pressure by favouring solutions with superior parkings, reducing the ability for less fit solutions to reproduce. Note also that if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of strips.
 
+It is also important to consider how the vicinal sum constraint affects the fitness of a solution. Given two half-full strips containing items from an instance of the classical BPP, it may be possible to move items betweenthe strips such that one strip is almost full and the other nearly empty. Now, suppose the items inthe half-filled strips have score lines, and are from an instance of the SCSPP. Obviously, it is more difficult to shuffle the items between the strips as the vicinal sum constraint may be violated. Thus, fuller strips in the SCSPP are extremely valuable, and the fitness function ensures that solutions containing fuller strips are preserved in the population throughout generations.
 
+% Hidden: Bullet point list for EA Framework, all \idone
 \begin{comment}
-A fitness function is used to calculate a fitness value to determine the quality of a solution, as opposed to simply relying on the number of strips within the solution. The reason for this is twofold: firstly, given two candidate solutions of equal size, it is impossible to determine the better solution based on the number of strips alone. Secondly, we note that the quality of a solution not only depends on the number of strips used, but \emph{how} the items are packed onto the strip. \ea{Recall} that strips that are ``fuller'' are preferrable over less filled strips, even if they contain more items. Thus, we consider a strip whose capacity is taken advantage of to be a ``better packed'' strip, reducing the amount of waste material. This may result in a strip in the solution that is nearly empty, which is beneficial as it allows further items to be packed, or the residual material could be used for other means. This type of packing is desirable over a packing of strips that are only half full, requiring more strips than necessary to pack all of the items. \ea{Well-filled strips with larger items preferable over less-filled strips with smaller items (Levine \cite{levine2004}).}
-\end{comment}
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
+	\item
 	\idone{Create candidate solutions for initial population, one solution using MFFD$^+$, the others using MFFR$^+$ (items sorted in random order as opposed to decreasing order of widths), each solution is mutated before being inserted into the population.}
 	\idone{Each iteration of EA, two parent solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ are chosen from the population at random, crossover operator used to create single offspring solution $\mathcal{S}$, which is then mutated before replacing the least fit parent solution in the population (breaking ties randomly).}
 	\idone{Fitness function $f(\mathcal{S}) = \frac{\sum_{S \in \mathcal{S}} (A(S)/W)^2}{|\mathcal{S}|}$ \cite{falkenauer1992}.}
@@ -496,43 +497,52 @@ A fitness function is used to calculate a fitness value to determine the quality
 	\idone{Not only considering how many strips required to pack all items, but how those items are packed onto the strips (optimise how the strips are packed).}
 	\idone{Better packed strips means full capacity of strip is taken advantage of, reduce waste material on strips, plus nearly empty strips can be used to accommodate more items, or waste material can be reused.}
 	\idone{If the strips are packed well, fewer strips required, else if strips are not packed well, extra strips required to pack items that cannot be packed onto strips already being used.}
-	\item Take into account vicinal sum constraint - there may be two strips that are roughly equally filled, however even though it may seem that the items could be shuffled so that more are on one strip (thus a better packing), it may not be possible due to the constraint - not taken into account in other applications of this fitness value, however will still use this fitness value as our aim is to produce the best packing possible given the constraint.
-	\item As an example, use fitness values from example solutions created using FFD/MFFD/MFFD$^+$ from Heuristics section figures.
+	\idone{Take into account vicinal sum constraint - there may be two strips that are roughly equally filled, however even though it may seem that the items could be shuffled so that more are on one strip (thus a better packing), it may not be possible due to the constraint - not taken into account in other applications of this fitness value, however will still use this fitness value as our aim is to produce the best packing possible given the constraint.}
+	\idone{As an example, use fitness values from example solutions created using FFD/MFFD/MFFD$^+$ from Heuristics section figures.}
 \end{itemize}
 }
+\end{comment}
 
 \subsection{Experimental Results - EA}
 \label{sub:expea}
-\noindent To allow for a fair comparison with the heuristics in Section~\ref{sec:scspp}, we used the same four sets of problem instances for the EA. Each of these four sets is used with six different combinations of crossover operators and strip widths. An initial population of 25 candidate solutions is fixed for all experiments. The EA is set to execute for 300 seconds. Table~\ref{table:ea} shows the output from our experiments.
+\noindent To allow for a fair comparison with the heuristics in Section~\ref{sec:scspp}, the same six sets of problem instances from the previous experiments were used to obtain results from our EA. Each of the instance classes were executed six times using different recombination operators and strip widths, produced 36 subclasses overall. We settled for an initial population containing 25 candidate solutions, which was shown to produce the best results. The advantage of using a small population size was to be expected, as the vicinal sum constaint limits the number of feasible candidiate solutions using a reasonable number of strips. It was seen that larger population sizes contained an abundance of poor solutions comprising over twice the number of strips as used in the final solution, whilst even smaller populations lacked the diversity needed to escape local optima. Across all instances, the EA had a fixed time limit of 300 seconds. Table~\ref{table:ea} displays the results obtained from the experiments.
 
 \begin{table}[h!]
-	\centering
-	\caption{EA comparisons}
-	\begin{tabular}{cccccccccccc}\toprule
-		& & & &\multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{GPX'} &\phantom{a}& \multicolumn{2}{c}{GPN}\\
-		\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
-		Instance & $W$ & $t$ && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$ \\ \midrule	
-		a,100 & 2500 & 23.323 && 23.483 & 931 && 23.357 & 977 && 23.372 & 966 \\
-		a,100 & 5000 & 11.922 && EA151 & - && EA152 & - && EA153 & -\\
-		\midrule
-		a,500 & 2500 & 114.942 && 116.681 & 264 && 117.041 & 213 && 116.604 & 277 \\
-		a,500 & 5000 & 57.722 && EA551 & - && EA552 & - && EA553 & -\\
-		\midrule
-		a,1000 & 2500 & 229.437 && EA1021 & - && EA1022 & - && EA1023 & -\\
-		a,1000 & 5000 & 114.965 && ER1051 & - && EA1052 & - && EA1053 & -\\
-		\midrule
-		\midrule
-		r,100 & 2500 & 23.473 && ER121 & - && ER122 & - && ER123 & -\\
-		r,100 & 5000 & 11.981 && ER151 & - && ER152 & - && ER153 & -\\
-		\midrule
-		r,500 & 2500 & 115.239 && ER521 & - && ER522 & - && ER523 & -\\
-		r,500 & 5000 & 57.865 && ER551 & - && ER552 & - && ER553 & -\\
-		\midrule
-		r,1000 & 2500 & 229.946 && ER1021 & - && ER1022 & - && ER1023 & -\\
-		r,1000 & 5000 & 115.227 && ER1051 & - && ER1052 & - && ER1053 & -\\
-		\bottomrule
-	\end{tabular}	
-	\label{table:ea}
+\centering
+\caption{\ea{EA comparisons}}
+\begin{threeparttable}
+\begin{tabular}{c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}ccc@{\hspace{15pt}}c@{\hspace{15pt}}ccc@{\hspace{15pt}}c@{\hspace{15pt}}c}\toprule
+	& & & \multicolumn{3}{c}{GGA} &\phantom{a}& \multicolumn{3}{c}{AGX} &\phantom{a}& \multicolumn{3}{c}{AGX$'$}\\
+	\cmidrule{4-6} \cmidrule{8-10} \cmidrule{12-14}
+	Type, $n$& $W$ & $t$\tnote{1} & $|\mathcal{S}|$\tnote{2} & $\# t$\tnote{3} & $q$\tnote{4} && $|\mathcal{S}|$ & $\# t$ & $q$ && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule \midrule
+	a, 100 & 2500 & 23.323 & EA121 & - & - && EA122 & - & - && EA123 & - & -\\
+	a, 100 & 5000 & 11.922 & EA151 & - & - && EA152 & - & - && EA153 & - & -\\
+	\midrule
+	a, 500 & 2500 & 114.942 & EA521 & - & - && EA522 & - & - && EA523 & - & -\\
+	a, 500 & 5000 & 57.722 & EA551 & - & - && EA552 & - & - && EA553 & - & -\\
+	\midrule
+	a, 1000 & 2500 & 229.437 & EA1021 & - & - && EA1022 & - & - && EA1023 & - & - \\
+	a, 1000 & 5000 & 114.965 & ER1051 & - & - && EA1052 & - & - && EA1053 & - & - \\
+	\midrule \midrule
+	r, 100 & 2500 & 23.473 & ER121 & - & - && ER122 & - & - && ER123 & - & - \\
+	r, 100 & 5000 & 11.981 & ER151 & - & - && ER152 & - & - && ER153 & - & - \\
+	\midrule
+	r, 500 & 2500 & 115.239 & ER521 & - & - && ER522 & - & - && ER523 & - & - \\
+	r, 500 & 5000 & 57.865 & ER551 & - & - && ER552 & - & - && ER553 & - & - \\
+	\midrule
+	r, 1000 & 2500 & 229.946 & ER1021 & - & - && ER1022 & - & - && ER1023 & - & - \\
+	r, 1000 & 5000 & 115.227 & ER1051 & - & - && ER1052 & - & - && ER1053 & - & - \\
+	\bottomrule
+\end{tabular}	
+\vspace{0.2cm} %
+\begin{tablenotes}
+	\item[1] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
+	\item[2] Number of strips per solution (mean from 1000 instances).
+	\item[3] Number of instances where a solution using $t$ strips was found (from 1000 instances).
+	\item[4] $q = |\mathcal{S}| /t$ (mean from 1000 instances).
+\end{tablenotes}
+\end{threeparttable}
+\label{table:ea}
 \end{table}
 
 {\color{myRed}
