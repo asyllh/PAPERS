@@ -10,7 +10,6 @@
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 \begin{abstract}
 \note{Type of packing problem in which order and orientation of items is important. Paper investigates heuristics, EA, postoptimisation.} 
-%\alert{make sure it says ``vicinal sum constraint'', not ``vicinal score constraint'', make sure all primes are $'$ not '.}
 \end{abstract}	
 \end{frontmatter}
 
@@ -60,57 +59,34 @@ Each item $i \in \mathcal{I}$ can be packed onto the strip in a regular orientat
 
 \noindent The BPP can be seen as a special case of the SCSPP when $\tau = 0$. As with the TPP and CSP-SDCL, the SCSPP not only involves deciding which strip each item should be packed onto, but also, unlike the BPP, \emph{how} the items should be packed -- that is, determining the order and orientation of items within each strip. One specific difference, however, concerns the feasibility of individual strips. In the TPP, although clearly not optimal, it is still legal to place trapezoids with opposite angles, i.e. `$\backslash$' and `/', alongside one another. Likewise in the CSP-SDCL, two items with a large cut loss between them can still be packed alongside one another if necessary. Both of these problems allow items to be packed in \emph{any} order and orientation as long as the strips are not overfilled. In contrast, the SCSPP possesses the strong vicinal sum constraint which if violated immediately causes an alignment of items on a strip to be invalid, thus rendering the entire solution infeasible. For consistency, we shall refer to the \intro{single-strip} problem of finding a legal sequence of a subset of items $\mathcal{I}' \subseteq \mathcal{I}$ on a \intro{single strip} as the Score-Constrained Strip-Packing Sub-Problem (SubSCP).
 
-In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the SubSCP. Section~\ref{sec:scspp} will explain the difficulties associated with the SCSPP and analyse bespoke heuristics \intro{not created in this paper}. An evolutionary algorithm for the SCSPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:postopt} details a postoptimisation procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
+In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the SubSCP. Section~\ref{sec:scspp} will explain the difficulties associated with the SCSPP and analyse bespoke heuristics \intro{created in a different paper}. An evolutionary algorithm for the SCSPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:postopt} details a postoptimisation procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
 
-% Hidden: Bullet point list for Intro, all \idone
-\begin{comment}
 {\color{myOrange}
 \begin{itemize}[leftmargin=*]
-	\item
-	\idone{Lit review, Becker \cite{becker2015}, Lewis \cite{lewis2011} (Lewis TSP method), Hawa \cite{hawa2018}, cite Garraffa \cite{garraffa2016}.}
-	\idone{MGPs, cite Lewis \cite{lewis2009}, general formula.}
-	\idone{Formal definition COP, vicinal sum constraint.}
-	\idone{Example instance $\mathcal{M}$ of COP and possible solution $\mathcal{T}$ using constraint value $\tau = 7$.}
-	\idone{Description of subproblem, pack from left to right, minimum scoring distance, single strip problem.}
-	\idone{Cite Goulimis \cite{goulimis2004}.}
-	\idone{$a_i, b_i, w_i, \mathcal{I}, \mathcal{I}', W, H, \tau, |\mathcal{I}| = n$.}
-	\idone{$\tau$ = 70mm approx in industry.}
-	\idone{$(a_i, b_i)$, $(b_i, a_i)$ orientations (regular and rotated).}
-	\idone{Outermost score widths/elements ignored.}
-	\idone{Need to decide order and orientation of items on strip.}
-	\idone{$2^{n-1} n!$ distinct orderings, combinatorial explosion.}
-	\idone{Show that the subproblem is equivalent to the COP, minimum scoring distance = VSC.}
-	\idone{COP/subproblem the strips have infinite width, what if finite width?}
-	\idone{Formal defintion of SCSPP, multistrip problem.}
-	\idone{Need to decide which strip to pack each item, and \emph{how}, i.e. what order and orientation should the items be in.}
-	\idone{BPP special case of SCSPP with $\tau = 0$.}
-	\idone{Items can be run through machine individually but extra time/cost.}
-	\idone{Two phase approach, EA then postopt, Malaguti \cite{malaguti2008}.}
-	\idone{Call the two phase process EAX?}
-	\idone{Polynomial-time algorithm for COP Becker \cite{becker2010} Hawa \cite{hawa2018}}
-	\idone{Describe rest of paper/layout.}
-	\idone{TPP/SDCL ordering still feasible, just not optimal, SCSPP ordering may not be feasible.}
+	\item Change first sentence.
+	\item For the TPP and SDCL, order and orientation helps minimise waste material and find a better solution using fewer strips, but for the SCSPP order and orientation is required to find a \emph{feasible} solution.
+	\item Two phsae approach using postoptimisation stage (like Malaguti \cite{malaguti2008}).
+	\item Items can be run through the machine individually but this incurs extra time/costs.
 \end{itemize}
 }
-\end{comment}
 
 %--------------------------------------------------------------------------------------
-\section{The Alternating Hamltonian Construction (AHC) algorithm}
+\section{The Alternating Hamltonian Construction Algorithm}
 \label{sec:ahc}
-\noindent Consider the Constrained Ordering Problem (COP), as defined in Hawa et al. \cite{hawa2018}:
+\noindent Firstly, let us consider the following sequencing problem originally defined by Hawa et al. \cite{hawa2018}:
 
 \begin{definition} % COP
 	\label{defn:cop}
-	Let $\mathcal{M}$ be a multiset of unordered pairs of positive integers $\mathcal{M} = \{\{a_1, b_1\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, and let $\mathcal{T}$ be a sequence of the elements of $\mathcal{M}$ in which each pair is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that, between every pair of tuples in the sequence, the sum of adjacent values from different tuples is greater than or equal to $\tau$.
+	Let $\mathcal{M}$ be a multiset of unordered pairs of integers $\mathcal{M} = \{\{a_1, b_1\}, \{a_2, b_2\},\dotsc,\{a_n, b_n\}\}$, and let $\mathcal{T}$ be a sequence of the elements of $\mathcal{M}$ in which each pair is a tuple. Given a fixed value $\tau \in \mathbb{Z}^+$, the Constrained Ordering Problem (COP) consists of finding a solution $\mathcal{T}$ such that the sum of adjacent values from different tuples is greater than or equal to $\tau$.
 \end{definition}
 
-\noindent For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and a fixed value $\tau = 7$, one possible feasible ordering is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. Then, it follows that the requirement for adjacent values to exceed $\tau$ corresponds to the vicinal sum constraint \eqref{eqn:vsc}.
+\noindent For example, given the COP instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$ and a fixed value $\tau = 7$, one possible feasible sequence is $\mathcal{T} = \langle(1,6), (2,4), (3,5), (2,3), (4,5), (2,1)\rangle$. It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. It follows that the requirement for the sum of adjacent values to exceed $\tau$ corresponds to the vicinal sum constraint \eqref{eqn:vsc}.
 
-We now present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and thus also the SubSCP. The underlying algorithm was originally proposed in \cite{becker2010}, and determines whether a feasible solution exists for a given instance. This was then extended by Hawa et al. \cite{hawa2018} so that if a solution does indeed exist, AHC is able to formulate and present the final solution. This is particularly useful for problems in industry. Here, we simplify and increase the efficiency and speed of AHC by replacing two of the subprocedures used in the previous version of AHC with a single algorithm.
+We now present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and thus also the SubSCP. The underlying algorithm was originally proposed in \cite{becker2010}, and determines whether a feasible solution exists for a given instance. This was then extended by Hawa et al. \cite{hawa2018} so that if a solution does indeed exist AHC is able to formulate and present the final solution. This is particularly useful for problems in industry. Here, we further simplify and increase the efficiency and speed of AHC by replacing two of the subprocedures used in the previous version of AHC with a single algorithm.
 
-We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value in $\mathcal{M}$ it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$. In order to prevent executing the algorithm unnecessarily, we are able to perform a simple check to determine if a given instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the ends of the ordering. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$.\footnote{A positive outcome from this test does not imply that a feasible solution exists for a given instance.}
+We begin by producing a graphical representation of the given instance $\mathcal{M}$ of the COP. The graph $G$ has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order, with each vertex $v_i \in V$ weighted with the value in $\mathcal{M}$ it represents. For simplicity, we shall refer to each value in $\mathcal{M}$ by its vertex on $G$. In order to prevent executing the algorithm unnecessarily, a basic preliminary test is performed to determine if the instance is infeasible. Of the $2n$ values, suppose the smallest values $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if the next-smallest value $v_3$ and the largest value $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note, however, that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance.
 
-If $\mathcal{M}$ has not been decided as infeasible, an extra pair of vertices is added to $G$, each assigned a value equal to $\tau$. $G$ comprises two edge sets: $B$, which contains blue edges between vertices that are ``partners'' (that is, whose values make up an unordered pair in $\mathcal{M}$); and $R$, containing red edges between vertices that add up to $\geq \tau$ and are not partners. The extra pair of vertices, $v_{2n+1}$ and $v_{2n+2}$, can be seen to be dominating vertices, as their weighted values means they will be adjacent to every other vertex via an edge in $R$, and thus have degrees of $2n+1$.\footnote{Note that the dominating vertices $v_{2n+1}$ and $v_{2n+2}$ are partners.} Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, we can denote the set of edges between partners as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Figure~\ref{fig:threshold} illustrates an example of the resulting graph $G = (V, B \cup R)$ produced from the instance $\mathcal{M}$ of the COP provided in Section~\ref{sec:intro}. It can be seen that $|B| = n+1$, hence $B$ is a perfect matching. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices.
+If $\mathcal{M}$ has not been deemed infeasible an extra pair of vertices is added to $G$, each assigned a value equal to $\tau$. $G$ comprises two edge sets: $B$, which contains \ahc{blue} edges between vertices that are \emph{partners}, that is, whose values make up an unordered pair in $\mathcal{M}$; and $R$, containing \ahc{red} edges between vertices that add up to $\geq \tau$ and are not partners. The additional vertices $v_{2n+1}$ and $v_{2n+2}$ are partners, and can be seen to be universal vertices as they are adjacent to every other vertex via an edge in $R$; thus both have degree $2n+1$. Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, the set of edges between partners can be denoted as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the \ahc{degree of each vertex increasing in accordance with the weight} of the vertices - \ahc{degree sequence}.
 
 A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
 
@@ -119,13 +95,13 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of one of two sets, $B$ or $R$. $G$ contains an alternating Hamiltonian cycle if there exists a Hamiltonian cycle such that successive edges alternate between sets $B$ and $R$.
 \end{definition}
 
-\noindent Note that a red edge in $G$ shows two values from different unordered pairs that meet the vicinal sum constraint and can be ordered adjacent to one another. Therefore, $R$ contains edges that represent \emph{all} possible feasible pairings of values. It can be seen that an alternating Hamiltonain cycle in $G$ corresponds to a feasible ordering of the elements in $\mathcal{M}$, as the edges from $R$ depict the order of each tuple in $\mathcal{T}$ and the order of the values \emph{within} each tuple. The solution $\mathcal{T}$ must containg all elements from the problem instance $\mathcal{M}$, and the unordered pairs in $\mathcal{M}$ cannot be altered or rearranged, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Thus, our task is to find a suitable set of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. As $B$ is a perfect matching, it follows that $R'$ must also be a matching, else there will not be enough edges to form the cycle.
+\noindent It can be seen that if two vertices are connected via an edge in $R$, then their corresponding values in $\mathcal{M}$ fulfil the vicinal sum constraint and can be ordered adjacent to one another, thus $R$ contains \emph{all} possible feasible pairings of values. It then follows that an alternating Hamiltonain cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges from $R$ depict the order of each tuple in $\mathcal{T}$ and the order of the values \emph{within} each tuple. The solution $\mathcal{T}$ must contain all elements from the problem instance $\mathcal{M}$ and the unordered pairs in $\mathcal{M}$ cannot be altered or rearranged, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Therefore, the aim is to find a suitable set of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. As $B$ is a perfect matching the subset $R'$ must also be a matching, else there will not be enough edges to form the cycle.
 
-The dominating vertices are used to aid the construction of the alternating Hamiltonian cycle, as they are able to connect to the smallest vertices. Once an alternating Hamiltonian cycle has been produced, the dominating vertices and any incident edges are removed, leaving the smallest vertices as the end points on the path. These vertices correspond to the smallest values in the problem instances, which will be in the outermost positions in the solution $\mathcal{T}$.
+The universal vertices are used to aid the construction of the alternating Hamiltonian cycle as they are able to connect to the smallest vertices, however once an alternating Hamiltonian cycle has been produced the universal vertices and any incident edges are removed, leaving the smallest vertices as the endpoints on the path. These vertices correspond to the smallest values in the problem instance which will be in the outermost positions of the solution $\mathcal{T}$.
 
-Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}. The problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. However, due to the manner in which graphs are created from instances of the COP, and the requirement that all edges in $B$ must be included, we are able to determine if an alternating Hamiltonian cycle exists in polynomial time \cite{hawa2018}.
+Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \cite{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \cite{hawa2018}.
 
-The Maximum Cardinality Matching (MCM) algorithm is used to produce a matching $R'$ from $R$ \cite{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. This set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
+The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \cite{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be ``matched''. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$. This set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
 	\item $i \neq 1$;
 	\item $v_{i-1}$ has been matched; and
@@ -309,7 +285,7 @@ The minimum scoring distance also introduces differences in solutions for the BP
 
 \subsection{Experimental Results - Heuristics}
 \label{sub:expheuristics}
-\noindent Although a comparison of these heuristics is given in \cite{hawa2018}, we performed out own tests where AHC used in MFFD$^+$ includes the preliminary check and the new BCR procedure. For our experiments, we produced two different types of instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. The minimum scoring distance $\tau$ was set to 70mm for all instances - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different strips widths, $W = 2500$ and 5000 were used to alter the number of items per strip. As optimal solutions are not available, we calculate the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
+\noindent Although a comparison of these heuristics is given in \cite{hawa2018}, we performed out own tests where AHC used in MFFD$^+$ includes the preliminary check and the new BCR procedure. For our experiments, we produced two different types of instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. The minimum scoring distance $\tau$ was set to 70mm for all instances - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different strips widths, $W = 2500$ and 5000 were used to alter the number of items per strip. As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
 
 \begin{table}[h!]
 \centering
@@ -561,6 +537,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	\item At the end of each EA iteration, add all strips from offspring to feasPacking set to use in post optimisation phase.
 	\item Number of solution in initial population = 25.
 	\item Time limit for EA - 300 seconds.
+	\item Time graph output.
 \end{itemize}
 }
 
@@ -606,14 +583,13 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Exact cover problem is decision problem, does a set exist.
 	\item However since we add every item on its own strip to feasPacking, we know that a set exists.
 	\item Problem is to find minimum number of strips that covers all items and contains every item exactly once.
-	\idone{$A = (a_{ij})$ - $m$ x $n$ matrix.}
-	\idone{$M = \{1, 2,..., m\}$ - rows of the matrix, each row $i \in M$ is a strip.}
-	\idone{$N = \{1, 2,...,n\}$ - columns of the matrix, each column $j \in N$ is an item.}
-	\idone{$(a_{ij}) = 1$ iff item $j$ is on strip $i$.}
-	\idone{Say that row $i$ covers column $j$ if $a_{ij} = 1$.}
+	\idone{$X = (x_{ij})$ - $m$ x $n$ matrix (previously matrix $A = (a_{ij})$).}
+	\idone{$M = \{1, 2,\dotsc, m\}$ - rows of the matrix, each row $i \in M$ is a strip.}
+	\idone{$N = \{1, 2,\dotsc,n\}$ - columns of the matrix, each column $j \in N$ is an item.}
+	\idone{$x_{ij} = 1$ iff item $j$ is on strip $i$ (previously $a_{ij} = 1$).}
+	\idone{Say that row $i$ covers column $j$ if $x_{ij} = 1$.}
 	\idone{Find the smallest number of strips $S \subseteq M$ that contains every item exactly once, i.e. union of strips $= \mathcal{I}$ and intersection $= \emptyset$.}
 	\idone{Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$.}
-	\item Xpress mosel model.
 \end{itemize}
 }
 
@@ -622,69 +598,53 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	\item
+	\item Use set $\mathcal{A}$ of feasible packings created during EA in previous section.
+	\item C++ circularly linked lists
+	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far.
+	\item Also used Xpress Mosel model (link) to compare.
 \end{itemize}
 }
 
-\section{Conclusion}
+%--------------------------------------------------------------------------------------
+\section{Conclusion and Further Work}
 \label{sec:conclusion}
 
 {\color{myPurple}
 \begin{itemize}[leftmargin=*]
-	\item Could use selected packings rather than all packings
+	\item Could use selected packings rather than all packings.
+	\item Lower bound.
 \end{itemize}
 }
 
-% Hidden: Citations used/not yet used 
-\begin{comment}
-%Citations
-%Numbers refer to section reference is cited in 1:Intro, 2:AHC, 3:SCSPP, 4:EA, 5:Postopt
-%\cite{aardal2007}1 - Frequency assignment
-%\cite{becker2010}1/2 - MSSP PhD
-%\cite{carter1996}1 - Exam timetabling strategies
-%\cite{coffman1984}1 - Approx algorithms survery for BPP
-%\cite{coffman1987}1 - BPP divisible item sizes
-%\cite{decarvalho1999}1 - Exact solution BPP column generation/B&B
-%\cite{dosa2007}3 - Tight bound FFD BPP
-%\cite{falkenauer1992}4 - Genetic algorithm BPP and line balancing
-%\cite{falkenauer1996}4 - Hybrid grouping genetic algorithm for BPP
-%\cite{fleszar2002}1 - New heuristics for BPP
-%\cite{garraffa2016}1 - CSP with sequence-dependent cut losses
-%\cite{goulimis2004}1 - Minimum score separation associated with CSP
-%\cite{haggkvist1977}2 - On F-Hamiltonian graphs (Alt Ham generalisation proposition)
-%\cite{haouari2009}1 - Heuristics variable sized BPP
-%\cite{hawa2018}1/2/3 - Heuristics SCSPP
-%\cite{johnson1973}3 - Near-optimal BPP algorithms
-%\cite{karp1972}2/5 - Reducibility among combinatorial problems (21 NP-Complete problems)
-%\cite{knuth2000}5 - Dancing links (DLX)
-%\cite{levine2004}4 - Ant colony optimisation and local search for BPP and CSP
-%\cite{lewis2009}1/3/4 - Hill-climbing for OIMGPs, graph coloring and BPP
-%\cite{lewis2011}1 - Investigation two BPPs with order and orientation implications
-%\cite{lewis2012}1 - Wide-ranging comparison of graph colouring algorithms
-%\cite{lewis2017}1/4 - How to pack trapezoids, exact and evolutionary
-%\cite{mahadev1994}2 - Longest cycles in threshold graphs
-%\cite{malaguti2008}1/5 - Metaheuristic approach for vertex colouring
-%\cite{martello1990l}3/4 - Lower bounds and reduction procedures for BPP
-%\cite{quiroz2015}4 - Grouping genetic algorithm for BPP
-%\cite{rekiek1999}1 - Applying equal piles problem to balance assembly lines
-%\cite{thompson1998}1 - Simulated annealing base exam timetabling system.
-
-%Not yet cited:
-%\cite{alvim2004} - Hybrid BPP
-%\cite{becker2015} - MSSP paper
-%\cite{coffman1978} - BPP multiprocessor scheduling
-%\cite{eilon1971} - Loading problem
-%\cite{garey1972} - Worst-case analysis of memory allocation algorithms
-%\cite{garey1979} - Computers and Intractability: A Guide to the Theory of NP-completeness
-%\cite{gilmore1961} - LP approach to CSP Part 1
-%\cite{gilmore1963} - LP approach to CSP Part 2
-%\cite{hung1978} - Algorithm for class of loading problems
-%\cite{johnson1974f} - Fast algorithms for BPP
-%\cite{johnson1974w} - Worst-case performance bounds for BPP algorithms
-%\cite{korf2002} - New algorithm for BPP
-%\cite{mahadev1995} - Threshold graphs and related topics
-%\cite{martello1990k} - Knapsack problems
-\end{comment}
+%--------------------------------------------------------------------------------------
+\section{Checklist}
+{\color{myAqua}
+\begin{itemize}[leftmargin=*]
+	\item Vicinal \emph{sum} constraint, not vicinal \emph{score} constraint.
+	\item All dashes $'$ not '. 
+	\item Citations/references/links.
+	\item Abbreviations (SCSPP, SubSCP, AHC etc.) spelling and being used correctly.
+	\item Figure and table captions.
+	\item References in correct format, title, year, authors, journal etc.
+	\item Name of entire process EAX?
+	\item Zenodo links DOI.
+	\item State specification of computers used for experiments.
+	\item Section and subsection titles, capitalisation and spelling.
+	\item All figures have same line thickness, dashed line density and thickness, label size, vertex size, and colour (use tikz colours tRed and tBlue).
+	\item All figures aligned correctly, subfigures aligned so that the captions are level.
+	\item $\backslash$noindent only used when required, after equations, check if needed after definitions/figures/tables etc.
+	\item Equations referenced using $\backslash$eqref, not $\backslash$ref.
+	\item Tilda $\sim$ before all $\backslash$ref.
+	\item Font/colours of figures clear, labels legible.
+	\item American/British spelling.
+	\item Word repetitions, duplicate statements.
+	\item Footnotes.
+	\item Compare with previous paper.
+	\item Table footnotes, font, spelling.
+	\item Pseudocode?
+	\item Dominating $\to$ universal.
+\end{itemize}		
+}
 
 \bibliographystyle{elsarticle-num}
 \bibliography{includes/bibliography}
