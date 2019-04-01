@@ -195,11 +195,11 @@ The vicinal sum constraint also introduces further differences in solutions for 
 \begin{figure}[H]	
 	\centering
 	\includestandalone[width=0.45\textwidth]{figures/ffd}
-	\caption{Example of an infeasible solution produced using FFD for an instance of the SCSPP. Here, $n = 15$, $W = 1000$, and $\tau = 70$. \scspp{$A(\mathcal{I}) = 5268$, therefore $t = 6$.}}	
+	\caption{An infeasible solution produced using FFD for an example instance of the SCSPP. Here, $|\mathcal{I}| = 15$, $W = 1000$, and $\tau = 70$. \scspp{$A(\mathcal{I}) = 5268$, therefore $t = 6$, shaded is unused material, item widths in middle of items.}}	
 	\label{fig:ffd}
 \end{figure}
 
-\noindent Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard \cite{garey1979}. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement are heuristics, which trade optimality for speed. As the SCSPP is a relatively new problem, few methods have been seen in literature. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD, with the extra condition that an item can only be packed onto the end of a strip if the score width on the end of the strip and one of the score widths on the item meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the end of the strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items on a given strip that includes the item to be packed.\footnote{If an item is the first to be packed on a strip, it is placed in a regular orientation, $(a_i, b_i)$.} Clearly, MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The limitation on MFFD of only packing items on the end has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdplus} compares solutions produced using MFFD and MFFD$^+$ using the same instance of the SCSPP as seen in Figure~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of strips as FFD while still satisfying the vicinal sum constraint.
+\noindent \scspp{Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard - has this already been stated?} \cite{garey1979}. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time \scspp{therefore like with the BPP we use heuristics}. \scspp{The simplest methods to implement are heuristics, which trade optimality for speed - should be at beginning}. As the SCSPP is a relatively new problem, few methods have been seen in literature. Some basic heuristics were introduced in Hawa et al. \cite{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD with the extra condition that an item $i$ can only be packed onto a strip $S_j$ if the score width on the end of $S_j$ and one of the score widths $a_i$ or $b_i$ meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item onto the ends of strips, MFFD$^+$ calls upon AHC to find a feasible ordering of all items currently on a given strip \emph{and} the item $i$ to be packed, i.e. AHC is used for every instance of SubSCP.\footnote{If an item $i$ is the first to be packed onto a strip, it is placed in a regular orientation, $(a_i, b_i)$.} Clearly MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The restriction on MFFD of only packing items on the ends of strips has the potential to increase the number of strips being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdplus} compares solutions produced using MFFD and MFFD$^+$ using the same instance of the SCSPP as seen in Figure~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of strips as FFD while still satisfying the vicinal sum constraint.
 
 \begin{figure}[H]	
 	\centering
@@ -213,7 +213,7 @@ The vicinal sum constraint also introduces further differences in solutions for 
 		\caption{MFFD$^+$}
 		\label{fig:mffdplus}
 	\end{subfigure}
-	\caption{Solutions produced using MFFD and MFFD$^+$ using the same instance as in the previous figure.}
+	\caption{Solutions produced using MFFD and MFFD$^+$ using the same instance as in the previous figure. \scspp{MFFD$^+$ using same number of strips as FFD but feasible, see that MFFD$^+$ items can be rearranged on strips but not in MFFD.}}
 	\label{fig:mffdvsmffdplus}
 \end{figure}
 
@@ -221,32 +221,14 @@ The vicinal sum constraint also introduces further differences in solutions for 
 {\color{myPink}
 \begin{itemize}[leftmargin=*]
 	\item Run MFFD and MFFD$^+$ experiments again, output time, and run them again using AHC from previous paper (without preliminary test and using BR/MBR, not BCR) to compare the time, also check for errors in strips/solution altHam vector.
-	\idone{Feasible solution $\mathcal{S} = \{S_1,...,S_k\}$ and four conditions.}
-	\idone{SCSPP at least as hard as BPP, NP-hard (SCSPP generalises BPP, assuming $P \neq NP$).}
-	\idone{Cannot find solution in reasonable time, therefore use heuristics, near optimal solutions faster.}
-	\idone{Lit review, heuristics used for BPP/SPP, FFD, BFD etc., how do these work with SCSPP? State how they could work with TPP/SDCL because of what was mentioned in introduction, but cannot guarantee feas solution for SCSPP due to VSC.}
-	\idone{Optimal solution requires fewest number of strips $k$ to pack all items.}
-	\idone{Lower bound for $k$ is theoretical minimum $t = \ceil*{\sum_{i=1}^{n}w_i / W}$.}
-	\idone{Lowerbound cite Martello \cite{martello1990l}.}
-	\idone{$t$ not accurate for SCSPP, doesn't take into account $\tau$, if $\tau >$ 2x largest score width then $n$ strips required, one for each item, regardless of item widths or strip width $W$.}
-	\idone{May find optimal solution without knowing, as optimal number of strips for a given problem instance of the SCSPP may be greater than $t$.}
-	\idone{Can we show a solution is optimal? If not, why?}
-	\idone{Differences BPP and SCSPP: (1) Importance of order and orientation of items; (2) Feasibility of strips when adding/removing/rearranging items.}
-	\idone{$\mathcal{F}$ denotes the set of all subsets $\mathcal{I}' \subseteq \mathcal{I}$ of items that can be feasibly packed onto a single strip, i.e. $\sum_{i \in S} w_i \leq W$ and VSC met.}
-	\idone{Heuristics for SCSPP Hawa \cite{hawa2018}.} 
-	\idone{Our implementation of AHC in MFFD$^+$ has the preliminary test and BCR, previous paper does not.}
-	\idone{MFFD - FFD but only place item if score width on end of strip meets VSC with a score width on the item (check both orientations) - operates in the same way as FFD, except additional step of checking that VSC is met with one of the score widths of the item and the right-most score width on the strip, i.e. check that $S \cup \{i\} \in \mathcal{F}$.}
-	\idone{MFFD$^+$ - FFD, incorporates AHC, instead of checking VSC on end of strip, run AHC using all items on strip and current item. If item fits on strip, run AHC on items on strip and current item. If solution found, replace current arrangement of items on strip with arrangement found by AHC including new item, else move on to next strip.}
-	\idone{If item starts new strip, pack item in regular orientation, i.e. $(a_i, b_i)$, smaller score width on left-hand side.}
-	\idone{MFFD$^+$ can find solution for subset of items, rearrange all items, MFFD cannot, only place items on end.}
-	\idone{MFFD may require extra strips for items even though feasible ordering exists using AHC.}
+	\item Change format of section.
 \end{itemize}
 }
 
 
 \subsection{Experimental Results - Heuristics}
 \label{sub:expheuristics}
-\noindent Although a comparison of these heuristics is given in \cite{hawa2018}, we performed out own tests where AHC used in MFFD$^+$ includes the preliminary check and the new BCR procedure. For our experiments, we produced two different types of instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. The minimum scoring distance $\tau$ was set to 70mm for all instances - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different strips widths, $W = 2500$ and 5000 were used to alter the number of items per strip. As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
+\noindent Although a comparison of these heuristics is given in \cite{hawa2018}, we performed out own tests where AHC used in MFFD$^+$ includes the preliminary test and the new BCR procedure. For our experiments, we produced two different types of instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. The minimum scoring distance $\tau$ was set to 70mm for all instances - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different strips widths, $W = 2500$ and 5000 were used to alter the number of items per strip. As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
 
 \begin{table}[h!]
 \centering
@@ -255,7 +237,7 @@ The vicinal sum constraint also introduces further differences in solutions for 
 \begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{8pt}}}\toprule
 	& & & \multicolumn{3}{c}{MFFD} &\phantom{a}& \multicolumn{3}{c}{MFFD$^+$}\\
 	\cmidrule{4-6} \cmidrule{8-10}
-	Type, $n$ & $W$ & $t$\tnote{1} & $|\mathcal{S}|$\tnote{2} & $\# t$\tnote{3} & $q$\tnote{4} && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule	
+	Type, $n$ & $W$ & $t$\tnote{$a$} & $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} & $q$\tnote{$d$} && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule	
 	a, 100 & 2500 & 23.323 & 30.754 & 0 & 1.320 && 28.457 & 26 & 1.221 \\
 	a, 100 & 5000 & 11.922 & 23.583 & 0 & 1.982 && 19.881 & 7 & 1.670  \\
 	\midrule
@@ -278,10 +260,10 @@ The vicinal sum constraint also introduces further differences in solutions for 
 \end{tabular}
 \vspace{0.2cm} %
 \begin{tablenotes}
-	\item[1] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
-	\item[2] Number of strips per solution (mean from 1000 instances).
-	\item[3] Number of instances where a solution using $t$ strips was found (from 1000 instances).
-	\item[4] $q = |\mathcal{S}| /t$ (mean from 1000 instances).
+	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
+	\item[$b$] Number of strips per solution (mean from 1000 instances).
+	\item[$c$] Number of instances where a solution using $t$ strips was found (from 1000 instances).
+	\item[$d$] $q = |\mathcal{S}| /t$ (mean from 1000 instances).
 \end{tablenotes}	
 \end{threeparttable}	
 \label{table:heuristics}
@@ -291,51 +273,27 @@ It can be seen that MFFD$^+$ produces solutions using fewer strips on average th
 
 Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} strips, that is, once an item has been packed onto a strip, it must stay on that strip (although the position of the item on the strip can change due to the use of AHC). It follows that every item packed has an affect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods.
 
-% Hidden: Bullet point list for Heuristics Experiments, all \idone
-\begin{comment}
+% Notes - Experiments Heuristics
 {\color{myPink}
 \begin{itemize}[leftmargin=*]
-	\item
-	\idone{Artificial - items are strongly heterogeneous (different widths/score widths).}
-	\idone{Real - items are weakly heterogeneous (many items have the same score widths/widths).}
-	\idone{Solution quality $q = |\mathcal{S}|/ t$.}
-	\idone{$t$, $q$, and $|\mathcal{S}|$ are all means from 1000 instances}
-	\idone{Remove fitness from table.}
-	\idone{MFFD only finds solutions == $t$ for real, 100, $W=2500$ (5 instances) and $W=5000$ (1 instance).}
-	\idone{MFFD$^+$ find solutions == $t$ for artificial, 100, $W = 2500$ (26 instances) and $W=5000$ (7 instances), and real, 100, $W=2500$ (16 instances) amd $W=5000$ (5 instances).}
-	\idone{Solution quality of MFFD$^+$ better (that is, closer to 1) than MFFD for every problem type on average.}
-	\idone{Instances where $|\mathcal{S}|$ == $t$ know that opt solution found.}
-	\idone{Could be instances where opt solution found but we are unable to show that it is optimal.}
-	\idone{MFFD$^+$ slower, for each item AHC could be executed up to $|\mathcal{S}|$ times.}
-	\idone{Running experiments again, this uses BCR and preliminary checks, unlike previous paper. }
-	\idone{Table shows...}
-	\idone{Time it takes to run heuristics.}
-	\idone{State that there are 20 types on average for real instances (no longer in table).}
-	\idone{MFFD$^+$ slower, could be a different ordering of items works better (rather than items in decreasing order of widths), one item at a time might not find feasible ordering, may be that feasible ordering exists when packing multiple items simultaneously.}
-	\idone{Fast greedy heuristics not as good, other methods superior, therefore use evolutionary algorithm (lead on to next section).}
+	\item Number of types on average real instances.
+	\item Number of items per strip.
 \end{itemize}
 }
-\end{comment}
 
 %--------------------------------------------------------------------------------------
-\section{Evolutionary Algorithm}
+\section{An Evolutionary Algorithm for the SCSPP}
 \label{sec:ea}
 \noindent We now introduce an evolutionary algorithm (EA) for the SCSPP to improve on the results of the previous heuristics. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the solutions. Each solution is evaluated based on a given critera, and individuals which are more suited to the environment are given more oppportunity to breed while those which are less so are eliminated. EAs have been used for a variety of grouping problems with positive results \cite{lewis2017, falkenauer1996, quiroz2015}. \ea{Iterative procedure, plus local search and xover, swapping items between strips, better than previous heuristics as repetition means more possible item combinations on strips, EA has the ability to move items between strips.}
 
 Within the EA framework, we investigate three different recombination operators as well as a local search procedure inspired by Martello and Toth \cite{martello1990l}. AHC is also integrated into the EA to solve instances of the SubSCP. Throughout the EA we maintain two sets, $\mathcal{A}$ and $\mathcal{B}$, containing subsets of items that AHC has determined produce feasible or infeasible orderings, respectively. When an instance of the subproblem occurs, these sets are searched before calling AHC; hence AHC is executed at most once for each distinct subset of items.
 
-% Hidden: Bullet point list for EA intro, all \idone
-\begin{comment}
+% Notes - EA Introduction
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
-	\item
-	\idone{Why use an EA? Lit review of EAs in BPP problems, benefits (repeated multiple times, best characteristics of strips/solutions).}
-	\idone{Whenever subproblem occurs, AHC will be used.}
-	\idone{Sets $\mathcal{A}$ and $\mathcal{B}$, subsets of items that produce feasible/infeasible orderings determined by AHC. Search these sets before calling AHC, therefore AHC used at most once for each distinct subset of items $\mathcal{I}' \subseteq \mathcal{I}$.}
-	\idone{Feasible solution $\mathcal{S}$ means solution abides by all constraints.}
+	\item EA consists of multiple iterations, previous heuristics only one.
 \end{itemize}
 }
-\end{comment}
 
 \subsection{Recombination}
 \label{sub:xover}
@@ -449,18 +407,18 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \centering
 \caption{\ea{EA comparisons}}
 \begin{threeparttable}
-\begin{tabular}{c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}ccc@{\hspace{15pt}}c@{\hspace{15pt}}ccc@{\hspace{15pt}}c@{\hspace{15pt}}c}\toprule
+\begin{tabular}{c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{15pt}}c@{\hspace{10pt}}c@{\hspace{10pt}}ccc@{\hspace{10pt}}c@{\hspace{10pt}}ccc@{\hspace{10pt}}c@{\hspace{10pt}}c}\toprule
 	& & & \multicolumn{3}{c}{GGA} &\phantom{a}& \multicolumn{3}{c}{AGX} &\phantom{a}& \multicolumn{3}{c}{AGX$'$}\\
 	\cmidrule{4-6} \cmidrule{8-10} \cmidrule{12-14}
-	Type, $n$& $W$ & $t$\tnote{1} & $|\mathcal{S}|$\tnote{2} & $\# t$\tnote{3} & $q$\tnote{4} && $|\mathcal{S}|$ & $\# t$ & $q$ && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule \midrule
-	a, 100 & 2500 & 23.323 & EA121 & - & - && EA122 & - & - && EA123 & - & -\\
-	a, 100 & 5000 & 11.922 & EA151 & - & - && EA152 & - & - && EA153 & - & -\\
+	Type, $n$& $W$ & $t$\tnote{$a$} & $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} & $q$\tnote{$d$} && $|\mathcal{S}|$ & $\# t$ & $q$ && $|\mathcal{S}|$ & $\# t$ & $q$\\ \midrule \midrule
+	a, 100 & 2500 & 23.323 & 23.368 & 966 & 1.002 && 23.349 & 981 & 1.001 && 23.36 & 971 & 1.002\\
+	a, 100 & 5000 & 11.922 & 12.304 & 833 & 1.033 && 12.352 & 810 & 1.037 && 12.353 & 807 & 1.037\\
 	\midrule
-	a, 500 & 2500 & 114.942 & EA521 & - & - && EA522 & - & - && EA523 & - & -\\
+	a, 500 & 2500 & 114.942 & 116.694 & 268 & 1.015 && 116.966 & 224 & 1.018 && 116.56 & 291 & 1.014\\
 	a, 500 & 5000 & 57.722 & EA551 & - & - && EA552 & - & - && EA553 & - & -\\
 	\midrule
 	a, 1000 & 2500 & 229.437 & EA1021 & - & - && EA1022 & - & - && EA1023 & - & - \\
-	a, 1000 & 5000 & 114.965 & ER1051 & - & - && EA1052 & - & - && EA1053 & - & - \\
+	a, 1000 & 5000 & 114.965 & EA1051 & - & - && EA1052 & - & - && EA1053 & - & - \\
 	\midrule \midrule
 	r, 100 & 2500 & 23.473 & ER121 & - & - && ER122 & - & - && ER123 & - & - \\
 	r, 100 & 5000 & 11.981 & ER151 & - & - && ER152 & - & - && ER153 & - & - \\
@@ -474,10 +432,10 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \end{tabular}	
 \vspace{0.2cm} %
 \begin{tablenotes}
-	\item[1] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
-	\item[2] Number of strips per solution (mean from 1000 instances).
-	\item[3] Number of instances where a solution using $t$ strips was found (from 1000 instances).
-	\item[4] $q = |\mathcal{S}| /t$ (mean from 1000 instances).
+	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
+	\item[$b$] Number of strips per solution (mean from 1000 instances).
+	\item[$c$] Number of instances where a solution using $t$ strips was found (from 1000 instances).
+	\item[$d$] $q = |\mathcal{S}| /t$ (mean from 1000 instances).
 \end{tablenotes}
 \end{threeparttable}
 \label{table:ea}
