@@ -1,4 +1,5 @@
 \documentclass[usenames,dvipsnames,tikz]{standalone}
+\usepackage{amsmath,amssymb}
 \usepackage{xcolor}
 \colorlet{tBlue}{RoyalBlue!35!Cerulean}
 \colorlet{tRed}{Red}
@@ -7,8 +8,9 @@
 \begin{document}
 	
 \begin{tikzpicture}
-%\draw [help lines] (-1,-2) grid (20,10);
+%\draw [help lines] (-1,-2) grid (22,10);
 % 1=0.1, 2=0.15, 3=0.2, 4=0.25, 5=0.3
+%A=2,(2-4), B=2,(4-5), C=3,(1-3), D=3,(2-3), E=3,(4-4), F=4(1-3), G=4(1-5), H=5(1-2)
 
 %Parent 1 BEFORE
 \node at (-0.5, 5.875) {\Large{$\mathcal{S}_1$}};
@@ -16,17 +18,17 @@
 \draw [thick] (0,5.5) rectangle (5,6.25);
 \draw [thick] (0,6.75) rectangle (5,7.5);
 
-%bottom row, 4, 4 (1-5, 3-1)
+%bottom row, 4, 4 (1-3, 5-1) -p1before
 \draw [thick] (2,5) -- (2,4.25);
 \draw [thick] (4,5) -- (4,4.25);
 \filldraw[fill=black!20!white, draw=black, thick] (4,4.25) rectangle (5,5);
 \draw [thick, dashed] (0.1,5) -- (0.1,4.25);
-\draw [thick, dashed] (1.7,5) -- (1.7,4.25);
-\draw [thick, dashed] (2.2,5) -- (2.2,4.25);
+\draw [thick, dashed] (1.8,5) -- (1.8,4.25);
+\draw [thick, dashed] (2.3,5) -- (2.3,4.25);
 \draw [thick, dashed] (3.9,5) -- (3.9,4.25);
 \node [below] at (0.1,4.25) {\scriptsize{1}};
-\node [below] at (1.7,4.25) {\scriptsize{5}};
-\node [below] at (2.2,4.25) {\scriptsize{3}};
+\node [below] at (1.8,4.25) {\scriptsize{3}};
+\node [below] at (2.3,4.25) {\scriptsize{5}};
 \node [below] at (3.9,4.25) {\scriptsize{1}};
 \node at (1,4.625) {4};
 \node at (3,4.625) {4};
@@ -36,7 +38,7 @@
 %\node at (3,5.5) {F};
 
 
-%middle row, 5, 2, 2 (1-2, 5-4, 4-2)
+%middle row, 5, 2, 2 (1-2, 5-4, 4-2) -p1before
 \draw [thick] (2.5,6.25) -- (2.5,5.5);
 \draw [thick] (3.5,6.25) -- (3.5,5.5);
 \filldraw[fill=black!20!white, draw=black, thick] (4.5,5.5) rectangle (5,6.25);
@@ -63,7 +65,7 @@
 %\node at (4,6.75) {A};
 
 
-%top row, 3, 3, 3 (2-3, 4-4, 3-1)
+%top row, 3, 3, 3 (2-3, 4-4, 3-1) -p1before
 \draw [thick] (1.5,7.5) -- (1.5,6.75);
 \draw [thick] (3,7.5) -- (3,6.75);
 \draw [thick] (4.5,7.5) -- (4.5,6.75);
@@ -92,7 +94,7 @@
 \draw [thick] (0,1.25) rectangle (5,2);
 \draw [thick] (0,2.5) rectangle (5,3.25);
 
-%bottom row, 3, 2, 2, 3 (1-3, 4-5, 2-4, 3-2)
+%bottom row, 3, 2, 2, 3 (1-3, 4-5, 2-4, 3-2) - p2before
 \draw [thick] (1.5,0) -- (1.5,0.75);
 \draw [thick] (2.5,0) -- (2.5,0.75);
 \draw [thick] (3.5,0) -- (3.5,0.75);
@@ -117,7 +119,7 @@
 \node at (3,0.375) {2};
 \node at (4.25,0.375) {3};
 
-%middle row, 4, 5 (1-5, 2-1)
+%middle row, 4, 5 (1-5, 2-1) - p2before
 \draw [thick] (2,1.25) -- (2,2);
 \draw [thick] (4.5,1.25) -- (4.5,2);
 \filldraw[fill=black!20!white, draw=black, thick] (4.5,1.25) rectangle (5,2);
@@ -132,7 +134,7 @@
 \node at (1,1.625) {4};
 \node at (3.25,1.625) {5};
 
-%top row, 3, 4 (4-4, 3-1)
+%top row, 3, 4 (4-4, 3-1) - p2before
 \draw [thick] (1.5,2.5) -- (1.5,3.25);
 \draw [thick] (3.5,2.5) -- (3.5,3.25);
 \filldraw[fill=black!20!white, draw=black, thick] (3.5,2.5) rectangle (5,3.25);
@@ -147,146 +149,148 @@
 \node at (0.75,2.875) {3};
 \node at (2.5,2.875) {4};
 
+%-----------------------------------
+\node at (6.75,3.75) {\huge{$\Rightarrow$}};
 
 %AFTER ITEMS REMOVED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %Parent 1 AFTER
 %\node at (9, 8.75) {\Large{$\mathcal{S}_1$}};
-\draw [thick] (7.5,4.25) rectangle (12.5,5);
-\draw [thick] (7.5,5.5) rectangle (12.5,6.25);
-\draw [thick] (7.5,6.75) rectangle (12.5,7.5);
+\draw [thick] (8.5,4.25) rectangle (13.5,5);
+\draw [thick] (8.5,5.5) rectangle (13.5,6.25);
+\draw [thick] (8.5,6.75) rectangle (13.5,7.5);
 
-%bottom row, 4, 4 (1-5, 3-1)
-\draw [thick] (9.5,5) -- (9.5,4.25);
-\draw [thick] (11.5,5) -- (11.5,4.25);
-\filldraw[fill=black!20!white, draw=black, thick] (11.5,4.25) rectangle (12.5,5);
-\draw [thick, dashed] (7.6,5) -- (7.6,4.25);
-\draw [thick, dashed] (9.2,5) -- (9.2,4.25);
-\draw [thick, dashed] (9.7,5) -- (9.7,4.25);
-\draw [thick, dashed] (11.4,5) -- (11.4,4.25);
-\node [below] at (7.6,4.25) {\scriptsize{1}};
-\node [below] at (9.2,4.25) {\scriptsize{5}};
-\node [below] at (9.7,4.25) {\scriptsize{3}};
-\node [below] at (11.4,4.25) {\scriptsize{1}};
-\node at (8.5,4.625) {4};
-\node at (10.5,4.625) {4};
+%bottom row, 4, 4 (1-3, 5-1) -p1after
+\draw [thick] (10.5,5) -- (10.5,4.25);
+\draw [thick] (12.5,5) -- (12.5,4.25);
+\filldraw[fill=black!20!white, draw=black, thick] (12.5,4.25) rectangle (13.5,5);
+\draw [thick, dashed] (8.6,5) -- (8.6,4.25);
+\draw [thick, dashed] (10.3,5) -- (10.3,4.25);
+\draw [thick, dashed] (10.8,5) -- (10.8,4.25);
+\draw [thick, dashed] (12.4,5) -- (12.4,4.25);
+\node [below] at (8.6,4.25) {\scriptsize{1}};
+\node [below] at (10.3,4.25) {\scriptsize{3}};
+\node [below] at (10.8,4.25) {\scriptsize{5}};
+\node [below] at (12.4,4.25) {\scriptsize{1}};
+\node at (9.5,4.625) {4};
+\node at (11.5,4.625) {4};
 
-%middle row, 5, 2, 2 (1-2, 5-4, 4-2)
-\draw [thick] (10,6.25) -- (10,5.5);
+%middle row, 5, 2, 2 (1-2, 5-4, 4-2) p1after
 \draw [thick] (11,6.25) -- (11,5.5);
 \draw [thick] (12,6.25) -- (12,5.5);
-\filldraw[fill=black!20!white, draw=black, thick] (12,5.5) rectangle (12.5,6.25);
-\draw [thick, dashed] (7.6,6.25) -- (7.6,5.5);
-\draw [thick, dashed] (9.85,6.25) -- (9.85,5.5);
-\draw [thick, dashed] (10.3,6.25) -- (10.3,5.5);
-\draw [thick, dashed] (10.75,6.25) -- (10.75,5.5);
-\draw [thick, dashed] (11.25,6.25) -- (11.25,5.5);
-\draw [thick, dashed] (11.85,6.25) -- (11.85,5.5);
-\node [below] at (7.6,5.5) {\scriptsize{1}};
-\node [below] at (9.85,5.5) {\scriptsize{2}};
-\node [below] at (10.3,5.5) {\scriptsize{5}};
-\node [below] at (10.75,5.5) {\scriptsize{4}};
-\node [below] at (11.25,5.5) {\scriptsize{4}};
-\node [below] at (11.85,5.5) {\scriptsize{2}};
-\node at (8.75,5.875) {5};
-\node at (10.5,5.875) {2};
+\draw [thick] (13,6.25) -- (13,5.5);
+\filldraw[fill=black!20!white, draw=black, thick] (13,5.5) rectangle (13.5,6.25);
+\draw [thick, dashed] (8.6,6.25) -- (8.6,5.5);
+\draw [thick, dashed] (10.85,6.25) -- (10.85,5.5);
+\draw [thick, dashed] (11.3,6.25) -- (11.3,5.5);
+\draw [thick, dashed] (11.75,6.25) -- (11.75,5.5);
+\draw [thick, dashed] (12.25,6.25) -- (12.25,5.5);
+\draw [thick, dashed] (12.85,6.25) -- (12.85,5.5);
+\node [below] at (8.6,5.5) {\scriptsize{1}};
+\node [below] at (10.85,5.5) {\scriptsize{2}};
+\node [below] at (11.3,5.5) {\scriptsize{5}};
+\node [below] at (11.75,5.5) {\scriptsize{4}};
+\node [below] at (12.25,5.5) {\scriptsize{4}};
+\node [below] at (12.85,5.5) {\scriptsize{2}};
+\node at (9.75,5.875) {5};
 \node at (11.5,5.875) {2};
+\node at (12.5,5.875) {2};
 
-%CHANGED - top row, 3, 3 (2-3 X 3-1) (removed middle item, vsc violated)
-\draw [thick] (9,7.5) -- (9,6.75);
-\draw [thick] (10.5,7.5) -- (10.5,6.75);
-\filldraw[fill=black!20!white, draw=black, thick] (10.5,6.75) rectangle (12.5,7.5);
-\draw [thick, dashed] (7.65,7.5) -- (7.65,6.75);
-\draw [thick, dashed, tRed] (8.8,7.5) -- (8.8,6.75);
-\draw [thick, dashed, tRed] (9.2,7.5) -- (9.2,6.75);
-\draw [thick, dashed] (10.4,7.5) -- (10.4,6.75);
-\node [below] at (7.65,6.75) {\scriptsize{2}};
-\node [below] at (8.8,6.75) {\textcolor{tRed}{\scriptsize{3}}};
-\node [below] at (9.2,6.75) {\textcolor{tRed}{\scriptsize{3}}};
-\node [below] at (10.4,6.75) {\scriptsize{1}};
-\node at (8.25,7.125) {3};
-\node at (9.75,7.125) {3};
+%CHANGED - top row, 3, 3 (2-3 X 3-1) (removed middle item, vsc violated) - p1after
+\draw [thick] (10,7.5) -- (10,6.75);
+\draw [thick] (11.5,7.5) -- (11.5,6.75);
+\filldraw[fill=black!20!white, draw=black, thick] (11.5,6.75) rectangle (13.5,7.5);
+\draw [thick, dashed] (8.65,7.5) -- (8.65,6.75);
+\draw [thick, dashed, tRed] (9.8,7.5) -- (9.8,6.75);
+\draw [thick, dashed, tRed] (10.2,7.5) -- (10.2,6.75);
+\draw [thick, dashed] (11.4,7.5) -- (11.4,6.75);
+\node [below] at (8.65,6.75) {\scriptsize{2}};
+\node [below] at (9.8,6.75) {\textcolor{tRed}{\scriptsize{3}}};
+\node [below] at (10.2,6.75) {\textcolor{tRed}{\scriptsize{3}}};
+\node [below] at (11.4,6.75) {\scriptsize{1}};
+\node at (9.25,7.125) {3};
+\node at (10.75,7.125) {3};
 
 %---------------------------------------------
 
 %Parent 2 AFTER
 %\node at (9,3.75) {\Large{$\mathcal{S}_2$}};
-\draw [thick] (7.5,0) rectangle (12.5,0.75);
-\draw [thick] (7.5,1.25) rectangle (12.5,2);
-\draw [thick] (7.5,2.5) rectangle (12.5,3.25);
+\draw [thick] (8.5,0) rectangle (13.5,0.75);
+\draw [thick] (8.5,1.25) rectangle (13.5,2);
+\draw [thick] (8.5,2.5) rectangle (13.5,3.25);
 
-%CHANGED - bottom row, 3, 2, 3 (1-3 X 2-4, 3-2) (removed second item, vsc violated)
-\draw [thick] (9,0) -- (9,0.75);
+%CHANGED - bottom row, 3, 2, 3 (1-3 X 2-4, 3-2) (removed second item, vsc violated) - p2after
 \draw [thick] (10,0) -- (10,0.75);
-\draw [thick] (11.5,0) -- (11.5,0.75);
-\filldraw[fill=black!20!white, draw=black, thick] (11.5,0) rectangle (12.5,0.75);
-\draw [thick, dashed] (7.6,0) -- (7.6,0.75);
-\draw [thick, dashed, tRed] (8.8,0) -- (8.8,0.75);
-\draw [thick, dashed, tRed] (9.15,0) -- (9.15,0.75);
-\draw [thick, dashed] (9.75,0) -- (9.75,0.75);
-\draw [thick, dashed] (10.2,0) -- (10.2,0.75);
-\draw [thick, dashed] (11.35,0) -- (11.35,0.75);
-\node [below] at (7.6,0) {\scriptsize{1}};
-\node [below] at (8.8,0) {\textcolor{tRed}{\scriptsize{3}}};
-\node [below] at (9.15,0) {\textcolor{tRed}{\scriptsize{2}}};
-\node [below] at (9.75,0) {\scriptsize{4}};
-\node [below] at (10.2,0) {\scriptsize{3}};
-\node [below] at (11.35,0) {\scriptsize{2}};
-\node at (8.25,0.375) {3};
-\node at (9.5,0.375) {2};
-\node at (10.75,0.375) {3};
+\draw [thick] (11,0) -- (11,0.75);
+\draw [thick] (12.5,0) -- (12.5,0.75);
+\filldraw[fill=black!20!white, draw=black, thick] (12.5,0) rectangle (13.5,0.75);
+\draw [thick, dashed] (8.6,0) -- (8.6,0.75);
+\draw [thick, dashed, tRed] (9.8,0) -- (9.8,0.75);
+\draw [thick, dashed, tRed] (10.15,0) -- (10.15,0.75);
+\draw [thick, dashed] (10.75,0) -- (10.75,0.75);
+\draw [thick, dashed] (11.2,0) -- (11.2,0.75);
+\draw [thick, dashed] (12.35,0) -- (12.35,0.75);
+\node [below] at (8.6,0) {\scriptsize{1}};
+\node [below] at (9.8,0) {\textcolor{tRed}{\scriptsize{3}}};
+\node [below] at (10.15,0) {\textcolor{tRed}{\scriptsize{2}}};
+\node [below] at (10.75,0) {\scriptsize{4}};
+\node [below] at (11.2,0) {\scriptsize{3}};
+\node [below] at (12.35,0) {\scriptsize{2}};
+\node at (9.25,0.375) {3};
+\node at (10.5,0.375) {2};
+\node at (11.75,0.375) {3};
 
 
-%CHANGED - middle row, 4 (1-5) (removed last item)
-\draw [thick] (9.5,1.25) -- (9.5,2);
-\filldraw[fill=black!20!white, draw=black, thick] (9.5,1.25) rectangle (12.5,2);
-\draw [thick, dashed] (7.6,1.25) -- (7.6,2);
-\draw [thick, dashed] (9.2,1.25) -- (9.2,2);
-\node [below] at (7.6,1.25) {\scriptsize{1}};
-\node [below] at (9.2,1.25) {\scriptsize{5}};
-\node at (8.5,1.625) {4};
+%CHANGED - middle row, 4 (1-5) (removed last item) - p2after
+\draw [thick] (10.5,1.25) -- (10.5,2);
+\filldraw[fill=black!20!white, draw=black, thick] (10.5,1.25) rectangle (13.5,2);
+\draw [thick, dashed] (8.6,1.25) -- (8.6,2);
+\draw [thick, dashed] (10.2,1.25) -- (10.2,2);
+\node [below] at (8.6,1.25) {\scriptsize{1}};
+\node [below] at (10.2,1.25) {\scriptsize{5}};
+\node at (9.5,1.625) {4};
 
-%top row, 3, 4 (4-4, 3-1)
-\draw [thick] (9,2.5) -- (9,3.25);
-\draw [thick] (11,2.5) -- (11,3.25);
-\filldraw[fill=black!20!white, draw=black, thick] (11,2.5) rectangle (12.5,3.25);
-\draw [thick, dashed] (7.75,2.5) -- (7.75,3.25);
+%top row, 3, 4 (4-4, 3-1) - p2after
+\draw [thick] (10,2.5) -- (10,3.25);
+\draw [thick] (12,2.5) -- (12,3.25);
+\filldraw[fill=black!20!white, draw=black, thick] (12,2.5) rectangle (13.5,3.25);
 \draw [thick, dashed] (8.75,2.5) -- (8.75,3.25);
-\draw [thick, dashed] (9.2,2.5) -- (9.2,3.25);
-\draw [thick, dashed] (10.9,2.5) -- (10.9,3.25);
-\node [below] at (7.75,2.5) {\scriptsize{4}};
+\draw [thick, dashed] (9.75,2.5) -- (9.75,3.25);
+\draw [thick, dashed] (10.2,2.5) -- (10.2,3.25);
+\draw [thick, dashed] (11.9,2.5) -- (11.9,3.25);
 \node [below] at (8.75,2.5) {\scriptsize{4}};
-\node [below] at (9.2,2.5) {\scriptsize{3}};
-\node [below] at (10.9,2.5) {\scriptsize{1}};
-\node at (8.25,2.875) {3};
-\node at (10,2.875) {4};
+\node [below] at (9.75,2.5) {\scriptsize{4}};
+\node [below] at (10.2,2.5) {\scriptsize{3}};
+\node [below] at (11.9,2.5) {\scriptsize{1}};
+\node at (9.25,2.875) {3};
+\node at (11,2.875) {4};
 
 %---------------------------------------------
 % OFFSPRING
-\node at (14.5,3.75) {\Large{$\mathcal{S}$}};
+\node at (15.5,3.75) {\Large{$\mathcal{S}$}};
 
 % items 5, 2, 3 (1-2, 5-4, 4-4)
-\draw [thick] (15,3.375) rectangle (20,4.125);
-\draw [thick] (17.5,3.375) -- (17.5,4.125);
+\draw [thick] (16,3.375) rectangle (21,4.125);
 \draw [thick] (18.5,3.375) -- (18.5,4.125);
+\draw [thick] (19.5,3.375) -- (19.5,4.125);
 
-\draw [thick, dashed] (15.1,3.375) -- (15.1,4.125);
-\draw [thick, dashed] (17.35, 3.375) -- (17.35,4.125);
-\draw [thick, dashed] (17.8,3.375) -- (17.8,4.125);
-\draw [thick, dashed] (18.25,3.375) -- (18.25,4.125);
-\draw [thick, dashed] (18.75, 3.375) -- (18.75,4.125);
-\draw [thick, dashed] (19.75,3.375) -- (19.75,4.125);
-\node [below] at (15.1,3.375) {\scriptsize{1}};
-\node [below] at (17.35,3.375) {\scriptsize{2}};
-\node [below] at (17.8,3.375) {\scriptsize{5}};
-\node [below] at (18.25,3.375) {\scriptsize{4}};
-\node [below] at (18.75,3.375) {\scriptsize{4}};
+\draw [thick, dashed] (16.1,3.375) -- (16.1,4.125);
+\draw [thick, dashed] (18.35, 3.375) -- (18.35,4.125);
+\draw [thick, dashed] (18.8,3.375) -- (18.8,4.125);
+\draw [thick, dashed] (19.25,3.375) -- (19.25,4.125);
+\draw [thick, dashed] (19.75, 3.375) -- (19.75,4.125);
+\draw [thick, dashed] (20.75,3.375) -- (20.75,4.125);
+\node [below] at (16.1,3.375) {\scriptsize{1}};
+\node [below] at (18.35,3.375) {\scriptsize{2}};
+\node [below] at (18.8,3.375) {\scriptsize{5}};
+\node [below] at (19.25,3.375) {\scriptsize{4}};
 \node [below] at (19.75,3.375) {\scriptsize{4}};
+\node [below] at (20.75,3.375) {\scriptsize{4}};
 
-\node at (16.25,3.75) {5};
-\node at (18,3.75) {2};
-\node at (19.25,3.75) {3};
+\node at (17.25,3.75) {5};
+\node at (19,3.75) {2};
+\node at (20.25,3.75) {3};
 
 
 
