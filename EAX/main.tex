@@ -186,7 +186,7 @@ The connecting procedure operates on a set $R_i$ as follows: for each edge in $R
 
 \noindent An optimal solution for the SCSPP is a solution consisting of the fewest number of strips required to feasibly pack all items in $\mathcal{I}$, thus the aim is to minimise $k$. In this particular MGP, a strip $S_j \in \mathcal{F}$ if the total width of items on the strip does not exceed the strip's capacity \eqref{eqn:capacity} and the vicinal sum constraint is fulfilled \eqref{eqn:vscstrip}. It follows that the SubSCP arises within the SCSPP.
 
-Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement for such problems are heuristics, which trade optimality for speed. One of the simplest and most well-known heuristics for the BPP is the First-Fit (FF) heuristic, a greedy online algorithm that packs each item, given in some arbitrary order, into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \cite{lewis2009}. An improvement on FF yields the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \cite{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$. \scspp{NEED TO EXTEND, SIMILAR TO PREVIOUS PAPER.}
+Since the SCSPP generalises the BPP, it follows that the SCSPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCSPP in polynomial time. The simplest methods to implement for such problems are heuristics, which trade optimality for speed. One of the simplest and most well-known heuristics for the BPP is First-Fit (FF), a greedy online algorithm that packs each item, given in some arbitrary order, into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. An improvement on FF yields the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. Similar heuristics include Best-Fit (BF), in which each item is packed into the fullest bin that can accommodate the item without being overfilled, and its offline counterpart Best-Fit Decreasing (BFD). A comprehensive overview of these heuristics and related methods can be seen in \cite{coffman1984}. More advanced heuristics for the BPP have been developed with positive results, such as the Minimum Bin Slack (MBS) heuristic \cite{gupta1999}, which focuses on packing each bin in turn rather than each item, and modifications of MBS such as the Perturbation-MBS' heuristic of Fleszar and Hindi \cite{fleszar2002}. 
 
 For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \cite{martello1990l}, however it can be seen that $t$ will not perform as accurately for the SCSPP. Given a set of $n$ items in which the largest score width $b_i < \tau / 2$, it is clear that no pairs of score widths will fulfil the vicinal sum constraint and so each item must be packed onto individual strips, thus $|\mathcal{S}| = n$. The theoretical minimum $t$ does not consider the effect of the minimum scoring distance on the feasibility of the solution.
 
@@ -221,6 +221,8 @@ The vicinal sum constraint also introduces further differences in solutions for 
 {\color{myPink}
 \begin{itemize}[leftmargin=*]
 	\item Run MFFD and MFFD$^+$ experiments again, output time, and run them again using AHC from previous paper (without preliminary test and using BR/MBR, not BCR) to compare the time, also check for errors in strips/solution altHam vector.
+	\item It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \cite{lewis2009}.
+	\item In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \cite{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$.
 \end{itemize}
 }
 
@@ -269,7 +271,7 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 It can be seen that MFFD$^+$ produces solutions using fewer strips on average than MFFD for all 12 instance classes. MFFD was only able to find solutions using $t$ strips for two instance classes, whereas MFFD$^+$ produced solutions using $t$ strips for four instances classes. Solutions using fewer strips were found less frequently on average when the strip width is larger. The solution quality $q$ for the six instance classes where $W = 5000$ is significantly higher than when $W = 2500$. A larger strip width means the strips can accommodate more items, however this increases the number of adjacent score widths that must fulfil the vicinal sum constraint. Note also that $q$ is higher for real instances in comparison to artificial instances, as due to the reduced variety of item widths and score widths it is difficult to attain feasible packings. 
 
-Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} strips, that is, once an item has been packed onto a strip, it must stay on that strip (although the position of the item on the strip can change due to the use of AHC). It follows that every item packed has an affect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods.
+Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} strips, that is, once an item has been packed onto a strip, it must stay on that strip (although the position of the item on the strip can change due to the use of AHC). It follows that every item packed has an effect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods. \scspp{where/how each item is packed is dependent on where/how previous items have been packed.}
 
 % Notes - Experiments Heuristics
 {\color{myPink}
@@ -286,13 +288,6 @@ Indeed, it may be that optimal solutions were found in many of these instances, 
 
 Within the EA framework, we investigate three different recombination operators as well as a local search procedure inspired by Martello and Toth \cite{martello1990l}. AHC is also integrated into the EA to solve instances of the SubSCP.
 
-\begin{figure}[H]	
-	\centering
-	\includestandalone[width=0.95\textwidth]{figures/eavsc}
-	\caption{removed individual items, causes vsc violation.}	
-	\label{fig:eavsc}
-\end{figure}
-
 % Notes - EA Introduction
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
@@ -303,6 +298,13 @@ Within the EA framework, we investigate three different recombination operators 
 \subsection{Recombination}
 \label{sub:xover}
 \noindent A recombination operator is used to generate new solutions from an existing population by taking two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, and combining them to create a new offspring solution. The operator determines which characteristics from each parent should be inherited by the offspring, with the aim of retaining the best elements of each parent such that a superior offspring is produced. As described in the previous section, individual items cannot be copied from parent to offspring as this may cause a violation of the vicinal sum constraint. Therefore, the operators used in this EA have been designed to ensure offspring feasibility.
+
+\begin{figure}[H]	
+	\centering
+	\includestandalone[width=0.75\textwidth]{figures/eavsc}
+	\caption{removed individual items, causes vsc violation.}	
+	\label{fig:eavsc}
+\end{figure}
 
 The first operator is based on the grouping genetic algorithm (GGA) of Falkenauer \cite{falkenauer1992}. The strips of the second parent solution $\mathcal{S}_2$ are permuted and two strips $S_i$ and $S_j$ from $\mathcal{S}_2$ are selected randomly (where $1 \leq i < j \leq |\mathcal{S}_2|$). All strips between and including $S_i$ and $S_j$ are inserted into an offspring solution $\mathcal{S}$. GGA then adds to the offspring all strips from $\mathcal{S}_1$ that do not contain items already present in the offspring. Note that the strips chosen from $\mathcal{S}_2$ cannot both be the outermost strips, that is, GGA cannot choose both $i = 1$ \emph{and} $j = |\mathcal{S}_2|$, as doing so would result in all strips from $\mathcal{S}_2$ being copied into the offspring, preventing the addition of any strips from $\mathcal{S}_1$. \ea{What is GGA's aim?}
 
@@ -515,6 +517,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Edges in parentheses $()$, not braces $\{\}$.
 	\item Check correct notation used, $i, j, S_i, S_j$ etc.
 	\item Do not use "OR" or Operational Research" etc.
+	\item APA referencing style.
 \end{itemize}		
 }
 
