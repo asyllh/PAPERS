@@ -3,7 +3,7 @@
 \begin{document}
 	
 \begin{frontmatter}
-\title{An Evolutionary Algorithm for the Score-Constrained Strip-Packing Problem}
+\title{Evolutionary Methods for the Score-Constrained Strip-Packing Problem}
 \author{Asyl L. Hawa}
 \author{Rhyd Lewis}
 \author{Jonathan M. Thompson}
@@ -16,24 +16,24 @@
 %--------------------------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
-\noindent \intro{In operational research, there are many problems that require the grouping of elements into subsets}. These types of problems can be seen in areas such as scheduling \cite{thompson1998, carter1996}, frequency assignment \cite{aardal2007}, graph colouring \cite{lewis2012, malaguti2008}, and load balancing \cite{rekiek1999}. Formally, given a set $\mathcal{I}$ of $n$ elements, a grouping problem involves producing a partition of subsets $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
+\noindent Many problems in operational research and discrete mathematics involve the grouping of elements into subsets. These types of problems can be seen in areas such as scheduling \cite{thompson1998, carter1996}, frequency assignment \cite{aardal2007}, graph colouring \cite{lewis2012, malaguti2008}, and load balancing \cite{rekiek1999}. Formally, given a set $\mathcal{I}$ of $n$ elements, the aim is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
 \begin{subequations}
 	\begin{alignat}{2}
 	\bigcup\nolimits_{j=1}^{k} S_j &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
-	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{1mm} i \neq j, \label{eqn:nointersect}\\[3pt]
+	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{1mm} i \neq j, \text{ and}\label{eqn:nointersect}\\[3pt]
 	S_j &\in \mathcal{F} & &\forall \hspace{1mm} j \in \{1,2,\dotsc,k\}.\label{eqn:feasible}
 	\end{alignat}
 \end{subequations}
 
-\noindent Equations \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets, while \eqref{eqn:feasible} specifies that each subset $S_j \in \mathcal{S}$ must be feasible. The set $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the specific constraint of the given problem.
+\noindent Here, \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets. Equation~\eqref{eqn:feasible} then specifies that each subset $S_j \in \mathcal{S}$ must be feasible, where $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the specific constraint of the given problem.
 
 Some problems require a solution to be partitioned into exactly $k$ subsets, whilst others have the task of minimising the number of subsets $k$ required to partition the elements provided conditions \eqref{eqn:allpacked}--\eqref{eqn:feasible} are satisfied. The latter problems are known as Minimum Grouping Problems (MGPs), named so by Lewis \cite{lewis2009}. One particular type of MGPs are packing problems. The classical one-dimensional bin-packing problem (BPP) requires a set of items of varying sizes to be packed into the fewest number of bins of fixed capacity. It can be seen that for this problem $\mathcal{F}$ contains all subsets of items whose total size does not cause the bin to be overfilled. Although seemingly simple by definition, the BPP is NP-hard and has been widely researched \cite{coffman1984, decarvalho1999, fleszar2002}. From the BPP stems numerous packing problems with various adaptations \cite{coffman1987, haouari2009}.
 
 One interesting problem related to the BPP is the Trapezoid Packing Problem (TPP), initially investigated by Lewis et al. \cite{lewis2011}. In the roofing industry, trusses are to be cut from wooden boards so as to minimise the number of boards required. These trusses, however, are trapezoidal in shape, which introduces the additional challenge of minimising the amount of triangular waste material between adjacent trapezoids on each board by rotating and reordering the items. In 2017, Lewis and Holborn \cite{lewis2017} presented the Euler-Splice algorithm which, given a subset of trapezoidal items whose total size is less than or equal to the board size, is able to determine whether a feasible ordering of the items on the board exists in polynomial time.
 
-Another problem similar to the BPP is the cutting stock problem (CSP). One particular case described by Garraffa et al. \cite{garraffa2016} considers sequence-dependent cut-losses (SDCL). Rectangular items of varying lengths are to be cut from strips of material of fixed lengths, however the type of cutting machine used results in material loss between items during the cutting process. The amount of these ``cut losses'' varies between different items, and is also dependent on the order of the items: a cut loss between two adjacent items A and B, with A packed first, may not necessarily be equal to the cut loss that arises when B is packed before A. Thus, the CSP-SDCL involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between all adjacent items on each strip does not exceed the strip capacity.
+Another problem similar to the BPP is the cutting stock problem (CSP). One particular case described by Garraffa et al. \cite{garraffa2016} considers sequence-dependent cut-losses (SDCL). Here, rectangular items of varying lengths are to be cut from strips of material of fixed lengths, however the type of cutting machine used results in material loss between items during the cutting process. The amount of loss can vary between different items, and is also dependent on the order of the items, i.e. a cut loss between two adjacent items A and B, with A packed first, may not necessarily be equal to the cut loss that arises when B is packed first. Hence, the CSP-SDCL involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between all adjacent items on each strip does not exceed the strip capacity.
 
-The focus of this paper is on a further problem involving order and orientation that occurs in the packaging industry where flat pieces of cardboard are to be folded into boxes. This strip-packing problem was introduced as an open-combinatorial problem by Goulimis in 2004 \cite{goulimis2004}. A set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths are to be packed onto a strip $S$ of height $H$ from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical score lines in predetermined places. The distance between each score line and the edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where $a_i \leq b_i$). Once the items are packed onto the strip, a pair of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$, which is approximately 70mm in industry. Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
+The focus of this paper is on another problem involving order and orientation that occurs in the packaging industry where flat pieces of cardboard are to be folded into boxes. This strip-packing problem was introduced as an open-combinatorial problem by Goulimis in 2004 \cite{goulimis2004}, \intro{and subsequently studied in ...}. In this problem, a set $\mathcal{I}$ of $n$ rectangular cardboard items of equal height $H$ and varying widths are to be packed onto a strip $S$ of height $H$ from left to right. Each item $i \in \mathcal{I}$ is marked with two vertical score lines in predetermined places. The distance between each score line and the edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where $a_i \leq b_i$). Once the items are packed onto the strip, a pair of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$, which is approximately 70mm in industry. Therefore, in order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
 \begin{equation}
 	\label{eqn:vsc}
 	\textbf{r}(i) + \textbf{l}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,\dotsc,|S|- 1\},
@@ -45,7 +45,7 @@ Each item $i \in \mathcal{I}$ can be packed onto the strip in a regular orientat
 
 \begin{figure}[H]	
 	\centering
-	\includestandalone[width=0.75\textwidth]{figures/itemsknife}
+	\includestandalone[width=0.65\textwidth]{figures/scspp}
 	\caption{Dimensions of an item $i$ marked with dashed score lines, and an example packing showing both feasible and infeasible alignments of three items to be scored by pairs of knives. Here, the minimum scoring distance $\tau = 7$.}	
 	\label{fig:itemsknife}
 \end{figure}
@@ -64,6 +64,12 @@ In the next section, we will provide a brief overview of the polynomial-time alg
 % Notes - Introduction
 {\color{myOrange}
 \begin{itemize}[leftmargin=*]
+	\item Start of introduction stays the same, general equations for grouping problems, explain each condition, feasibility depends on the specific problem.
+	\item For example, graph colouring, feasible independent sets, BPP no bin overfilled.
+	\item Then go on to explain SCSPP (not SubSCP), give formal definition, state as a BPP.
+	\item Follow up with lit review, TPP, CSP-SDCL, shorten TPP to a sentence.
+	\item Use BP notation rather than strips.
+	\item Remove SubSCP from introduction, put in AHC section.
 	\item For the TPP and SDCL, order and orientation helps minimise waste material and find a better solution using fewer strips, but for the SCSPP order and orientation is required to find a \emph{feasible} solution.
 	\item Two phsae approach using postoptimisation stage (like Malaguti \cite{malaguti2008}).
 	\item Items can be run through the machine individually but this incurs extra time/costs.
@@ -383,10 +389,10 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	a, 500 & 2500 & 114.942 & 116.694 & 268 & 1.015 && 116.966 & 224 & 1.018 && 116.56 & 291 & 1.014\\
 	a, 500 & 5000 & 57.722 & 62.393 & 43 & 1.081 && 62.813 & 35 & 1.088 && 63.022 & 37 & 1.092\\
 	\midrule
-	a, 1000 & 2500 & 229.437 & EA1021 & - & - && EA1022 & - & - && EA1023 & - & - \\
+	a, 1000 & 2500 & 229.437 & 234.938 & 7 & 1.024 && 235.458 & 10 & 1.026 && 234.409 & 13 & 1.022 \\
 	a, 1000 & 5000 & 114.965 & EA1051 & - & - && EA1052 & - & - && EA1053 & - & - \\
 	\midrule \midrule
-	r, 100 & 2500 & 23.473 & ER121 & - & - && ER122 & - & - && ER123 & - & - \\
+	r, 100 & 2500 & 23.473 & 26.108 & 551 & 1.116 && 26.146 & 558 & 1.117 && 26.029 & 554 & 1.112 \\
 	r, 100 & 5000 & 11.981 & ER151 & - & - && ER152 & - & - && ER153 & - & - \\
 	\midrule
 	r, 500 & 2500 & 115.239 & ER521 & - & - && ER522 & - & - && ER523 & - & - \\
@@ -518,6 +524,9 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Check correct notation used, $i, j, S_i, S_j$ etc.
 	\item Do not use "OR" or Operational Research" etc.
 	\item APA referencing style.
+	\item MGPs referenced throughout paper, make sure it is actually stated in the introduction (might be removed from introduction because of new layout from Rhyd's suggestions - 04/04/2019)
+	\item EPSRC?
+	\item Check things that have been removed from intro are not directly referenced to or are placed elsewhere in the paper (e.g. BPP NP-hard)
 \end{itemize}		
 }
 
