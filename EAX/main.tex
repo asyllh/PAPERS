@@ -1,4 +1,4 @@
-\documentclass{elsarticle}
+\documentclass[authoryear]{elsarticle}
 \input{includes/preamble.tex}
 \begin{document}
 	
@@ -16,18 +16,18 @@
 %--------------------------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
-\noindent Many problems in operational research and discrete mathematics involve the grouping of elements into subsets. These types of problems can be seen in areas such as scheduling \cite{thompson1998, carter1996}, frequency assignment \cite{aardal2007}, graph colouring \cite{lewis2012, malaguti2008}, and load balancing \cite{rekiek1999}. Formally, given a set $\mathcal{I}$ of $n$ elements, the aim is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
+\noindent Many problems in operational research and discrete mathematics involve the grouping of elements into subsets. These types of problems can be seen in areas such as scheduling \citep{thompson1998, carter1996}, frequency assignment \citep{aardal2007}, graph colouring \citep{lewis2012, malaguti2008}, and load balancing \citep{rekiek1999} \intro{and compsci - table formatting, prepaging, file allocation \citep{garey1972}}. Formally, given a set $\mathcal{I}$ of $n$ elements, the aim is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
 \begin{subequations}
 	\begin{alignat}{2}
-	\bigcup\nolimits_{j=1}^{k} S_j &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
+	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
 	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{1mm} i \neq j, \text{ and}\label{eqn:nointersect}\\[3pt]
-	S_j &\in \mathcal{F} & &\forall \hspace{1mm} j \in \{1,2,\dotsc,k\}.\label{eqn:feasible}
+	S_i &\in \mathcal{F} & &\forall \hspace{1mm} i \in \{1,2,\dotsc,k\}.\label{eqn:feasible}
 	\end{alignat}
 \end{subequations}
 
-\noindent Here, \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets. Equation~\eqref{eqn:feasible} then specifies that each subset $S_j \in \mathcal{S}$ must be feasible, where $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the specific constraint of the given problem. For example, in the graph colouring problem where vertices on a graph must be assigned colours such that no two adjacent vertices are in the same colour class, $\mathcal{F}$ contains all possible independent sets of vertices, whilst for the classical one-dimensional bin-packing problem (BPP), which requires a set of items of varying sizes to be packed into the fewest number of bins of fixed capacity, a bin $S_i$ is feasible if it is not overfilled.
+\noindent Here, \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets. Equation~\eqref{eqn:feasible} then specifies that each subset $S_i \in \mathcal{S}$ must be feasible, where $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the specific constraint of the given problem. For example, in the graph colouring problem where vertices on a graph must be assigned colours such that no two adjacent vertices are in the same colour class, $\mathcal{F}$ contains all possible independent sets of vertices, whilst for the classical one-dimensional bin-packing problem (BPP), which requires a set of items of varying sizes to be packed into the fewest number of bins of fixed capacity, a bin $S_i$ is feasible if it is not overfilled.
 
-The focus of this paper is on another packing problem which occurs in the packaging industry, where flat rectangular items of varying widths are to be cut and scored from fixed-length strips of cardboard to then be folded into boxes. \intro{cite here where this problem has been seen, \cite{goulimis2004, becker2010, hawa2018}.}
+The focus of this paper is on another packing problem which occurs in the packaging industry, where flat rectangular items of varying widths are to be cut and scored from fixed-length strips of cardboard to then be folded into boxes. This problem was originally introduced as an open-combinatorial problem by \citeauthor{goulimis2004} in 2004, and subsequently studied in \citet{lewis2011}, \citet{becker2015}, and \citet{hawa2018}.
 
 Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each item $i \in \mathcal{I}$ has width $w_i \in \mathbb{Z}^+$ and is marked with two vertical score lines in predetermined places. The distance between each score line and the edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where w.l.o.g. $a_i \leq b_i$) \intro{see Figure?}. A pair of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage. Due to the manner in which the knives are secured onto the bar, the knives must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$, which is approximately 70mm in industry. In order for the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
 \begin{equation}
@@ -50,17 +50,17 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	\label{defn:scsp}
 \end{definition}	
 
-\noindent Each item $i \in \mathcal{I}$ can be packed into a bin in either a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or a rotated orientation $(b_i, a_i)$, where the item has been rotated $180^{\circ}$ so that the larger score width $b_i$ is on the left-hand side. Thus, the problem involves finding an ordering and orientation of the items in the bins such that the sum of all adjacent score widths is greater than or equal to the minimum scoring distance $\tau$, i.e. the vicinal sum constraint is satisfied.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} For example, in Figure~\ref{fig:itemsknife}, observe that a feasible alignment of all three items can be obtained by rotating item C. It follows that the BPP can be seen as a special case of the SCPP when $\tau = 0$. As there are $2^{n-1} n!$ distinct orderings of $n$ items, it is clear that enumerative methods are not suitable. \intro{Figure~\ref{fig:scpp} shows a feasible solution $\mathcal{S}$ to an instance of the SCPP.}
+\noindent Each item $i \in \mathcal{I}$ can be packed into a bin in either a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or a rotated orientation $(b_i, a_i)$, where the item has been rotated $180^{\circ}$ so that the larger score width $b_i$ is on the left-hand side. Thus, the problem involves finding an ordering and orientation of the items in the bins such that the sum of all adjacent score widths is greater than or equal to the minimum scoring distance $\tau$, i.e. the vicinal sum constraint is satisfied.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} For example, in Figure~\ref{fig:itemsknife}, observe that a feasible alignment of all three items can be obtained by rotating item C. The BPP can be seen as a special case of the SCPP when $\tau = 0$. As there are $2^{n-1} n!$ distinct orderings of $n$ items, it is clear that enumerative methods are not suitable. \intro{Figure~\ref{fig:scpp} shows a feasible solution $\mathcal{S}$ to an instance of the SCPP.}
 \begin{figure}[H]	
 	\centering
-	\includestandalone[width=0.3\textwidth]{figures/scpp}
+	\includestandalone[width=0.65\textwidth]{figures/bppvscpp}
 	\caption{\intro{Example of a feasible solution to the SCPP, $\tau = 7$.}}	
 	\label{fig:scpp}
 \end{figure}
 
-\noindent One interesting problem related to the BPP is the Trapezoid Packing Problem (TPP), initially investigated by Lewis et al. \cite{lewis2011}. In the roofing industry, trusses are to be cut from wooden boards so as to minimise the number of boards required. These trusses, however, are trapezoidal in shape, which introduces the additional challenge of minimising the amount of triangular waste material between adjacent trapezoids on each board by rotating and reordering the items. In 2017, Lewis and Holborn \cite{lewis2017} presented the Euler-Splice algorithm which, given a subset of trapezoidal items whose total size is less than or equal to the board size, is able to determine whether a feasible ordering of the items on the board exists in polynomial time.
+\noindent One interesting problem related to the BPP is the Trapezoid Packing Problem (TPP), initially investigated by \citet{lewis2011}. In the roofing industry, trusses are to be cut from wooden boards so as to minimise the number of boards required. These trusses, however, are trapezoidal in shape, which introduces the additional challenge of minimising the amount of triangular waste material between adjacent trapezoids on each board by rotating and reordering the items. In 2017, \citeauthor{lewis2017} presented the Euler-Splice algorithm which, given a subset of trapezoidal items whose total size is less than or equal to the board size, is able to determine whether a feasible ordering of the items on the board exists in polynomial time.
 
-Another problem similar to the BPP is the cutting stock problem (CSP). One particular case described by Garraffa et al. \cite{garraffa2016} considers sequence-dependent cut-losses (SDCL). Here, rectangular items of varying lengths are to be cut from strips of material of fixed lengths, however the type of cutting machine used results in material loss between items during the cutting process. The amount of loss can vary between different items, and is also dependent on the order of the items, i.e. a cut loss between two adjacent items A and B, with A packed first, may not necessarily be equal to the cut loss that arises when B is packed first. Hence, the CSP-SDCL involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between all adjacent items on each strip does not exceed the strip capacity.
+Another problem similar to the BPP is the cutting stock problem (CSP). One particular case described by \citet{garraffa2016} considers sequence-dependent cut-losses (SDCL). Here, rectangular items of varying lengths are to be cut from strips of material of fixed lengths, however the type of cutting machine used results in material loss between items during the cutting process. The amount of loss can vary between different items, and is also dependent on the order of the items, i.e. a cut loss between two adjacent items A and B, with A packed first, may not necessarily be equal to the cut loss that arises when B is packed first. Hence, the CSP-SDCL involves packing the items onto the fewest number of strips such that the sum of item lengths \emph{and} the sum of cut losses between all adjacent items on each strip does not exceed the strip capacity.
 
 As with the TPP and CSP-SDCL, the SCPP not only involves deciding which strip each item should be packed onto, but also, unlike the BPP, \emph{how} the items should be packed -- that is, determining the order and orientation of items within each strip. One specific difference, however, concerns the feasibility of individual strips. In the TPP, although clearly not optimal, it is still legal to place trapezoids with opposite angles, i.e. `$\backslash$' and `/', alongside one another. Likewise in the CSP-SDCL, two items with a large cut loss between them can still be packed alongside one another if necessary. Both of these problems allow items to be packed in \emph{any} order and orientation as long as the strips are not overfilled. In contrast, the SCPP possesses the strong vicinal sum constraint which if violated immediately causes an alignment of items on a strip to be invalid, thus rendering the entire solution infeasible. For consistency, we shall refer to the \intro{single-strip} problem of finding a legal sequence of a subset of items $\mathcal{I}' \subseteq \mathcal{I}$ on a \intro{single strip} as the Score-Constrained Packing Sub-Problem (SubSCP).
 
@@ -169,12 +169,19 @@ The connecting procedure operates on a set $R_i$ as follows: for each edge in $R
 	\label{fig:bcr}
 \end{figure}
 
+\begin{theorem}
+	\label{thm:ahc}
+	Let $G=(V, B \cup R)$ be a graph created from an instance $\mathcal{M}$ of cardinality $n$ of the COP. Then, AHC terminates in at most $O(n^2)$ time.
+\end{theorem}
+
+\begin{proof}
+	We assess each subprocedure of AHC in turn. Firstly, MCM produces a matching set $R' \subseteq R$ in at most $O(n \lg n)$ time due to the sorting of the vertices in lexicographical order. \ahc{In BR, sorting the $n+1$ edges of $R'$ and removing unsuitable edges also requires $O(n \lg n)$ time. The sets $R_i$ can be created in $O(n)$ time, as each edge in the list is considered once. As each set $R_i$ contains at least two edges, BR can produce up to $\frac{n+1}{2}$ sets. Thus, examining each set to find one such that $|R_i| = l$ takes at most $O(n)$ time. The same method is also used to find the set with the highest cardinality in MBR. Since $G'$ comprises a maximum of $\frac{n+1}{2}$ components, it follows that the number of edge sets in $\mathcal{R}^{*}$ needed to connect all the components is bounded by $\frac{n+1}{2}-1$. The initial sorted list consists of at most $n-1$ edges, and therefore MBR is of quadratic complexity $O(n^2)$. Finally, the connecting procedure replaces up to $n+1$ edges, and so can be executed in $O(n)$ time.}Consequently, AHC has an overall worst case complexity of $O(n^2)$.
+\end{proof}	
+
 % Notes - AHC
 {\color{myBlue}
 \begin{itemize}[leftmargin=*]
 	\item Degree sequence of graph $G$.
-	\item Theorem and new proof.
-	\item Reverse order of solution path figure.
 \end{itemize}
 }
 
@@ -201,7 +208,7 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 \begin{figure}[H]	
 	\centering
-	\includestandalone[width=0.45\textwidth]{figures/ffd}
+	\includestandalone[width=0.4\textwidth]{figures/ffd}
 	\caption{An infeasible solution produced using FFD for an example instance of the SCPP. Here, $|\mathcal{I}| = 15$, $W = 1000$, and $\tau = 70$. \scspp{$A(\mathcal{I}) = 5268$, therefore $t = 6$, shaded is unused material, item widths in middle of items.}}	
 	\label{fig:ffd}
 \end{figure}
@@ -210,12 +217,12 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 \begin{figure}[H]	
 	\centering
-	\begin{subfigure}[h]{0.45\textwidth}
+	\begin{subfigure}[h]{0.4\textwidth}
 		\includestandalone[width=\textwidth]{figures/mffd}
 		\caption{MFFD}
 		\label{fig:mffd}
 	\end{subfigure} \hspace{10mm}
-	\begin{subfigure}[h]{0.45\textwidth}
+	\begin{subfigure}[h]{0.4\textwidth}
 		\includestandalone[width=\textwidth]{figures/mffdplus}
 		\caption{MFFD$^+$}
 		\label{fig:mffdplus}
@@ -321,13 +328,6 @@ Our final operator, AGX$'$, performs in a similar manner to AGX, however rather 
 
 In order to maintain feasibility, the operators remove entire strips containing duplicate items rather than individual items. These strips may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}^*$. The partial offspring solution $\mathcal{S}$ and $\mathcal{S}^*$ are then used as input into a local search procedure to create a full feasible offspring solution.
 
-% Notes - Recombination
-{\color{myRed}
-\begin{itemize}[leftmargin=*]
-	\item
-\end{itemize}
-}
-
 \subsection{Local Search}
 \label{sub:localsearch}
 \noindent Our local search method takes in two feasible partial solutions, $\mathcal{S}$ and $\mathcal{S}^*$, permutes the strips of both, and then attempts to move items between the two solutions in four stages: 
@@ -365,12 +365,6 @@ We therefore make use of the following function to calculate the fitness of a so
 
 It is also important to consider how the vicinal sum constraint affects the fitness of a solution. Given two half-full strips containing items from an instance of the classical BPP, it may be possible to move items betweenthe strips such that one strip is almost full and the other nearly empty. Now, suppose the items inthe half-filled strips have score lines, and are from an instance of the SCPP. Obviously, it is more difficult to shuffle the items between the strips as the vicinal sum constraint may be violated. Thus, fuller strips in the SCSPP are extremely valuable, and the fitness function ensures that solutions containing fuller strips are preserved in the population throughout generations.
 
-% Notes - EA Framework
-{\color{myRed}
-\begin{itemize}[leftmargin=*]
-	\item
-\end{itemize}
-}
 
 \subsection{Experimental Results - EA}
 \label{sub:expea}
@@ -394,7 +388,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	a, 1000 & 5000 & 114.965 & 127.673 & 0 & 1.111 && 128.037 & 0 & 1.114 && 128.122 & 0 & 1.114 \\
 	\midrule \midrule
 	r, 100 & 2500 & 23.473 & 26.108 & 551 & 1.116 && 26.146 & 558 & 1.117 && 26.029 & 554 & 1.112 \\
-	r, 100 & 5000 & 11.981 & ER151 & - & - && ER152 & - & - && ER153 & - & - \\
+	r, 100 & 5000 & 11.981 & 17.667 & 470 & 1.485 && 17.718 & 458 & 1.489 && 17.692 & 449 & 1.487\\
 	\midrule
 	r, 500 & 2500 & 115.239 & ER521 & - & - && ER522 & - & - && ER523 & - & - \\
 	r, 500 & 5000 & 57.865 & ER551 & - & - && ER552 & - & - && ER553 & - & - \\
@@ -530,10 +524,11 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Check things that have been removed from intro are not directly referenced to or are placed elsewhere in the paper (e.g. BPP NP-hard)
 	\item Strips $\to$ bins.
 	\item SCSPP $\to$ SCPP.
+	\item Change thickness of dashed lines tikz figures.
 \end{itemize}		
 }
 
-\bibliographystyle{elsarticle-num}
+\bibliographystyle{model5-names}
 \bibliography{includes/bibliography}
 
 \end{document}
