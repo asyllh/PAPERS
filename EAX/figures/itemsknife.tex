@@ -51,20 +51,26 @@
 %score lines and score width labels for item A
 \draw [thick, dashed] (7.15,0) -- (7.15,1.55); %1
 \draw [thick, dashed] (9.5,0) -- (9.5,1.55); %5
-\node [below] at (7.075,0) {1};
-\node [below] at (9.75,0) {5};
+%\node [below] at (7.075,0) {1};
+%\node [below] at (9.75,0) {5};
+\node [below] at (7.15,0) {1};
+\node [below] at (9.5,0) {5};
 
 %score lines and score width labels for item B
 \draw [thick, dashed] (10.3,0) -- (10.3,1.55); %3
-%\draw [thick, red, dashed] (12.1,0) -- (12.1,1.55); %4
-\node [below] at (10.15,0) {3};
-\node [below] at (13.3,0) {\textcolor{tRed}{4}};
+%\draw [thick, red, dashed] (13.1,0) -- (12.1,1.55); %4 moved to top
+%\node [below] at (10.15,0) {3};
+%\node [below] at (13.3,0) {\textcolor{tRed}{4}};
+\node [below] at (10.3,0) {3};
+\node [below] at (13.1,0) {\textcolor{tRed}{4}};
 
 %score lines and score width labels for item C
-%\draw [thick, red, dashed] (12.7,0) -- (12.7,1.55); %2
+%\draw [thick, red, dashed] (13.7,0) -- (12.7,1.55); %2 moved to top
 \draw [thick, dashed] (15.9,0) -- (15.9,1.55); %6
-\node [below] at (13.6,0) {\textcolor{tRed}{2}};
-\node [below] at (16.2,0) {6};
+%\node [below] at (13.6,0) {\textcolor{tRed}{2}};
+%\node [below] at (16.2,0) {6};
+\node [below] at (13.7,0) {\textcolor{tRed}{2}};
+\node [below] at (15.9,0) {6};
 
 %------------------
 
@@ -72,12 +78,16 @@
 \draw [thick] (6.9,2.05) -- (16.6,2.05);
 
 %knives for items A and B
-\draw [thick] (9.5,1.75) -- (9.5,2.35);
-\draw [thick] (10.3,1.75) -- (10.3,2.35);
+\filldraw[fill=white, draw=black, thin] (9.475,1.75) rectangle (9.525,2.35);
+\filldraw[fill=white, draw=black, thin] (10.275,1.75) rectangle (10.325,2.35);
+%\draw [thick] (9.5,1.75) -- (9.5,2.35);
+%\draw [thick] (10.3,1.75) -- (10.3,2.35);
 
 %knives for items B and C
-\draw [thick] (13.1,1.75) -- (13.1,2.35);
-\draw [thick] (13.7,1.75) -- (13.7,2.35);
+\filldraw[fill=white, draw=black, thin] (13.075,1.75) rectangle (13.125,2.35);
+\filldraw[fill=white, draw=black, thin] (13.675,1.75) rectangle (13.725,2.35);
+%\draw [thick] (13.1,1.75) -- (13.1,2.35);
+%\draw [thick] (13.7,1.75) -- (13.7,2.35);
 
 
 %constraint label for score widths between items A and B (feasible, >= tau)
