@@ -100,7 +100,7 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 
 Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \citep{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \citep{hawa2018}.
 
-The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the highest-indexed vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
+The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the largest vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
 	\item $i \neq 1$;
 	\item $v_{i-1}$ has been matched; and
@@ -108,7 +108,7 @@ The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorith
 \end{enumerate*} 
 Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$.
 
-If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycle with the edges in $B$, thus no feasible solution can exist and AHC is terminated. Otherwise, the subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as demonstrated in Figure~\ref{fig:mcm}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found. However, if $z > 1$, then AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
+If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycle with the edges in $B$, thus no feasible solution can exist and AHC is terminated. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as demonstrated in Figure~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found. However, if $z > 1$, then AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -124,26 +124,26 @@ If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycl
 	\end{subfigure} \hspace{5mm}
 	\begin{subfigure}[h]{0.243\textwidth}
 		\includestandalone[width=\textwidth]{figures/mps}
-		\caption{$G' = (V, B \cup R')$ \ahc{planar}}
+		\caption{$G'$ in planar form}
 		\label{fig:mps}
 	\end{subfigure}
-	\caption{The graph $G$ created from the instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$, and the spanning subgraph $G'$ formed using the set $R' \subseteq R$ produced by MCM. In planar form it can be seen that $G'$ comprises $z = 3$ cyclic components. \ahc{vertex weights in parentheses, universal vertices are $v_{13}$ and $v_{14}$.}}
+	\caption{(a) Graph $G$ modelling instance $\mathcal{M} = \{\{1,2\}, \{1,6\}, \{2,3\}, \{2,4\}, \{3,5\}, \{4,5\}\}$; (b) $G'$ formed using $R' \subseteq R$ produced by MCM; and (c) $G'$ in planar form, clearly showing $z = 3$ components. Here, thicker blue edges are in $B$, and thinner red edges are in $R$, with the vertices' weights stated in parentheses.}
 	\label{fig:mcm}
 \end{figure}
 
-\noindent Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph, so the addition of a bridge decreases the number of components. In order to combine the multiple cyclic components of $G'$ into a single component, suitable edges must be selected from $R \backslash R'$ that are able to function as bridges between the different components. For this, AHC calls upon the Bridge-Cover Recognition (BCR) algorithm, which produces a collection of edge sets $\mathcal{R}^* = \{R^*_1, R^*_2,\dots \}$ containing edges from $R'$. A set $R^*_i$ is said to \emph{cover} a component $C_j$ if $R^*_i$ contains an edge from $C_j$. BCR operates by creating a collection $\mathcal{R}^*$ of sets that cover all $z$ components of $G'$.
+\noindent Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph, so the addition of a bridge decreases the number of components. In order to combine the multiple cyclic components of $G'$ into a single component, AHC calls upon the Bridge-Cover Recognition (BCR) algorithm, an iterative procedure which forms a collection of sets $\mathcal{R}^* = \{R^*_1, R^*_2, \dots\}$ containing specific edges from $R'$. These edges can then be replaced by new edges from $R\backslash R'$ which function as bridges between the different components. $\mathcal{R}^*$ is said to \emph{cover} a component $C_j$ if there exists a set $R^*_i \subset \mathcal{R}^*$ that contains an edge from $C_j$. BCR aims to create a collection $\mathcal{R}^*$ that covers all $z$ components of $G'$.
 
-In the original algorithm \citep{becker2010}, a procedure is used to find these sets of edges, which determine whether a feasible solution exists for a given instance. However, for some instances these sets are unable to connect the components of $G'$ into a single alternating Hamiltonian cycle, instead forming multiple cycles which do not correspond to a feasible solution. An additional procedure is implemented by \citet{hawa2018} which finds and produces feasible solutions to these instances, but we found that the initial procedure was then unnecessary. Here, we replace the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner.
+In the original algorithm \citep{becker2010}, a procedure is used to find these edge sets which determine whether a solution exists for a given instance. However, for some instances these sets are unable to connect the components of $G'$ into a single alternating Hamiltonian cycle, instead forming multiple components. An additional procedure is implemented by \citet{hawa2018} which finds and produces feasible solutions to these instances, but we found that the initial procedure was then unnecessary. Here, we replace the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner.
 
-Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the lower-indexed vertices of the edges are in increasing order and the higher-indexed vertices are in decreasing order \ahc{refer to list in figure~\ref{fig:bcrandcp}}, and any edges that cannot be sorted in this manner are removed from the list. The BCR procedure then searches through $\mathcal{L}$ for an edge whose lower-indexed vertex is adjacent to the higher-indexed vertex of the next edge via an edge from $R \backslash R'$, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R^*_1$, and succeeding edges are added to $R^*_1$ provided the adjacency condition holds and the succeeding edge is not a member of a component that is already covered by $R^*_1$. $R^*_1$ is then added to $\mathcal{R}^*$, and BCR continues to search through $\mathcal{L}$ for edges that fulfil the adjacency condition and can form an overlapping set. A set $R^*_i$ \emph{overlaps} with $\mathcal{R}^*$ if $R^*_i$ covers exactly one component that is already covered by $\mathcal{R}^*$, with all other components covered by $R^*_i$ not yet covered by $\mathcal{R}^*$. BCR proceeds through the list, finding and adding overlapping sets to $\mathcal{R}^*$. After the penultimate edge has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$, and BCR restarts the search for overlapping sets from the beginning of the list. This process is repeated, with overlapping sets being created and edges being removed from $\mathcal{L}$ during each iteration. 
+Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the smaller vertices of the edges are in increasing order and the larger vertices are in decreasing order, and any edges that cannot be sorted in this manner are removed from the list. An example of this list can be seen in figure~\ref{fig:bcrandcp}. During each iteration, BCR searches from the beginning of $\mathcal{L}$ to find successive edges that meet the following conditions:
+\begin{enumerate*}[label={(\roman*)}]
+	\item the smaller vertex of each edge is adjacent to the larger vertex of the next edge;\label{item:adj}
+	\item all of the edges are in different components of $G'$; \label{item:diffcomp} and
+	\item exactly one of the edge is in a component already covered by $\mathcal{R}^*$, with all other edges in components not yet covered by $\mathcal{R}^*$.\label{item:overlap}
+\end{enumerate*} 
+These edges form a set $R^*_i$ which is then added to $\mathcal{R}^*$, and BCR continues through the list in search of another suitable set of edges.\footnote{When searching for edges to produce the first set, $R^*_1$, only conditions \ref{item:adj} and \ref{item:diffcomp} are required as $\mathcal{R}^* = \emptyset$.} After the penultimate edge has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. Once $\mathcal{R}^*$ contains sets that cover all components of $G'$, BCR ends the search, and a connecting procedure (CP) is used on $\mathcal{R}^*$ to link the components of $G'$. If, however, no new sets are created during an iteration and $\mathcal{R}^*$ does not cover all components, then no more sets exist and BCR terminates. Furthermore, if fewer than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be produced as at least two edges are required to form a new set. In both of these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
 
-If at any point $\mathcal{R}^*$ contains overlapping sets that cover all components of $G'$, BCR immediately terminates, and a connecting procedure is used on all sets $R^*_i \subset \mathcal{R}^*$ to combine the components of $G'$. If, however, no new sets are created during an iteration and $\mathcal{R}^*$ does not cover all components, then it is clear that no more sets exist and the components cannot be combined into a single alternating Hamiltonian cycle. Furthermore, if fewer than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be created as at least two edges are required to start a new set. In both of these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
-
-% In the event that BCR reaches the end of the list and $R^*_1 = \emptyset$, then no suitable edges have been found that can join the components, thus there is no feasible solution to the given instance $\mathcal{M}$. On the other hand, if $|R^*_1| = z$ then $R^*_1$ covers all components of $G'$, and a connecting procedure is able to use $R^*_1$ to combine the components into an alternating Hamiltonian cycle.
-
-% Otherwise, $R^*_1$ is added to a collection $\mathcal{R}^*$ and the edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$. An iterative procedure is then used to find overlapping sets. A set $R^*_i$ \emph{overlaps} with $\mathcal{R}^*$ if $R^*_i$ covers exactly one component that is covered by $\mathcal{R}^*$, and all other components covered by $R^*_i$ are not yet covered by $\mathcal{R}^*$. During each iteration, BCR searches from the beginning of $\mathcal{L}$ for edges that fulfil the adjacency condition and can form an overlapping set. If such a set is found, BCR adds it to $\mathcal{R}^*$ and continues through the list in search of another overlapping set. After the penultimate edge has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. As soon as $\mathcal{R}^*$ contains overlapping sets that cover all components of $G'$, the process is immediately terminated. The connecting procedure is then used on all sets $R^*_i \subset \mathcal{R}^*$ to combine the components of $G'$. If, however, no new sets are created during an iteration and $\mathcal{R}^*$ does not cover all components, then it is clear that no more sets exist and the components cannot be combined into a single alternating Hamiltonian cycle. Furthermore, if fewer than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be created as at least two edges are required to start a new set. In both of these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
-
-The connecting procedure operates on a set $R^*_i$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the lower-indexed vertex of the edge to the higher-indexed vertex of the next edge is added to $R'$ (for the last edge, take the first edge in $R^*_i$ to be the next edge). The edges in $R^*_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:bcr}, where BCR has produced a single set $R^*_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$. 
+CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the smaller vertex of the edge to the larger vertex of the next edge is added to $R'$ (for the last edge in $R^*_i$, take the first edge to be the next edge). The edges in $R^*_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:bcr}, where $\mathcal{R}^*$ comprises a single set $R^*_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$. 
 
 \begin{figure}[H]	
 	\centering
@@ -167,7 +167,7 @@ The connecting procedure operates on a set $R^*_i$ as follows: for each edge in 
 		\caption{}
 		\label{fig:solutionpath}
 	\end{subfigure}
-	\caption{Bridge-Cover Recognition (BCR) algorithm and connecting procedure used to combine the components of $G'$ to produce a single alternating Hamiltonian cycle that corresponds to a solution $\mathcal{T}$. \ahc{Explain final path removed universal vertices.}}
+	\caption{(a) Sorted list $\mathcal{L}$ of edges from $R'$, and set $\mathcal{R}^* = \{R^*_1\}$ containing three edges produced by BCR. Dashed lines show the edges from $R\backslash R'$ obtained using CP; (b) and (c) edges from $R\backslash R'$ linking the components, replacing edges in $R'$ to form a single alternating Hamiltonian cycle; (d) removing universal vertices and incident edges results in an alternating Hamiltonian path corresponding to a solution $\mathcal{T}$.}
 	\label{fig:bcr}
 \end{figure}
 
@@ -177,8 +177,18 @@ The connecting procedure operates on a set $R^*_i$ as follows: for each edge in 
 \end{theorem}
 
 \begin{proof}
-	Firstly, MCM produces a matching set $R' \subseteq R$ in at most $O(n \lg n)$ time due to the sorting of the vertices in lexicographical order. In BCR, sorting the $n+1$ edges of $R'$ and removing unsuitable edges also requires $O(n \lg n)$ time. As each set $R^*_i$ contains at least two edges, BCR can produce up to $\frac{n+1}{2}$ sets. Since $G'$ comprises a maximum of $\frac{n+1}{2}$ components, it follows that the number of edge sets in $\mathcal{R}^*$ needed to connect all the components is bounded by $\frac{n+1}{2}-1$. The initial sorted list consists of at most $n+1$ edges, and therefore BCR is of quadratic complexity $O(n^2)$. Finally, the connecting procedure replaces up to $n+1$ edges, and so can be executed in $O(n)$ time. Consequently, AHC has an overall worst case complexity of $O(n^2)$ \ahc{rewrite}.
+	Firstly, MCM produces a matching set $R' \subseteq R$ in at most $O(n \lg n)$ time due to the sorting of the vertices in lexicographical order. In BCR, sorting the $n+1$ edges of $R'$ and removing unsuitable edges also requires $O(n \lg n)$ time. As each set $R^*_i$ contains at least two edges, BCR can produce up to $\frac{n+1}{2}$ sets. Since $G'$ comprises a maximum of $\frac{n+1}{2}$ components, it follows that the number of edge sets in $\mathcal{R}^*$ needed to connect all the components is bounded by $\frac{n+1}{2}-1$. The initial sorted list consists of at most $n+1$ edges, and therefore BCR is of quadratic complexity $O(n^2)$. Finally, CP replaces up to $n+1$ edges, and so can be executed in $O(n)$ time. Consequently, AHC has an overall worst case complexity of $O(n^2)$ \ahc{rewrite}.
 \end{proof}	
+
+% Notes - AHC
+{\color{myBlue}
+\begin{itemize}[leftmargin=*]
+	\item 2-factor $G'$.
+	\item ``Matching'' edge from $R'$, distinguish from $B$ as $B$ is also a matching, then can use matching edge rather than red edge.
+	\item State red and blue edges in figures.
+	\item Why choose single overlapping sets BCR, multiple overlap means multiple cycles.
+\end{itemize}
+}
 
 %--------------------------------------------------------------------------------------
 \section{Heuristics for the SCPP}
@@ -493,10 +503,9 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \begin{itemize}[leftmargin=*]
 	\item Vicinal \emph{sum} constraint, not vicinal \emph{score} constraint.
 	\item All dashes $'$ not '. 
-	\item Citations/references/links.
-	\item Abbreviations (SCSPP, SubSCP, AHC etc.) spelling and being used correctly.
+	\item Abbreviations (SCPP, SubSCP, AHC etc.) spelling and being used correctly.
 	\item Figure and table captions.
-	\item References in correct format, title, year, authors, journal etc.
+	\item Check that correct figures are being referred to in text.
 	\item Name of entire process EAX?
 	\item Zenodo links DOI.
 	\item State specification of computers used for experiments.
@@ -509,7 +518,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Font/colours of figures clear, labels legible.
 	\item American/British spelling.
 	\item Word repetitions, duplicate statements.
-	\item Footnotes.
+	\item Footnotes, check if required or if statement can be put in text.
 	\item Compare with previous paper.
 	\item Table footnotes, font, spelling.
 	\item Pseudocode?
@@ -524,12 +533,19 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Check things that have been removed from intro are not directly referenced to or are placed elsewhere in the paper (e.g. BPP NP-hard)
 	\item Strips $\to$ bins.
 	\item SCSPP $\to$ SCPP.
-	\item Change thickness of dashed lines tikz figures.
 	\item New citation style, check that sentences make sense, i.e. ``implemented in [1]...'' works but ``implemented in Becker (2010)...'' does not.
+	\item Use correct citation command: citet, citep, citeauthor etc.
 	\item Fulfil (one `l').
+	\item ``red'' and ``blue'' edges, refer to them in figures, thick blue, thin red.
+	\item Vertex weights.
+	\item Check notation used in tikz figures is correct.
 \end{itemize}		
 }
 \end{comment}
+
+% Recall that an edge in a graph is a \emph{bridge} if the removal of the edge increases the number of components of the graph, so the addition of a bridge decreases the number of components. In order to combine the multiple cyclic components of $G'$ into a single component, suitable edges must be selected from $R \backslash R'$ that are able to function as bridges between the different components. For this, AHC calls upon the Bridge-Cover Recognition (BCR) algorithm, which produces a collection of edge sets $\mathcal{R}^* = \{R^*_1, R^*_2,\dots \}$ containing edges from $R'$. A set $R^*_i$ is said to \emph{cover} a component $C_j$ if $R^*_i$ contains an edge from $C_j$. BCR operates by creating a collection $\mathcal{R}^*$ of sets that cover all $z$ components of $G'$.
+
+% The BCR procedure then searches through $\mathcal{L}$ for an edge whose lower-indexed vertex is adjacent to the higher-indexed vertex of the next edge via an edge from $R \backslash R'$, and that is not in the same component of $G'$ as the next edge. This edge starts the set $R^*_1$, and succeeding edges are added to $R^*_1$ provided the adjacency condition holds and the succeeding edge is not a member of a component that is already covered by $R^*_1$. $R^*_1$ is then added to $\mathcal{R}^*$, and BCR continues to search through $\mathcal{L}$ for edges that fulfil the adjacency condition and can form an overlapping set. A set $R^*_i$ \emph{overlaps} with $\mathcal{R}^*$ if $R^*_i$ covers exactly one component that is already covered by $\mathcal{R}^*$, with all other components covered by $R^*_i$ not yet covered by $\mathcal{R}^*$. BCR proceeds through the list, finding and adding overlapping sets to $\mathcal{R}^*$. After the penultimate edge has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$, and BCR restarts the search for overlapping sets from the beginning of the list. This process is repeated, with overlapping sets being created and edges being removed from $\mathcal{L}$ during each iteration.
 
 \bibliographystyle{model5-names}
 \bibliography{includes/bibliography}
