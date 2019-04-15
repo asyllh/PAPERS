@@ -72,7 +72,7 @@ As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each
 In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the SubSCP. Section~\ref{sec:scpp} will explain the difficulties associated with the SCPP and analyse heuristics currently in literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:postopt} details a postoptimisation procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
 
 %--------------------------------------------------------------------------------------
-\section{The Alternating Hamltonian Construction Algorithm}
+\section{Solving the SubSCP}
 \label{sec:ahc}
 \noindent Firstly, let us consider the following sequencing problem originally defined by \citet{hawa2018}:
 
@@ -99,6 +99,11 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 \noindent It can be seen that an alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint and can be ordered so that they are adjacent to one another. The solution $\mathcal{T}$ must contain all elements from the problem instance $\mathcal{M}$ so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Therefore, the aim is to find a suitable set of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices are used to aid the construction of the alternating Hamiltonian cycle as they are able to connect to the smallest vertices, however once an alternating Hamiltonian cycle has been produced the universal vertices and any incident edges are removed, with the resulting path corresponding to a solution $\mathcal{T}$.
 
 Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \citep{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \citep{hawa2018}.
+
+\subsection{The Alternating Hamiltonian Construction Algorithm}
+\label{sub:ahc}
+
+\noindent AHC consists of two subprocedures: one to find an initial set $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ on $G$. We now describe these two methods in detail.
 
 The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the largest vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
 \begin{enumerate*}[label={(\alph*)}]
@@ -143,7 +148,7 @@ Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the sm
 \end{enumerate*} 
 These edges form a set $R^*_i$ which is then added to $\mathcal{R}^*$, and BCR continues through the list in search of another suitable set of edges.\footnote{When searching for edges to produce the first set, $R^*_1$, only conditions \ref{item:adj} and \ref{item:diffcomp} are required as $\mathcal{R}^* = \emptyset$.} After the penultimate edge has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. Once $\mathcal{R}^*$ contains sets that cover all components of $G'$, BCR ends the search, and a connecting procedure (CP) is used on $\mathcal{R}^*$ to link the components of $G'$. If, however, no new sets are created during an iteration and $\mathcal{R}^*$ does not cover all components, then no more sets exist and BCR terminates. Furthermore, if fewer than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be produced as at least two edges are required to form a new set. In both of these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
 
-CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the smaller vertex of the edge to the larger vertex of the next edge is added to $R'$ (for the last edge in $R^*_i$, take the first edge to be the next edge). The edges in $R^*_i$ that appear in $R'$ are then removed, resulting in $n+1$ edges in $R'$ that form an alternating Hamiltonian cycle on $G'$ with the edges in $B$. An example of this is shown in Figure~\ref{fig:bcr}, where $\mathcal{R}^*$ comprises a single set $R^*_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$. 
+CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the smaller vertex of the edge to the larger vertex of the next edge is added to $R'$ (for the last edge in $R^*_i$, take the first edge to be the next edge). The edges in $R'$ that appear in $\mathcal{R}^*$ are then removed, maintaining $n+1$ edges in $R'$. An example of this is shown in Figure~\ref{fig:bcr}, where BCR produces the set $R^*_1 = \{(v_3, v_{12}),(v_4, v_{11}), (v_5, v_{10})\}$ of successive edges in $\mathcal{L}$ that meet the required conditions. $\mathcal{R}^* =\{R^*_1\}$ covers all three components of $G'$, and so CP is used on $R^*_1$ to obtain the edges $\{(v_3,v_{11}),(v_4, v_{10}),(v_5, v_{12})\}$ from $R\backslash R'$, as illustrated in Figure~\ref{fig:bcrandcp}. These edges are added to $R'$ and the edges in $R^*_1$ are removed from $R'$, as seen in Figures~\ref{fig:mpsconnect} and \ref{fig:mpscycle}, resulting in an alternating Hamiltonian cycle on $G'$. Finally, removing the universal vertices and any incident edges yields an alternating Hamiltonian path, which corresponds to a feasible solution $\mathcal{T}$ depicted in Figure~\ref{fig:solutionpath}.
 
 \begin{figure}[H]	
 	\centering
@@ -167,25 +172,23 @@ CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge 
 		\caption{}
 		\label{fig:solutionpath}
 	\end{subfigure}
-	\caption{(a) Sorted list $\mathcal{L}$ of edges from $R'$, and set $\mathcal{R}^* = \{R^*_1\}$ containing three edges produced by BCR. Dashed lines show the edges from $R\backslash R'$ obtained using CP; (b) and (c) edges from $R\backslash R'$ linking the components, replacing edges in $R'$ to form a single alternating Hamiltonian cycle; (d) removing universal vertices and incident edges results in an alternating Hamiltonian path corresponding to a solution $\mathcal{T}$.}
+	\caption{(a) BCR selects suitable edges from $\mathcal{L}$ to create the set $R^*_1$. Dashed green lines show the edges from $R\backslash R'$ obtained using CP; (b)--(c) edges from $R\backslash R'$ replace edges in $R'$ to form a single alternating Hamiltonian cycle on $G'$; (d) removing the universal vertices and incident edges results in an alternating Hamiltonian path corresponding to a solution $\mathcal{T}$.}
 	\label{fig:bcr}
 \end{figure}
 
 \begin{theorem}
 	\label{thm:ahc}
-	Let $G=(V, B \cup R)$ be a graph created from an instance $\mathcal{M}$ of cardinality $n$ of the COP. Then, AHC terminates in at most $O(n^2)$ time.
+	Let $G=(V, B \cup R)$ be a graph modelled from an instance $\mathcal{M}$ of cardinality $n$ of the COP. Then, AHC terminates in at most $O(n^2)$ time.
 \end{theorem}
 
 \begin{proof}
-	Firstly, MCM produces a matching set $R' \subseteq R$ in at most $O(n \lg n)$ time due to the sorting of the vertices in lexicographical order. In BCR, sorting the $n+1$ edges of $R'$ and removing unsuitable edges also requires $O(n \lg n)$ time. As each set $R^*_i$ contains at least two edges, BCR can produce up to $\frac{n+1}{2}$ sets. Since $G'$ comprises a maximum of $\frac{n+1}{2}$ components, it follows that the number of edge sets in $\mathcal{R}^*$ needed to connect all the components is bounded by $\frac{n+1}{2}-1$. The initial sorted list consists of at most $n+1$ edges, and therefore BCR is of quadratic complexity $O(n^2)$. Finally, CP replaces up to $n+1$ edges, and so can be executed in $O(n)$ time. Consequently, AHC has an overall worst case complexity of $O(n^2)$ \ahc{rewrite}.
+	The first subprocedure, MCM, produces an initial matching $R' \subseteq R$ in at most $O(n \lg n)$ time due to the sorting of the vertices. Forming the list $\mathcal{L}$ in the second subprocedure, BCR, also requires $O(n \lg n)$ time. Since each set $R^*_i$ must contain at least two edges, and $\mathcal{L}$ initial consists of up to $n+1$ edges, BCR can form up to $\frac{n+1}{2}$ sets. As $G'$ comprises a maximum of $\frac{n+1}{2}$ components, it follows that the number of edge in $\mathcal{R}^*$ required to cover all components of $G'$  is bounded by $\frac{n+1}{2}-1$. Removing edges from $\mathcal{L}$ can be performed in linear time. At least one set $R^*_i$ is created in each iteration of BCR, therefore producing the collection $\mathcal{R}^*$ is of quadratic complexity $O(n^2)$. CP replaces up to $n+1$ edges in $R'$, and so can be executed in $O(n)$ time. Consequently, AHC has an overall worst case complexity of $O(n^2)$.
 \end{proof}	
 
 % Notes - AHC
 {\color{myBlue}
 \begin{itemize}[leftmargin=*]
-	\item 2-factor $G'$.
-	\item ``Matching'' edge from $R'$, distinguish from $B$ as $B$ is also a matching, then can use matching edge rather than red edge.
-	\item State red and blue edges in figures.
+	\item Why not use Blossom MCM?
 	\item Why choose single overlapping sets BCR, multiple overlap means multiple cycles.
 \end{itemize}
 }
@@ -403,7 +406,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	r, 500 & 5000 & 57.865 & 94.491 & 81 & 1.643 && 95.009 & 78 & 1.652 && 94.76 & 74 & 1.648 \\
 	\midrule
 	r, 1000 & 2500 & 229.946 & 270.714 & 0 & 1.182 && 270.862 & 2 & 1.182 && 270.782 & 0 & 1.182 \\
-	r, 1000 & 5000 & 115.227 & ER1051 & - & - && ER1052 & - & - && ER1053 & - & - \\
+	r, 1000 & 5000 & 115.227 & 193.595 & 26 & 1.691 && 193.957 & 25 & 1.695 && 193.838 & 24 & 1.693 \\
 	\bottomrule
 \end{tabular}	
 \vspace{0.2cm} %
@@ -539,6 +542,8 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item ``red'' and ``blue'' edges, refer to them in figures, thick blue, thin red.
 	\item Vertex weights.
 	\item Check notation used in tikz figures is correct.
+	\item Capital F for Figure in middle of sentence?
+	\item Remove custom colours.
 \end{itemize}		
 }
 \end{comment}
