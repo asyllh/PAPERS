@@ -3,6 +3,7 @@
 \usepackage{xcolor}
 \colorlet{tBlue}{RoyalBlue!35!Cerulean}
 \colorlet{tRed}{Red}
+\definecolor{tGreen}{HTML}{569909}
 \usepackage{tikz}
 \usepackage{standalone}
 \begin{document}	
@@ -10,7 +11,7 @@
 \begin{tikzpicture}
 %\draw [help lines] (-1,-1) grid (9, 10);
 
-% LIST OF EDGES FOR MBR.
+% LIST OF EDGES FOR BCR.
 \draw [thick, tRed] (1,7.5) -- (1,8.5);
 \draw [thick, tRed] (2,7.5) -- (2,8.5);
 \draw [thick, tRed] (3,7.5) -- (3,8.5);
@@ -66,27 +67,31 @@
 \node at (6,9.25) {\small{(3)}};
 \node at (7,9.25) {\small{(3)}};
 
-\node at (1,6.1) {$C_1$};
-\node at (2,6.1) {$C_1$};
-\node at (3,6.1) {$C_1$};
-\node at (4,6.1) {$C_2$};
-\node at (5,6.1) {$C_3$};
-\node at (6,6.1) {$C_2$};
-\node at (7,6.1) {$C_3$};
+\draw [thick] (2.7,6.35) -- (5.3,6.35);
+\draw [thick] (2.7,6.34) -- (2.7,6.65);
+\draw [thick] (5.3,6.34) -- (5.3,6.65);
+\node at (4,6) {\small{$R^*_1$}};
+%\node at (1,6.1) {$C_1$};
+%\node at (2,6.1) {$C_1$};
+%\node at (3,6.1) {$C_1$};
+%\node at (4,6.1) {$C_2$};
+%\node at (5,6.1) {$C_3$};
+%\node at (6,6.1) {$C_2$};
+%\node at (7,6.1) {$C_3$};
 
 %\node at (0.25,8) {\large{$\mathcal{L}$}};
 
 %----------------------------------------------------------------
 % EDGES IN SET R1 WITH EDGES FROM R\R' DASHED, CONNECTING PROCEDURE.
-\node at (2,5.3) {\small{$|R^*_1| = z$}};
+\node at (2,5.3) {\small{$\mathcal{R}^* = \{R^*_1\}$}};
 
 \draw [thick, tRed] (1,3) -- (1,4);
 \draw [thick, tRed] (2,3) -- (2,4);
 \draw [thick, tRed] (3,3) -- (3,4);
 
-\draw [thick, densely dashed, tRed] (1,4) -- (2,3);
-\draw [thick, densely dashed, tRed] (2,4) -- (3,3);
-\draw [thick, densely dashed, tRed] (3,4) to[out=120,in=130, distance=2.2cm] (1,3);
+\draw [thick, densely dashed, tGreen] (1,4) -- (2,3);
+\draw [thick, densely dashed, tGreen] (2,4) -- (3,3);
+\draw [thick, densely dashed, tGreen] (3,4) to[out=120,in=130, distance=2.2cm] (1,3);
 
 \draw [fill=white, thick] (1,3) circle [radius = 0.08];
 \draw [fill=white, thick] (2,3) circle [radius = 0.08];
@@ -102,13 +107,21 @@
 \node at (2,4.3) {\large{$v_4$}};
 \node at (3,4.3) {\large{$v_5$}};
 
+\draw [thick] (3.7,3.45) -- (4.1,3.45);
+\draw [thick] (3.7,3.55) -- (4.1,3.55);
+\draw [thick] (4.3,3.495) -- (4.1,3.65);
+\draw [thick] (4.3,3.505) -- (4.1,3.35);
+\draw [thick] (4.1,3.65) -- (4.1,3.545);
+\draw [thick] (4.1,3.35) -- (4.1,3.455);
+\draw [thick] (3.705,3.45) -- (3.705,3.55);
+
 %-------------------------------------------
-% EDGES FROM R\R' FOUND USING MBR AND CONNECTING PROCEDURE, USE TO CONNECT CYCLES.
+% EDGES FROM R\R' FOUND USING BCR AND CONNECTING PROCEDURE, USE TO CONNECT CYCLES.
 \node at (6,5.3) {\small{Bridges from $R\backslash R'$}};
 
-\draw [thick, tRed] (5,3) -- (5,4);
-\draw [thick, tRed] (6,3) -- (6,4);
-\draw [thick, tRed] (7,3) -- (7,4);
+\draw [thick, densely dashed, tGreen] (5,3) -- (5,4);
+\draw [thick, densely dashed, tGreen] (6,3) -- (6,4);
+\draw [thick, densely dashed, tGreen] (7,3) -- (7,4);
 
 \draw [fill=white, thick] (5,3) circle [radius = 0.08];
 \draw [fill=white, thick] (6,3) circle [radius = 0.08];
