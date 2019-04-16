@@ -102,7 +102,6 @@ Determining whether a graph is Hamiltonian is one of the well-known 21 NP-comple
 
 \subsection{The Alternating Hamiltonian Construction Algorithm}
 \label{sub:ahc}
-
 \noindent AHC consists of two subprocedures: one to find an initial set $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ on $G$. We now describe these two methods in detail.
 
 The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the largest vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
@@ -144,7 +143,7 @@ Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the sm
 \begin{enumerate*}[label={(\roman*)}]
 	\item the smaller vertex of each edge is adjacent to the larger vertex of the next edge;\label{item:adj}
 	\item all of the edges are in different components of $G'$; \label{item:diffcomp} and
-	\item exactly one of the edge is in a component already covered by $\mathcal{R}^*$, with all other edges in components not yet covered by $\mathcal{R}^*$.\label{item:overlap}
+	\item exactly one edge is in a component already covered by $\mathcal{R}^*$, and all other edges are in components not yet covered by $\mathcal{R}^*$.\label{item:overlap}
 \end{enumerate*} 
 These edges form a set $R^*_i$ which is then added to $\mathcal{R}^*$, and BCR continues through the list in search of another suitable set of edges.\footnote{When searching for edges to produce the first set, $R^*_1$, only conditions \ref{item:adj} and \ref{item:diffcomp} are required as $\mathcal{R}^* = \emptyset$.} After the penultimate edge has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. Once $\mathcal{R}^*$ contains sets that cover all components of $G'$, BCR ends the search, and a connecting procedure (CP) is used on $\mathcal{R}^*$ to link the components of $G'$. If, however, no new sets are created during an iteration and $\mathcal{R}^*$ does not cover all components, then no more sets exist and BCR terminates. Furthermore, if fewer than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be produced as at least two edges are required to form a new set. In both of these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
 
@@ -199,58 +198,48 @@ CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge 
 \noindent A feasible solution for an instance of the SCPP is represented by the set $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
 \begin{subequations}
 	\begin{alignat}{2}
-	\bigcup\nolimits_{j=1}^{k} S_j &= \mathcal{I}, & \label{eqn:packall}\\[3pt]
-	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1,2,\dotsc,k\}, \hspace{1mm} i \neq j, \label{eqn:nooverlap} \\[3pt]
-	A(S_j) = \sum\nolimits_{i=1}^{|S_j|}w_i &\leq W &\quad &\forall \hspace{1mm} S_j \in \mathcal{S}, \label{eqn:capacity} \\[3pt]
+	\bigcup\nolimits_{j=1}^{k} S_j &= \mathcal{I}, & \label{eqn:packall}\\[4pt]
+	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1,2,\dotsc,k\}, \hspace{1mm} i \neq j, \label{eqn:nooverlap} \\[4pt]
+	A(S_j) = \sum\nolimits_{i=1}^{|S_j|}w_i &\leq W &\quad &\forall \hspace{1mm} S_j \in \mathcal{S}, \label{eqn:capacity} \\[4pt]
 	\textup{\textbf{r}}(i) + \textup{\textbf{l}}(i+1) &\geq \tau &\quad &\forall \hspace{1mm} i \in \{1, 2,\dotsc,|S_j|-1\}, \hspace{1mm} \forall \hspace{1mm} S_j \in \mathcal{S}. \label{eqn:vscbin}
 	\end{alignat}
 \end{subequations}
 
-\noindent An optimal solution for the SCPP is a solution consisting of the fewest number of bins required to feasibly pack all items in $\mathcal{I}$, thus the aim is to minimise $k$. Here, a bin $S_j \in \mathcal{F}$ if the total width of items in the bin does not exceed the bin's capacity \eqref{eqn:capacity} and the vicinal sum constraint is fulfilled \eqref{eqn:vscbin}. It follows that the SubSCP arises within the SCPP.
+\noindent An optimal solution for the SCPP is a solution consisting of the fewest number of bins required to feasibly pack all items in $\mathcal{I}$, thus the aim is to minimise $k$. Here, a bin $S_j \in \mathcal{F}$ if the total width of items in the bin does not exceed the bin's capacity \eqref{eqn:capacity} and the vicinal sum constraint is fulfilled \eqref{eqn:vscbin}. It is clear then that the SubSCP arises within the SCPP.
 
-Since the SCPP generalises the BPP, it follows that the SCPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCPP in polynomial time. The simplest methods to implement for such problems are heuristics, which trade optimality for speed. One of the most well-known heuristics for the BPP is First-Fit (FF), a greedy online algorithm that packs each item, given in some arbitrary order, into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. An improvement on FF yields the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. Similar heuristics include Best-Fit (BF), in which each item is packed into the fullest bin that can accommodate the item without being overfilled, and its offline counterpart Best-Fit Decreasing (BFD). A comprehensive overview of these heuristics and related methods can be seen in \citet{coffman1984}. More advanced heuristics for the BPP have been developed with positive results, such as the Minimum Bin Slack (MBS) heuristic \citep{gupta1999}, which focuses on packing each bin in turn rather than each item, and modifications of MBS such as the Perturbation-MBS' heuristic of \citet{fleszar2002}. 
+Since the SCPP generalises the BPP, it follows that the SCPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCPP in polynomial time. The simplest methods to implement for such problems are heuristics, which trade optimality for speed. One of the most well-known heuristics for the BPP is First-Fit (FF), a greedy online algorithm that packs each item, given in some arbitrary order, into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \citep{lewis2009}. An improvement on FF yields the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \citep{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$. Similar heuristics include Best-Fit (BF), in which each item is packed into the fullest bin that can accommodate the item without being overfilled, and its offline counterpart Best-Fit Decreasing (BFD). A comprehensive overview of these heuristics and related methods can be seen in \citet{coffman1984}. More advanced heuristics for the BPP have been developed with positive results, such as the Minimum Bin Slack (MBS) heuristic \citep{gupta1999}, which focuses on packing each bin in turn rather than each item, and modifications of MBS such as the Perturbation-MBS' heuristic of \citet{fleszar2002}. 
 
-For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \citep{martello1990l}, however it can be seen that $t$ will not perform as accurately for the SCPP. Given a set of $n$ items in which the largest score width $b_i < \tau / 2$, it is clear that no pairs of score widths will fulfil the vicinal sum constraint and so each item must be packed into individual bins, thus $|\mathcal{S}| = n$. The theoretical minimum $t$ does not consider the effect of the minimum scoring distance on the feasibility of the solution.
+\scpp{complexity of these heuristics FF, FFD, BF, BFD etc, sorting.}
 
-The vicinal sum constraint also introduces further differences in solutions for the BPP and SCPP. The obvious disparity is that of the ordering and orientation of the items in the bins: unimportant in the BPP, but vital for the feasibility of a solution for the SCPP. Another distinction arises when attempting to modify solutions. A solution for the BPP remains feasible when an item is removed or a new item is added to a bin (provided the bin can accommodate said item), whereas this may render a solution for the SCPP infeasible, as the new adjacent score widths may not abide by the vicinal sum constraint. Because of these differences, basic heuristics designed for the BPP cannot be used for the SCPP as there is no guarantee that the final solution will be feasible. Notice however that these heuristics can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL.
+For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \citep{martello1990l}, however it can be seen that $t$ will not perform as accurately for the SCPP. Given a set of $n$ items in which the largest score width $b_i < \tau / 2$, it is clear that no pairs of score widths will fulfil the vicinal sum constraint and so each item must be packed into individual bins, thus $|\mathcal{S}| = n$. The theoretical minimum $t$ does not consider the effect of the minimum scoring distance on the feasibility of the solution. \scpp{also see that when $\tau=0$ $t$ holds.}
 
-% An example of this is depicted in Figure~\ref{fig:ffd} where FFD has been used for an instance of the SCPP, producing invalid alignments of items in three of the bins thus resulting in an entirely infeasible solution.
+The vicinal sum constraint also introduces further differences in solutions for the BPP and SCPP. The obvious disparity is that of the ordering and orientation of the items in the bins: unimportant in the BPP, but vital for the feasibility of a solution for the SCPP. Another distinction arises when attempting to modify solutions. A solution for the BPP remains feasible when an item is removed or a new item is added to a bin (provided the bin can accommodate said item), whereas this may render a solution for the SCPP infeasible, as the new adjacent score widths may not abide by the vicinal sum constraint. Because of these differences, basic heuristics designed for the BPP cannot be used for the SCPP as there is no guarantee that the final solution will be feasible.  An example of this is depicted in Figure~\ref{fig:ffd} where a solution for an instance of the SCPP has been generated using FFD. The heuristic's inablity to rotate or reorder items produces alignments of items that violate the vicinal sum constraint in three of the bins, thus resulting in an entirely infeasible solution. Notice however that heuritics for the BPP can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL, as the only hard constraint in these problems is the requirement that no bin is overfilled~\eqref{eqn:capacity}.
 
-\begin{comment}
-\begin{figure}[H]	
+\begin{figure}[h]	
 	\centering
-	\includestandalone[width=0.4\textwidth]{figures/ffd}
-	\caption{An infeasible solution produced using FFD for an example instance of the SCPP. Here, $|\mathcal{I}| = 15$, $W = 1000$, and $\tau = 70$. \scpp{$A(\mathcal{I}) = 5268$, therefore $t = 6$, shaded is unused material, item widths in middle of items.}}	
+	\includestandalone[width=0.35\textwidth]{figures/ffd}
+	\caption{An infeasible solution produced using FFD for an example instance of the SCPP. Here, $|\mathcal{I}| = 15$, $W = 1000$, $\tau = 70$, and the theoretical minimum $t = 6$.}	
 	\label{fig:ffd}
 \end{figure}
-\end{comment}
 
-As the SCPP is a relatively new problem, few methods have been seen in literature. Some basic heuristics were introduced in \citet{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD with the extra condition that an item $i$ can only be packed into a bin $S_j$ if the score width on the end of $S_j$ and one of the score widths $a_i$ or $b_i$ meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item into the ends of bins, MFFD$^+$ calls upon AHC to find a feasible ordering of all items currently in a given bin \emph{and} the item $i$ to be packed, i.e. AHC is used for every instance of SubSCP.\footnote{If an item $i$ is the first to be packed into a bin, it is placed in a regular orientation, $(a_i, b_i)$.} Clearly MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The restriction on MFFD of only packing items in the ends of bins has the potential to increase the number of bins being used in a final solution unnecessarily. \scpp{Figure~\ref{fig:mffdvsmffdplus} compares solutions produced using MFFD and MFFD$^+$ using the same instance of the SCPP as seen in Figure~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of bins as FFD while still satisfying the vicinal sum constraint.}
+\noindent As the SCPP is a relatively new problem, few methods have been seen in literature. Some basic heuristics were introduced in \citet{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD with the extra condition that an item $i$ can only be packed into a bin $S_j$ if the score width on the end of $S_j$ and one of the score widths $a_i$ or $b_i$ meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item into the ends of bins, MFFD$^+$ calls upon AHC to find a feasible ordering of all items currently in a given bin \emph{and} the item $i$ to be packed, i.e. AHC is used for every instance of SubSCP.\footnote{If an item $i$ is the first to be packed into a bin, it is placed in a regular orientation, $(a_i, b_i)$.} Clearly MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The restriction on MFFD of only packing items in the ends of bins has the potential to increase the number of bins being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdplus} compares solutions produced using MFFD and MFFD$^+$ using the same instance of the SCPP as seen in Figure~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of bins as FFD while still satisfying the vicinal sum constraint.
 
 \begin{figure}[H]	
 	\centering
-	\begin{subfigure}[h]{0.4\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
 		\includestandalone[width=\textwidth]{figures/mffd}
 		\caption{MFFD}
 		\label{fig:mffd}
 	\end{subfigure} \hspace{10mm}
-	\begin{subfigure}[h]{0.4\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
 		\includestandalone[width=\textwidth]{figures/mffdplus}
 		\caption{MFFD$^+$}
 		\label{fig:mffdplus}
 	\end{subfigure}
-	\caption{\scpp{Solutions produced using MFFD and MFFD$^+$ using the same instance as in the previous figure. MFFD$^+$ using same number of bins as FFD but feasible, see that MFFD$^+$ items can be rearranged in bins but not in MFFD.}}
+	\caption{Solutions using MFFD and MFFD$^+$ for the same instance of the SCPP as in the previous figure, where MFFD$^+$ has generated a feasible solution using the same number of bins as FFD.}
 	\label{fig:mffdvsmffdplus}
 \end{figure}
 
-% Notes - SCPP
-{\color{myPink}
-\begin{itemize}[leftmargin=*]
-	\item Run MFFD and MFFD$^+$ experiments again, output time, and run them again using AHC from previous paper (without preliminary test and using BR/MBR, not BCR) to compare the time, also check for errors in strips/solution altHam vector.
-	\item It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \citet{lewis2009}.
-	\item In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \citet{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$.
-\end{itemize}
-}
 
 \subsection{Experimental Results - Heuristics}
 \label{sub:expheuristics}
@@ -423,6 +412,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
 	\item Time graph output.
+	\item Number of EA iterations within time limit, how does it vary between recombination operators?
 \end{itemize}
 }
 
