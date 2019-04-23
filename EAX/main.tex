@@ -117,17 +117,17 @@ If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycl
 \begin{figure}[H]	
 	\centering
 	\begin{subfigure}[h]{0.33\textwidth}
-		\includestandalone[width=\textwidth]{figures/thresholdnew}
+		\includestandalone[width=\textwidth]{figures/threshold}
 		\caption{$G = (V, B \cup R)$}
 		\label{fig:threshold}
 	\end{subfigure} \hspace{5mm}
 	\begin{subfigure}[h]{0.33\textwidth}
-		\includestandalone[width=\textwidth]{figures/matchingnew}
+		\includestandalone[width=\textwidth]{figures/matching}
 		\caption{$G' = (V, B \cup R')$}
 		\label{fig:matching}
 	\end{subfigure} \hspace{5mm}
 	\begin{subfigure}[h]{0.2\textwidth}
-		\includestandalone[width=\textwidth]{figures/planar2}
+		\includestandalone[width=\textwidth]{figures/mps}
 		\caption{$G'$ in planar form}
 		\label{fig:mps}
 	\end{subfigure}
@@ -150,22 +150,22 @@ CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge 
 \begin{figure}[H]	
 	\centering
 	\begin{subfigure}[h]{0.35\textwidth}
-		\includestandalone[width=\textwidth]{figures/bcrnew}
+		\includestandalone[width=\textwidth]{figures/bcr}
 		\caption{}
 		\label{fig:bcrandcp}
 	\end{subfigure} \hspace{7mm} %
 	\begin{subfigure}[h]{0.25\textwidth}
-		\includestandalone[width=\textwidth]{figures/planarconnect2}
+		\includestandalone[width=\textwidth]{figures/mpsconnect}
 		\caption{}
 		\label{fig:mpsconnect}
 	\end{subfigure} \hspace{7mm} %
 	\begin{subfigure}[h]{0.25\textwidth}
-		\includestandalone[width=\textwidth]{figures/planarcycle2}
+		\includestandalone[width=\textwidth]{figures/mpscycle}
 		\caption{}
 		\label{fig:mpscycle}
 	\end{subfigure}
 	\begin{subfigure}[h]{0.75\textwidth}
-		\includestandalone[width=\textwidth]{figures/solutionpathnew}
+		\includestandalone[width=\textwidth]{figures/solutionpath}
 		\caption{}
 		\label{fig:solutionpath}
 	\end{subfigure}
@@ -173,22 +173,27 @@ CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge 
 	\label{fig:bcr}
 \end{figure}
 
-\noindent In the original algorithm, a procedure is used that searches through $\mathcal{L}$ just once to find edges sets for the collection $\mathcal{R}^*$. For some instance, although $\mathcal{R}^*$ covered all components of $G'$, the components are unable to be connected into a single alternating Hamiltonian cycle. In condition~\ref{item:overlap}, the original algorithm allowed edges to be from more than one component already covered by $\mathcal{R}^*$. This causes additional bridges to be formed between components that have already been connected, resulting in multiple components on $G'$. By restricting \ref{item:overlap} such that only one edge can be in a component that $\mathcal{R}^*$ covers, we prevent unecessary edges being added to $G'$, and ensure that components are linked to form a single component. An additional procedure is implemented by \citet{hawa2018} that recitifies this issue, but we found that the initial procedure was then unnecessary.Thus, we replace the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner. Figure gives a basic example of the problem created using the orignal procedure. The first set $R^*_1 = \{(v_3, v_{18}),(v_4, v_{17}),(v_5, v_{15})\}$ is created and added to $\mathcal{R}^*$, covering components $C_1, C_2$ and $C_3$. Another set is required to cover $C_4$, and so the set $R^*_2 = \{(v_8, v_{13}),(v_9, v_{12}),(v_{10}, v_{11})\}$ is produced. However, although $R^*_2$ contains an edge from $C_4$, the other two edges in the set are in $C_2$ and $C_3$, both of which $\mathcal{R}^*$ already covers. It can be seen that the bridges obtained from these sets form two components on $G'$, as $C_2$ and $C_3$ are linked twice. Using our modified version of condition~\ref{item:overlap}, $R^*_2$ would only contain two edges: $(v_9,v_{12})$ in $C_3$, a component that $\mathcal{R}^*$ already covers, and $(v_{10}, v_{11})$ in $C_4$. The collection $\mathcal{R}^* = \{R^*_1, R^*_2\}$ would then cover all components of $G'$, and the bridges attained from $\mathcal{R}^*$ would only link $C_2$ and $C_3$ once, forming a single alternating Hamiltonian cycle on $G'$.
+\noindent In \citet{becker2010}, a procedure is used that searches through $\mathcal{L}$ just once to find edges sets for the collection $\mathcal{R}^*$. For some instances, although $\mathcal{R}^*$ covered all components of $G'$, the components are unable to be connected into a single alternating Hamiltonian cycle. The issue stems from the requirements for edges to form a set, where in the original algorithm, condition~\ref{item:overlap} allows edges to be in multiple components already covered by $\mathcal{R}^*$. This causes additional bridges to be formed between components that have already been connected, resulting in multiple components on $G'$. By restricting \ref{item:overlap} such that only one edge can be in a component that $\mathcal{R}^*$ covers, we prevent unecessary edges being added to $G'$, and ensure that components are linked to form a single component. Figure~\ref{fig:overlaperror} shows the production of $\mathcal{R}^*$ using the original procedure, where the first set $R^*_1$ is created and added to $\mathcal{R}^*$, covering components $C_1, C_2$ and $C_3$. Then, the set $R^*_2$ is produced which contains edges in \emph{two} components that $\mathcal{R}^*$ already covers, as well as an edge in $C_4$. It can be seen that although $\mathcal{R}^* = \{R^*_1, R^*_2\}$ covers all components of $G'$, the bridges obtained from these sets form two components on $G'$, as $C_2$ and $C_3$ are linked twice. An additional procedure is implemented by \citet{hawa2018} that recitifies this issue, but we found that the initial procedure was then unnecessary. Thus, we replaced the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner. 
 
 \begin{figure}[H]
 	\centering	
-	\begin{subfigure}[h]{0.27\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
+		\includestandalone[width=\textwidth]{figures/bcrerror}
+		\caption{}
+		\label{fig:bcrerror}
+	\end{subfigure} \hspace{5mm}
+	\begin{subfigure}[h]{0.25\textwidth}
 		\includestandalone[width=\textwidth]{figures/planarerrornew}
 		\caption{}
-		\label{fig:planarerror}
+		\label{fig:overlaperror1}
 	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.27\textwidth}
+	\begin{subfigure}[h]{0.25\textwidth}
 		\includestandalone[width=\textwidth]{figures/planarerrornew2}
 		\caption{}
-		\label{fig:planarerror2}
+		\label{fig:overlaperror2}
 	\end{subfigure}
-	\caption{\ahc{overlap error}}	
-	\label{fig:doubleoverlap}
+	\caption{Issue caused using the original procedure to find suitable edge sets, where the collection $\mathcal{R}^*$ covers all components of $G'$, but the bridges obtained from the edge sets in $\mathcal{R}^*$ form two components, as opposed to a single alternating Hamiltonian cycle.}	
+	\label{fig:overlaperror}
 \end{figure}
 
 \begin{theorem}
