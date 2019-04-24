@@ -384,7 +384,7 @@ We therefore make use of the following function to calculate the fitness of a so
 	f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
 \end{equation}
 
-\noindent which assigns higher values to fitter solutions. This function exerts evolutionary pressure by favouring solutions with superior parkings, reducing the ability for less fit solutions to reproduce. Note also that if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
+\noindent which assigns higher values to fitter solutions. This function exerts evolutionary pressure by favouring solutions with superior packings, reducing the ability for less fit solutions to reproduce. Note also that if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
 
 It is also important to consider how the vicinal sum constraint affects the fitness of a solution. Given two half-full bins containing items from an instance of the classical BPP, it may be possible to move items between the bins such that one bin is almost full and the other nearly empty. Now, suppose the items in the half-filled bins have score lines, and are from an instance of the SCPP. Obviously, it is more difficult to shuffle the items between the bins as the vicinal sum constraint may be violated. Thus, fuller bins in the SCPP are extremely valuable, and the fitness function ensures that solutions containing fuller bins are preserved in the population throughout generations.
 
@@ -438,6 +438,8 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \end{threeparttable}
 \label{table:ea}
 \end{table}
+
+\noindent Firstly, it is clear that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. GGA consistently generates solutions with the fewest number of bins on average when $W=5000$, whilst AGX$'$ is more favourable when $W=2500$. One interesting observation is of the results obtained using AGX. Despite producing solutions with the most bins on average across all real instances, AGX also yields the highest number of solutions comprising $t$ bins when $W=2500$. This suggests a high variance in the quality of solutions.
 
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
