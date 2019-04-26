@@ -7,6 +7,7 @@
 \definecolor{tOrange}{HTML}{FA7602}
 \usepackage{tikz}
 \usepackage{standalone}
+\usepackage{amsmath, amssymb, mathtools}
 \begin{document}	
 	
 \begin{tikzpicture}
@@ -78,7 +79,12 @@
 \node at (3,6.1) {\small{$R^*_1$}};
 \node at (7,6.1) {\small{$R^*_2$}};
 
-\node at (5,5.3) {\small{$\mathcal{R}^* = \{R^*_1, R^*_2\}$}};
+%\node at (5,5.3) {\small{$\mathcal{R}^* = \{R^*_1, R^*_2\}$}};
+
+\node [right] at (3.55,5.5) {\small{$R^*_1: C_1, C_2, C_3$}};
+\node [right] at (3.55,5.1) {\small{$R^*_2:$}};
+\node [right] at (4.75,5.1) {\small{$C_2, C_3, C_4$}};
+%\draw [tRed] (4.85, 5) -- (4.85, 4.9) -- (5.9, 4.9) -- (5.9, 5);
 
 %----------------------------------------------------------------
 % R1
