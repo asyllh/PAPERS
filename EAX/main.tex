@@ -176,7 +176,7 @@ CP operates on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge 
 	\label{fig:bcr}
 \end{figure}
 
-\noindent In \citet{becker2010}, a procedure is used that searches through $\mathcal{L}$ just once to find edges sets for the collection $\mathcal{R}^*$. For some instances, although $\mathcal{R}^*$ covered all components of $G'$, the components are unable to be connected into a single alternating Hamiltonian cycle. The issue stems from the requirements for edges to form a set, where in the original algorithm, condition~\ref{item:overlap} allows edges to be in multiple components already covered by $\mathcal{R}^*$. This causes additional bridges to be formed between components that have already been connected, resulting in multiple components on $G'$. By restricting \ref{item:overlap} such that only one edge can be in a component that $\mathcal{R}^*$ covers, we prevent unecessary edges being added to $G'$, and ensure that components are linked to form a single component. Figure~\ref{fig:overlaperror} shows the production of $\mathcal{R}^*$ using the original procedure, where the first set $R^*_1$ is created and added to $\mathcal{R}^*$, covering components $C_1, C_2$ and $C_3$. Then, the set $R^*_2$ is produced which contains edges in \emph{two} components that $\mathcal{R}^*$ already covers, as well as an edge in $C_4$. It can be seen that although $\mathcal{R}^* = \{R^*_1, R^*_2\}$ covers all components of $G'$, the bridges obtained from these sets form two components on $G'$, as $C_2$ and $C_3$ are linked twice. An additional procedure is implemented by \citet{hawa2018} that recitifies this issue, but we found that the initial procedure was then unnecessary. Thus, we replaced the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner. 
+\noindent In the first algorithm \citep{becker2010}, a procedure is used that searches through $\mathcal{L}$ just once to find edges sets for the collection $\mathcal{R}^*$. For some instances, although $\mathcal{R}^*$ covered all components of $G'$, the components are unable to be connected into a single alternating Hamiltonian cycle. The issue stems from the requirements for edges to form a set, where in the original algorithm, condition~\ref{item:overlap} allows edges to be in multiple components already covered by $\mathcal{R}^*$. This causes additional bridges to be formed between components that have already been connected, resulting in multiple components on $G'$. By restricting \ref{item:overlap} such that only one edge can be in a component that $\mathcal{R}^*$ covers, we prevent unecessary edges being added to $G'$ and ensure that components are linked to form a single component. Figure~\ref{fig:overlaperror} shows the production of $\mathcal{R}^*$ using the original procedure, where the first set $R^*_1$ is created and added to $\mathcal{R}^*$, covering components $C_1, C_2$ and $C_3$. Then, the set $R^*_2$ is produced which contains edges in \emph{two} components that $\mathcal{R}^*$ already covers, as well as an edge in $C_4$. It can be seen that although $\mathcal{R}^* = \{R^*_1, R^*_2\}$ covers all components of $G'$, the bridges obtained from these sets form two components on $G'$, as $C_2$ and $C_3$ are linked twice. An additional procedure is implemented by \citet{hawa2018} that recitifies this issue, but we found that the initial procedure was then unnecessary. Thus, we replaced the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner. 
 
 \begin{figure}[H]
 	\centering	
@@ -299,15 +299,17 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 It can be seen that MFFD$^+$ produces solutions using fewer bins on average than MFFD for all 12 instance classes. MFFD was only able to find solutions using $t$ bins for two instance classes, whereas MFFD$^+$ produced solutions using $t$ bins for four instances classes. Solutions using fewer bins were found less frequently on average when the bin size is larger. The solution quality $q$ for the six instance classes where $W = 5000$ is significantly higher than when $W = 2500$. A larger bin size means the bins can accommodate more items, however this increases the number of adjacent score widths that must fulfil the vicinal sum constraint. Note also that $q$ is higher for real instances in comparison to artificial instances, as due to the reduced variety of item widths and score widths it is difficult to attain feasible packings. 
 
-Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} bins, that is, once an item has been packed into a bin, it must stay in that bin (although the position of the item in the bin can change due to the use of AHC). It follows that every item packed has an effect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods. \scpp{where/how each item is packed is dependent on where/how previous items have been packed.}
+Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} bins, that is, once an item has been packed into a bin, it must stay in that bin (although the position of the item in the bin can change due to the use of AHC). It follows that every item packed has an effect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods.
 
 % Notes - Experiments Heuristics
+\begin{comment}
 {\color{myPink}
 \begin{itemize}[leftmargin=*]
 	\item Number of types on average real instances.
 	\item Number of items per bin.
 \end{itemize}
 }
+\end{comment}
 
 %--------------------------------------------------------------------------------------
 \section{An Evolutionary Algorithm for the SCPP}
@@ -328,10 +330,10 @@ In order to maintain feasibility, the operators remove entire bins containing du
 
 \begin{figure}[H]	
 	\centering
-	\begin{minipage}{0.31\textwidth}
+	\begin{minipage}{0.3\textwidth}
 		\includestandalone[width=\textwidth]{figures/parentS1}
 	\end{minipage} \hspace{15mm}
-	\begin{minipage}{0.31\textwidth}
+	\begin{minipage}{0.3\textwidth}
 		\includestandalone[width=\textwidth]{figures/parentS2}
 	\end{minipage}
 \end{figure}
