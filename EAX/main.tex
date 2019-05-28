@@ -443,6 +443,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 
 \noindent Firstly, it is clear that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. GGA consistently generates solutions with the fewest number of bins on average when $W=5000$, whilst AGX$'$ is more favourable when $W=2500$. One interesting observation is of the results obtained using AGX. Despite producing solutions with the most bins on average across all real instances, AGX also yields the highest number of solutions comprising $t$ bins when $W=2500$. This suggests a high variance in the quality of solutions.
 
+\begin{comment}
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
 	\item Better than heuristics - compare.
@@ -463,6 +464,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	\item Number of EA iterations within time limit, how does it vary between recombination operators?
 \end{itemize}
 }
+\end{comment}
 
 %--------------------------------------------------------------------------------------
 \section{Postoptimisation}
@@ -470,7 +472,6 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \noindent Given a collection $\mathcal{S}$ of subsets of a set $X$, an \emph{exact cover} is a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ such that each element in $X$ is contained in exactly one subset in $\mathcal{S}^*$.
 
 Consider an $m\times n$ binary matrix $X$. Let $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ be the rows and columns of the matrix respectively. Now, suppose each row $i \in M$ represents a bin, and each column $j \in N$ represents an item. Then, an element of the matrix $x_{ij} = 1$ iff item $j$ is in bin $i$. It can be said in this case that row $i$ \emph{covers} column $j$. Thus, the problem is to find a minimum cardinality subset of rows $S \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in S$. This problem can be formulated as the following integer linear program.
-
 \begin{subequations}
 	\begin{alignat}{3}
 		\text{minimise  } &\sum_{i \in M} c_i & \\[3pt]
@@ -486,14 +487,48 @@ Consider an $m\times n$ binary matrix $X$. Let $M = \{1,2,\dotsc,m\}$ and $N = \
 \end{cases}
 \]
 
-\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem, and one of Karp's 21 NP-complete problems \cite{karp1972}. However, if we know that an exact cover does indeed exist, we can alter the problem to instead find the smallest subcollection.
+
+\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem, and one of Karp's 21 NP-complete problems \citet{karp1972}. However, if we know that an exact cover does indeed exist, we can alter the problem to instead find the smallest subcollection.
 
 Given a set of feasible bins, we can use this to find a solution to the SCPP. Since the bins provided are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald Knuth \cite{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we chose to use the set $\mathcal{A}$ created during the EA, which contains feasible bins found during the algorithm.
+One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald \citet{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we chose to use the set $\mathcal{A}$ created during the EA, which contains feasible bins found during the algorithm.
 
+\begin{algorithm}
+\caption{\textsc{CMSA} ($p$, $maxAge$)}
+\begin{algorithmic}[1]
+	\State $\mathcal{S}_{bsf} \gets \emptyset$, $\mathcal{C}^* \gets \emptyset$
+	\While{time limit not reached}
+		\For{$i\gets 1$ \To $p$}
+			\State $\mathcal{S} \gets$ \textsc{MFFR}$^+$($\mathcal{I}$)
+				\ForAll{$b \in \mathcal{S}$ \textbf{and} $b \notin \mathcal{B}^*$}
+					\State $age[b] \gets 0$
+					\State $\mathcal{B}^* \gets \mathcal{B}^* \cup \{b\}$
+				\EndFor
+		\EndFor
+		\State $\mathcal{S}^* \gets$ \textsc{ExactCover}($\mathcal{B}^*$)
+		\If{$\mathcal{S}^*$ is better than $\mathcal{S}_{bsf}$}
+			\State $\mathcal{S}_{bsf} \gets \mathcal{S}^*$
+		\EndIf
+		\ForAll{$b \in \mathcal{B}^*$}
+			\If{$b \in \mathcal{S}^*$}
+				\State $age[b] \gets 0$
+			\ElsIf{$b \notin \mathcal{S}^*$}
+				\State $age[b] \gets age[b] + 1$
+				\If{$age[b] = maxAge$}
+					\State $\mathcal{B}^* \gets \mathcal{B}^* - \{b\}$
+				\EndIf
+			\EndIf		
+		\EndFor
+	\EndWhile
+	\Return $\mathcal{S}_{bsf}$
+\end{algorithmic}	
+\end{algorithm}	
+
+\begin{comment}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
+	\item Cite \citet{blum2016}
 	\item Cite \citet{malaguti2008}.
 	\item Exact cover formulation, NP-hard, state the IP, describe DLX.
 	\item Cite \citet{knuth2000} dancing steps.
@@ -515,8 +550,9 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\idone{Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$.}
 \end{itemize}
 }
+\end{comment}
 
-\subsection{Experimental Results - Postoptimisation}
+\subsection{Experimental Results - }
 \label{sub:exppostopt}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
