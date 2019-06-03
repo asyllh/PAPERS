@@ -422,10 +422,10 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	artificial, 1000 & 5000 & 114.965 && 126.308 & 0 && 126.918 & 0 && 127.122 & 0 \\
 	\midrule \midrule
 	real, 100 & 2500 & 23.473 && 26.012 & 569 && 26.084 & 568 && 25.955 & 569 \\
-	real, 100 & 5000 & 11.981 && - & - && 17.621 & 466 && 17.608 & 466 \\
+	real, 100 & 5000 & 11.981 && 17.571 & 484 && 17.621 & 466 && 17.608 & 466 \\
 	\midrule
-	real, 500 & 2500 & 115.239 && 134.342 & 45 && 134.586 & 55 && - & - \\
-	real, 500 & 5000 & 57.865 && - & - && - & - && - & - \\
+	real, 500 & 2500 & 115.239 && 134.342 & 45 && 134.586 & 55 && 134.24 & 39 \\
+	real, 500 & 5000 & 57.865 && 93.875 & 85 && 94.549 & 86 && 94.186 & 82 \\
 	\midrule
 	real, 1000 & 2500 & 229.946 && 270.396 & 1 && 270.654 & 2 && 270.59 & 0 \\
 	real, 1000 & 5000 & 115.227 && - & - && 193.658 & 27 && 193.578 & 29 \\
@@ -441,7 +441,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \label{table:ea}
 \end{table}
 
-\noindent Firstly, it is clear that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. GGA consistently generates solutions with the fewest number of bins on average when $W=5000$, whilst AGX$'$ is more favourable when $W=2500$. One interesting observation is of the results obtained using AGX. Despite producing solutions with the most bins on average across all real instances, AGX also yields the highest number of solutions comprising $t$ bins when $W=2500$. This suggests a high variance in the quality of solutions.
+Firstly, it is clear that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. GGA consistently generates solutions with the fewest number of bins on average when $W=5000$, whilst AGX$'$ is more favourable when $W=2500$. One interesting observation is of the results obtained using AGX. Despite producing solutions with the most bins on average across all real instances, AGX also yields the highest number of solutions comprising $t$ bins when $W=2500$. This suggests a high variance in the quality of solutions.
 
 \begin{comment}
 {\color{myRed}
@@ -488,11 +488,9 @@ Consider an $m\times n$ binary matrix $X$. Let $M = \{1,2,\dotsc,m\}$ and $N = \
 \]
 
 
-\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem, and one of Karp's 21 NP-complete problems \citet{karp1972}. However, if we know that an exact cover does indeed exist, we can alter the problem to instead find the smallest subcollection.
+\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem, and one of Karp's 21 NP-complete problems \citet{karp1972}. However, if we know that an exact cover does indeed exist, we can alter the problem to instead find the smallest subcollection. Given a set of feasible bins, we can use this to find a solution to the SCPP. Since the bins provided are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-Given a set of feasible bins, we can use this to find a solution to the SCPP. Since the bins provided are already feasible, the complications associated with the vicinal sum constraint are eliminated.
-
-One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald \citet{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we chose to use the set $\mathcal{A}$ created during the EA, which contains feasible bins found during the algorithm.
+One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald \citet{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we implement the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as in our EA, CMSA operates on a set $\mathcal{B}^*$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
 
 \begin{algorithm}
 \caption{\textsc{CMSA} ($p$, $maxAge$)}
@@ -522,8 +520,11 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 		\EndFor
 	\EndWhile
 	\Return $\mathcal{S}_{bsf}$
-\end{algorithmic}	
+\end{algorithmic}
+\label{alg:cmsa}	
 \end{algorithm}	
+
+\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}^*$. The age of every new bin $b$ added to $\mathcal{B}^*$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}^*$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}^*$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}^*$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. 
 
 \begin{comment}
 {\color{myGreen}
