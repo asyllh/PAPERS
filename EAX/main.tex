@@ -263,6 +263,43 @@ The vicinal sum constraint also introduces further differences in solutions for 
 \centering
 \caption{\scpp{MFFD vs MFFD$^+$}}
 \begin{threeparttable}
+\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{25pt}}c@{\hspace{20pt}}c@{\hspace{10pt}}cc@{\hspace{20pt}}c@{\hspace{10pt}}}\toprule \toprule
+	& & & \multicolumn{2}{c}{MFFD} &\phantom{abc}& \multicolumn{2}{c}{MFFD$^+$}\\
+	\cmidrule{4-5} \cmidrule{7-8}
+	Type, $n$ & $W$ & $t$\tnote{$a$} & $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} && $|\mathcal{S}|$ & $\# t$\\ \midrule	
+	artificial, 100 & 2500 & 23.323 & 30.754 & 0 && 28.457 & 26 \\
+	artificial, 500 & 2500 & 114.942 & 140.206 & 0 && 132.647 & 0 \\
+	artificial, 1000 & 2500 & 229.437 & 271.919 & 0 && 258.388 & 0 \\
+	\midrule
+	artificial, 100 & 5000 & 11.922 & 23.583 & 0 && 19.881 & 7 \\
+	artificial, 500 & 5000 & 57.722 & 103.209 & 0 && 89.544 & 0 \\
+	artificial, 1000 & 5000 & 114.965 & 198.325 & 0 && 172.613 & 0 \\
+	\midrule
+	\midrule
+	real, 100 & 2500 & 23.473 & 37.069 & 5 && 35.419 & 16 \\
+	real, 500 & 2500 & 115.239 & 184.106 & 0 && 177.249 & 0 \\
+	real, 1000 & 2500 & 229.946 & 368.453 & 0 && 355.042 & 0 \\
+	\midrule
+	real, 100 & 5000 & 11.981 & 32.348 & 1 && 29.611 & 5 \\
+	real, 500 & 5000 & 57.865 & 163.819 & 0 && 153.416 & 0\\
+	real, 1000 & 5000 & 115.227 & 328.618 & 0 && 308.642 & 0 \\
+	\bottomrule
+\end{tabular}
+\vspace{0.2cm} %
+\begin{tablenotes}
+	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
+	\item[$b$] Number of bins per solution (mean from 1000 instances).
+	\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
+\end{tablenotes}	
+\end{threeparttable}	
+\label{table:heuristics}
+\end{table}
+
+\begin{comment} %table
+\begin{table}[h!]
+\centering
+\caption{\scpp{MFFD vs MFFD$^+$}}
+\begin{threeparttable}
 \begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{25pt}}c@{\hspace{20pt}}c@{\hspace{10pt}}cc@{\hspace{20pt}}c@{\hspace{10pt}}}\toprule
 	& & & \multicolumn{2}{c}{MFFD} &\phantom{abc}& \multicolumn{2}{c}{MFFD$^+$}\\
 	\cmidrule{4-5} \cmidrule{7-8}
@@ -294,8 +331,9 @@ The vicinal sum constraint also introduces further differences in solutions for 
 	\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
 \end{tablenotes}	
 \end{threeparttable}	
-\label{table:heuristics}
+\label{table:heuristics1}
 \end{table}
+\end{comment}
 
 It can be seen that MFFD$^+$ produces solutions using fewer bins on average than MFFD for all 12 instance classes. MFFD was only able to find solutions using $t$ bins for two instance classes, whereas MFFD$^+$ produced solutions using $t$ bins for four instances classes. Solutions using fewer bins were found less frequently on average when the bin size is larger. \scpp{The solution quality $q$ for the six instance classes where $W = 5000$ is significantly higher than when $W = 2500$.} A larger bin size means the bins can accommodate more items, however this increases the number of adjacent score widths that must fulfil the vicinal sum constraint. \scpp{Note also that $q$ is higher for real instances in comparison to artificial instances, as due to the reduced variety of item widths and score widths it is difficult to attain feasible packings.} \note{$q$ has now been removed from tables as it is redundant, can discuss in text rather than displaying in tables - change text accordingly.}
 
@@ -408,27 +446,27 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \centering
 \caption{\ea{EA comparisons}}
 \begin{threeparttable}
-\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}}\toprule
+\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}}\toprule \toprule
 	& & & \phantom{a} & \multicolumn{2}{c}{GGA} &\phantom{ab}& \multicolumn{2}{c}{AGX} &\phantom{ab}& \multicolumn{2}{c}{AGX$'$}\\
 	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
-	Type, $n$& $W$ & $t$\tnote{$a$} && $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$\\ \midrule \midrule
-	artificial, 100 & 2500 & 23.323 && 23.358 & 973 && 23.343 & 985 && 23.355 & 975 \\
-	artificial, 100 & 5000 & 11.922 && 12.265 & 849 && 12.315 & 825 && 12.304 & 832 \\
+	Type, $n$& $W$ & $t$\tnote{$a$} && $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$\\
 	\midrule
-	artificial, 500 & 2500 & 114.942 && 116.44 & 316 && 116.711 & 280 && 116.326 & 347 \\
-	artificial, 500 & 5000 & 57.722 && 61.836 & 65 && 62.322 & 46 && 62.546 & 51 \\
+	artificial, 100 & 2500 & 23.323 && 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 \\
+	artificial, 500 & 2500 & 114.942 && 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} \\
+	artificial, 1000 & 2500 & 229.437 && 234.482 & 14 && 235.029 & 17 && \textbf{233.988} &\textbf{21} \\
 	\midrule
-	artificial, 1000 & 2500 & 229.437 && 234.482 & 14 && 235.029 & 17 && 233.988 & 21 \\
-	artificial, 1000 & 5000 & 114.965 && 126.308 & 0 && 126.918 & 0 && 127.122 & 0 \\
-	\midrule \midrule
-	real, 100 & 2500 & 23.473 && 26.012 & 569 && 26.084 & 568 && 25.955 & 569 \\
-	real, 100 & 5000 & 11.981 && 17.571 & 484 && 17.621 & 466 && 17.608 & 466 \\
+	artificial, 100 & 5000 & 11.922 && \textbf{12.265} & \textbf{849} && 12.315 & 825 && 12.304 & 832 \\
+	artificial, 500 & 5000 & 57.722 && \textbf{61.836} & \textbf{65} && 62.322 & 46 && 62.546 & 51 \\
+	artificial, 1000 & 5000 & 114.965 && \textbf{126.308} & 0 && 126.918 & 0 && 127.122 & 0 \\
 	\midrule
-	real, 500 & 2500 & 115.239 && 134.342 & 45 && 134.586 & 55 && 134.24 & 39 \\
-	real, 500 & 5000 & 57.865 && 93.875 & 85 && 94.549 & 86 && 94.186 & 82 \\
 	\midrule
-	real, 1000 & 2500 & 229.946 && 270.396 & 1 && 270.654 & 2 && 270.59 & 0 \\
-	real, 1000 & 5000 & 115.227 && - & - && 193.658 & 27 && 193.578 & 29 \\
+	real, 100 & 2500 & 23.473 && 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} \\
+	real, 500 & 2500 & 115.239 && 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 \\
+	real, 1000 & 2500 & 229.946 && \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 \\
+	\midrule
+	real, 100 & 5000 & 11.981 && \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 \\
+	real, 500 & 5000 & 57.865 && \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 \\
+	real, 1000 & 5000 & 115.227 && \textbf{193.08} & \textbf{29} && 193.658 & 27 && 193.578 &\textbf{29} \\
 	\bottomrule
 \end{tabular}	
 \vspace{0.2cm} %
@@ -440,6 +478,47 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \end{threeparttable}
 \label{table:ea}
 \end{table}
+
+\begin{comment} %table
+\begin{table}[h!]
+\centering
+\caption{\ea{EA comparisons}}
+\begin{threeparttable}
+\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}}\toprule \toprule
+	& & & \phantom{a} & \multicolumn{2}{c}{GGA} &\phantom{ab}& \multicolumn{2}{c}{AGX} &\phantom{ab}& \multicolumn{2}{c}{AGX$'$}\\
+	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
+	Type, $n$& $W$ & $t$\tnote{$a$} && $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$\\
+	\midrule
+	artificial, 100 & 2500 & 23.323 && 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 \\
+	artificial, 100 & 5000 & 11.922 && \textbf{12.265} & \textbf{849} && 12.315 & 825 && 12.304 & 832 \\
+	\midrule
+	artificial, 500 & 2500 & 114.942 && 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} \\
+	artificial, 500 & 5000 & 57.722 && \textbf{61.836} & \textbf{65} && 62.322 & 46 && 62.546 & 51 \\
+	\midrule
+	artificial, 1000 & 2500 & 229.437 && 234.482 & 14 && 235.029 & 17 && \textbf{233.988} &\textbf{21} \\
+	artificial, 1000 & 5000 & 114.965 && \textbf{126.308} & 0 && 126.918 & 0 && 127.122 & 0 \\
+	\midrule
+	\midrule
+	real, 100 & 2500 & 23.473 && 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} \\
+	real, 100 & 5000 & 11.981 && \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 \\
+	\midrule
+	real, 500 & 2500 & 115.239 && 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 \\
+	real, 500 & 5000 & 57.865 && \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 \\
+	\midrule
+	real, 1000 & 2500 & 229.946 && \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 \\
+	real, 1000 & 5000 & 115.227 && - & - && 193.658 & 27 && 193.578 & 29 \\
+	\bottomrule
+\end{tabular}	
+\vspace{0.2cm} %
+\begin{tablenotes}
+	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
+	\item[$b$] Number of bins per solution (mean from 1000 instances).
+	\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
+\end{tablenotes}
+\end{threeparttable}
+\label{table:ea1}
+\end{table}
+\end{comment}
 
 Firstly, it is clear that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. GGA consistently generates solutions with the fewest number of bins on average when $W=5000$, whilst AGX$'$ is more favourable when $W=2500$. One interesting observation is of the results obtained using AGX. Despite producing solutions with the most bins on average across all real instances, AGX also yields the highest number of solutions comprising $t$ bins when $W=2500$. This suggests a high variance in the quality of solutions.
 
