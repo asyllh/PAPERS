@@ -257,32 +257,35 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 \subsection{Experimental Results - Heuristics}
 \label{sub:expheuristics}
-\noindent Although a comparison of these heuristics is given in \citet{hawa2018}, we performed out own tests where AHC used in MFFD$^+$ includes the preliminary test and the new BCR procedure. For our experiments, we produced two different types of instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. The minimum scoring distance $\tau$ was set to 70mm for all instances - the industry standard. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different bin sizes, $W = 2500$ and 5000 (also for height $H=1$) were used to alter the number of items per bin. \scpp{As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum.} Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
+\noindent Although a comparison of these heuristics is given in \citet{hawa2018}, we performed out own tests where the Alternating Hamiltonian Construction algorithm integrated within MFFD$^+$ includes the preliminary test and the new BCR procedure. We produced two different types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type, 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$) were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was fixed at 70mm - the industry standard. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms. \scpp{Need to state that number of item types for real instances was chosen uniform randomly between [10,30] and the number of items within each type also assigned uniform randomly.}
+
+%\scpp{As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum.}
 
 \begin{table}[h!]
 \centering
 \caption{\scpp{Results obtained using MFFD and MFFD$^+$ on different types of SCPP instances. Figures in bold indicate the best results for each instance type.}}
 \begin{threeparttable}
-\begin{tabular}{lrrcrrcrr}\toprule
-	& & & & \multicolumn{2}{c}{MFFD} &\phantom{ab}& \multicolumn{2}{c}{MFFD$^+$}\\
-	\cmidrule{5-6} \cmidrule{8-9}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$|\mathcal{I}|$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\ \midrule	
-	a, $W=2500$ & 100 & 23.323 && 30.754 & 0 && \textbf{28.457} & \textbf{26} \\
-	& 500 & 114.942 && 140.206 & 0 && \textbf{132.647} & 0 \\
-	& 1000 & 229.437 && 271.919 & 0 && \textbf{258.388} & 0 \\
+\begin{tabular}{lcrcrc crcr crcr} %Type, X, |I|, X, t, X, X, |S|, X, #t, X, |S|, X, #t.
+	\toprule
+	& & & & & & & \multicolumn{3}{c}{MFFD} &\phantom{ab}& \multicolumn{3}{c}{MFFD$^+$}\\
+	\cmidrule{8-10} \cmidrule{12-14}
+	\multicolumn{1}{c}{Type, $W$} && \multicolumn{1}{c}{$n$} && \multicolumn{1}{c}{$t$\tnote{$a$}} &&& \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} && \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} && \multicolumn{1}{c}{$\# t$}\\ \midrule	
+	a, $W=2500$ && 100 && 23.323 &&& 30.754 && 0 && \textbf{28.457} && \textbf{26} \\
+	&& 500 && 114.942 &&& 140.206 && 0 && \textbf{132.647} && 0 \\
+	&& 1000 && 229.437 &&& 271.919 && 0 && \textbf{258.388} && 0 \\
 	\midrule
-	a, $W=5000$ & 100 & 11.922 && 23.583 & 0 && \textbf{19.881} & \textbf{7} \\
-	& 500 & 57.722 && 103.209 & 0 && \textbf{89.544} & 0 \\
-	& 1000 & 114.965 && 198.325 & 0 && \textbf{172.613} & 0 \\
+	a, $W=5000$ && 100 && 11.922 &&& 23.583 && 0 && \textbf{19.881} && \textbf{7} \\
+	&& 500 && 57.722 &&& 103.209 && 0 && \textbf{89.544} && 0 \\
+	&& 1000 && 114.965 &&& 198.325 && 0 && \textbf{172.613} && 0 \\
 	\midrule
 	\midrule
-	r, $W=2500$ & 100 & 23.473 && 37.069 & 5 && \textbf{35.419} & \textbf{16} \\
-	& 500 & 115.239 && 184.106 & 0 && \textbf{177.249} & 0 \\
-	& 1000 & 229.946 && 368.453 & 0 && \textbf{355.042} & 0 \\
+	r, $W=2500$ && 100 && 23.473 &&& 37.069 && 5 && \textbf{35.419} && \textbf{16} \\
+	&& 500 && 115.239 &&& 184.106 && 0 && \textbf{177.249} && 0 \\
+	&& 1000 && 229.946 &&& 368.453 && 0 && \textbf{355.042} && 0 \\
 	\midrule
-	r, $W=5000$ & 100 & 11.981 && 32.348 & 1 && \textbf{29.611} & \textbf{5} \\
-	& 500 & 57.865 && 163.819 & 0 && \textbf{153.416} & 0\\
-	& 1000 & 115.227 && 328.618 & 0 && \textbf{308.642} & 0 \\
+	r, $W=5000$ && 100 && 11.981 &&& 32.348 && 1 && \textbf{29.611} && \textbf{5} \\
+	&& 500 && 57.865 &&& 163.819 && 0 && \textbf{153.416} && 0\\
+	&& 1000 && 115.227 &&& 328.618 && 0 && \textbf{308.642} && 0 \\
 	\bottomrule
 \end{tabular}
 \vspace{0.2cm} %
@@ -295,47 +298,11 @@ The vicinal sum constraint also introduces further differences in solutions for 
 \label{table:heuristics}
 \end{table}
 
-\begin{comment}
-\begin{table}[h!]
-\centering
-\caption{\scpp{Results obtained using MFFD and MFFD$^+$ on different types of SCPP instances. Figures in bold indicate the best results for each instance type.}}
-\begin{threeparttable}
-\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}c@{\hspace{25pt}}c@{\hspace{20pt}}c@{\hspace{10pt}}cc@{\hspace{20pt}}c@{\hspace{10pt}}}\toprule
-& & & \multicolumn{2}{c}{MFFD} &\phantom{abc}& \multicolumn{2}{c}{MFFD$^+$}\\
-\cmidrule{4-5} \cmidrule{7-8}
-Type, $n$ & $W$ & $t$\tnote{$a$} & $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} && $|\mathcal{S}|$ & $\# t$\\ \midrule	
-artificial, 100 & 2500 & 23.323 & 30.754 & 0 && \textbf{28.457} & \textbf{26} \\
-artificial, 500 & 2500 & 114.942 & 140.206 & 0 && \textbf{132.647} & 0 \\
-artificial, 1000 & 2500 & 229.437 & 271.919 & 0 && \textbf{258.388} & 0 \\
-\midrule
-artificial, 100 & 5000 & 11.922 & 23.583 & 0 && \textbf{19.881} & \textbf{7} \\
-artificial, 500 & 5000 & 57.722 & 103.209 & 0 && \textbf{89.544} & 0 \\
-artificial, 1000 & 5000 & 114.965 & 198.325 & 0 && \textbf{172.613} & 0 \\
-\midrule
-\midrule
-real, 100 & 2500 & 23.473 & 37.069 & 5 && \textbf{35.419} & \textbf{16} \\
-real, 500 & 2500 & 115.239 & 184.106 & 0 && \textbf{177.249} & 0 \\
-real, 1000 & 2500 & 229.946 & 368.453 & 0 && \textbf{355.042} & 0 \\
-\midrule
-real, 100 & 5000 & 11.981 & 32.348 & 1 && \textbf{29.611} & \textbf{5} \\
-real, 500 & 5000 & 57.865 & 163.819 & 0 && \textbf{153.416} & 0\\
-real, 1000 & 5000 & 115.227 & 328.618 & 0 && \textbf{308.642} & 0 \\
-\bottomrule
-\end{tabular}
-\vspace{0.2cm} %
-\begin{tablenotes}
-\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
-\item[$b$] Number of bins per solution (mean from 1000 instances).
-\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
-\end{tablenotes}	
-\end{threeparttable}	
-\label{table:heuristics1}
-\end{table}
-\end{comment}
 
+It can be seen that MFFD$^+$ produces solutions using fewer bins on average than MFFD for all 12 instance classes. MFFD was only able to find solutions using $t$ bins for two instance classes, whereas MFFD$^+$ produced solutions using $t$ bins for four instances classes. Solutions using fewer bins were found less frequently on average when the bin size is larger. A larger bin size means the bins can accommodate more items, however this increases the number of adjacent score widths that must fulfil the vicinal sum constraint. 
 
-
-It can be seen that MFFD$^+$ produces solutions using fewer bins on average than MFFD for all 12 instance classes. MFFD was only able to find solutions using $t$ bins for two instance classes, whereas MFFD$^+$ produced solutions using $t$ bins for four instances classes. Solutions using fewer bins were found less frequently on average when the bin size is larger. \scpp{The solution quality $q$ for the six instance classes where $W = 5000$ is significantly higher than when $W = 2500$.} A larger bin size means the bins can accommodate more items, however this increases the number of adjacent score widths that must fulfil the vicinal sum constraint. \scpp{Note also that $q$ is higher for real instances in comparison to artificial instances, as due to the reduced variety of item widths and score widths it is difficult to attain feasible packings.} \note{$q$ has now been removed from tables as it is redundant, can discuss in text rather than displaying in tables - change text accordingly.}
+%\scpp{The solution quality $q$ for the six instance classes where $W = 5000$ is significantly higher than when $W = 2500$.}
+%\scpp{Note also that $q$ is higher for real instances in comparison to artificial instances, as due to the reduced variety of item widths and score widths it is difficult to attain feasible packings.} \note{$q$ has now been removed from tables as it is redundant, can discuss in text rather than displaying in tables - change text accordingly.}
 
 Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} bins, that is, once an item has been packed into a bin, it must stay in that bin (although the position of the item in the bin can change due to the use of AHC). It follows that every item packed has an effect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods.
 
@@ -433,14 +400,14 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \begin{itemize}[leftmargin=*]
 	\item Iterative procedure, plus local search and xover, swapping items between bins, better than previous heuristics as repetition means more possible item combinations in bins, EA has the ability to move items between bins.
 	\item EA consists of multiple iterations, previous heuristics only one.
-	\item What is GGA's aim?
-	\item How is AGX useful? Choose fullest bin, less waste, less bins required.
+	%\item What is GGA's aim?
+	%\item How is AGX useful? Choose fullest bin, less waste, less bins required.
 \end{itemize}
 }
 
-\subsection{Experimental Results - EA}
+\subsection{Experimental Results - Evolutionary Algorithm}
 \label{sub:expea}
-\noindent To allow for a fair comparison with the heuristics in Section~\ref{sec:scpp}, the same sets of problem instances from the previous experiments were used to obtain results from our EA. Each of the instance classes were executed six times using different recombination operators and bin sizes, producing 36 subclasses overall. We settled for an initial population containing 25 candidate solutions, which was shown to produce the best results. The advantage of using a small population size was to be expected, as the vicinal sum constaint limits the number of feasible candidiate solutions using a reasonable number of bins. It was seen that larger population sizes contained an abundance of poor solutions comprising over twice the number of bins as used in the final solution, whilst even smaller populations lacked the diversity needed to escape local optima. Across all instances, the EA had a fixed time limit of 300 seconds. Table~\ref{table:ea} displays the results obtained from the experiments.
+\noindent To ensure a fair comparison with the heuristics in Section~\ref{sec:scpp}, the same set of problem instances generated for the previous experiments were used to test our EA. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. The advantage of using a small population size was to be expected, as the vicinal sum constaint limits the number of feasible candidiate solutions using a reasonable number of bins. The preliminary tests showed that larger population sizes contained an abundance of poor solutions comprising over twice the number of bins as used in the final solution, whilst even smaller populations lacked the diversity needed to escape local optima. Across all instances, the EA had a fixed time limit of 600 seconds. Table~\ref{table:ea} displays the results obtained from the EA experiments using the different recombination operators and bin sizes.
 
 \begin{table}[h!]
 \centering
@@ -450,7 +417,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	\toprule
 	& & & & \multicolumn{2}{c}{GGA} &\phantom{ab}& \multicolumn{2}{c}{AGX} &\phantom{a'}& \multicolumn{2}{c}{AGX$'$}\\
 	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$|\mathcal{I}|$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
 	\midrule
 	a, $W=2500$ & 100 & 23.323 && 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 \\
 	& 500 & 114.942 && 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} \\
@@ -480,52 +447,14 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 \label{table:ea}
 \end{table}
 
-\begin{comment}
-\begin{table}[h!]
-\centering
-\caption{\ea{EA comparisons}}
-\begin{threeparttable}
-\begin{tabular}{c@{\hspace{20pt}}c@{\hspace{20pt}}ccc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}cc@{\hspace{15pt}}c@{\hspace{10pt}}}\toprule
-& & & \phantom{a} & \multicolumn{2}{c}{GGA} &\phantom{ab}& \multicolumn{2}{c}{AGX} &\phantom{ab}& \multicolumn{2}{c}{AGX$'$}\\
-\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
-Type, $n$& $W$ & $t$\tnote{$a$} && $|\mathcal{S}|$\tnote{$b$} & $\# t$\tnote{$c$} && $|\mathcal{S}|$ & $\# t$ && $|\mathcal{S}|$ & $\# t$\\
-\midrule
-artificial, 100 & 2500 & 23.323 && 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 \\
-artificial, 500 & 2500 & 114.942 && 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} \\
-artificial, 1000 & 2500 & 229.437 && 234.482 & 14 && 235.029 & 17 && \textbf{233.988} &\textbf{21} \\
-\midrule
-artificial, 100 & 5000 & 11.922 && \textbf{12.265} & \textbf{849} && 12.315 & 825 && 12.304 & 832 \\
-artificial, 500 & 5000 & 57.722 && \textbf{61.836} & \textbf{65} && 62.322 & 46 && 62.546 & 51 \\
-artificial, 1000 & 5000 & 114.965 && \textbf{126.308} & 0 && 126.918 & 0 && 127.122 & 0 \\
-\midrule
-\midrule
-real, 100 & 2500 & 23.473 && 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} \\
-real, 500 & 2500 & 115.239 && 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 \\
-real, 1000 & 2500 & 229.946 && \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 \\
-\midrule
-real, 100 & 5000 & 11.981 && \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 \\
-real, 500 & 5000 & 57.865 && \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 \\
-real, 1000 & 5000 & 115.227 && \textbf{193.08} & \textbf{29} && 193.658 & 27 && 193.578 &\textbf{29} \\
-\bottomrule
-\end{tabular}	
-\vspace{0.2cm} %
-\begin{tablenotes}
-\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
-\item[$b$] Number of bins per solution (mean from 1000 instances).
-\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
-\end{tablenotes}
-\end{threeparttable}
-\label{table:ea1}
-\end{table}
-\end{comment}
 
-Firstly, it is immediately evident that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. Fewer iterations of the EA were performed as $n$ and $W$ increaded, with the average number of iterations ranging from 300,000 to 1400 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances when $W=5000$ were 470 and 65 iterations.
+Firstly, it is immediately evident that the EA outperforms the previous heuristics, producing solutions using $t$ bins in all but one of the 12 subclasses. Fewer iterations of the EA were performed as $n$ and $W$ increased, with the average number of iterations ranging from 300,000 to 1400 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances when $W=5000$ were 470 and 65 iterations.
 
-It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instance types when the larger bin size is used, where higher quality solutions contain 8.6 items per bin on average. \ea{dicuss why GGA works best for $W=5000$.}
+It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instance types when the larger bin size is used, where higher quality solutions contain 8.6 items per bin on average. The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
 
-On the other hand, when the smaller bin capacity $W=2500$ is used, where the best solutions average 4.3 items per bin, AGX$'$ can be see to produce the more optimal solutions. \ea{explain why AGX$'$ is best for smaller bin size.}
+\noindent On the other hand, when the smaller bin capacity $W=2500$ is used, where the best solutions average 4.3 items per bin, AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, fewer bins will be needed to pack all of the items, and bins containing items that are considered harder to pack are preserved throughout the EA. 
 
-AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 sub classes in regards to the average number of bins per solution $|\mathcal{S}|$. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the subclasses, suggesting a high variance in the quality of solutions produced.
+AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 sub classes in regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus extra bins are required to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the subclasses, suggesting a high variance in the quality of solutions produced.
 
 \begin{comment}
 {\color{myRed}
@@ -709,6 +638,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Align tables.
 	\item Check all indentations after figures, tables etc.
 	\item Compare Heuristics and EA results, number of types, six or twelve, classes or subtypes etc., be consistent.
+	\item Link zenodo.
 \end{itemize}		
 }
 \end{comment}
