@@ -257,7 +257,7 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 \subsection{Experimental Results - Heuristics}
 \label{sub:expheuristics}
-\noindent Although a comparison of these heuristics is given in \citet{hawa2018}, we performed out own tests where the Alternating Hamiltonian Construction algorithm integrated within MFFD$^+$ includes the preliminary test and the new BCR procedure. We produced two different types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type, 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$) were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was fixed at 70mm - the industry standard. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms. \scpp{Need to state that number of item types for real instances was chosen uniform randomly between [10,30] and the number of items within each type also assigned uniform randomly.}
+\noindent Although a comparison of these heuristics is given in \citet{hawa2018}, we performed out own tests where the Alternating Hamiltonian Construction algorithm integrated within MFFD$^+$ includes the preliminary test and the new BCR procedure. We produced two different types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type, 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item types was chosen uniform randomly between 10 and 30, and the number of items within each type also assigned uniform randomly. Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$) were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was fixed at 70mm - the industry standard. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
 
 %\scpp{As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum.}
 
@@ -537,7 +537,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{alg:cmsa}	
 \end{algorithm}	
 
-\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}^*$. The age of every new bin $b$ added to $\mathcal{B}^*$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}^*$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}^*$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}^*$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. 
+\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}^*$. The age of every new bin $b$ added to $\mathcal{B}^*$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}^*$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}^*$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}^*$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}^*$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}^*$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}^*$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
 \begin{comment}
 {\color{myGreen}
@@ -570,7 +570,6 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{sub:exppostopt}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	\item Use set $\mathcal{A}$ of feasible packings created during EA in previous section.
 	\item C++ circularly linked lists
 	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far.
 	\item Also used Xpress Mosel model (link) to compare.
@@ -582,7 +581,6 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{sec:conclusion}
 {\color{myPurple}
 \begin{itemize}[leftmargin=*]
-	\item Could use selected packings rather than all packings.
 	\item Lower bound.
 \end{itemize}
 }
