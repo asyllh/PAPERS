@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/InstGen.dir/main.cpp.o CMakeFiles/InstGen.dir/gfunc.cpp.o  -o InstGen 
