@@ -1,4 +1,8 @@
 #.gitignore for PAPERS
+Debug/*
+cmake-build-debug/
+cmake-build-release/
+.idea/
 *.pdf
 *.out
 *.exe
