@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/GENERATOR.dir/main.cpp.o CMakeFiles/GENERATOR.dir/gfunc.cpp.o  -o GENERATOR 
