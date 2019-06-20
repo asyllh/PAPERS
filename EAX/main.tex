@@ -570,13 +570,55 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{sub:exppostopt}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	\item C++ circularly linked lists
+	%\item C++ circularly linked lists
 	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far.
-	\item Also used Xpress Mosel model (link) to compare.
+	%\item Also used Xpress Mosel model (link) to compare.
 \end{itemize}
 }
 
 %--------------------------------------------------------------------------------------
+\section{Xpress}
+\label{sec:xpress}
+\begin{itemize}[leftmargin=*]
+	\item $N$ vertices, one for each score width - depot is vertex 0 (base vertex, universal vertex)
+	\item $K$ vehicles, one for each `tour`. Set $K = N\backslash 2$ as this is the maximum number of tours possible, equivalent to each item having its own bin
+	\item $d_{ij}^k$ is the distance travelled from vertex $i$ to vertex $j$ by vehicle $k$ - equivalent to the weight of edge $(i,j)$ which is the width of the item
+	\item $D$ is the maximum allowed distance travelled for each vehicle $k$ - equivalent to $W$, the bin capacity. 
+\end{itemize}
+
+\begin{subequations}
+	\begin{alignat}{3}
+	\text{minimise  } &\sum_{k=1}^K \sum_{i=1}^N x_{i0}^k & \\[3pt]
+	\text{subject to  } &\sum_{k=1}^K \sum_{i=0}^N x_{ij}^k = 1 &\quad &\forall \hspace{1mm} j \in \{1,2,\dotsc,N\} \\[3pt]
+	&\sum_{k=1}^K \sum_{j=0}^N x_{ij}^k = 1 &\quad &\forall \hspace{1mm} i \in \{1,2,\dotsc,N\} \\[3pt]
+	&\sum_{i=0}^N x_{it}^k - \sum_{j=0}^N x_{tj}^k = 0 &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\}, \hspace{1mm} \forall \hspace{1mm} t \in \{1,2,\dotsc,N\} \\[3pt]
+	&x_{i,p(i)}^k + x_{p(i),i}^k = 1 &\quad &\forall \hspace{1mm} i \in \{1,2,\dotsc,N\}, \hspace{1mm} \forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
+	&\sum_{i=0}^N \sum_{j=0}^N d_{ij}^k x_{ij}^k \leq D &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
+	&\sum_{i=1}^N x_{i0}^k \leq 1 &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
+	&\sum_{j=1}^N x_{0j}^k \leq 1 &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
+	&x_{ij}^k \in \{0,1\} & &\forall \hspace{1mm} i,j \in \{0,1,\dotsc,N\}, \hspace{1mm} \forall \hspace{1mm} k \in \{1,2,\dotsc,K\}
+	\end{alignat}
+\end{subequations}
+
+\[x_{ij}^k =
+\begin{cases} 
+1 & \text{if vehicle } k \text{ travels from } i \text{ to } j\\
+0 & \text{otherwise} 
+\end{cases}
+\]
+
+\begin{itemize}[leftmargin=*]
+	\item (6a) minimise the number of vehicles used
+	\item (6b)--(6c) each vertex is visited exactly once
+	\item (6d) vertices in a route are served by the same vehicle
+	\item (6e) each vertex is either preceeded or suceeded by its partner
+	\item (6f) the total distance of each route must not exceed the set maximum distance
+	\item (6g)--(6h) each vehicle is used at most once
+\end{itemize}	
+
+
+%--------------------------------------------------------------------------------------
+
 \section{Conclusion and Further Work}
 \label{sec:conclusion}
 {\color{myPurple}
