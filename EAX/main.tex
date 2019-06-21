@@ -581,7 +581,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{sec:xpress}
 \begin{itemize}[leftmargin=*]
 	\item $N$ vertices, one for each score width - depot is vertex 0 (base vertex, universal vertex)
-	\item $K$ vehicles, one for each `tour`. Set $K = N\backslash 2$ as this is the maximum number of tours possible, equivalent to each item having its own bin
+	\item $K$ vehicles, one for each `tour'. Set $K = N\backslash 2$ as this is the maximum number of tours possible, equivalent to each item having its own bin
 	\item $d_{ij}^k$ is the distance travelled from vertex $i$ to vertex $j$ by vehicle $k$ - equivalent to the weight of edge $(i,j)$ which is the width of the item
 	\item $D$ is the maximum allowed distance travelled for each vehicle $k$ - equivalent to $W$, the bin capacity. 
 \end{itemize}
