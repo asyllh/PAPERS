@@ -482,52 +482,57 @@ AGX generates the least favourable results, particularly for the real instance t
 %--------------------------------------------------------------------------------------
 \section{Postoptimisation}
 \label{sec:postopt}
-\noindent Given a collection $\mathcal{S}$ of subsets of a set $X$, an \emph{exact cover} is a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ such that each element in $X$ is contained in exactly one subset in $\mathcal{S}^*$.
+\noindent In this section, we discuss a metaheuristic approach to the SCPP, combined with an exact method.
 
-Consider an $m\times n$ binary matrix $X$. Let $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ be the rows and columns of the matrix respectively. Now, suppose each row $i \in M$ represents a bin, and each column $j \in N$ represents an item. Then, an element of the matrix $x_{ij} = 1$ iff item $j$ is in bin $i$. It can be said in this case that row $i$ \emph{covers} column $j$. Thus, the problem is to find a minimum cardinality subset of rows $S \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in S$. This problem can be formulated as the following integer linear program.
+\begin{definition}
+	Let $\mathcal{S}$ be a collection of subsets of a set $\mathcal{B}$. Then a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ is an exact cover if and only if each element in $\mathcal{B}$ is contained in exactly one subset in $\mathcal{S}^*$.
+\end{definition}	
+
+\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be altered to instead find the smallest subcollection. 
+
+Consider an $m\times n$ binary matrix $\mathcal{B}$, and let $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ be the rows and columns of the matrix respectively. Then, an element of the matrix $b_{ij} = 1$ if row $i$ covers column $j$. The task involves finding a minimum cardinality subset of rows $\mathcal{S}^* \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in \mathcal{S}^*$. This problem can be formulated as the following integer linear program:
 \begin{subequations}
 	\begin{alignat}{3}
-		\text{minimise  } &\sum_{i \in M} c_i & \\[3pt]
-		\text{subject to  } &\sum_{i \in M} x_{ij} c_i = 1 &\quad &\forall \hspace{1mm} j \in N \\[3pt]
-		&c_i \in \{0,1\} & &\forall \hspace{1mm} i \in M
+		\text{minimise  } &\sum_{i \in M} x_i & \\[3pt]
+		\text{subject to  } &\sum_{i \in M} b_{ij} x_i = 1 &\quad &\forall \hspace{1mm} j \in N \\[3pt]
+		&x_i \in \{0,1\} & &\forall \hspace{1mm} i \in M
 	\end{alignat}
 \end{subequations}
 
-\[c_i =
+\[x_i =
 \begin{cases} 
-1 & \text{if } i \in S \\
+1 & \text{if } i \in \mathcal{S}^* \\
 0 & \text{otherwise} 
 \end{cases}
 \]
 
+\noindent Given a set of feasible bins, it can be seen that this formulation can be used to find a solution for the SCPP, where each row $i \in M$ represents a bin, and each column $j \in N$ represents a item. Since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem, and one of Karp's 21 NP-complete problems \citet{karp1972}. However, if we know that an exact cover does indeed exist, we can alter the problem to instead find the smallest subcollection. Given a set of feasible bins, we can use this to find a solution to the SCPP. Since the bins provided are already feasible, the complications associated with the vicinal sum constraint are eliminated.
-
-One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald \citet{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we implement the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as in our EA, CMSA operates on a set $\mathcal{B}^*$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
+One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald \citet{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we implement the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
 
 \begin{algorithm}
 \caption{\textsc{CMSA} ($p$, $maxAge$)}
 \begin{algorithmic}[1]
-	\State $\mathcal{S}_{bsf} \gets \emptyset$, $\mathcal{B}^* \gets \emptyset$
+	\State $\mathcal{S}_{bsf} \gets \emptyset$, $\mathcal{B} \gets \emptyset$
 	\While{time limit not reached}
 		\For{$i\gets 1$ \To $p$}
 			\State $\mathcal{S} \gets$ \textsc{MFFR}$^+$($\mathcal{I}$)
-				\ForAll{$b \in \mathcal{S}$ \textbf{and} $b \notin \mathcal{B}^*$}
+				\ForAll{$b \in \mathcal{S}$ \textbf{and} $b \notin \mathcal{B}$}
 					\State $age[b] \gets 0$
-					\State $\mathcal{B}^* \gets \mathcal{B}^* \cup \{b\}$
+					\State $\mathcal{B} \gets \mathcal{B} \cup \{b\}$
 				\EndFor
 		\EndFor
-		\State $\mathcal{S}^* \gets$ \textsc{ExactCover}($\mathcal{B}^*$)
+		\State $\mathcal{S}^* \gets$ \textsc{ExactCover}($\mathcal{B}$)
 		\If{$\mathcal{S}^*$ is better than $\mathcal{S}_{bsf}$}
 			\State $\mathcal{S}_{bsf} \gets \mathcal{S}^*$
 		\EndIf
-		\ForAll{$b \in \mathcal{B}^*$}
+		\ForAll{$b \in \mathcal{B}$}
 			\If{$b \in \mathcal{S}^*$}
 				\State $age[b] \gets 0$
 			\ElsIf{$b \notin \mathcal{S}^*$}
 				\State $age[b] \gets age[b] + 1$
 				\If{$age[b] = maxAge$}
-					\State $\mathcal{B}^* \gets \mathcal{B}^* - \{b\}$
+					\State $\mathcal{B} \gets \mathcal{B} - \{b\}$
 				\EndIf
 			\EndIf		
 		\EndFor
@@ -537,7 +542,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{alg:cmsa}	
 \end{algorithm}	
 
-\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}^*$. The age of every new bin $b$ added to $\mathcal{B}^*$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}^*$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}^*$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}^*$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}^*$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}^*$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}^*$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
+\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$. The age of every new bin $b$ added to $\mathcal{B}$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
 \begin{comment}
 {\color{myGreen}
@@ -580,23 +585,26 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \section{Xpress}
 \label{sec:xpress}
 \begin{itemize}[leftmargin=*]
-	\item $N$ vertices, one for each score width - depot is vertex 0 (base vertex, universal vertex)
-	\item $K$ vehicles, one for each `tour'. Set $K = N\backslash 2$ as this is the maximum number of tours possible, equivalent to each item having its own bin
-	\item $d_{ij}^k$ is the distance travelled from vertex $i$ to vertex $j$ by vehicle $k$ - equivalent to the weight of edge $(i,j)$ which is the width of the item
+	\item $n$ vertices, one for each score width - depot is vertex 0 (base vertex, universal vertex), $N = \{1,2,\dotsc,n\}$
+	\item $m$ vehicles, one for each `tour'. Set $m = n\backslash 2$ as this is the maximum number of tours possible, equivalent to each item having its own bin, $M = \{1,2,\dotsc,m\}$
+	\item $d_{ij}$ is the distance travelled from vertex $i$ to vertex $j$ - equivalent to the weight of edge $(i,j)$ which is the width of the item
 	\item $D$ is the maximum allowed distance travelled for each vehicle $k$ - equivalent to $W$, the bin capacity. 
+	\item $a_{ij}$ = 1 if edge exists between $i$ and $j$, 0 otherwise
+	\item $p{i}$ is the partner of $i$
 \end{itemize}
 
 \begin{subequations}
 	\begin{alignat}{3}
-	\text{minimise  } &\sum_{k=1}^K \sum_{i=1}^N x_{i0}^k & \\[3pt]
-	\text{subject to  } &\sum_{k=1}^K \sum_{i=0}^N x_{ij}^k = 1 &\quad &\forall \hspace{1mm} j \in \{1,2,\dotsc,N\} \\[3pt]
-	&\sum_{k=1}^K \sum_{j=0}^N x_{ij}^k = 1 &\quad &\forall \hspace{1mm} i \in \{1,2,\dotsc,N\} \\[3pt]
-	&\sum_{i=0}^N x_{it}^k - \sum_{j=0}^N x_{tj}^k = 0 &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\}, \hspace{1mm} \forall \hspace{1mm} t \in \{1,2,\dotsc,N\} \\[3pt]
-	&x_{i,p(i)}^k + x_{p(i),i}^k = 1 &\quad &\forall \hspace{1mm} i \in \{1,2,\dotsc,N\}, \hspace{1mm} \forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
-	&\sum_{i=0}^N \sum_{j=0}^N d_{ij} x_{ij}^k \leq D &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
-	&\sum_{i=1}^N x_{i0}^k \leq 1 &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
-	&\sum_{j=1}^N x_{0j}^k \leq 1 &\quad &\forall \hspace{1mm} k \in \{1,2,\dotsc,K\} \\[3pt]
-	&x_{ij}^k \in \{0,1\} & &\forall \hspace{1mm} i,j \in \{0,1,\dotsc,N\}, \hspace{1mm} \forall \hspace{1mm} k \in \{1,2,\dotsc,K\}
+	\text{minimise  } &\sum_{k=1}^m \sum_{i=1}^n x_{i0}^k & \\[3pt]
+	\text{subject to  } &\sum_{k=1}^m \sum_{i=0}^n x_{ij}^k = 1 &\quad &\forall \hspace{1mm} j \in N \\[3pt]
+	&\sum_{k=1}^m \sum_{j=0}^n x_{ij}^k = 1 &\quad &\forall \hspace{1mm} i \in N \\[3pt]
+	&\sum_{i=0}^n x_{it}^k - \sum_{j=0}^n x_{tj}^k = 0 &\quad &\forall \hspace{1mm} k \in M, \hspace{1mm} t \in N \\[3pt]
+	&\sum_{k=1}^m (x_{i,p(i)}^k + x_{p(i),i}^k) = 1 &\quad &\forall \hspace{1mm} i \in N \\[3pt]
+	&\sum_{i=0}^n \sum_{j=0}^n d_{ij} x_{ij}^k \leq D &\quad &\forall \hspace{1mm} k \in M \\[3pt]
+	&\sum_{i=1}^n x_{i0}^k \leq 1 &\quad &\forall \hspace{1mm} k \in M \\[3pt]
+	&\sum_{j=1}^n x_{0j}^k \leq 1 &\quad &\forall \hspace{1mm} k \in M \\[3pt]
+	&x_{ij}^k \leq a_{ij} &\quad &\forall \hspace{1mm} i,j \in N \cup \{0\}, \hspace{1mm} k \in M \\[3pt]
+	&x_{ij}^k \in \{0,1\} & &\forall \hspace{1mm} i,j \in N \cup \{0\}, \hspace{1mm} k \in M
 	\end{alignat}
 \end{subequations}
 
