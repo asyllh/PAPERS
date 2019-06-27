@@ -70,7 +70,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 
 As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each item should be packed into, but also, unlike the BPP, \emph{how} the items should be packed -- that is, determining the order and orientation of items within each bin. One specific difference, however, concerns the feasibility of individual bins. In the TPP, although clearly not optimal, it is still legal to place trapezoids with opposite angles, i.e. `$\backslash$' and `/', alongside one another. Likewise in the CSP-SDCL, two items with a large cut loss between them can still be packed alongside one another if necessary. Both of these problems allow items to be packed in \emph{any} order and orientation as long as the bins are not overfilled. In contrast, the SCPP possesses the strong vicinal sum constraint which if violated immediately causes an alignment of items in a bin to be invalid, thus rendering the entire solution infeasible. For consistency, we shall refer to the problem of finding a legal sequence of a subset of items $\mathcal{I}' \subseteq \mathcal{I}$ in a single bin as the Score-Constrained Packing Sub-Problem (SubSCP).
 
-In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the SubSCP. Section~\ref{sec:scpp} will explain the difficulties associated with the SCPP and analyse heuristics currently in literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:postopt} details a postoptimisation procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
+In the next section, we will provide a brief overview of the polynomial-time algorithm used to solve the SubSCP. Section~\ref{sec:scpp} will explain the difficulties associated with the SCPP and analyse heuristics currently in literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a postoptimisation procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
 
 %--------------------------------------------------------------------------------------
 \section{Solving the SubSCP}
@@ -480,17 +480,19 @@ AGX generates the least favourable results, particularly for the real instance t
 \end{comment}
 
 %--------------------------------------------------------------------------------------
-\section{Postoptimisation}
-\label{sec:postopt}
+\section{A Hybrid Metaheuristic Approach}
+\label{sec:cmsa}
 \noindent In this section, we discuss a metaheuristic approach to the SCPP, combined with an exact method.
 
 \begin{definition}
+	\label{defn:exactcover}
 	Let $\mathcal{S}$ be a collection of subsets of a set $\mathcal{B}$. Then a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ is an exact cover if and only if each element in $\mathcal{B}$ is contained in exactly one subset in $\mathcal{S}^*$.
 \end{definition}	
 
 \noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be altered to instead find the smallest subcollection. 
 
 Consider an $m\times n$ binary matrix $\mathcal{B}$, and let $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ be the rows and columns of the matrix respectively. Then, an element of the matrix $b_{ij} = 1$ if row $i$ covers column $j$. The task involves finding a minimum cardinality subset of rows $\mathcal{S}^* \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in \mathcal{S}^*$. This problem can be formulated as the following integer linear program:
+
 \begin{subequations}
 	\begin{alignat}{3}
 		\text{minimise  } &\sum_{i \in M} x_i & \\[3pt]
@@ -508,7 +510,7 @@ Consider an $m\times n$ binary matrix $\mathcal{B}$, and let $M = \{1,2,\dotsc,m
 
 \noindent Given a set of feasible bins, it can be seen that this formulation can be used to find a solution for the SCPP, where each row $i \in M$ represents a bin, and each column $j \in N$ represents a item. Since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-One method of solving the exact cover problem is by using a recursive depth-first backtracking algorithm, dubbed ``Algorithm X'' by Donald \citet{knuth2000}, which is used to find all solutions. Given our problem, it is unecessary to find all solutions. Instead, we have adapted the procedure to only seach for solutions that improve upon the best solution found thus far. Ideally, we would use the entire set of feasible bins $\mathcal{F}$ to form the matrix, however this could include hundreds of millions of feasible bins. Instead, we implement the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
+Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the matrix, however this could include hundred of millions of bins. Instead, we implemented the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
 
 \begin{algorithm}
 \caption{\textsc{CMSA} ($p$, $maxAge$)}
@@ -544,6 +546,8 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 
 \noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$. The age of every new bin $b$ added to $\mathcal{B}$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
+One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far.
+
 \begin{comment}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
@@ -571,7 +575,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 }
 \end{comment}
 
-\subsection{Experimental Results - }
+\subsection{Experimental Results - CMSA}
 \label{sub:exppostopt}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
