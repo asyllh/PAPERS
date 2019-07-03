@@ -29,7 +29,7 @@
 
 The focus of this paper is on another packing problem that occurs in the packaging industry, where flat rectangular items of varying widths are to be cut and scored from fixed-length strips of cardboard to then be folded into boxes. This problem was originally introduced as an open-combinatorial problem by \citeauthor{goulimis2004} in 2004, and subsequently studied in \citet{lewis2011}, \citet{becker2015}, and \citet{hawa2018}.
 
-Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each item $i \in \mathcal{I}$ has width $w_i \in \mathbb{Z}^+$, and is marked with two vertical score lines in predetermined places. The distance between each score line and the nearest edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where w.l.o.g. $a_i \leq b_i$). An example of an item $i$ with these dimensions is provided in Fig.~\ref{fig:itemsdimknives}. Pairs of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage. Due to the manner in which the machine is designed, the knives in each pair must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$, (approximately 70mm in industry). For the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must be equal to or exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
+Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each item $i \in \mathcal{I}$ has width $w_i \in \mathbb{Z}^+$, and is marked with two vertical score lines in predetermined places. The distance between each score line and the nearest edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where w.l.o.g. $a_i \leq b_i$). An example of an item $i$ with these dimensions is provided in Fig.~\ref{fig:itemsdimknives}. Pairs of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage. Due to the manner in which the machine is designed, the knives in each pair must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$ (approximately 70mm in industry). For the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must be equal to or exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
 \begin{equation}
 	\textbf{r}(i) + \textbf{l}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,\dotsc,|S|- 1\},
 	\label{eqn:vsc}
@@ -548,88 +548,63 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 
 One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far.
 
-\begin{comment}
-{\color{myGreen}
-\begin{itemize}[leftmargin=*]
-	\item Cite \citet{blum2016}
-	\item Cite \citet{malaguti2008}.
-	\item Exact cover formulation, NP-hard, state the IP, describe DLX.
-	\item Cite \citet{knuth2000} dancing steps.
-	\item Use strips in feasPacking for post opt.
-	\item Compare with EA output - is a better solution found, or a solution with the same number of strips but a better fitness value?
-	\item Is the post opt phase able to find a solution equal to the lowerbound?
-	\item Post opt will only ever find a solution equal to or better than the solution found in EA, never worse.
-	\item Execution time.
-	\item Set cover problem is optimisation problem, find min number of sets.
-	\item Exact cover problem is decision problem, does a set exist.
-	\item However since we add every item on its own strip to feasPacking, we know that a set exists.
-	\item Problem is to find minimum number of strips that covers all items and contains every item exactly once.
-	\idone{$X = (x_{ij})$ - $m$ x $n$ matrix (previously matrix $A = (a_{ij})$).}
-	\idone{$M = \{1, 2,\dotsc, m\}$ - rows of the matrix, each row $i \in M$ is a strip.}
-	\idone{$N = \{1, 2,\dotsc,n\}$ - columns of the matrix, each column $j \in N$ is an item.}
-	\idone{$x_{ij} = 1$ iff item $j$ is on strip $i$ (previously $a_{ij} = 1$).}
-	\idone{Say that row $i$ covers column $j$ if $x_{ij} = 1$.}
-	\idone{Find the smallest number of strips $S \subseteq M$ that contains every item exactly once, i.e. union of strips $= \mathcal{I}$ and intersection $= \emptyset$.}
-	\idone{Find minimum cardinality subset $S \subseteq M$ of rows such that each column $j \in N$ is covered by exactly one row $i \in S$.}
-\end{itemize}
-}
-\end{comment}
-
 \subsection{Experimental Results - CMSA}
-\label{sub:exppostopt}
+\label{sub:expcmsa}
+
+\begin{table}[h!]
+\centering
+\caption{\cmsa{CMSA}}
+\begin{threeparttable}
+\begin{tabular}{lrrcrrcrrrr}
+	\toprule
+	& & & & \multicolumn{2}{c}{EA} &\phantom{ab}& \multicolumn{4}{c}{CMSA}\\
+	\cmidrule{5-6} \cmidrule{8-11}
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$=$} & \multicolumn{1}{c}{$<$}\\
+	\midrule
+	a, $W=2500$ & 100 & 23.323 && 23.38 & 49 && 24.02 & 21 & 22 & 0 \\
+	& 500 & 114.942 && 116.1 & 17 && 118.48 & 0 & 5 & 0 \\
+	& 1000 & 229.437 && 234.84 & 0 && 237.1 & 0 & 8 & 4 \\
+	\midrule
+	a, $W=5000$ & 100 & 11.922 && 12.56 & 39 && 13.54 & 24 & 24 & 0 \\
+	& 500 & 57.722 && 61.9 & 1 && 75.6 & 0 & 0 & 0 \\
+	& 1000 & 114.965 && 126.4 & 0 && 169.04 & 0 & 0 & 0 \\
+	\midrule
+	\midrule
+	r, $W=2500$ & 100 & 23.473 && 27.52 & 21 && 27.94 & 15 & 28 & 6 \\
+	& 500 & 115.239 && 143.1 & 4 && 148.08 & 0 & 7 & 9 \\
+	& 1000 & 229.946 && 290.32 & 0 && 294.76 & 0 & 5 & 23 \\
+	\midrule
+	r, $W=5000$ & 100 & 11.981 && 20.56 & 16 && 20.98 & 12 & 27 & 5 \\
+	& 500 & 57.865 && 109.28 & 4 && 114.18 & 6 & 5 & 16 \\
+	& 1000 & 115.227 && 224.52 & 0 && 239.38 & 0 & 4 & 15 \\
+	\bottomrule
+\end{tabular}
+\vspace{0.2cm} %
+\begin{tablenotes}
+	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
+	\item[$b$] Number of bins per solution (mean from 1000 instances).
+	\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
+\end{tablenotes}	
+\end{threeparttable}	
+\label{table:cmsa}
+\end{table}
+
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	%\item C++ circularly linked lists
 	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far.
-	%\item Also used Xpress Mosel model (link) to compare.
+	\item $\mathcal{B}$ does not include duplicates.
+	\item CMSA using 50 instances, comparing with results from EA (with the best results obtained from EA of the three recombination operators).
+	\item Parameters, $p = 3, maxAge = 3$ after preliminary tests.
+	\item CMSA time limit 3600 seconds, exact cover algorithm time limit 600 seconds.
+	\item If no solution found within 600 seconds, set $\mathcal{S}^* \gets \mathcal{S}_{bsf}$, unless first iteration of CMSA and $\mathcal{S}_{bsf} \gets \emptyset$, then keep going until one solution found.
+	\item Zenodo citation.
+	\item From decision problem to optimisation problem.
+	\item Compare by fitness value. 
 \end{itemize}
 }
 
 %--------------------------------------------------------------------------------------
-\section{Xpress}
-\label{sec:xpress}
-\begin{itemize}[leftmargin=*]
-	\item $n$ vertices, one for each score width - depot is vertex 0 (base vertex, universal vertex), $N = \{1,2,\dotsc,n\}$
-	\item $m$ vehicles, one for each `tour'. Set $m = n\backslash 2$ as this is the maximum number of tours possible, equivalent to each item having its own bin, $M = \{1,2,\dotsc,m\}$
-	\item $d_{ij}$ is the distance travelled from vertex $i$ to vertex $j$ - equivalent to the weight of edge $(i,j)$ which is the width of the item
-	\item $D$ is the maximum allowed distance travelled for each vehicle $k$ - equivalent to $W$, the bin capacity. 
-	\item $a_{ij}$ = 1 if edge exists between $i$ and $j$, 0 otherwise
-	\item $p{i}$ is the partner of $i$
-\end{itemize}
 
-\begin{subequations}
-	\begin{alignat}{3}
-	\text{minimise  } &\sum_{k=1}^m \sum_{i=1}^n x_{i0}^k & \\[3pt]
-	\text{subject to  } &\sum_{k=1}^m \sum_{i=0}^n x_{ij}^k = 1 &\quad &\forall \hspace{1mm} j \in N \\[3pt]
-	&\sum_{k=1}^m \sum_{j=0}^n x_{ij}^k = 1 &\quad &\forall \hspace{1mm} i \in N \\[3pt]
-	&\sum_{i=0}^n x_{it}^k - \sum_{j=0}^n x_{tj}^k = 0 &\quad &\forall \hspace{1mm} k \in M, \hspace{1mm} t \in N \\[3pt]
-	&\sum_{k=1}^m (x_{i,p(i)}^k + x_{p(i),i}^k) = 1 &\quad &\forall \hspace{1mm} i \in N \\[3pt]
-	&\sum_{i=0}^n \sum_{j=0}^n d_{ij} x_{ij}^k \leq D &\quad &\forall \hspace{1mm} k \in M \\[3pt]
-	&\sum_{i=1}^n x_{i0}^k \leq 1 &\quad &\forall \hspace{1mm} k \in M \\[3pt]
-	&\sum_{j=1}^n x_{0j}^k \leq 1 &\quad &\forall \hspace{1mm} k \in M \\[3pt]
-	&x_{ij}^k \leq a_{ij} &\quad &\forall \hspace{1mm} i,j \in N \cup \{0\}, \hspace{1mm} k \in M \\[3pt]
-	&x_{ij}^k \in \{0,1\} & &\forall \hspace{1mm} i,j \in N \cup \{0\}, \hspace{1mm} k \in M
-	\end{alignat}
-\end{subequations}
-
-\[x_{ij}^k =
-\begin{cases} 
-1 & \text{if vehicle } k \text{ travels from } i \text{ to } j\\
-0 & \text{otherwise} 
-\end{cases}
-\]
-
-\begin{itemize}[leftmargin=*]
-	\item (6a) minimise the number of vehicles used
-	\item (6b)--(6c) each vertex is visited exactly once
-	\item (6d) vertices in a route are served by the same vehicle
-	\item (6e) each vertex is either preceeded or suceeded by its partner
-	\item (6f) the total distance of each route must not exceed the set maximum distance
-	\item (6g)--(6h) each vehicle is used at most once
-\end{itemize}	
-
-
-%--------------------------------------------------------------------------------------
 
 \section{Conclusion and Further Work}
 \label{sec:conclusion}
