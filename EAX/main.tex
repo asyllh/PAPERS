@@ -101,7 +101,7 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 
 Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \citep{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \citep{hawa2018}.
 
-\subsection{The Alternating Hamiltonian Construction Algorithm}
+\subsection{The Alternating Hamiltonian Construction (AHC) Algorithm}
 \label{sub:ahc}
 \noindent AHC consists of two subprocedures: one to find an initial matching $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ in $G$. We now describe these two methods in detail.
 
@@ -389,6 +389,7 @@ A tailored function is used to determine the fitness of a solution, as opposed t
 We therefore make use of the following function to calculate the fitness of a solution $\mathcal{S}$ \citep{falkenauer1992}:
 \begin{equation}
 	f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
+	\label{eqn:fitness}
 \end{equation}
 
 \noindent which assigns higher values to fitter solutions. This function exerts evolutionary pressure by favouring solutions with superior packings, reducing the ability for less fit solutions to reproduce. Note also that if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
@@ -495,9 +496,9 @@ Consider an $m\times n$ binary matrix $\mathcal{B}$, and let $M = \{1,2,\dotsc,m
 
 \begin{subequations}
 	\begin{alignat}{3}
-		\text{minimise  } &\sum_{i \in M} x_i & \\[3pt]
-		\text{subject to  } &\sum_{i \in M} b_{ij} x_i = 1 &\quad &\forall \hspace{1mm} j \in N \\[3pt]
-		&x_i \in \{0,1\} & &\forall \hspace{1mm} i \in M
+		\text{minimise  } &\sum_{i \in M} x_i & \label{eqn:objfn}\\[3pt]
+		\text{subject to  } &\sum_{i \in M} b_{ij} x_i = 1 &\quad &\forall \hspace{1mm} j \in N \label{eqn:cover}\\[3pt]
+		&x_i \in \{0,1\} & &\forall \hspace{1mm} i \in M \label{eqn:binary}
 	\end{alignat}
 \end{subequations}
 
@@ -525,7 +526,7 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 				\EndFor
 		\EndFor
 		\State $\mathcal{S}^* \gets$ \textsc{ExactCover}($\mathcal{B}$)
-		\If{$\mathcal{S}^*$ is better than $\mathcal{S}_{bsf}$}
+		\If{$\mathcal{S}^*$ \cmsa{is better than} $\mathcal{S}_{bsf}$}
 			\State $\mathcal{S}_{bsf} \gets \mathcal{S}^*$
 		\EndIf
 		\ForAll{$b \in \mathcal{B}$}
@@ -544,39 +545,40 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 \label{alg:cmsa}	
 \end{algorithm}	
 
-\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$. The age of every new bin $b$ added to $\mathcal{B}$, $age[b]$, is initially set to 0. Then, the exact cover algorithm is applied to $\mathcal{B}$, generating an optimal solution $\mathcal{S}^*$, which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution. $\mathcal{B}$ is then adapted, with the age of bins used in $\mathcal{S}^*$ reset to zero, and the age of all other bins increased by one. Any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set. This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
+\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$, $age[b]$, set to zero (lines 3--7). The exact cover algorithm is executed, generating an optimal solution $\mathcal{S}^*$ which, if better than the best-so-far solution $\mathcal{S}_{bsf}$, is stored as the new best-so-far solution (lines 8--10). The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum, $maxAge$, are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
 One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far.
 
 \subsection{Experimental Results - CMSA}
 \label{sub:expcmsa}
+\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the CMSA algorithm, while the exact cover procedure was set to run for a maximum of 600 seconds. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. \cmsa{Note that the best solution of the three recombination operators was used to compare EA with CMSA.}
 
 \begin{table}[h!]
 \centering
 \caption{\cmsa{CMSA}}
 \begin{threeparttable}
-\begin{tabular}{lrrcrrcrrrr}
+\begin{tabular}{lrrcrrrcrrr}
 	\toprule
-	& & & & \multicolumn{2}{c}{EA} &\phantom{ab}& \multicolumn{4}{c}{CMSA}\\
-	\cmidrule{5-6} \cmidrule{8-11}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$=$} & \multicolumn{1}{c}{$<$}\\
+	& & & & \multicolumn{3}{c}{EA} &\phantom{ab}& \multicolumn{3}{c}{CMSA}\\
+	\cmidrule{5-7} \cmidrule{9-11}
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{best}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{best}$}\\
 	\midrule
-	a, $W=2500$ & 100 & 23.323 && 23.38 & 49 && 24.02 & 21 & 22 & 0 \\
-	& 500 & 114.942 && 116.1 & 17 && 118.48 & 0 & 5 & 0 \\
-	& 1000 & 229.437 && 234.84 & 0 && 237.1 & 0 & 8 & 4 \\
+	a, $W=2500$ & 100 & 23.323 && 23.38 & 49 & 28 && 24.02 & 21 & 0 \\
+	& 500 & 114.942 && 116.1 & 17 & 45 && 118.48 & 0 & 0 \\
+	& 1000 & 229.437 && 234.84 & 0 & 38 && 237.1 & 0 & 4 \\
 	\midrule
-	a, $W=5000$ & 100 & 11.922 && 12.56 & 39 && 13.54 & 24 & 24 & 0 \\
-	& 500 & 57.722 && 61.9 & 1 && 75.6 & 0 & 0 & 0 \\
-	& 1000 & 114.965 && 126.4 & 0 && 169.04 & 0 & 0 & 0 \\
+	a, $W=5000$ & 100 & 11.922 && 12.56 & 39 & 26 && 13.54 & 24 & 0 \\
+	& 500 & 57.722 && 61.9 & 1 & 50 && 75.6 & 0 & 0 \\
+	& 1000 & 114.965 && 126.4 & 0 & 50 && 169.04 & 0 & 0 \\
 	\midrule
 	\midrule
-	r, $W=2500$ & 100 & 23.473 && 27.52 & 21 && 27.94 & 15 & 28 & 6 \\
-	& 500 & 115.239 && 143.1 & 4 && 148.08 & 0 & 7 & 9 \\
-	& 1000 & 229.946 && 290.32 & 0 && 294.76 & 0 & 5 & 23 \\
+	r, $W=2500$ & 100 & 23.473 && 27.52 & 21 & 16 && 27.94 & 15 & 6 \\
+	& 500 & 115.239 && 143.1 & 4 & 34 && 148.08 & 0 & 9 \\
+	& 1000 & 229.946 && 290.32 & 0 & 22 && 294.76 & 0 & 23 \\
 	\midrule
-	r, $W=5000$ & 100 & 11.981 && 20.56 & 16 && 20.98 & 12 & 27 & 5 \\
-	& 500 & 57.865 && 109.28 & 4 && 114.18 & 6 & 5 & 16 \\
-	& 1000 & 115.227 && 224.52 & 0 && 239.38 & 0 & 4 & 15 \\
+	r, $W=5000$ & 100 & 11.981 && 20.56 & 16 & 18 && 20.98 & 12 & 5 \\
+	& 500 & 57.865 && 109.28 & 4 & 29 && 114.18 & 6 & 16 \\
+	& 1000 & 115.227 && 224.52 & 0 & 31 && 239.38 & 0 & 15 \\
 	\bottomrule
 \end{tabular}
 \vspace{0.2cm} %
@@ -584,6 +586,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 50 instances).
 	\item[$b$] Number of bins per solution (mean from 50 instances).
 	\item[$c$] Number of instances where a solution using $t$ bins was found (from 50 instances).
+	\item[$d$] Number of instances where the solution generated by the algorithm consists of fewer bins than the solution generated by the alternative algorithm.
 \end{tablenotes}	
 \end{threeparttable}	
 \label{table:cmsa}
@@ -592,14 +595,13 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
 	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far.
+	\item Ran EA on those 50 instances for an hour to compare fairly, and best solution from the three recombination operators is chosen.	
 	\item $\mathcal{B}$ does not include duplicates.
-	\item CMSA using 50 instances, comparing with results from EA (with the best results obtained from EA of the three recombination operators).
-	\item Parameters, $p = 3, maxAge = 3$ after preliminary tests.
-	\item CMSA time limit 3600 seconds, exact cover algorithm time limit 600 seconds.
 	\item If no solution found within 600 seconds, set $\mathcal{S}^* \gets \mathcal{S}_{bsf}$, unless first iteration of CMSA and $\mathcal{S}_{bsf} \gets \emptyset$, then keep going until one solution found.
+	\item When comparing in line 9, the ``better than'' is done by comparing the number of bins first and choosing solution with fewest bins, otherwise if number of bins equal then compare fitness values.
 	\item Zenodo citation.
 	\item From decision problem to optimisation problem.
-	\item Compare by fitness value. 
+	\item Compare by fitness value if number of bins equal in RS.
 \end{itemize}
 }
 
@@ -623,8 +625,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item All dashes $'$ not '. 
 	\item Abbreviations (SCPP, SubSCP, AHC etc.) spelling and being used correctly.
 	\item Figure and table captions.
-	\item Check that correct figures are being referred to in text.
-	\item Name of entire process EAX?
+	\item Check that correct figures and equations are being referred to in text.
 	\item Zenodo links DOI.
 	\item State specification of computers used for experiments.
 	\item Section and subsection titles, capitalisation and spelling.
@@ -665,7 +666,6 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Align tables.
 	\item Check all indentations after figures, tables etc.
 	\item Compare Heuristics and EA results, number of types, six or twelve, classes or subtypes etc., be consistent.
-	\item Link zenodo.
 \end{itemize}		
 }
 \end{comment}
