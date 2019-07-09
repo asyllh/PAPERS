@@ -399,6 +399,13 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 % Notes - EA
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
+	\item Fitness function by Falkenauer
+	\item If $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
+	\item This is using the characteristic of the classical 1D BPP, where at most one bin in a solution is less than half full, as the contents of two half-full bins can be combined into one.
+	\item However, solutions to the SCPP can contain multiple bins that are less than half-full, as the items within these bins may not be able to form a feasible alignment/packing due to the vsc.
+	\item Many instances where although $|\mathcal{S}_1| < |\mathcal{S}_2|$, we have $f(\mathcal{S}_1) < f(\mathcal{S}_2)$.
+	\item Thus we cannot rely on the fitness functionalone to guide us towards an optimal solution.
+	\item Instead, we use the number of bins to compare the solutions, only using the fitness function when comparing two solutions of the same size to determine which solution has the better packing.
 	\item Iterative procedure, plus local search and xover, swapping items between bins, better than previous heuristics as repetition means more possible item combinations in bins, EA has the ability to move items between bins.
 	\item EA consists of multiple iterations, previous heuristics only one.
 	%\item What is GGA's aim?
