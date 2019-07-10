@@ -88,7 +88,9 @@ In this section we present the Alternating Hamiltonian Construction (AHC) algori
 
 We begin by modelling a given instance $\mathcal{M}$ of the COP as a vertex-weighted graph $G$, which has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value in $\mathcal{M}$ it represents. To prevent executing the algorithm unnecessarily, a basic preliminary test is performed to determine if the instance is infeasible. Of the $2n$ vertices, suppose the smallest vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if the next-smallest vertex $v_3$ and the largest vertex $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
 
-If $\mathcal{M}$ has not been deemed infeasible an extra pair of vertices $v_{2n+1}, v_{2n+2}$ is added to $G$, each assigned a weight equal to $\tau$. $G$ now comprises two edge sets: $B$, which contains edges between vertices that are \emph{partners}, that is, whose weights make up an unordered pair in $\mathcal{M}$; and $R$, containing edges between vertices that add up to $\geq \tau$ and are not partners. The additional vertices are partners, and can be seen to be universal vertices as they are adjacent to every other vertex via an edge in $R$; thus both have degree $2n+1$. Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, the set of edges between partners can be denoted as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. \ahc{Degree sequence.}
+If $\mathcal{M}$ has not been deemed infeasible an extra pair of vertices $v_{2n+1}, v_{2n+2}$ is added to $G$, each assigned a weight equal to $\tau$. $G$ now comprises two edge sets: $B$, which contains edges between vertices that are \emph{partners}, that is, whose weights make up an unordered pair in $\mathcal{M}$; and $R$, containing edges between vertices that add up to $\geq \tau$ and are not partners. The additional vertices are partners, and can be seen to be universal vertices as they are adjacent to every other vertex via an edge in $R$; thus both have degree $2n+1$. Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, the set of edges between partners can be denoted as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. 
+
+%\ahc{Degree sequence.}
 
 A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
 
@@ -111,7 +113,7 @@ The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorith
 	\item $v_{i-1}$ has been matched; and
 	\item $(v_{i-1}, p(v_i)) \in R$.
 \end{enumerate*} 
-Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. \ahc{Blossom?}
+Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. %\ahc{Blossom?}
 
 If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycle with the edges in $B$, thus no feasible solution can exist and AHC is terminated. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$, as illustrated in Fig.~\ref{fig:mps}. Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found. However, if $G'$ comprises multiple cycles, then AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
 
@@ -319,7 +321,7 @@ Indeed, it may be that optimal solutions were found in many of these instances, 
 %--------------------------------------------------------------------------------------
 \section{An Evolutionary Algorithm for the SCPP}
 \label{sec:ea}
-\noindent We now introduce an evolutionary algorithm (EA) for the SCPP \ea{to improve on the results of the previous heuristics}. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the population. Each solution is evaluated based on a specific critera, and individuals which are more suited to the environment are provided more oppportunity to breed while those which are less so are eliminated. EAs have been used for a variety of grouping problems with positive results \citep{lewis2017, falkenauer1996, quiroz2015}. Within the EA framework, we investigate three different recombination operators as well as a local search procedure inspired by \citet{martello1990l}. The AHC algorithm described in Section~\ref{sec:ahc} is also integrated into the EA to solve instances of the SubSCP.
+\noindent We now introduce an evolutionary algorithm (EA) for the SCPP to improve on the results of the previous heuristics. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the population. Each solution is evaluated based on a specific critera, and individuals which are more suited to the environment are provided more oppportunity to breed while those which are less so are eliminated. EAs have been used for a variety of grouping problems with positive results \citep{lewis2017, falkenauer1996, quiroz2015}. Within the EA framework, we investigate three different recombination operators as well as a local search procedure inspired by \citet{martello1990l}. The AHC algorithm described in Section~\ref{sec:ahc} is also integrated into the EA to solve instances of the SubSCP.
 
 \subsection{Recombination}
 \label{sub:xover}
@@ -375,7 +377,7 @@ In order to maintain feasibility, the operators remove entire bins containing du
 \end{enumerate*} 
 During stages \ref{item:pairpair}--\ref{item:sinsin}, the width of the item(s) from $\mathcal{S}^*$ must exceed the width of the item(s) from $\mathcal{S}$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}$ or $\mathcal{S}^*$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}^*$, generating a new feasible partial solution $\mathcal{S}^{**}$, with $|\mathcal{S}^{**}| \leq |\mathcal{S}^*|$. The bins in $\mathcal{S}^{**}$ are then inserted into $\mathcal{S}$ to form a full feasible solution.
 
-This method is based on the dominance criterion of \citet{martello1990l}: if a bin $S_x$ \emph{dominates} a bin $S_y$, then a solution containing $S_x$ will have no more bins than a solution containing $S_y$. The local search procedure is in fact a local search for dominating bins. By moving larger items into $\mathcal{S}$, the fullness $A(S_j)$ of the bins $S_j \in \mathcal{S}$ increases whilst the number of items per bin is maintained or decreases, improving the \ea{quality} of the bins in $\mathcal{S}$. Simultaneously, items moved into $\mathcal{S}^*$ are smaller and therefore easier to repack into bins in $\mathcal{S}$ during stage~\ref{item:movesin}. Variations of this method can be seen in \citet{lewis2009, lewis2017, falkenauer1996, levine2004}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages numerous distinct subsets of items in the bins are produced, generating more possibilities for feasible orderings of items. It can be seen that this procedure cannot increase the number of bins in a solution, and also has the ability to decrease the number of bins.
+This method is based on the dominance criterion of \citet{martello1990l}: if a bin $S_x$ \emph{dominates} a bin $S_y$, then a solution containing $S_x$ will have no more bins than a solution containing $S_y$. The local search procedure is in fact a local search for dominating bins. By moving larger items into $\mathcal{S}$, the fullness $A(S_j)$ of the bins $S_j \in \mathcal{S}$ increases whilst the number of items per bin is maintained or decreases, improving the quality of the bins in $\mathcal{S}$. Simultaneously, items moved into $\mathcal{S}^*$ are smaller and therefore easier to repack into bins in $\mathcal{S}$ during stage~\ref{item:movesin}. Variations of this method can be seen in \citet{lewis2009, lewis2017, falkenauer1996, levine2004}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages numerous distinct subsets of items in the bins are produced, generating more possibilities for feasible orderings of items. It can be seen that this procedure cannot increase the number of bins in a solution, and also has the ability to decrease the number of bins.
 
 
 \subsection{Evolutionary Algorithm Framework}
@@ -384,19 +386,23 @@ This method is based on the dominance criterion of \citet{martello1990l}: if a b
 
 Each iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a recombination operator to produce an offspring solution $\mathcal{S}$, then finally mutating $\mathcal{S}$ before replacing the least fit of the two parents in the population.
 
-A tailored function is used to determine the fitness of a solution, as opposed to simply relying on the number of bins within a solution. The reason for this is two-fold: firstly, given two solutions of equal size, it is impossible to determine the fitter solution based on the number of bins alone. Secondly, we note that the fitness of a solution not only depends on the number of bins used, but also \emph{how} the items are packed into the bins. It is clear that if the bins' capacities are taken advantage of, fewer bins will be needed to pack all items compared to if the bins are only half full, requiring more bins than necessary to accommodate all of the items. A solution comprising fuller bins may also contain bins that are nearly empty, which is beneficial as it allows futher items to be packed, or the residual material could be used for other means. 
+For the classical one-dimensional BPP, a tailored function can be used to determine the fitness of a solution, as opposed to simply relying on the number of bins within a solution. The reason for this is two-fold: firstly, given two solutions of equal size, it is impossible to determine the fitter solution based on the number of bins alone. Secondly, we note that the fitness of a solution not only depends on the number of bins used, but also \emph{how} the items are packed into the bins. It is clear that if the bins' capacities are taken advantage of, fewer bins will be needed to pack all items compared to if the bins are only half full, requiring more bins than necessary to accommodate all of the items. A solution comprising fuller bins may also contain bins that are nearly empty, which is beneficial as it allows futher items to be packed, or the residual material could be used for other means.
 
-We therefore make use of the following function to calculate the fitness of a solution $\mathcal{S}$ \citep{falkenauer1992}:
+\citet{falkenauer1992} make use of the following function to calculate the fitness of a solution $\mathcal{S}$ of the BPP:
 \begin{equation}
-	f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
-	\label{eqn:fitness}
+f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
+\label{eqn:fitness}
 \end{equation}
 
-\noindent which assigns higher values to fitter solutions. This function exerts evolutionary pressure by favouring solutions with superior packings, reducing the ability for less fit solutions to reproduce. Note also that if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
+\noindent which assigns higher values to fitter solutions. Note also that for the BPP, if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
 
-It is also important to consider how the vicinal sum constraint affects the fitness of a solution. Given two half-full bins containing items from an instance of the classical BPP, it may be possible to move items between the bins such that one bin is almost full and the other nearly empty. Now, suppose the items in the half-filled bins have score lines, and are from an instance of the SCPP. Obviously, it is more difficult to shuffle the items between the bins as the vicinal sum constraint may be violated. Thus, fuller bins in the SCPP are extremely valuable, and the fitness function ensures that solutions containing fuller bins are preserved in the population throughout generations.
+In the BPP, it is clear that at most one bin in a solution can be half-full or less, as the contents of two less than half-full bins can be combined into a single bin. However, this is not the case for the SCPP, as the items of two half-full bins may not be able to form a single feasible packing due to the vicinal sum constraint, hence solutions for the SCPP may contain multiple bins $S_j$ such that $A(S_j) \leq W/2$. As a result, we have observed a number of cases of the SCPP where although  $|\mathcal{S}_1| < |\mathcal{S}_2|$, the corresponding fitness values $f(\mathcal{S}_1) < f(\mathcal{S}_2)$. Therefore, we cannot rely on the fitness function alone to guide us towards an optimal solution, as this may lead to a final solution comprising more bins than necessary. Instead, we use the number of bins to determine the quality of a solution, only using the fitness function when comparing solutions of equal size to select the solution with more efficient packing.
+
+
+
 
 % Notes - EA
+\begin{comment}
 {\color{myRed}
 \begin{itemize}[leftmargin=*]
 	\item Fitness function by Falkenauer
@@ -412,6 +418,7 @@ It is also important to consider how the vicinal sum constraint affects the fitn
 	%\item How is AGX useful? Choose fullest bin, less waste, less bins required.
 \end{itemize}
 }
+\end{comment}
 
 \subsection{Experimental Results - Evolutionary Algorithm}
 \label{sub:expea}
@@ -599,6 +606,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \label{table:cmsa}
 \end{table}
 
+\begin{comment}
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
 	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far.
@@ -611,6 +619,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Compare by fitness value if number of bins equal in RS.
 \end{itemize}
 }
+\end{comment}
 
 %--------------------------------------------------------------------------------------
 
