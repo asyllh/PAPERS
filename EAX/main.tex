@@ -88,7 +88,7 @@ As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each
 %--------------------------------------------------------------------------------------
 \section{Solving the SubSCP}
 \label{sec:ahc}
-\noindent Firstly, let us consider the following sequencing problem originally defined by \citet{hawa2018}:
+\noindent Firstly, consider the following sequencing problem originally defined by \citet{hawa2018}:
 
 \begin{definition} % COP
 	\label{defn:cop}
@@ -102,9 +102,9 @@ In this section we present the Alternating Hamiltonian Construction (AHC) algori
 
 We begin by modelling an instance $\mathcal{M}$ of the COP graphically. For each pair $\{a_i, b_i\} \in \mathcal{M}$, two vertices $u, v$ with weights $w(u) = a_i$, $w(v) = b_i$ are created, together with an edge $\{u, v\}$. Such vertices formed from a pair in $\mathcal{M}$ are referred to as ``partners''. This gives a vertex-weighted graph $G$ comprising $n$ components. W.l.o.g., assume that the vertices $\{v_1,\dotsc,v_{2n}\}$ are labelled in weight order such that $w(v_i) \leq w(v_{i+1})$.
 
-To prevent executing the algorithm unnecessarily, a basic preliminary test is performed to determine if the instance is infeasible. Of the $2n$ vertices, suppose the smallest vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if the next-smallest vertex $v_3$ and the largest vertex $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
+To prevent executing the algorithm unnecessarily, a basic preliminary test is first performed to determine if the instance admits no feasible solution. Of the $2n$ vertices, suppose the smallest vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if the next-smallest vertex $v_3$ and the largest vertex $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
 
-If $\mathcal{M}$ has not been deemed infeasible an extra pair of partner vertices $v_{2n+1}, v_{2n+2}$ is then added to $G$ with weights $w(v_{2n+1}) = w(v_{2n+2}) = \tau$, together with an edge $\{v_{2n+1}, v_{2n+2}\}$. The edges between partners are contained in the edge set $B$ (see the blue egdes in Fig.~\ref{fig:threshold} as an example). It is useful to denote the partner of a vertex $v_i$ as $p(v_i)$, thus the edge $B$ can be written as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. A further set of red edges, $R$ is created, which contains edges between vertices that are not partners and whose weights sum up to $\geq \tau$. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. 
+If $\mathcal{M}$ has not yet been deemed infeasible an extra pair of partner vertices $v_{2n+1}, v_{2n+2}$ is then added to $G$ with weights $w(v_{2n+1}) = w(v_{2n+2}) = \tau$, together with an edge $\{v_{2n+1}, v_{2n+2}\}$. The edges between partners are contained in the edge set $B$ (see the blue egdes in Fig.~\ref{fig:threshold} as an example). It is useful to denote the partner of a vertex $v_i$ as $p(v_i)$, thus the edge $B$ can be written as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. A further set of red edges, $R$ is created, which contains edges between vertices that are not partners and whose weights sum up to $\geq \tau$. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. 
 
 
 %%%
@@ -120,24 +120,18 @@ A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ ex
 
 \begin{definition} % Alternating Hamiltonian Cycle
 	\label{defn:althamcycle}
-	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of one of two sets, $B$ or $R$. $G$ contains an alternating Hamiltonian cycle if there exists a Hamiltonian cycle whose successive edges alternate between sets $B$ and $R$.
+	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of exactly one of two sets, $B$ or $R$. $G$ contains an \emph{alternating Hamiltonian cycle} if there exists a Hamiltonian cycle whose successive edges alternate between sets $B$ and $R$.
 \end{definition}
 
-\noindent An alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint and can be ordered so that they are adjacent to one another. The solution $\mathcal{T}$ must contain all elements from the problem instance $\mathcal{M}$, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Therefore, the aim is to find a suitable set of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices aid the construction of the alternating Hamiltonian cycle as they are able to connect to the smallest vertices, however once a cycle has been produced these vertices and any incident edges are removed, resulting in a path corresponding to a solution $\mathcal{T}$.
+\noindent An alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint. The solution $\mathcal{T}$ must contain all elements from the problem instance $\mathcal{M}$, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Therefore, the aim is to find a suitable matching subset of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices aid the construction of the alternating Hamiltonian cycle as they are able to connect to the smallest vertices; however once a cycle has been produced these vertices and any incident edges are removed, resulting in a path corresponding to a feasible COP solution $\mathcal{T}$.
 
-Determining whether a graph is Hamiltonian is one of the well-known 21 NP-complete problems \cite{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the Hamiltonian cycle problem \citep{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \citep{hawa2018}.
+Determining whether a graph is Hamiltonian is NP-hard (\cite{karp1972}), whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the former \citep{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \citep{hawa2018}. \ahc{additional vertices are universal vertices with deg $2n+1$}
 
 \subsection{The Alternating Hamiltonian Construction (AHC) Algorithm}
 \label{sub:ahc}
 \noindent AHC consists of two subprocedures: one to find an initial matching $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ in $G$. We now describe these two methods in detail.
 
-The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the largest vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
-\begin{enumerate*}[label={(\alph*)}]
-	\item $i \neq 1$;
-	\item $v_{i-1}$ has been matched; and
-	\item $(v_{i-1}, p(v_i)) \in R$.
-\end{enumerate*} 
-Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. %\ahc{Blossom?}
+The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm which seeks a matching $R'$ comprising $n+1$ edges on the graph induced by the set of red edges $R$. This could be achieved via standard matching processes such as the Blossom algorithm (\cite{edmonds1965}); however due to the special structure of $G$ such a matching can also be achieved via a cheaper, more efficient method as proposed by \cite{mahadev1994} and \cite{becker2015}. 
 
 \begin{algorithm}
 \caption{\textsc{MCM}}
@@ -145,9 +139,9 @@ Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. %\ahc{Blos
 	\State $R' \gets \emptyset$, $V_{used} \gets \emptyset$
 	\For{$i \gets 1$ \To $2n+2$ : $v_i \notin V_{used}$}
 		\For{$j \gets 2n+2$ \To 1 : $v_j \notin V_{used}$}
-			\If{$\{v_i, v_j\} \in R$}
+			\If{$(v_i, v_j) \in R$}
 				\State $V_{used} \gets V_{used} \cup \{v_i, v_j\}$
-				\State $R' \gets R' \cup \{\{v_i, v_j\}\}$
+				\State $R' \gets R' \cup \{(v_i, v_j)\}$
 				\Break
 			\EndIf
 		\EndFor
@@ -156,7 +150,19 @@ Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. %\ahc{Blos
 \label{alg:mcm}	
 \end{algorithm}	
 
-If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycle with the edges in $B$, thus no feasible solution can exist and AHC is terminated. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ is a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$, as illustrated in Fig.~\ref{fig:mps}. Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found. However, if $G'$ comprises multiple cycles, then AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
+\begin{comment}
+The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the largest vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
+\begin{enumerate*}[label={(\alph*)}]
+	\item $i \neq 1$;
+	\item $v_{i-1}$ has been matched; and
+	\item $(v_{i-1}, p(v_i)) \in R$.
+\end{enumerate*} 
+Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. %\ahc{Blossom?}
+\end{comment}
+
+\noindent As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight ascending order, and are matched with an adjacent vertex in $R$ not currently in $R'$ that has the largest weight. An example outcome of this process is shown in Fig.~\ref{fig:mcm}.
+
+At this point, if $R'$ does not contain $n+1$ edges then there are too few edges to form an alternating Hamiltonian cycle, thus no feasible solution can exist. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ will be a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as illustrated in Fig.~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found; otherwise $G'$ comprises multiple cycles,so AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -181,17 +187,36 @@ If $R'$ does not contain $n+1$ edges then there are too few edges to form a cycl
 	\label{fig:mcm}
 \end{figure}
 
+\noindent The multiple cyclic components of $G'$ can be combined into a single component by removing edges from each component and adding new edges between vertices of different components. As all edges in $B$ are required in the final solution, the task involves deciding which edges from each component should be removed from $R'$ and replaced with edges from $R\backslash R'$ such that the modified edge set $R'$ forms a single alternating Hamiltonian cycle with the edges in $B$. 
+
+For this, we use the Bridge-Cover Recognition (BCR) algorithm which creates a collection of sets $\mathcal{R}^* = \{R^*_1, R^*_2,\dots\}$ each containing suitable edges from $R'$ that, once removed from $R'$, allow for specific edges from $R\backslash R'$ to be added to $R'$ that function as bridges between different components. For convenience, we say that $\mathcal{R}^*$ \textit{covers} a component $C_j$ of $G'$ if there exists a set $R^*_i \subset \mathcal{R}^*$ that contains an edge in $C_j$. BCR aims to produce a collection $\mathcal{R}^*$ that covers all $z$ components of $G'$ as follows
+
+Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the lower-weighted vertices of the edges are in ascending order (see Fig.~\ref{fig:bcrlist}). Then, in each iteration, BCR searches from the beginning of $\mathcal{L}$ to find two or more successive edges that meet the following conditions:
+\begin{enumerate}[label={(\roman*)},itemsep=-2pt,topsep=2pt]
+	\item the lower-weighted vertex of each edge is adjacent to the higher-weighted vertex of the next edge via an edge in $R\backslash R'$;\label{item:adj}
+	\item each edge is in a different component of $G'$; \label{item:diffcomp} and
+	\item only one edge is in a component already covered by $\mathcal{R}^*$; all other edges are in components not yet covered by $\mathcal{R}^*$.\label{item:overlap}
+\end{enumerate} 
+These edges form a set $R^*_i$ which BCR adds to $\mathcal{R}^*$ before continuing the search for another set of edges.\footnote{When searching for edges to produce the first set, $R^*_1$, only conditions \ref{item:adj} and \ref{item:diffcomp} are required as $\mathcal{R}^* = \emptyset$.} Once the penultimate edge in $\mathcal{L}$ has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. BCR ends the search successfully once $\mathcal{R}^*$ covers all $z$ components of $G'$. On the other hand, if no new sets are created during an iteration, or fewer than two edges remain in $\mathcal{L}$ after an iteration and $\mathcal{R}^*$ does not cover all $z$ components, then no more sets exist and it can be said with absolute certainty that no feasible solution exists for the given instance of the COP. Fig.~\ref{fig:bcr} shows the BCR process on our example instance, where the sets $R^*_1 = \{(v_2, v_{17}),(v_3, v_{16}), (v_4, v_{15})\}$ and $R^*_2 = \{(v_7, v_{12}), (v_8, v_{11})\}$ have been formed. As $\mathcal{R}^* =\{R^*_1, R^*_2\}$ covers all four components of $G'$ no more sets are required.
+
+If a feasible collection $\mathcal{R}^*$ has been produced, BCR then uses each set $R^*_i \subset \mathcal{R}^*$ to procure edges from $R\backslash R'$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the lower-weighted vertex of the edge to the higher-weighted vertex of the next edge is added to $R'$. These edges form bridges between vertices of different components (as shown in Fig.~\ref{fig:mpsconnect}). The edges in $\mathcal{R}^*$ are then removed from $R'$, so that $|R'| = n+1$. This modified matching $R'$ is able to form an alternating Hamiltonian cycle in $G'$ with the edge set $B$. Removing the universal vertices yields an alternating Hamiltonian path which corresponds to a feasible solution $\mathcal{T}$ (Fig.~\ref{fig:solutionpath}).
+
+\begin{comment}
 \noindent Recall that an edge in a graph is a \emph{bridge} if removing the edge increases the number of components of the graph, thus the addition of a bridge decreases the number of components. To combine the components of $G'$ into a single component AHC calls upon a second subprocedure, the Bridge-Cover Recognition (BCR) algorithm, an iterative procedure that forms a collection of sets $\mathcal{R}^* = \{R^*_1, R^*_2, \dots\}$ containing specific edges from $R'$. These edges will be replaced by new edges from $R\backslash R'$ that can function as bridges between the different components. $\mathcal{R}^*$ is said to \emph{cover} a component $C_j$ if there exists a set $R^*_i \subset \mathcal{R}^*$ that contains an edge in $C_j$. BCR aims to create a collection $\mathcal{R}^*$ that covers all $z$ components of $G'$.
 
-Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the smaller vertices of the edges are in increasing order and the larger vertices are in decreasing order, and any edges that cannot be sorted in this manner are removed from the list. An example of this list can be seen in Fig.~\ref{fig:bcrlist}. During each iteration, BCR searches from the beginning of $\mathcal{L}$ to find successive edges that meet the following conditions:
-\begin{enumerate*}[label={(\roman*)}]
-	\item the smaller vertex of each edge is adjacent to the larger vertex of the next edge in $\mathcal{L}$;\label{item:adj}
-	\item each edge is in a different component of $G'$; \label{item:diffcomp} and
-	\item only one of the edges is in a component already covered by $\mathcal{R}^*$, and all other edges are in components not yet covered by $\mathcal{R}^*$.\label{item:overlap}
-\end{enumerate*} 
-These edges form a set $R^*_i$ which BCR adds to $\mathcal{R}^*$ before continuing through the list in search of another suitable set of edges.\footnote{When searching for edges to produce the first set, $R^*_1$, only conditions \ref{item:adj} and \ref{item:diffcomp} are required as $\mathcal{R}^* = \emptyset$.} After the penultimate edge in the list has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. Once $\mathcal{R}^*$ covers all components of $G'$, BCR ends the search and proceeds to obtain the bridges using the sets in $\mathcal{R}^*$. If no new sets are created during an iteration and $\mathcal{R}^*$ does not cover all components, then no more sets exist and BCR terminates. Furthermore, if fewer than two edges remain in $\mathcal{L}$ after an iteration, then no more sets can be produced as at least two edges are required to form a new set. In both of these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
 
-BCR procures the bridges from a collection $\mathcal{R}^*$ covering all components of $G'$ by operating on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the smaller vertex of the edge to the larger vertex of the next edge is added to $R'$. These edges are bridges, connecting the different components together. The edges in $\mathcal{R}^*$ are then removed from $R'$, so that $|R'| = n+1$. Figure~\ref{fig:bcr} shows how BCR performs on our example instance, where the sets $R^*_1 = \{(v_2, v_{17}),(v_3, v_{16}), (v_4, v_{15})\}$  and $R^*_2 = \{(v_7, v_{12}), (v_8, v_{11})\}$ of successive edges in $\mathcal{L}$ that meet the required conditions have been formed. As $\mathcal{R}^* =\{R^*_1, R^*_2\}$ covers all four components of $G'$ no more sets are required, and BCR uses $\mathcal{R}^*$ to acquire the bridges from $R\backslash R'$, as demonstrated in Fig.~\ref{fig:bcrlist}. These bridges are added to the set $R'$, linking the components of $G'$, and replace the edges in $R'$ that appear in $\mathcal{R}^*$, shown in Figs.~\ref{fig:mpsconnect}--\ref{fig:mpscycle}. This modified matching $R'$ is able to form an alternating Hamiltonian cycle in $G'$ with the edge set $B$. Removing the universal vertices yields an alternating Hamiltonian path which corresponds to a feasible solution $\mathcal{T}$ (Fig.~\ref{fig:solutionpath}).
+Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ such that the smaller vertices of the edges are in increasing order and the larger vertices are in decreasing order, and any edges that cannot be sorted in this manner are removed from the list. An example of this list can be seen in Fig.~\ref{fig:bcrlist}. During each iteration, BCR searches from the beginning of $\mathcal{L}$ to find successive edges that meet the following conditions:
+\begin{enumerate}[label={(\roman*)},itemsep=-2pt,topsep=2pt]
+	\item the smaller vertex of each edge is adjacent to the larger vertex of the next edge in $\mathcal{L}$;\label{item:adj1}
+	\item each edge is in a different component of $G'$; \label{item:diffcomp1} and
+	\item only one of the edges is in a component already covered by $\mathcal{R}^*$, and all other edges are in components not yet covered by $\mathcal{R}^*$.\label{item:overlap1}
+\end{enumerate} 
+These edges form a set $R^*_i$ which BCR adds to $\mathcal{R}^*$ before continuing through the list in search of another suitable set of edges.\footnote{When searching for edges to produce the first set, $R^*_1$, only conditions \ref{item:adj} and \ref{item:diffcomp} are required as $\mathcal{R}^* = \emptyset$.} After the penultimate edge in the list has been assessed, edges in $\mathcal{R}^*$ are removed from $\mathcal{L}$ and the next iteration begins. Once $\mathcal{R}^*$ covers all components of $G'$, BCR ends the search and proceeds to obtain the bridges using the sets in $\mathcal{R}^*$. If no new sets are created during an iteration or fewer than two edges remain in the list after an iteration and $\mathcal{R}^*$ does not cover all components, then no more sets exist and BCR terminates. In these cases, it can be said with absolute certainty that no feasible solution exists for the given instance $\mathcal{M}$ of the COP.
+
+BCR procures the bridges from a collection $\mathcal{R}^*$ covering all components of $G'$ by operating on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the smaller vertex of the edge to the larger vertex of the next edge is added to $R'$. These edges are bridges, connecting the different components together. The edges in $\mathcal{R}^*$ are then removed from $R'$, so that $|R'| = n+1$. Figure~\ref{fig:bcr} shows how BCR performs on our example instance, where the sets $R^*_1 = \{(v_2, v_{17}),(v_3, v_{16}), (v_4, v_{15})\}$ and $R^*_2 = \{(v_7, v_{12}), (v_8, v_{11})\}$ of successive edges in $\mathcal{L}$ that meet the required conditions have been formed. As $\mathcal{R}^* =\{R^*_1, R^*_2\}$ covers all four components of $G'$ no more sets are required, and BCR uses $\mathcal{R}^*$ to acquire the bridges from $R\backslash R'$, as demonstrated in Fig.~\ref{fig:bcrlist}. These bridges are added to the set $R'$, linking the components of $G'$, and replace the edges in $R'$ that appear in $\mathcal{R}^*$, shown in Figs.~\ref{fig:mpsconnect}--\ref{fig:mpscycle}. This modified matching $R'$ is able to form an alternating Hamiltonian cycle in $G'$ with the edge set $B$. Removing the universal vertices yields an alternating Hamiltonian path which corresponds to a feasible solution $\mathcal{T}$ (Fig.~\ref{fig:solutionpath}).
+\end{comment}
+
+
 
 \begin{figure}[H]	
 	\centering
