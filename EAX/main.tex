@@ -25,9 +25,9 @@
 	\end{alignat}
 \end{subequations}
 
-\noindent Here, \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets and \eqref{eqn:feasible} specifies that each subset $S_i \in \mathcal{S}$ must be feasible, where $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the particular constraints of the given problem. For example, in the graph colouring problem where vertices on a graph must be assigned colours such that no two adjacent vertices are in the same colour class, $\mathcal{F}$ contains all possible independent sets of vertices, whilst for the classical one-dimensional bin-packing problem (BPP) which requires a set of items of varying sizes to be packed into the fewest number of bins of fixed capacity, a bin $S_i$ is feasible only if the sum of its item sizes is less than or equal to the bins capacity.
+\noindent Here, \eqref{eqn:allpacked} and \eqref{eqn:nointersect} state the requirement that every element must be in exactly one of the $k$ subsets and \eqref{eqn:feasible} specifies that each subset $S_i \in \mathcal{S}$ must be feasible, where $\mathcal{F}$ is used to denote the set of all feasible subsets of elements in $\mathcal{I}$. The notion of feasibility is dependent on the particular constraints of the given problem. For example, in the graph colouring problem where vertices on a graph must be assigned colours such that no two adjacent vertices are in the same colour class, $\mathcal{F}$ contains all possible independent sets of vertices, whilst for the classical one-dimensional bin-packing problem (BPP) which requires a set of items of varying sizes to be packed into the fewest number of bins of fixed capacity, a bin $S_i$ is feasible only if the sum of its item sizes is less than or equal to the bin's capacity.
 
-The focus of this paper is on another packing problem that occurs in the packaging industry, where flat rectangular items of varying widths are to be cut and scored from fixed-length strips of cardboard which are then folded into boxes. This problem was originally introduced as an open-combinatorial problem by \citeauthor{goulimis2004} in 2004, and subsequently studied by \citet{lewis2011}, \citet{becker2015}, and \citet{hawa2018}.
+The focus of this paper is on a special type of packing problem that occurs in the packaging industry, where flat rectangular items of varying widths are to be cut and scored from fixed-length strips of cardboard which are then folded into boxes. This problem was originally introduced as an open-combinatorial problem by \citeauthor{goulimis2004} in 2004, and subsequently studied by \citet{lewis2011}, \citet{becker2015}, and \citet{hawa2018}.
 
 Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each item $i \in \mathcal{I}$ has width $w_i \in \mathbb{Z}^+$, and is marked with two vertical score lines in predetermined places. The distance between each score line and the nearest edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where w.l.o.g. $a_i \leq b_i$). An example of an item $i$ with these dimensions is provided in Fig.~\ref{fig:itemsdimknives}. In the industrial process described by Goulimis, pairs of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage; however due to the manner in which the machine is designed, the knives in each pair must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$ (approximately 70mm in practice). For the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must therefore equal or exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
 \begin{equation}
@@ -55,7 +55,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	\label{defn:scpp}
 \end{definition}	
 
-\noindent Each item $i \in \mathcal{I}$ can be packed into a bin in either a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or a rotated orientation $(b_i, a_i)$, where the larger score width $b_i$ is on the left-hand side. Thus, there is the additional problem of finding an ordering and orientation of the items in the bins such that the sum of all adjacent score widths is greater than or equal to the minimum scoring distance $\tau$, which we define as follows:
+\noindent Each item $i \in \mathcal{I}$ can be packed into a bin in either a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or a rotated orientation $(b_i, a_i)$, where the larger score width $b_i$ is on the left-hand side. Thus, there is the additional packing problem within each individual bin, defined as follows:
 
 \begin{definition}
 	Let $\mathcal{I}' \subseteq \mathcal{I}$ be a set of rectangular items whose total width $A(\mathcal{I}') = \sum_{i \in \mathcal{I}'} w_i$ is less than or equal to the bin width $W$. Then, given a minimum scoring distance $\tau$, the \emph{Score-Constrained Packing Sub-Problem (SubSCP)} consists of finding an ordering and orientation of the items in $\mathcal{I}'$ in the bin such that the vicinal sum constraint is satisfied.
@@ -63,16 +63,16 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 \end{definition}
 
 
-\noindent For example, in Fig.~\ref{fig:itemsdimknives}, observe that a feasible alignment of the three items in a single bin can be obtained by rotating item C.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} As there are $2^{n-1} n!$ distinct orderings of $n$ items, it is clear that enumerative methods are not suitable. Figure~\ref{fig:bppvscpp} shows feasible solutions for a set of items $\mathcal{I}$ as an instance of the BPP and the SCPP. For the SCPP, an extra bin is required to accommodate all items whilst fulfilling the vicinal sum constraint. Note that the solution produced for the BPP is not feasible for the SCPP as the constraint is violated in every bin. Thus the BPP can be seen as a special case of the SCPP when $\tau=0$, as the vicinal sum constraint will always be satisfied.
+\noindent For example, in Fig.~\ref{fig:itemsdimknives}, observe that a feasible alignment of the three items in a single bin can be obtained by rotating item C.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} As there are $2^{n-1} n!$ distinct orderings of $n$ items, it is clear that enumerative methods are not suitable. Figure~\ref{fig:bppvscpp} shows feasible solutions for a set of items $\mathcal{I}$ as an instance of the BPP and the SCPP. For the SCPP, an extra bin is required to accommodate all items whilst fulfilling the vicinal sum constraint. Note that the solution produced for the BPP is not feasible for the SCPP in this case as the constraint is violated at least once in every bin. Thus the BPP can be seen as a special case of the SCPP when $\tau=0$, as the vicinal sum constraint will always be satisfied.
 
 \begin{figure}[H]
 	\centering	
-	\begin{subfigure}[h]{0.38\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
 		\includestandalone[width=\textwidth]{figures/bpp}
 		\caption{BPP}
 		\label{fig:bpp}
 	\end{subfigure} \hspace{15mm}
-	\begin{subfigure}[h]{0.38\textwidth}
+	\begin{subfigure}[h]{0.35\textwidth}
 		\includestandalone[width=\textwidth]{figures/scpp}
 		\caption{SCPP}
 		\label{fig:scpp}
@@ -97,58 +97,77 @@ As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each
 
 \noindent For example, given the instance $\mathcal{M} = \{\{4,21\}, \{9,53\}, \{13,26\}, \{17,29\}, \{32,39\}, \{35,41\}, \{44,57\}, \{48,61\} \}$ and $\tau = 70$, one possible solution is $\mathcal{T} = \langle(4,21), (53,9), (61,48), (26,13), (57,44), (32,39), (35,41), (29,17)\rangle$. It is evident that the COP is in fact equivalent to the SubSCP, whereby each pair in $\mathcal{M}$ can be seen as an item $i$ represented by its score widths $a_i, b_i$, and the constraint value $\tau$ is the minimum scoring distance. It follows that the requirement for the sum of adjacent values to exceed $\tau$ corresponds to the vicinal sum constraint \eqref{eqn:vsc}.
 
-In this section we present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and hence the SubSCP. The underlying algorithm was originally proposed by \citet{becker2010} and determines whether a feasible solution exists for a given instance. This was then extended by \citet{hawa2018} so that, if a solution does indeed exist AHC, is able to construct the final solution. Here, we further simplify and increase the efficiency of AHC by replacing two of the subprocedures used in previous versions with a single algorithm.
+In this section we present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and hence the SubSCP. The underlying algorithm was originally proposed by \citet{becker2010} and determines whether a feasible solution exists for a given instance. This was then extended by \citet{hawa2018} so that, if a solution does indeed exist AHC, is able to construct the final solution. Here, we further simplify and increase the efficiency of AHC.
 
 
-We begin by modelling an instance $\mathcal{M}$ of the COP graphically. For each pair $\{a_i, b_i\} \in \mathcal{M}$, two vertices $u, v$ with weights $w(u) = a_i$, $w(v) = b_i$ are created, together with an edge $\{u, v\}$. Such vertices formed from a pair in $\mathcal{M}$ are referred to as ``partners''. This gives a vertex-weighted graph $G$ comprising $n$ components. W.l.o.g., assume that the vertices $\{v_1,\dotsc,v_{2n}\}$ are labelled in weight order such that $w(v_i) \leq w(v_{i+1})$.
+We begin by modelling an instance $\mathcal{M}$ of the COP graphically. For each pair $\{a_i, b_i\} \in \mathcal{M}$, two vertices $u, v$ with weights $w(u) = a_i$, $w(v) = b_i$ are created, together with a ``blue'' edge $\{u, v\}$. Such vertices formed from a pair in $\mathcal{M}$ are referred to as \textit{partners}. This gives a vertex-weighted graph $G$ comprising $n$ components. Without loss of generality, we also assume that the vertices $\{v_1,\dotsc,v_{2n}\}$ are labelled in weight order such that $w(v_i) \leq w(v_{i+1})$.
 
-To prevent executing the algorithm unnecessarily, a basic preliminary test is first performed to determine if the instance admits no feasible solution. Of the $2n$ vertices, suppose the smallest vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if the next-smallest vertex $v_3$ and the largest vertex $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
+To prevent executing the algorithm unnecessarily, a basic preliminary test is first performed. Of the $2n$ vertices, suppose vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if vertices $v_3$ and $v_{2n}$ do not meet the vicinal sum constraint, i.e. $w(v_3) + w(v_{2n}) < \tau$, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
 
-If $\mathcal{M}$ has not yet been deemed infeasible an extra pair of partner vertices $v_{2n+1}, v_{2n+2}$ is then added to $G$ with weights $w(v_{2n+1}) = w(v_{2n+2}) = \tau$, together with an edge $\{v_{2n+1}, v_{2n+2}\}$. The edges between partners are contained in the edge set $B$ (see the blue egdes in Fig.~\ref{fig:threshold} as an example). It is useful to denote the partner of a vertex $v_i$ as $p(v_i)$, thus the edge $B$ can be written as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. A further set of red edges, $R$ is created, which contains edges between vertices that are not partners and whose weights sum up to $\geq \tau$. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. 
+If $\mathcal{M}$ has not yet been deemed infeasible an extra pair of partner vertices $v_{2n+1}, v_{2n+2}$ is then added to $G$ with weights $w(v_{2n+1}) = w(v_{2n+2}) = \tau$, together with a blue edge $\{v_{2n+1}, v_{2n+2}\}$. All blue edges between partners are contained in an edge set $B$ on $G$. It is useful to denote the partner of a vertex $v_i$ as $p(v_i)$; thus the set $B$ can be written as $\{\{v_i, p(v_i)\} : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. 
 
+Next, a second set of ``red'' edges, $R$, is added to $G$, which contains edges between vertices that are not partners and whose combined weight equals or exceeds $\tau$. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. 
 
-%%%
-\begin{comment}
-We begin by modelling a given instance $\mathcal{M}$ of the COP as a vertex-weighted graph $G$, which has a vertex set $V$ defined using one vertex for each element in $\mathcal{M}$ in non-decreasing order. Each vertex $v_i \in V$ is weighted with the value in $\mathcal{M}$ it represents. To prevent executing the algorithm unnecessarily, a basic preliminary test is performed to determine if the instance is infeasible. Of the $2n$ vertices, suppose the smallest vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if the next-smallest vertex $v_3$ and the largest vertex $v_{2n}$ do not meet the vicinal sum constraint, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
-
-If $\mathcal{M}$ has not been deemed infeasible an extra pair of vertices $v_{2n+1}, v_{2n+2}$ is added to $G$, each assigned a weight equal to $\tau$. $G$ now comprises two edge sets: $B$, which contains edges between vertices that are \emph{partners}, that is, whose weights make up an unordered pair in $\mathcal{M}$; and $R$, containing edges between vertices that add up to $\geq \tau$ and are not partners. The additional vertices are partners, and can be seen to be universal vertices as they are adjacent to every other vertex via an edge in $R$; thus both have degree $2n+1$. Given the bijective function $p : V \to V$ that associates each vertex $v_i \in V$ with its partner $p(v_i)$, the set of edges between partners can be denoted as $B = \{(v_i, p(v_i)) : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. 
-\end{comment}
-
-%\ahc{Degree sequence.}
-
-A Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
+Our task is to now produce a particular type of cycle on the graph $G$. Recall that a Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
 
 \begin{definition} % Alternating Hamiltonian Cycle
 	\label{defn:althamcycle}
 	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of exactly one of two sets, $B$ or $R$. $G$ contains an \emph{alternating Hamiltonian cycle} if there exists a Hamiltonian cycle whose successive edges alternate between sets $B$ and $R$.
 \end{definition}
 
-\noindent An alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint. The solution $\mathcal{T}$ must contain all elements from the problem instance $\mathcal{M}$, so all $n+1$ edges in $B$ must be present in the alternating Hamiltonian cycle. Therefore, the aim is to find a suitable matching subset of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices aid the construction of the alternating Hamiltonian cycle as they are able to connect to the smallest vertices; however once a cycle has been produced these vertices and any incident edges are removed, resulting in a path corresponding to a feasible COP solution $\mathcal{T}$.
+\noindent Observe that an alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint. The aim of the problem is therefore to find a suitable matching subset of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices $v_{2n+1}$ and $v_{2n+2}$, aid the construction of the alternating Hamiltonian cycle as they are able to connect to the smallest vertices; however once a cycle has been produced these vertices and any incident edges are removed, resulting in a path corresponding to a feasible COP solution $\mathcal{T}$.
 
-Determining whether a graph is Hamiltonian is NP-hard (\cite{karp1972}), whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the former \citep{haggkvist1977}. Despite this, due to the manner in which graphs are modelled from instances of the COP and the requirement that all edges in $B$ must be included, we are able to determine the existence of an alternating Hamiltonian cycle in a graph $G$ in polynomial time \citep{hawa2018}. \ahc{additional vertices are universal vertices with deg $2n+1$}
+Determining whether a graph is Hamiltonian is NP-complete \citep{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the former \citep{haggkvist1977}. Despite this, due to the special structure of these graphs, we are able to determine the existence of an alternating Hamiltonian cycle in polynomial time \citep{hawa2018}. \ahc{additional vertices are universal vertices with deg $2n+1$}
 
 \subsection{The Alternating Hamiltonian Construction (AHC) Algorithm}
 \label{sub:ahc}
-\noindent AHC consists of two subprocedures: one to find an initial matching $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ in $G$. We now describe these two methods in detail.
+\noindent Our algorithm for finding an alternating Hamiltonian cycle on $G$ is the Alternating Hamiltonian Construction (AHC) algorithm. This consists of two subprocedures: one to find an initial matching $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ in $G$. We now describe these two methods in detail.
 
-The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm which seeks a matching $R'$ comprising $n+1$ edges on the graph induced by the set of red edges $R$. This could be achieved via standard matching processes such as the Blossom algorithm (\cite{edmonds1965}); however due to the special structure of $G$ such a matching can also be achieved via a cheaper, more efficient method as proposed by \cite{mahadev1994} and \cite{becker2015}. 
+The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm which seeks a matching $R'$ comprising $n+1$ edges on the graph induced by the set of red edges $R$. This could be achieved via standard matching processes such as the Blossom algorithm (\cite{edmonds1965}); however due to the special structure of $G$, such a matching can also be achieved via a cheaper, more efficient method as proposed by \cite{mahadev1994} and \cite{becker2015}. 
 
 \begin{algorithm}
 \caption{\textsc{MCM}}
 \begin{algorithmic}[1]
-	\State $R' \gets \emptyset$, $V_{used} \gets \emptyset$
-	\For{$i \gets 1$ \To $2n+2$ : $v_i \notin V_{used}$}
-		\For{$j \gets 2n+2$ \To 1 : $v_j \notin V_{used}$}
-			\If{$(v_i, v_j) \in R$}
-				\State $V_{used} \gets V_{used} \cup \{v_i, v_j\}$
-				\State $R' \gets R' \cup \{(v_i, v_j)\}$
+	\State $m(v_i) \gets$ \textsc{null} $\forall$ $v_i \in V$, $R' \gets \emptyset$
+	\For{$i \gets 1$ \To $2n+2 : m(v_i) =$ \textsc{null}}
+		\For{$j \gets 2n+2$ \To $i+1 : m(v_j) =$ \textsc{null}}
+			\If{$\{v_i, v_j\} \in R$}
+				\State $m(v_i) \gets v_j$, $m(v_j) \gets v_i$
+%				\State $R' \gets R' \cup \{\{v_i, v_j\}\}$
+				\Break
+			\EndIf
+		\EndFor
+		\If{$m(v_i) =$ \textsc{null} $\land$ $i \neq 1 \land m(m(v_{i-1})) = v_{i-1} \land \{v_{i-1}, p(v_i)\} \in R$}
+%			\State $R' \gets R' \backslash \{\{v_{i-1}, m(v_{i-1})\}\}$
+			\State $m(v_i) \gets m(v_{i-1})$, $m(m(v_i)) \gets v_i$
+			\State $m(v_{i-1}) \gets p(v_i)$, $m(p(v_i)) \gets v_{i-1}$
+%			\State $R' \gets R' \cup \{\{v_{i-1}, p(v_i)\}\}$
+%			\State $R' \gets R' \cup \{\{v_i, m(v_i)\}\}$
+		\EndIf
+	\EndFor
+	\State then need to output set $R'$ containing all matching edges
+\end{algorithmic}
+\label{alg:mcm}	
+\end{algorithm}
+
+\begin{comment}
+\begin{algorithm}
+\caption{\textsc{MCM}}
+\begin{algorithmic}[1]
+	\State $R' \gets \emptyset$, $V_{\textup{used}} \gets \emptyset$
+	\For{$i \gets 1$ \To $2n+2$ : $v_i \notin V_{\textup{used}}$}
+		\For{$j \gets 2n+2$ \To 1 : $v_j \notin V_{\textup{used}}$}
+			\If{$\{v_i, v_j\} \in R$}
+				\State $V_{\textup{used}} \gets V_{\textup{used}} \cup \{v_i, v_j\}$
+				\State $R' \gets R' \cup \{\{v_i, v_j\}\}$
 				\Break
 			\EndIf
 		\EndFor
 	\EndFor
 \end{algorithmic}
-\label{alg:mcm}	
+\label{alg:mcmvused}	
 \end{algorithm}	
+\end{comment}
 
 \begin{comment}
 The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which is used to produce a matching $R'$ from $R$ \citep{mahadev1994}. MCM takes each vertex $v_1, v_2,\dotsc,v_{2n+2}$ and adds to $R'$ the edge from $R$ connecting $v_i$ to the largest vertex $v_j$ that is not incident to an edge in already in $R'$. Pairs of vertices incident to edges in $R'$ are then said to be \emph{matched}. As with partners, the bijective function $m : V \to V$ associates with each vertex $v_i \in V$ its match, $m(v_i)$, thus the set can then be denoted as $R' = \{(v_i, m(v_i)): v_i \in V\}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched, provided 
@@ -160,9 +179,9 @@ The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorith
 Then, we simply set $m(v_i) = m(v_{i-1})$, and $m(v_{i-1}) = p(v_i)$. %\ahc{Blossom?}
 \end{comment}
 
-\noindent As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight ascending order, and are matched with an adjacent vertex in $R$ not currently in $R'$ that has the largest weight. An example outcome of this process is shown in Fig.~\ref{fig:mcm}.
+\noindent As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order, and are matched with an adjacent vertex in $R$ not currently in $R'$ that has the largest weight. An example outcome of this process is shown in Fig.~\ref{fig:mcm}. \ahc{need to explain swap of partners, it works because if previous vertex is matched with a vertex, then current vertex should also be able to match with the vertex because vertices are considered in weight-increasing order.}
 
-At this point, if $R'$ does not contain $n+1$ edges then there are too few edges to form an alternating Hamiltonian cycle, thus no feasible solution can exist. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ will be a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as illustrated in Fig.~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found; otherwise $G'$ comprises multiple cycles,so AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
+At this point, if $R'$ does not contain $n+1$ edges then there are too few edges to form an alternating Hamiltonian cycle, thus no feasible solution can exist. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ will be a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as illustrated in Fig.~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found; otherwise $G'$ comprises multiple cycles, so AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
 
 \begin{figure}[H]	
 	\centering
@@ -187,7 +206,7 @@ At this point, if $R'$ does not contain $n+1$ edges then there are too few edges
 	\label{fig:mcm}
 \end{figure}
 
-\noindent The multiple cyclic components of $G'$ can be combined into a single component by removing edges from each component and adding new edges between vertices of different components. As all edges in $B$ are required in the final solution, the task involves deciding which edges from each component should be removed from $R'$ and replaced with edges from $R\backslash R'$ such that the modified edge set $R'$ forms a single alternating Hamiltonian cycle with the edges in $B$. 
+\noindent The multiple cyclic components of $G'$ can be combined into a single component by removing edges from components and adding new edges between vertices of different components. As all edges in $B$ are required in the final solution, the task involves deciding which edges from each component should be removed from $R'$ and replaced with edges from $R\backslash R'$ such that the modified edge set $R'$ forms a single alternating Hamiltonian cycle with the edges in $B$. 
 
 For this, we use the Bridge-Cover Recognition (BCR) algorithm which creates a collection of sets $\mathcal{R}^* = \{R^*_1, R^*_2,\dots\}$ each containing suitable edges from $R'$ that, once removed from $R'$, allow for specific edges from $R\backslash R'$ to be added to $R'$ that function as bridges between different components. For convenience, we say that $\mathcal{R}^*$ \textit{covers} a component $C_j$ of $G'$ if there exists a set $R^*_i \subset \mathcal{R}^*$ that contains an edge in $C_j$. BCR aims to produce a collection $\mathcal{R}^*$ that covers all $z$ components of $G'$ as follows
 
@@ -766,6 +785,9 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Check all indentations after figures, tables etc.
 	\item Compare Heuristics and EA results, number of types, six or twelve, classes or subtypes etc., be consistent.
 	\item Partial solution or subsolution? Difference?
+	\item All edges in curly braces, not parentheses.
+	\item All $\mathcal{S}^* \gets \mathcal{S}'$; $\mathcal{S}^{**} \gets \mathcal{S}''$ 
+	\item Largest/highest/smallest/lowest weight of vertex, choose.
 \end{itemize}		
 }
 \end{comment}
