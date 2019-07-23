@@ -19,9 +19,9 @@
 \noindent Many problems in operational research and discrete mathematics involve the grouping of elements into subsets. These types of problems can be seen in areas such as scheduling \citep{thompson1998, carter1996}, frequency assignment \citep{aardal2007}, graph colouring \citep{lewis2015, malaguti2008}, and load balancing \citep{rekiek1999}, as well as in practical problems in computer science such as table formatting, prepaging, and file allocation \citep{garey1972}. Formally, given a set $\mathcal{I}$ of $n$ elements, the aim in such problems is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
 \begin{subequations}
 	\begin{alignat}{2}
-	\bigcup\nolimits_{i=1}^{k} S_i &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
+	\bigcup\nolimits_{j=1}^{k} S_j &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
 	S_i \cap S_j &= \emptyset &\quad &\forall \hspace{1mm} i, j \in \{1, 2,\dotsc,k\}, \hspace{1mm} i \neq j, \text{ and}\label{eqn:nointersect}\\[3pt]
-	S_i &\in \mathcal{F} & &\forall \hspace{1mm} i \in \{1,2,\dotsc,k\}.\label{eqn:feasible}
+	S_j &\in \mathcal{F} & &\forall \hspace{1mm} j \in \{1,2,\dotsc,k\}.\label{eqn:feasible}
 	\end{alignat}
 \end{subequations}
 
@@ -43,7 +43,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	\label{fig:itemsdimknives}
 \end{figure}
 
-\noindent The remainder of this section will formally define the single bin problem and the corresponding multi-bin version, the Score-Constrained Packing Problem. In the next section, we will provide a brief overview of a polynomial-time algorithm used to solve the single bin problem. Section~\ref{sec:scpp} will explain the difficulties associated with the SCPP and analyse heuristics currently in literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a hybrid metaheuritic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
+\noindent The remainder of this section will formally define the single bin problem and the corresponding multi-bin version, the Score-Constrained Packing Problem. In the next section, we will provide a brief overview of a polynomial-time algorithm used to solve the single bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse heuristics currently in literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a hybrid metaheuritic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
 
 \subsection{Problem Definitions}
 \label{sub:intro}
@@ -216,8 +216,6 @@ These edges form a set $R^*_i$ which BCR adds to $\mathcal{R}^*$ before continui
 BCR procures the bridges from a collection $\mathcal{R}^*$ covering all components of $G'$ by operating on each set $R^*_i \subset \mathcal{R}^*$ as follows: for each edge in $R^*_i$ in turn, the edge from $R \backslash R'$ connecting the smaller vertex of the edge to the larger vertex of the next edge is added to $R'$. These edges are bridges, connecting the different components together. The edges in $\mathcal{R}^*$ are then removed from $R'$, so that $|R'| = n+1$. Figure~\ref{fig:bcr} shows how BCR performs on our example instance, where the sets $R^*_1 = \{(v_2, v_{17}),(v_3, v_{16}), (v_4, v_{15})\}$ and $R^*_2 = \{(v_7, v_{12}), (v_8, v_{11})\}$ of successive edges in $\mathcal{L}$ that meet the required conditions have been formed. As $\mathcal{R}^* =\{R^*_1, R^*_2\}$ covers all four components of $G'$ no more sets are required, and BCR uses $\mathcal{R}^*$ to acquire the bridges from $R\backslash R'$, as demonstrated in Fig.~\ref{fig:bcrlist}. These bridges are added to the set $R'$, linking the components of $G'$, and replace the edges in $R'$ that appear in $\mathcal{R}^*$, shown in Figs.~\ref{fig:mpsconnect}--\ref{fig:mpscycle}. This modified matching $R'$ is able to form an alternating Hamiltonian cycle in $G'$ with the edge set $B$. Removing the universal vertices yields an alternating Hamiltonian path which corresponds to a feasible solution $\mathcal{T}$ (Fig.~\ref{fig:solutionpath}).
 \end{comment}
 
-
-
 \begin{figure}[H]	
 	\centering
 	\begin{subfigure}[h]{0.35\textwidth}
@@ -278,7 +276,11 @@ BCR procures the bridges from a collection $\mathcal{R}^*$ covering all componen
 
 %--------------------------------------------------------------------------------------
 \section{Heuristics for the SCPP}
-\label{sec:scpp}
+\label{sec:heur}
+
+\noindent In this section we will consider the multi-bin version of the SubSCP, the Score-Constrained Packing Problem (SCPP), in which a set $\mathcal{I}$ of $n$ items are to be partitioned into a set of bins $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ according to constraints ~\eqref{eqn:allpacked}--\eqref{eqn:feasible}. Here, a bin $S_j \in \mathcal{F}$ if and only if the total width of items in the bin, $A(S_j) = \sum_{i \in S_j} w_i$ does not exceed the bin's capacity $W$, and the vicinal sum constraint \eqref{eqn:vsc} is fulfilled. An optimal solution for the SCPP is a solution consisting of the fewest number of bins required to feasibly pack all items in $\mathcal{I}$, thus the aim is to minimise $k$.
+
+\begin{comment}
 \noindent A feasible solution for an instance of the SCPP is represented by the set $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
 \begin{subequations}
 	\begin{alignat}{2}
@@ -290,12 +292,18 @@ BCR procures the bridges from a collection $\mathcal{R}^*$ covering all componen
 \end{subequations}
 
 \noindent An optimal solution for the SCPP is a solution consisting of the fewest number of bins required to feasibly pack all items in $\mathcal{I}$, thus the aim is to minimise $k$. Here, a bin $S_j \in \mathcal{F}$ if the total width of items in the bin does not exceed the bin's capacity \eqref{eqn:capacity} and the vicinal sum constraint is fulfilled \eqref{eqn:vscbin}.
+\end{comment}
 
-The BPP is known to be NP-hard \citep{garey1979}, and since the SCPP generalises the BPP it follows that the SCPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCPP in polynomial time. The simplest methods to implement for such problems are heuristics, which trade optimality for speed. One of the most well-known heuristics for the BPP is First-Fit (FF), a greedy online algorithm that packs each item, given in some arbitrary order, into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \citep{lewis2009}. An improvement on FF yields the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \citep{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$. Similar heuristics include Best-Fit (BF), in which each item is packed into the fullest bin that can accommodate the item without being overfilled, and its offline counterpart Best-Fit Decreasing (BFD). A comprehensive overview of these heuristics and related methods can be seen in \citet{coffman1984}. More advanced heuristics for the BPP have been developed with positive results, such as the Minimum Bin Slack (MBS) heuristic \citep{gupta1999}, which focuses on packing each bin in turn rather than each item, and modifications of MBS such as the Perturbation-MBS' heuristic of \citet{fleszar2002}. 
+The BPP is known to be NP-hard \citep{garey1979}, and since the SCPP generalises the BPP it follows that the SCPP is also NP-hard. Assuming $P \neq NP$, we cannot hope to find an optimal solution for all instances of the SCPP in polynomial time. One approach for such problems are heuristics, which trade optimality for speed. 
 
-For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \citep{martello1990l}, however $t$ will not perform as accurately for the SCPP. Given a set of $n$ items in which the largest score width $b_i < \tau / 2$, it is clear that no pairs of score widths can fulfil the vicinal sum constraint and so each item must be packed into individual bins, thus $|\mathcal{S}| = n$. The theoretical minimum $t$ does not consider the effect of the minimum scoring distance on the feasibility of the solution.
+A well-known heuristic for the BPP is First-Fit (FF), a greedy online algorithm that packs each item one by one in some given order into the lowest-indexed bin such that the capacity of the bin is not exceed, opening a new bin when required. It is known that there always exists at least one ordering of the items such that FF produces an optimal solution \citep{lewis2009}, though identifying such an ordering is itself NP-hard. An improvement on FF is the First-Fit Decreasing (FFD) heuristic, which initially sorts the items in non-increasing order of size. In 2007, it was proven that the worst case for FFD is $\frac{11}{9}k + \frac{6}{9}$, and that this bound is tight \citep{dosa2007}. Due to the initial sorting of the items, the time complexity of FFD is $O(n \lg n)$. Similar heuristics include Best-Fit (BF), in which each item is packed into the fullest bin that can accommodate the item without being overfilled, and its offline counterpart Best-Fit Decreasing (BFD). A comprehensive overview of these heuristics and related methods can be seen in \citet{coffman1984}. More advanced heuristics for the BPP have been developed with positive results, such as the Minimum Bin Slack (MBS) heuristic \citep{gupta1999}, which focuses on packing each bin in turn rather than each item, and modifications of MBS such as the Perturbation-MBS' heuristic of \citet{fleszar2002}. 
 
-The vicinal sum constraint also introduces further differences in solutions for the BPP and SCPP. The obvious disparity is that of the ordering and orientation of the items in the bins: unimportant in the BPP, but vital for the feasibility of a solution for the SCPP. Another distinction arises when attempting to modify solutions. A solution for the BPP remains feasible when an item is removed or a new item is added to a bin (provided the bin can accommodate said item), whereas this may render a solution for the SCPP infeasible, as the new adjacent score widths may not abide by the vicinal sum constraint. As a result of these differences, basic heuristics designed for the BPP cannot be used for the SCPP as there is no guarantee that the final solution will be feasible.  An example of this issue is provided in Fig.~\ref{fig:ffd} where a solution for an instance of the SCPP has been generated using FFD. The heuristic's inablity to rotate or reorder items produces alignments of items that violate the vicinal sum constraint in three of the bins, thus resulting in an entirely infeasible solution. Notice however that heuritics for the BPP can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL, as the only hard constraint in these problems is the requirement that no bin is overfilled~\eqref{eqn:capacity}.
+For the BPP, a basic lower bound for $k$ is the theoretical minimum, $t = \ceil{\sum_{i=1}^{n} w_i / W}$ \citep{martello1990l}, however $t$ will not perform as accurately for the SCPP as it fails to account for the vicinal sum constraint. For example, given a set of $n$ items in which the largest score width $b_i < \tau / 2$, it is clear that no pairs of score widths can fulfil the vicinal sum constraint and so each item must be packed into individual bins, thus $|\mathcal{S}| = n$.
+
+The vicinal sum constraint also introduces further differences in solutions for the BPP and SCPP. The obvious disparity is that of the ordering and orientation of the items in the bins: unimportant in the BPP, but vital for the feasibility of a solution for the SCPP. Another distinction arises when attempting to modify solutions. In the BPP, a bin remains feasible when an item is removed or a new item is added (provided the bin can accommodate the item), whereas for the SCPP this may render a bin infeasible, as the new adjacent score widths may not abide by the vicinal sum constraint. Consequently, heuristics for the BPP will need to be adapted in order to produce feasible solutions for the SCPP.
+
+\begin{comment}
+A solution for the BPP remains feasible when an item is removed or a new item is added to a bin (provided the bin can accommodate said item), whereas this may render a solution for the SCPP infeasible, as the new adjacent score widths may not abide by the vicinal sum constraint. As a result of these differences, basic heuristics designed for the BPP cannot be used for the SCPP as there is no guarantee that the final solution will be feasible.  An example of this issue is provided in Fig.~\ref{fig:ffd} where a solution for an instance of the SCPP has been generated using FFD. The heuristic's inablity to rotate or reorder items produces alignments of items that violate the vicinal sum constraint in three of the bins, thus resulting in an entirely infeasible solution. Notice however that heuritics for the BPP can still produce feasible, albeit not optimal, solutions for the TPP and CSP-SDCL, as the only hard constraint in these problems is the requirement that no bin is overfilled~\eqref{eqn:capacity}.
 
 \begin{figure}[h]	
 	\centering
@@ -303,8 +311,12 @@ The vicinal sum constraint also introduces further differences in solutions for 
 	\caption{An infeasible solution produced using FFD for an example instance of the SCPP. Here, $|\mathcal{I}| = 15$, $W = 1000$, $\tau = 70$, and the theoretical minimum $t = 6$.}	
 	\label{fig:ffd}
 \end{figure}
+\end{comment}
 
-\noindent As the SCPP is a relatively new problem, few methods have been seen in literature. Some basic heuristics were introduced in \citet{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD with the extra condition that an item $i$ can only be packed into a bin $S_j$ if the score width on the end of $S_j$ and one of the score widths $a_i$ or $b_i$ meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item into the ends of bins, MFFD$^+$ calls upon AHC to find a feasible ordering of all items currently in a given bin \emph{and} the item $i$ to be packed, i.e. AHC is used for every instance of SubSCP.\footnote{If an item $i$ is the first to be packed into a bin, it is placed in a regular orientation, $(a_i, b_i)$.} Clearly MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible ordering will be found if it exists. The restriction on MFFD of only packing items in the ends of bins has the potential to increase the number of bins being used in a final solution unnecessarily. Figure~\ref{fig:mffdvsmffdplus} compares solutions produced by MFFD and MFFD$^+$ using the same instance of the SCPP as seen in Fig.~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of bins as FFD while still satisfying the vicinal sum constraint.
+As the SCPP is a relatively new problem, few methods have been seen in literature. Some basic heuristics were introduced in \citet{hawa2018}, two of which are based on the FFD heuristic for the BPP. The first, named the Modified First-Fit Decreasing (MFFD) heuristic, performs in the same fashion as FFD with the additional condition that an item $i$ can only be packed into a bin $S_j$ if the score width on the end of $S_j$ and one of the score widths $a_i$ or $b_i$ meet the vicinal sum constraint. An improvement on MFFD is their second heuristic, MFFD$^+$, which incorporates AHC. Rather than attempting to pack each item into the ends of bins, MFFD$^+$ calls upon AHC to find a feasible ordering of all items currently in a given bin \emph{and} the item $i$ to be packed, i.e. AHC is used to determine the membership of $\mathcal{F}$.\footnote{If an item $i$ is the first to be packed into a bin, it is placed in a regular orientation, $(a_i, b_i)$.} Clearly MFFD$^+$ is the superior of the two, as the application of AHC guarantees that a feasible configuration of items in a bin will be found if it exists. The restriction on MFFD of only packing items in the ends of bins has the potential to increase the number of bins being used in a final solution unnecessarily. 
+
+\begin{comment}
+Figure~\ref{fig:mffdvsmffdplus} compares solutions produced by MFFD and MFFD$^+$ using the same instance of the SCPP as seen in Fig.~\ref{fig:ffd}. Note how MFFD$^+$ is able to form a solution using the same number of bins as FFD while still satisfying the vicinal sum constraint.
 
 \begin{figure}[H]	
 	\centering
@@ -324,8 +336,8 @@ The vicinal sum constraint also introduces further differences in solutions for 
 
 
 \subsection{Experimental Results - Heuristics}
-\label{sub:expheuristics}
-\noindent Although a comparison of these heuristics is given in \citet{hawa2018}, we performed our own tests where the MFFD$^+$ algorithm uses our updated version of the Alternating Hamiltonian Construction algorithm which includes the preliminary test and the new BCR procedure. We produced two different types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type, 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item types was chosen uniform randomly between 10 and 30, and the number of items within each type also assigned uniform randomly. Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$) were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was fixed at 70mm - the industry standard. The problem instance generator and instance files used is provided by \citet{hawa2019}. Table~\ref{table:heuristics} contains the results from the experiments. All instances were completed in under 125ms.
+\label{sub:expheur}
+\noindent Although a comparison of these heuristics is given in \citet{hawa2018}, we performed our own tests where the MFFD$^+$ algorithm uses our updated version of the Alternating Hamiltonian Construction algorithm which includes the preliminary test and the new BCR procedure. We produced two different types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). For each type, 1000 instances were generated using sets of 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item types was chosen uniform randomly between 10 and 30, and the number of items within each type also assigned uniform randomly. Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$) were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was fixed at 70mm - the industry standard. The problem instance generator and instance files used is provided by \citet{hawa2019}. Table~\ref{table:heur} contains the results from the experiments. All individual runs were completed in under 125ms.
 
 %\scpp{As optimal solutions are not available, we calculated the solution quality $q = |\mathcal{S}|/ t$ which compares each solution to the theoretical minimum.}
 
@@ -363,7 +375,7 @@ The vicinal sum constraint also introduces further differences in solutions for 
 	\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
 \end{tablenotes}	
 \end{threeparttable}	
-\label{table:heuristics}
+\label{table:heur}
 \end{table}
 
 
@@ -373,7 +385,7 @@ It can be seen that MFFD$^+$ produces solutions using fewer bins on average than
 %\scpp{Note also that $q$ is higher for real instances in comparison to artificial instances, as due to the reduced variety of item widths and score widths it is difficult to attain feasible packings.} \note{$q$ has now been removed from tables as it is redundant, can discuss in text rather than displaying in tables - change text accordingly.}
 
 Indeed, it may be that optimal solutions were found in many of these instances, as the lower bound for $k$ may actually be higher than the theoretical minimum calculated. These experiments provide clear results that the use of an exact polynomial-time algorithm, AHC, within a heuristic is more powerful than using a simple heuristic alone. In spite of this, MFFD$^+$ lacks the capability of rearranging items \emph{between} bins, that is, once an item has been packed into a bin, it must stay in that bin (although the position of the item in the bin can change due to the use of AHC). It follows that every item packed has an effect on where the unplaced items can be placed, i.e. where an item is packed is dependent on where previous items have been packed. These limitations associated with greedy heuristics lead us to explore other superior methods.
-
+\end{comment}
 % Notes - Experiments Heuristics
 \begin{comment}
 {\color{myPink}
@@ -387,19 +399,22 @@ Indeed, it may be that optimal solutions were found in many of these instances, 
 %--------------------------------------------------------------------------------------
 \section{An Evolutionary Algorithm for the SCPP}
 \label{sec:ea}
-\noindent We now introduce an evolutionary algorithm (EA) for the SCPP to improve on the results of the previous heuristics. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the population. Each solution is evaluated based on a specific critera, and individuals which are more suited to the environment are provided more oppportunity to breed while those which are less so are eliminated. EAs have been used for a variety of grouping problems with positive results \citep{lewis2017, falkenauer1996, quiroz2015}. Within the EA framework, we investigate three different recombination operators as well as a local search procedure inspired by \citet{martello1990l}. The AHC algorithm described in Section~\ref{sec:ahc} is also integrated into the EA to solve instances of the SubSCP.
+\noindent We now introduce an evolutionary algorithm (EA) for the SCPP to improve on the previous heuristics. An evolutionary algorithm is a metaheuristic optimisation algorithm inspired by the natural evolutionary process. Candidate solutions to the problem form the initial population, and procedures emulating natural selection, reproduction, recombination and mutation are used to create the next generation of solutions. This iterated process results in the evolution of the population. EAs have been used for a variety of grouping problems with positive results \citep{lewis2017, falkenauer1996, quiroz2015}. Within the EA framework, we investigate three different group-based recombination operators as well as a local search procedure inspired by \citet{martello1990l}. The AHC algorithm described in Section~\ref{sec:ahc} is also integrated into the EA to solve instances of the SubSCP.
 
 \subsection{Recombination}
-\label{sub:xover}
-\noindent A recombination operator is used to generate new solutions from an existing population by taking two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, and combining them to create a new offspring solution. The operator determines which elements from each parent should be inherited by the offspring, with the aim of retaining the best characteristics of each parent such that a superior offspring is produced. As described in the previous section, individual items cannot be copied from parent to offspring as this may cause a violation of the vicinal sum constraint. Thus, all of the operators investigated in our EA are designed such that the vicinal sum constraint is always satisfied, ensuring offspring feasibility.
+\label{sub:recomb}
+\noindent Recombination is used in EAs to generate new solutions by taking existing parent solutions and combining them to create one or more offspring solutions. A recombination operator determines which elements from each parent should be inherited by the offspring. The operators used for our EA use two parent solutions, $\mathcal{S}_1, \mathcal{S}_2$, to form one offspring solution $\mathcal{S}$. These operators have been designed to ensure the offspring is feasible, and so this can result in a partial offspring solution. In such cases, a repair procedure described below is used to build a full offspring solution $\mathcal{S}$.
 
-The first operator is based on the grouping genetic algorithm (GGA) of \citet{falkenauer1992}. The bins of the second parent solution $\mathcal{S}_2$ are permuted and two bins $S_i$ and $S_j$ from $\mathcal{S}_2$ are selected randomly (where $1 \leq i < j \leq |\mathcal{S}_2|$). All bins between and including $S_i$ and $S_j$ are inserted into an offspring solution $\mathcal{S}$. GGA then adds to the offspring all bins from $\mathcal{S}_1$ that do not contain items already present in the offspring. Note that the bins chosen from $\mathcal{S}_2$ cannot both be the outermost bins, that is, GGA cannot choose both $i = 1$ \emph{and} $j = |\mathcal{S}_2|$, as doing so would result in all bins from $\mathcal{S}_2$ being copied into the offspring, preventing the addition of any bins from $\mathcal{S}_1$.
 
-The second operator we implemented is the alternating grouping crossover (AGX), and is analogous to that of \citet{quiroz2015}. Starting with the parent solution containing the fullest bin, AGX inserts this bin into an offspring solution $\mathcal{S}$, and bins containing items in $\mathcal{S}$ are removed from the other parent.\footnote{For both AGX and AGX', in the event that both parents contain bins with equal maximum fullness/number of items, the initial parent solution is chosen at random.} The operator then inserts the fullest bin from the modified parent into $\mathcal{S}$ and removes bins from the first parent. AGX continues to alternate between parents, selecting the fullest bin $max_{S_j \in \mathcal{S}_p} (A(S_j))$ (where $\mathcal{S}_p$ is the parent solution under consideration, $p \in \{1,2\}$) until at most $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ bins have been added to the offspring solution.
+The first operator is based on the grouping genetic algorithm (GGA) of \citet{falkenauer1992}. Starting with an empty offspring $\mathcal{S} = \emptyset$, the bins of the second parent solution $\mathcal{S}_2$ are randomly permuted and two bins $S_i$ and $S_j$ are selected randomly (where $1 \leq i < j \leq |\mathcal{S}_2|$). All bins between and including $S_i$ and $S_j$ are then copied into the offspring solution $\mathcal{S}$. GGA then adds to the offspring all bins from $\mathcal{S}_1$ that do not contain items already present in the offspring.
+
+%Note that the bins chosen from $\mathcal{S}_2$ cannot both be the outermost bins, that is, GGA cannot choose both $i = 1$ \emph{and} $j = |\mathcal{S}_2|$, as doing so would result in all bins from $\mathcal{S}_2$ being copied into the offspring, preventing the addition of any bins from $\mathcal{S}_1$.
+
+The second operator we implemented is the alternating grouping crossover (AGX), and is analogous to that of \citet{quiroz2015} proposed for the BPP. Starting with the parent solution containing the fullest bin, AGX inserts this bin into an offspring solution $\mathcal{S}$, and bins containing items in $\mathcal{S}$ are removed from the other parent.\footnote{For both AGX and AGX', in the event that both parents contain bins with equal maximum fullness/number of items, the initial parent solution is chosen at random.} The operator then inserts the fullest bin from the modified parent into $\mathcal{S}$ and removes bins from the first parent. AGX continues to alternate between parents, selecting the fullest bin $max_{S_j \in \mathcal{S}_p} (A(S_j))$ (where $\mathcal{S}_p$ is the parent solution under consideration, $p \in \{1,2\}$) until at most $min (|\mathcal{S}_1|,|\mathcal{S}_2|) - 1$ bins have been added to the offspring solution.
 
 Our final operator, AGX$'$, performs in a similar manner to AGX, however rather than choosing the fullest bin to insert into the offspring solution AGX$'$ selects bins containing the most items, $max_{S_j \in \mathcal{S}_p} (|S_j|)$. This method has the ability to preserve bins containing items that are harder to pack along with other items. 
 
-In order to maintain feasibility, the operators remove entire bins containing duplicate items rather than individual items. These bins may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}^*$. The partial offspring solution $\mathcal{S}$ and $\mathcal{S}^*$ are then used as input into a local search procedure to create a full feasible offspring solution. Figure~\ref{fig:recomb} shows the offspring solution $\mathcal{S}$ produced from two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, using each of the recombination operators, along with the individual items missing from each offspring.
+In order to maintain feasibility, the operators remove entire bins containing duplicate items rather than individual items. These bins may also contain items that are not present in the offspring solution. Consequently, on completion of the crossover, the offspring solution $\mathcal{S}$ may not contain all $n$ items and is therefore not yet a full solution. To rectify this, MFFD$^+$ is applied using the missing items to form a partial solution $\mathcal{S}'$. The partial solutions $\mathcal{S}$ and $\mathcal{S}'$ are then used as input into a local search procedure to create a full feasible offspring solution. Figure~\ref{fig:recomb} shows the offspring solution $\mathcal{S}$ produced from two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, using each of the recombination operators, along with the individual items missing from each offspring.
 
 \begin{figure}[H]	
 	\centering
@@ -434,25 +449,25 @@ In order to maintain feasibility, the operators remove entire bins containing du
 
 \subsection{Local Search}
 \label{sub:localsearch}
-\noindent Our local search method takes in two feasible partial solutions, $\mathcal{S}$ and $\mathcal{S}^*$, permutes the bins of both, and then attempts to move items between the two solutions in four stages: 
-\begin{enumerate*}[label={(\roman*)}]
-	\item swapping a pair of items from a bin in $\mathcal{S}$ with a pair of items from a bin in $\mathcal{S}^*$;\label{item:pairpair}
-	\item swapping a pair of items from a bin in $\mathcal{S}$ with an individual item from a bin in $\mathcal{S}^*$;\label{item:pairsin}
-	\item swapping individual items from bins in $\mathcal{S}$ and $\mathcal{S}^*$;\label{item:sinsin} and
-	\item moving an item from a bin in $\mathcal{S}^*$ to a bin in $\mathcal{S}$.\label{item:movesin}
-\end{enumerate*} 
-During stages \ref{item:pairpair}--\ref{item:sinsin}, the width of the item(s) from $\mathcal{S}^*$ must exceed the width of the item(s) from $\mathcal{S}$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}$ or $\mathcal{S}^*$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}^*$, generating a new feasible partial solution $\mathcal{S}^{**}$, with $|\mathcal{S}^{**}| \leq |\mathcal{S}^*|$. The bins in $\mathcal{S}^{**}$ are then inserted into $\mathcal{S}$ to form a full feasible solution.
+\noindent Our local search method takes two subsolutions, $\mathcal{S}$ and $\mathcal{S}'$, containing bins that together form a full solution containing all items in $\mathcal{I}$, and shuffles items between the bins of the each subsolution. By moving larger items into $\mathcal{S}$, the fullness $A(S_j)$ of the bins $S_j \in \mathcal{S}$ increases whilst the number of items per bin is maintained or decreases. Simultaneously, items moved into $\mathcal{S}'$ are smaller and therefore easier to repack into bins in $\mathcal{S}$. The procedure begins by permuting the bins $\mathcal{S}$ and $\mathcal{S}'$, before attempting to move items in four stages:
+\begin{enumerate}[label={(\arabic*)},itemsep=-2pt,topsep=2pt]
+	\item swapping a pair of items from a bin in $\mathcal{S}$ with a pair of items from a bin in $\mathcal{S}'$;\label{item:pairpair}
+	\item swapping a pair of items from a bin in $\mathcal{S}$ with an individual item from a bin in $\mathcal{S}'$;\label{item:pairsin}
+	\item swapping individual items from bins in $\mathcal{S}$ and $\mathcal{S}'$;\label{item:sinsin} and
+	\item moving an item from a bin in $\mathcal{S}'$ to a bin in $\mathcal{S}$.\label{item:movesin}
+\end{enumerate} 
+During stages \ref{item:pairpair}--\ref{item:sinsin}, the width of the item(s) from $\mathcal{S}'$ must exceed the width of the item(s) from $\mathcal{S}$. Once a swap or move has been perfomed, the procedure immediately moves on to the next stage. This method is repeated until all four stages have been executed in succession with no changes to $\mathcal{S}$ or $\mathcal{S}'$. Then, MFFD$^+$ is applied to any items remaining in $\mathcal{S}'$, generating a new feasible partial solution $\mathcal{S}''$, with $|\mathcal{S}''| \leq |\mathcal{S}'|$. The bins in $\mathcal{S}'$ are then inserted into $\mathcal{S}$ to form a full feasible solution. \ea{a swap/move is only performed if vsc met, AHC run every time.}
 
-This method is based on the dominance criterion of \citet{martello1990l}: if a bin $S_x$ \emph{dominates} a bin $S_y$, then a solution containing $S_x$ will have no more bins than a solution containing $S_y$. The local search procedure is in fact a local search for dominating bins. By moving larger items into $\mathcal{S}$, the fullness $A(S_j)$ of the bins $S_j \in \mathcal{S}$ increases whilst the number of items per bin is maintained or decreases, improving the quality of the bins in $\mathcal{S}$. Simultaneously, items moved into $\mathcal{S}^*$ are smaller and therefore easier to repack into bins in $\mathcal{S}$ during stage~\ref{item:movesin}. Variations of this method can be seen in \citet{lewis2009, lewis2017, falkenauer1996, levine2004}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages numerous distinct subsets of items in the bins are produced, generating more possibilities for feasible orderings of items. It can be seen that this procedure cannot increase the number of bins in a solution, and also has the ability to decrease the number of bins.
+This method is based on the dominance criterion of \citet{martello1990l}: if a bin $S_x$ \emph{dominates} a bin $S_y$, then a solution containing $S_x$ will have no more bins than a solution containing $S_y$. Variations of this method can be seen in \citet{lewis2009, lewis2017, falkenauer1996, levine2004}, however the addition of the vicinal sum constraint results in fewer changes than seen in these previous implementations. By iterating the stages numerous distinct subsets of items in the bins are produced, generating more possibilities for feasible orderings of items. It can be seen that this procedure cannot increase the number of bins in a solution, and also has the ability to decrease the number of bins.
 
 
 \subsection{Evolutionary Algorithm Framework}
 \label{sub:eaframework}
-\noindent Our EA for the SCPP begins by producing candidate solutions to form an initial population, with one solution created using MFFD$^+$ and the rest using MFFR$^+$ (the same method as MFFD$^+$ with the items in a random order). Each solution is mutated before being inserted into the population. The mutation of a solution $\mathcal{S}$ consists of permuting the bins and inserting $1 < r < |\mathcal{S}|$ bins selected randomly from $\mathcal{S}$ into a set $\mathcal{S}^*$. Local search is then executed using these two partial solutions to produce a full feasible solution $\mathcal{S}$. 
+\noindent Our EA for the SCPP begins by producing candidate solutions to form an initial population, with one solution created using MFFD$^+$ and the rest using MFFR$^+$ (the same method as MFFD$^+$ with the items in a random order). Each solution is mutated before being inserted into the population. The mutation of a solution $\mathcal{S}$ consists of permuting the bins and inserting $1 < r < |\mathcal{S}|$ bins selected randomly from $\mathcal{S}$ into a set $\mathcal{S}'$, and then executing local search on these two partial solutions to produce a full feasible solution $\mathcal{S}$. 
 
 Each iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a recombination operator to produce an offspring solution $\mathcal{S}$, then finally mutating $\mathcal{S}$ before replacing the least fit of the two parents in the population.
 
-For the classical one-dimensional BPP, a tailored function can be used to determine the fitness of a solution, as opposed to simply relying on the number of bins within a solution. The reason for this is two-fold: firstly, given two solutions of equal size, it is impossible to determine the fitter solution based on the number of bins alone. Secondly, we note that the fitness of a solution not only depends on the number of bins used, but also \emph{how} the items are packed into the bins. It is clear that if the bins' capacities are taken advantage of, fewer bins will be needed to pack all items compared to if the bins are only half full, requiring more bins than necessary to accommodate all of the items. A solution comprising fuller bins may also contain bins that are nearly empty, which is beneficial as it allows futher items to be packed, or the residual material could be used for other means.
+For the classical one-dimensional BPP, a tailored function can be used to determine the fitness of a solution, as opposed to simply relying on the number of bins within a solution. The reason for this is two-fold: firstly, it is difficult to distinguish between solutions as many of them will have the same number of bins, and secondly, we note that the fitness of a solution not only depends on the number of bins used, but also \emph{how} the items are packed into the bins. It is clear that if the bins' capacities are taken advantage of, fewer bins will be needed to pack all items compared to if the bins are only half full, requiring more bins than necessary to accommodate all of the items. A solution comprising fuller bins may also contain bins that are nearly empty, which is beneficial as it allows futher items to be packed, or the residual material could be used for other means.
 
 \citet{falkenauer1992} make use of the following function to calculate the fitness of a solution $\mathcal{S}$ of the BPP:
 \begin{equation}
@@ -460,11 +475,7 @@ f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
 \label{eqn:fitness}
 \end{equation}
 
-\noindent which assigns higher values to fitter solutions. Note also that for the BPP, if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins.
-
-In the BPP, it is clear that at most one bin in a solution can be half-full or less, as the contents of two less than half-full bins can be combined into a single bin. However, this is not the case for the SCPP, as the items of two half-full bins may not be able to form a single feasible packing due to the vicinal sum constraint, hence solutions for the SCPP may contain multiple bins $S_j$ such that $A(S_j) \leq W/2$. As a result, we have observed a number of cases of the SCPP where although  $|\mathcal{S}_1| < |\mathcal{S}_2|$, the corresponding fitness values $f(\mathcal{S}_1) < f(\mathcal{S}_2)$. Therefore, we cannot rely on the fitness function alone to guide us towards an optimal solution, as this may lead to a final solution comprising more bins than necessary. Instead, we use the number of bins to determine the quality of a solution, only using the fitness function when comparing solutions of equal size to select the solution with more efficient packing.
-
-
+\noindent which assigns higher values to fitter solutions. Here, if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins. Note that this is dependent on the characteristic of the BPP where at most one bin in a solution is less or equal to half full, as the contents of two less than half-full bins can be combined into a single bin. However, this is not the case for the SCPP, as the items of two half-full bins may not be able to form a single feasible packing due to the vicinal sum constraint, hence solutions for the SCPP may contain multiple bins $S_j$ such that $A(S_j) \leq W/2$. As a result, we have observed a number of cases of the SCPP where although  $|\mathcal{S}_1| < |\mathcal{S}_2|$, the corresponding fitness values $f(\mathcal{S}_1) < f(\mathcal{S}_2)$. Therefore, we cannot rely on the fitness function alone to guide us towards an optimal solution, as this may lead to a final solution comprising more bins than necessary. Instead, we use the number of bins to determine the quality of a solution, only using the fitness function when comparing solutions of containing equal number of bins to select the solution with more efficient packing.
 
 
 % Notes - EA
@@ -486,36 +497,42 @@ In the BPP, it is clear that at most one bin in a solution can be half-full or l
 }
 \end{comment}
 
-\subsection{Experimental Results - Evolutionary Algorithm}
+\subsection{Experimental Results}
 \label{sub:expea}
-\noindent To ensure a fair comparison with the heuristics in Section~\ref{sec:scpp}, the same set of problem instances generated for the previous experiments were used to test our EA. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. The advantage of using a small population size was to be expected, as the vicinal sum constaint limits the number of feasible candidiate solutions using a reasonable number of bins. The preliminary tests showed that larger population sizes contained an abundance of poor solutions comprising over twice the number of bins as used in the final solution, whilst even smaller populations lacked the diversity needed to escape local optima. Across all instances, the EA had a fixed time limit of 600 seconds. Table~\ref{table:ea} displays the results obtained from the EA experiments using the different recombination operators and bin sizes.
+\noindent Our EA was executed on a set of problem instances for the SCPP created using a problem instance generator available online \citep{hawa2019}. The set contains two types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). Each type contains three subsets of 1000 instances for 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item groups was chosen uniform randomly between 10 and 30, and the number of items within each group also assigned uniform randomly.
+
+For our experiments, we used two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$) were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was set to 70mm - the industry standard. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. The MFFD$^+$ heuristic descibed in Section~\ref{sec:heur} was also executed on the same set of problem instances to provide comparative results. Table~\ref{table:ea} displays the results obtained from the experiments using the different recombination operators and bin sizes.
+
+%\noindent To ensure a fair comparison with the heuristics in Section~\ref{sec:heur}, the same set of problem instances generated for the previous experiments were used to test our EA. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. Table~\ref{table:ea} displays the results obtained from the EA experiments using the different recombination operators and bin sizes.
+
 
 \begin{table}[h!]
 \centering
 \caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type.}}
+\small
 \begin{threeparttable}
-\begin{tabular}{lrrcrrcrrcrr}
+\begin{tabular}{crr c rr c rr c rr c rr}
 	\toprule
-	& & & & \multicolumn{2}{c}{GGA} &\phantom{ab}& \multicolumn{2}{c}{AGX} &\phantom{a'}& \multicolumn{2}{c}{AGX$'$}\\
-	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
+	& & & & \multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{AGX} &\phantom{a'}& \multicolumn{2}{c}{AGX$'$} &\phantom{a'}& \multicolumn{2}{c}{MFFD$^+$}\\
+	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-15}
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
 	\midrule
-	a, $W=2500$ & 100 & 23.323 && 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 \\
-	& 500 & 114.942 && 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} \\
-	& 1000 & 229.437 && 234.482 & 14 && 235.029 & 17 && \textbf{233.988} &\textbf{21} \\
+	a, 2500 & 100 & 23.323 && 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 && 28.457 & 26\\
+	& 500 & 114.942 && 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} && 132.647 & 0\\
+	& 1000 & 229.437 && 234.482 & 14 && 235.029 & 17 && \textbf{233.988} &\textbf{21} && 258.388 & 0\\
 	\midrule
-	a, $W=5000$ & 100 & 11.922 && \textbf{12.265} & \textbf{849} && 12.315 & 825 && 12.304 & 832 \\
-	& 500 & 57.722 && \textbf{61.836} & \textbf{65} && 62.322 & 46 && 62.546 & 51 \\
-	& 1000 & 114.965 && \textbf{126.308} & 0 && 126.918 & 0 && 127.122 & 0 \\
+	a, 5000 & 100 & 11.922 && \textbf{12.265} & \textbf{849} && 12.315 & 825 && 12.304 & 832 && 19.881 & 7\\
+	& 500 & 57.722 && \textbf{61.836} & \textbf{65} && 62.322 & 46 && 62.546 & 51 && 89.544 & 0\\
+	& 1000 & 114.965 && \textbf{126.308} & 0 && 126.918 & 0 && 127.122 & 0 && 172.613 & 0\\
 	\midrule
 	\midrule
-	r, $W=2500$ & 100 & 23.473 && 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} \\
-	& 500 & 115.239 && 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 \\
-	& 1000 & 229.946 && \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 \\
+	r, 2500 & 100 & 23.473 && 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} && 35.419 & 16\\
+	& 500 & 115.239 && 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 && 177.249 & 0\\
+	& 1000 & 229.946 && \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 && 355.042 & 0\\
 	\midrule
-	r, $W=5000$ & 100 & 11.981 && \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 \\
-	& 500 & 57.865 && \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 \\
-	& 1000 & 115.227 && \textbf{193.08} & \textbf{29} && 193.658 & 27 && 193.578 &\textbf{29} \\
+	r, 5000 & 100 & 11.981 && \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 && 29.611 & 5\\
+	& 500 & 57.865 && \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 && 153.416 & 0\\
+	& 1000 & 115.227 && \textbf{193.08} & \textbf{29} && 193.658 & 27 && 193.578 &\textbf{29} && 308.642 & 0\\
 	\bottomrule
 \end{tabular}	
 \vspace{0.2cm} %
@@ -748,6 +765,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item Align tables.
 	\item Check all indentations after figures, tables etc.
 	\item Compare Heuristics and EA results, number of types, six or twelve, classes or subtypes etc., be consistent.
+	\item Partial solution or subsolution? Difference?
 \end{itemize}		
 }
 \end{comment}
