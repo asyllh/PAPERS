@@ -433,8 +433,8 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 
 \begin{table}[h!]
 \centering
-\caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type.}}
-\small
+\caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type. ALL ARTIFICIAL TYPES FOR EA HAVE BEEN UPDATED WITH NEW RESULTS 600SECONDS $|\mathcal{S}|$ COMPARED, FITNESS USED ONLY WHEN $|\mathcal{S}|$ EQUAL.}}
+\footnotesize
 \begin{threeparttable}
 \begin{tabular}{crrrrcrrcrrcrr}
 	\toprule
@@ -442,22 +442,22 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 	\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11} \cmidrule{13-14}
 	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} & \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
 	\midrule
-	a, 2500 & 100 & 23.323 & 23.358 & 973 && \textbf{23.343} & \textbf{985} && 23.355 & 975 && 28.457 & 26\\
-	& 500 & 114.942 & 116.44 & 316 && 116.711 & 280 && \textbf{116.326} &\textbf{347} && 132.647 & 0\\
-	& 1000 & 229.437 & 234.482 & 14 && 235.029 & 17 && \textbf{233.988} &\textbf{21} && 258.388 & 0\\
+	a, 2500 & 100 & 23.32 & $23.36 \pm 4.6$ & 974 && $\textbf{23.34} \pm 4.5$ & \textbf{986} && $23.36 \pm 4.5$ & 972 && 28.46 & 26\\
+	& 500 & 114.94 & $116.36 \pm 2.2$ & 334 && $116.67 \pm 2.2$ & 274 && $\textbf{116.28} \pm 2.2$ &\textbf{350} && 132.65 & 0\\
+	& 1000 & 229.44 & $233.93 \pm 1.6$ & 15 && $234.58 \pm 1.6$ & 13 && $\textbf{233.73} \pm 1.6$ &\textbf{23} && 258.39 & 0\\
 	\midrule
-	a, 5000 & 100 & 11.922 & \textbf{12.265} & \textbf{849} && 12.315 & 825 && 12.304 & 832 && 19.881 & 7\\
-	& 500 & 57.722 & \textbf{61.836} & \textbf{65} && 62.322 & 46 && 62.546 & 51 && 89.544 & 0\\
-	& 1000 & 114.965 & \textbf{126.308} & 0 && 126.918 & 0 && 127.122 & 0 && 172.613 & 0\\
+	a, 5000 & 100 & 11.92 & $\textbf{12.27} \pm 10.0$ & \textbf{845} && $12.31 \pm 10.2$ & 827 && $12.32 \pm 10.2$ & 820 && 19.88 & 7\\
+	& 500 & 57.72 & $\textbf{61.91} \pm 4.9$ & \textbf{60} && $62.44 \pm 5.1$ & 45 && $62.50 \pm 5.0$ & 49 && 89.54 & 0\\
+	& 1000 & 114.97 & $\textbf{126.37} \pm 4.0$ & 0 && $126.85 \pm 3.9$ & 0 && $127.08 \pm 4.0$ & 0 && 172.61 & 0\\
 	\midrule
 	\midrule
-	r, 2500 & 100 & 23.473 & 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} && 35.419 & 16\\
-	& 500 & 115.239 & 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 && 177.249 & 0\\
-	& 1000 & 229.946 & \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 && 355.042 & 0\\
+	r, 2500 & 100 & 23.47 & 26.012 & \textbf{569} && 26.084 & 568 && \textbf{25.955} &\textbf{569} && 35.419 & 16\\
+	& 500 & 115.24 & 134.342 & 45 && 134.586 & \textbf{55} && \textbf{134.24} & 39 && 177.249 & 0\\
+	& 1000 & 229.95 & \textbf{270.396} & 1 && 270.654 & \textbf{2} && 270.59 & 0 && 355.042 & 0\\
 	\midrule
-	r, 5000 & 100 & 11.981 & \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 && 29.611 & 5\\
-	& 500 & 57.865 & \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 && 153.416 & 0\\
-	& 1000 & 115.227 & \textbf{193.08} & \textbf{29} && 193.658 & 27 && 193.578 &\textbf{29} && 308.642 & 0\\
+	r, 5000 & 100 & 11.98 & \textbf{17.571} & \textbf{484} && 17.621 & 466 && 17.608 & 466 && 29.611 & 5\\
+	& 500 & 57.87 & \textbf{93.875} & 85 && 94.549 & \textbf{86} && 94.186 & 82 && 153.416 & 0\\
+	& 1000 & 115.23 & \textbf{193.08} & \textbf{29} && 193.658 & 27 && 193.578 &\textbf{29} && 308.642 & 0\\
 	\bottomrule
 \end{tabular}	
 \vspace{0.2cm} %
@@ -579,26 +579,26 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 \begin{threeparttable}
 \begin{tabular}{crrcrrrcrrr}
 	\toprule
-	& & & & \multicolumn{3}{c}{EA} &\phantom{ab}& \multicolumn{3}{c}{CMSA}\\
+	& & & & \multicolumn{3}{c}{CMSA} &\phantom{ab}& \multicolumn{3}{c}{EA}\\
 	\cmidrule{5-7} \cmidrule{9-11}
 	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
 	\midrule
-	a, 2500 & 100 & 23.323 && 23.38 & 49 & 28 && 24.02 & 21 & 0 \\
-	& 500 & 114.942 && 116.1 & 17 & 45 && 118.48 & 0 & 0 \\
-	& 1000 & 229.437 && 234.84 & 0 & 38 && 237.1 & 0 & 4 \\
+	a, 2500 & 100 & 23.36 && 24.02 & 21 &  &&  &  &  \\
+	& 500 & 114.74 && 118.48 & 0 & && &  &  \\
+	& 1000 & 230.24 && 237.1 & 0 &  &&  &  &  \\
 	\midrule
-	a, 5000 & 100 & 11.922 && 12.56 & 39 & 26 && 13.54 & 24 & 0 \\
-	& 500 & 57.722 && 61.9 & 1 & 50 && 75.6 & 0 & 0 \\
-	& 1000 & 114.965 && 126.4 & 0 & 50 && 169.04 & 0 & 0 \\
+	a, 5000 & 100 & 11.96 && 13.54 & 24 & && & & \\
+	& 500 & 57.62 && 75.6 & 0 & && & & \\
+	& 1000 & 115.42 && 169.04 & 0 & && & & \\
 	\midrule
 	\midrule
-	r, 2500 & 100 & 23.473 && 27.52 & 21 & 16 && 27.94 & 15 & 6 \\
-	& 500 & 115.239 && 143.1 & 4 & 34 && 148.08 & 0 & 9 \\
-	& 1000 & 229.946 && 290.32 & 0 & 22 && 294.76 & 0 & 23 \\
+	r, 2500 & 100 & 23.34 && 27.94 & 15 & && & & \\
+	& 500 & 115.76 && 148.04 & 0 & && & & \\
+	& 1000 & 231.26 && 294.76 & 0 & && & & \\
 	\midrule
-	r, 5000 & 100 & 11.981 && 20.56 & 16 & 18 && 20.98 & 12 & 5 \\
-	& 500 & 57.865 && 109.28 & 4 & 29 && 114.18 & 6 & 16 \\
-	& 1000 & 115.227 && 224.52 & 0 & 31 && 239.38 & 0 & 15 \\
+	r, 5000 & 100 & 11.94 && 20.94 & 12 & && & & \\
+	& 500 & 58.12 && 113.96 & 6 & && & & \\
+	& 1000 & 115.92 && 239.28 & 0 & && & & \\
 	\bottomrule
 \end{tabular}
 \vspace{0.2cm} %
