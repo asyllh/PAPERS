@@ -426,7 +426,7 @@ f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
 
 \subsection{Experimental Results}
 \label{sub:expea}
-\noindent Our EA was executed on a set of problem instances for the SCPP created using a problem instance generator available online \citep{hawa2019}. The set contains two types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). Each type contains three subsets of 1000 instances for 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item groups was chosen uniform randomly between 10 and 30, and the number of items within each group also assigned uniform randomly.
+\noindent Our EA was executed on a set of problem instances for the SCPP created using a problem instance generator available online \citep{hawa2019inst}. The set contains two types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). Each type contains three subsets of 1000 instances for 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item groups was chosen uniform randomly between 10 and 30, and the number of items within each group also assigned uniform randomly.
 
 Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was set to 70mm - the industry standard. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. The MFFD$^+$ heuristic descibed in Section~\ref{sec:heur} was also executed on the same set of problem instances to provide comparative results. Table~\ref{table:ea} displays the results obtained from the experiments using the different recombination operators and bin sizes.
 
@@ -504,14 +504,14 @@ AGX generates the least favourable results, particularly for the real instance t
 %--------------------------------------------------------------------------------------
 \section{A Hybrid Metaheuristic Approach}
 \label{sec:cmsa}
-\noindent In this section, we discuss a metaheuristic approach to the SCPP, combined with an exact method.
+\noindent In this section, we explore an alternative approach to the SCPP using a hybrid metaheuristic method. To begin, let us define a particular type of set cover:
 
 \begin{definition}
 	\label{defn:exactcover}
 	Let $\mathcal{S}$ be a collection of subsets of a set $\mathcal{B}$. Then a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ is an exact cover if and only if each element in $\mathcal{B}$ is contained in exactly one subset in $\mathcal{S}^*$.
 \end{definition}	
 
-\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be altered to instead find the smallest subcollection. \cmsa{optimisation problem.}
+\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be reformulated as an optimisation problem with the objective of finding the smallest subcollection.
 
 Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ are the rows and columns of the matrix respectively. Then, an element of the matrix $b_{ij} = 1$ if and only if row $i$ covers column $j$. The task involves finding a minimum cardinality subset of rows $\mathcal{S}^* \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in \mathcal{S}^*$. This problem can be formulated as the following integer linear program:
 
@@ -531,7 +531,7 @@ Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}
 
 \noindent Given a set of feasible bins this formulation can be used to find a solution for the SCPP, where each row $i \in M$ represents a bin and each column $j \in N$ represents a item. Since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the matrix however this \cmsa{could include hundred of millions of bins - rewrite, long time to solve}. Instead, we implemented the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
+Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the matrix however as $\mathcal{F}$ contains a large number of bins, it would not be possible to find the smallest subset in a realistic amount of time. Instead, we implemented the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
 
 \begin{algorithm}
 \caption{\textsc{Construct, Merge, Solve \& Adapt} ($\mathcal{I}$, $p$, $maxAge$)}
@@ -567,7 +567,7 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 
 \noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$, $age[b]$, set to zero (lines 3--7). The exact cover algorithm is executed, generating an optimal solution $\mathcal{S}^*$ which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). As with our EA, the number of bins in $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared first, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum, $maxAge$, are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
-One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far. \cmsa{zenodo.}
+One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far. \cite{hawa2019cmsa}.
 
 \subsection{Experimental Results - CMSA}
 \label{sub:expcmsa}
