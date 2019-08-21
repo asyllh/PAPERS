@@ -433,7 +433,7 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 
 \begin{table}[h!]
 \centering
-\caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type. NEED TO UPDATE NSR1021 AND NSR1022.}}
+\caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type.}}
 \small
 \begin{threeparttable}
 \begin{tabular}{crrrrcrrcrrcrr}
@@ -453,7 +453,7 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 	\midrule
 	r, 2500 & 100 & 23.47 & 25.99 & \textbf{573} && 26.07 & 570 && \textbf{25.95} & 570 && 35.42 & 16\\
 	& 500 & 115.24 & \textbf{133.94} & 47 && 134.25 & \textbf{59} && 133.99 & 41 && 177.25 & 0\\
-	& 1000 & 229.95 & 270.40 & 1 && 270.65 & \textbf{2} && \textbf{270.03} & 1 && 355.04 & 0\\
+	& 1000 & 229.95 & \textbf{269.99} & 1 && 270.17 & \textbf{4} && 270.03 & 1 && 355.04 & 0\\
 	\midrule
 	r, 5000 & 100 & 11.98 & \textbf{17.51} & \textbf{480} && 17.54 & 468 && 17.54 & 462 && 29.61 & 5\\
 	& 500 & 57.87 & \textbf{93.59} & \textbf{87} && 94.18 & 86 && 93.97 & 80 && 153.42 & 0\\
@@ -464,19 +464,19 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \begin{tablenotes}
 	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
 	\item[$b$] Number of bins per solution (mean from 1000 instances).
-	\item[$c$] Number of instances where a solution using $t$ bins was found (from 1000 instances).
+	\item[$c$] Number of instances where the solution comprises $t$ bins (from 1000 instances).
 \end{tablenotes}
 \end{threeparttable}
 \label{table:ea}
 \end{table}
 
-\noindent Firstly, it is immediately evident that the EA outperforms the MFFD$^+$ heuristic, producing solutions using $t$ bins in all but one of the 12 subclasses. Fewer iterations of the EA were performed as $n$ and $W$ increased, with the average number of iterations ranging from 300,000 to 1400 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances when $W=5000$ were 470 and 65 iterations.
+\noindent It is immediately evident that the EA outperforms the MFFD$^+$ heuristic, producing solutions using $t$ bins in all but one of the 12 \ea{subclasses}. Fewer iterations of the EA were performed as $n$ and $W$ increased, with the average number of iterations ranging from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations.
 
-It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instance types when the larger bin size is used, where higher quality solutions contain 8.6 items per bin on average. The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
+It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instance types using the larger bin size, where higher quality solutions contain 8.6 items per bin on average. The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
 
-\noindent On the other hand, when the smaller bin capacity $W=2500$ is used, where the best solutions average 4.3 items per bin, AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, fewer bins will be needed to pack all of the items, and bins containing items that are considered harder to pack are preserved throughout the EA. 
+On the other hand, when $W = 2500$ (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions.
 
-AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 sub classes in regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus extra bins are required to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the subclasses, suggesting a high variance in the quality of solutions produced.
+AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 \ea{subclasses} in regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the \ea{subclasses}, suggesting a high variance in the quality of solutions produced.
 
 \begin{comment}
 {\color{myRed}
@@ -565,7 +565,7 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 \label{alg:cmsa}	
 \end{algorithm}	
 
-\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$, $age[b]$, set to zero (lines 3--7). The exact cover algorithm is executed, generating an optimal solution $\mathcal{S}^*$ which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). As with our EA, the number of bins in $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared first, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum, $maxAge$, are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
+Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$, $age[b]$, set to zero (lines 3--7). The exact cover algorithm is executed, generating an optimal solution $\mathcal{S}^*$ which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). As with our EA, the number of bins in $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared first, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum, $maxAge$, are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
 One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far. \cite{hawa2019cmsa}.
 
@@ -575,7 +575,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 
 \begin{table}[h!]
 \centering
-\caption{\cmsa{CMSA}}
+\caption{\cmsa{CMSA, number in parentheses in end column is the number of instances where $|\mathcal{S}|$ in CMSA solution is equal to $|\mathcal{S}|$ in EA solution.}}
 \begin{threeparttable}
 \begin{tabular}{crrcrrrcrrr}
 	\toprule
@@ -583,22 +583,22 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\cmidrule{5-7} \cmidrule{9-11}
 	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
 	\midrule
-	a, 2500 & 100 & 23.36 && 24.02 & 21 &  &&  &  &  \\
-	& 500 & 114.74 && 118.48 & 0 & && &  &  \\
-	& 1000 & 230.24 && 237.1 & 0 &  &&  &  &  \\
+	a, 2500 & 100 & 23.36 && 24.02 & 21 & 0 && 23.36 & 50 & 29 (21)\\
+	& 500 & 114.74 && 118.48 & 0 & 0 && 115.50 & 24 & 49 (1)\\
+	& 1000 & 230.24 && 237.10 & 0 & 0 && 233.48 & 3 & 48 (2)\\
 	\midrule
-	a, 5000 & 100 & 11.96 && 13.54 & 24 & && & & \\
-	& 500 & 57.62 && 75.6 & 0 & && & & \\
-	& 1000 & 115.42 && 169.04 & 0 & && & & \\
+	a, 5000 & 100 & 11.96 && 13.54 & 24 & 0 && 12.48 & 39 & 26 (24)\\
+	& 500 & 57.62 && 75.60 & 0 & 0 && 60.70 & 4 & 50 (0)\\
+	& 1000 & 115.42 && 169.04 & 0 & 0 && 124.26 & 0 & 50 (0)\\
 	\midrule
 	\midrule
-	r, 2500 & 100 & 23.34 && 27.94 & 15 & && & & \\
-	& 500 & 115.76 && 148.04 & 0 & && & & \\
-	& 1000 & 231.26 && 294.76 & 0 & && & & \\
+	r, 2500 & 100 & 23.34 && 27.94 & 15 & 4 && 27.34 & 23 & 19 (27)\\
+	& 500 & 115.76 && 148.04 & 0 & 7 && 141.72 & 6 & 36 (7)\\
+	& 1000 & 231.26 && 294.76 & 0 & 20 && 288.90 & 0 & 26 (4)\\
 	\midrule
-	r, 5000 & 100 & 11.94 && 20.94 & 12 & && & & \\
-	& 500 & 58.12 && 113.96 & 6 & && & & \\
-	& 1000 & 115.92 && 239.28 & 0 & && & & \\
+	r, 5000 & 100 & 11.94 && 20.94 & 12 & 1 && 20.24 & 17 & 22 (27)\\
+	& 500 & 58.12 && 113.96 & 6 & 11 && 107.14 & 7 & 32 (7)\\
+	& 1000 & 115.92 && 239.28 & 0 & 12 && 221.72 & 0 & 34 (4)\\
 	\bottomrule
 \end{tabular}
 \vspace{0.2cm} %
@@ -614,12 +614,14 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	\item Designed to not search for all covers, only minimum one, so recursion is restricted to as many levels as the best solution found so far, compare by fitness value if number of bins equal in RS.	
-	\item If no solution found within 600 seconds, set $\mathcal{S}^* \gets \mathcal{S}_{\textup{bsf}}$, unless first iteration of CMSA and $\mathcal{S}_{\textup{bsf}} = \emptyset$, then keep going until one solution found.
-	\item Number of iterations EA vs CMSA
-	\item Standard deviation
-	\item Time taken to obtain best solution
-	\item Compare all three recombination operators separately with CMSA, rather than grouping together? Then can see if CMSA is better or worse than specific operator.
+	\item CMSA works better for smaller $n$ (100 items) and real instances.
+	\item CMSA unable to produce solution using fewer bins than EA in any of the artificial instance classes/types.
+	\item CMSA performs fewer iterations (on average) than EA within the same amount of time, 3600 seconds.
+	\item EA recombination operators and local search only applied to a two solutions/pair of partial solutions, can be executed quickly, whereas exact cover/algorithm X is applied to the entire set $\mathcal{B}$ which in some cases contains up to \textbf{insert value} bins.
+	\item Therefore we set a time limit on exact cover also, 600 seconds, and the best solution found within this time frame is taken as $\mathcal{S}^*$, however it could be that a better solution exists if the exact cover algorithm was allowed to run for longer.
+	\item Another issue: if no solution found within 600 seconds, $\mathcal{S}^*$ automatically set to $\mathcal{S}_{\textup{bsf}}$. Again, could be that better solution exists, but not enough time to find it (unless first iteration of CMSA and $\mathcal{S}_{\textup{bsf}} = \emptyset$, then keep going until one solution found).
+	\item Reason why CMSA better for real instances, no duplicates in $\mathcal{B}$, and many items same dimension, so fewer bins in $\mathcal{B}$? (check)
+	\item Zenodo citation \cite{hawa2019cmsa}
 \end{itemize}
 }
 
