@@ -428,36 +428,36 @@ f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
 \label{sub:expea}
 \noindent Our EA was executed on a set of problem instances for the SCPP created using a problem instance generator available online \citep{hawa2019inst}. The set contains two types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). Each type contains three subsets of 1000 instances for 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item groups was chosen uniform randomly between 10 and 30, and the number of items within each group also assigned uniform randomly.
 
-Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was set to 70mm - the industry standard. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. The MFFD$^+$ heuristic descibed in Section~\ref{sec:heur} was also executed on the same set of problem instances to provide comparative results. Table~\ref{table:ea} displays the results obtained from the experiments using the different recombination operators and bin sizes.
-
+Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was set to 70mm - the industry standard. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. The MFFD$^+$ heuristic descibed in Section~\ref{sec:heur} was also executed on the same set of problem instances to provide comparative results. Table~\ref{table:ea} displays the results obtained from the experiments using the different recombination operators and bin sizes. \cite{hawa2019ea}.
 
 \begin{table}[h!]
+\setlength{\tabcolsep}{4.2pt}
 \centering
 \caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type.}}
-\small
+\scriptsize
 \begin{threeparttable}
-\begin{tabular}{crrrrcrrcrrcrr}
+\begin{tabular}{crrcrrcrrcrrcrr}
 	\toprule
-	& & & \multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{AGX} &\phantom{a}& \multicolumn{2}{c}{AGX$'$} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
-	\cmidrule{4-5} \cmidrule{7-8} \cmidrule{10-11} \cmidrule{13-14}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} & \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
+	& & & & \multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{AGX} &\phantom{a}& \multicolumn{2}{c}{AGX$'$} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
+	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-15}
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
 	\midrule
-	a, 2500 & 100 & 23.32 & 23.36 & 974 && \textbf{23.34} & \textbf{986} && 23.36 & 972 && 28.46 & 26\\
-	& 500 & 114.94 & 116.36 & 334 && 116.67 & 274 && \textbf{116.28} &\textbf{350} && 132.65 & 0\\
-	& 1000 & 229.44 & 233.93 & 15 && 234.58 & 13 && \textbf{233.73} &\textbf{23} && 258.39 & 0\\
+	a, 2500 & 100 & 23.32 && $23.36 \pm 4.6$ & 974 && $^{**}\textbf{23.34} \pm 4.5$ & \textbf{986} && $23.36 \pm 4.5$ & 972 && $28.46 \pm 10.4$ & 26 \\
+	& 500 & 114.94 && $116.36 \pm 2.2$ & 334 && $116.67 \pm 2.2$ & 274 && $^{**}\textbf{116.28} \pm 2.2$ &\textbf{350} && $132.65 \pm 4.9$ & 0 \\
+	& 1000 & 229.44 && $233.93 \pm 1.6$ & 15 && $234.58 \pm 1.6$ & 13 && $^{**}\textbf{233.73} \pm 1.6$ &\textbf{23} && $258.39 \pm 3.5$ & 0 \\
 	\midrule
-	a, 5000 & 100 & 11.92 & \textbf{12.27} & \textbf{845} && 12.31 & 827 && 12.32 & 820 && 19.88 & 7\\
-	& 500 & 57.72 & \textbf{61.91} & \textbf{60} && 62.44 & 45 && 62.50 & 49 && 89.54 & 0\\
-	& 1000 & 114.97 & \textbf{126.37} & 0 && 126.85 & 0 && 127.08 & 0 && 172.61 & 0\\
+	a, 5000 & 100 & 11.92 && $^{**}\textbf{12.27} \pm 10.0$ & \textbf{845} && $12.31 \pm 10.2$ & 827 && $12.32 \pm 10.2$ & 820 && $19.88 \pm 18.3$ & 7 \\
+	& 500 & 57.72 && $^{**}\textbf{61.91} \pm 4.9$ & \textbf{60} && $62.44 \pm 5.1$ & 45 && $62.50 \pm 5.0$ & 49 && $89.54 \pm 9.3$ & 0 \\
+	& 1000 & 114.97 && $^{**}\textbf{126.37} \pm 4.0$ & 0 && $126.85 \pm 3.9$ & 0 && $127.08 \pm 4.0$ & 0 && $172.61 \pm 7.1$ & 0 \\
 	\midrule
 	\midrule
-	r, 2500 & 100 & 23.47 & 25.99 & \textbf{573} && 26.07 & 570 && \textbf{25.95} & 570 && 35.42 & 16\\
-	& 500 & 115.24 & \textbf{133.94} & 47 && 134.25 & \textbf{59} && 133.99 & 41 && 177.25 & 0\\
-	& 1000 & 229.95 & \textbf{269.99} & 1 && 270.17 & \textbf{4} && 270.03 & 1 && 355.04 & 0\\
+	r, 2500 & 100 & 23.47 && $25.99 \pm 21.3$ & \textbf{573} && $26.07 \pm 21.5$ & 570 && $^{*}\textbf{25.95} \pm 21.1$ & 570 && $35.42 \pm 23.1$ & 16 \\
+	& 500 & 115.24 && $\textbf{133.94} \pm 21.3$ & 47 && $134.25 \pm 21.5$ & \textbf{59} && $133.99 \pm 21.2$ & 41 && $177.25 \pm 21.2$ & 0 \\
+	& 1000 & 229.95 && $\textbf{269.99} \pm 21.6$ & 1 && $270.17 \pm 21.7$ & \textbf{4} && $270.03 \pm 21.6$ & 1 && $355.04 \pm 21.2$ & 0 \\
 	\midrule
-	r, 5000 & 100 & 11.98 & \textbf{17.51} & \textbf{480} && 17.54 & 468 && 17.54 & 462 && 29.61 & 5\\
-	& 500 & 57.87 & \textbf{93.59} & \textbf{87} && 94.18 & 86 && 93.97 & 80 && 153.42 & 0\\
-	& 1000 & 115.23 & \textbf{192.38} & \textbf{31} && 192.92 & 26 && 192.79 & 30 && 308.64 & 0\\
+	r, 5000 & 100 & 11.98 && $\textbf{17.51} \pm 47.5$ & \textbf{480} && $17.54 \pm 47.3$ & 468 && $17.54 \pm 47.2$ & 462 && $29.61 \pm 32.7$ & 5 \\
+	& 500 & 57.87 && $^{**}\textbf{93.59} \pm 43.0$ & \textbf{87} && $94.18 \pm 43.0$ & 86 && $93.97 \pm 42.9$ & 80 && $153.42 \pm 28.9$ & 0 \\
+	& 1000 & 115.23 && $^{**}\textbf{192.38} \pm 42.7$ & \textbf{31} && $192.92 \pm 42.8$ & 26 && $192.79 \pm 42.7$ & 30 && $308.64 \pm 28.7$ & 0 \\
 	\bottomrule
 \end{tabular}	
 \vspace{0.2cm} %
@@ -620,6 +620,7 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\item EA recombination operators and local search only applied to a two solutions/pair of partial solutions, can be executed quickly, whereas exact cover/algorithm X is applied to the entire set $\mathcal{B}$ which in some cases contains up to \textbf{insert value} bins.
 	\item Therefore we set a time limit on exact cover also, 600 seconds, and the best solution found within this time frame is taken as $\mathcal{S}^*$, however it could be that a better solution exists if the exact cover algorithm was allowed to run for longer.
 	\item Another issue: if no solution found within 600 seconds, $\mathcal{S}^*$ automatically set to $\mathcal{S}_{\textup{bsf}}$. Again, could be that better solution exists, but not enough time to find it (unless first iteration of CMSA and $\mathcal{S}_{\textup{bsf}} = \emptyset$, then keep going until one solution found).
+	\item Number of iterations where time limit exact cover max (600s) and no solutions found.
 	\item Reason why CMSA better for real instances, no duplicates in $\mathcal{B}$, and many items same dimension, so fewer bins in $\mathcal{B}$? (check)
 	\item Zenodo citation \cite{hawa2019cmsa}
 \end{itemize}
