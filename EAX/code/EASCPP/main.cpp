@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
     }
     outputEAStream.open(filename2.c_str(), std::ios::app);
     if(outputEAStream.fail()) {
-        std::cerr << "[ERROR]: Cannot write to outputNSStream file." << std::endl;
+        std::cerr << "[ERROR]: Cannot write to outputEAStream file." << std::endl;
         exit(1);
     }
 

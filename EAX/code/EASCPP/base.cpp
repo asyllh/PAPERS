@@ -18,7 +18,7 @@ int instance; //Number of instances
 int timeLimit = 600; //How long EA will run for (seconds)
 int tau = 70; //Minimum scoring distance
 int numItem = 0; //Number of items n in the set I in the problem instance file
-int stripWidth = 5000; //Width of strips
+int stripWidth = 2500; //Width of strips
 int numPop = 25; //Number of initial solutions in population
 int xOver = 1; //Crossover Type, 1 = GGA, 2 = AGX, 3 = AGX'
 int seed = 1;
@@ -34,7 +34,7 @@ void ProgramInfo() {
               << "PARAMETERS:\n"
               << "       -e <int>    [Time limit for EA. Default = 600s.]\n"
               << "       -t <int>    [Constraint value. Default = 70.]\n"
-              << "       -W <int>    [Width of strips. Default = 5000.]\n"
+              << "       -W <int>    [Width of strips. Default = 2500.]\n"
               << "       -p <int>    [Number of solutions in population. Default = 25.]\n"
               << "       -x <int>    [Crossover operator. 1: GGA. 2: AGX. 3: AGX'. Default = GGA.]\n"
               << "       -s <int>    [Seed. Default = 1.]\n"
@@ -45,21 +45,27 @@ void ArgumentCheck() {
 
     bool error = false;
 
-    std::cout << "MODEA - Evolutionary Algorithm for the SCSPP\n------------------------------\n";
-    if(tau == 0) {
-        std::cerr << "[ERROR]: Constraint value cannot be zero.\n";
+    std::cout << "EA - Evolutionary Algorithm for the SCSPP\n------------------------------\n";
+    if(timeLimit > 0 && timeLimit < 60) {
+        std::cout << "[WARNING]: Time limit is set to " << timeLimit << " seconds, potentially insufficient amount of time for the program.\n";
+    }
+    if(timeLimit == 0) {
+        std::cerr << "[ERROR]: Time limit cannot be zero.\n";
         error = true;
+    }
+    if(tau == 0) {
+        std::cout << "[WARNING]: Constraint value is zero, problem is equivalent to BPP.\n";
     }
     if(stripWidth == 0) {
         std::cerr << "[ERROR]: Strip cannot have width zero.\n";
         error = true;
     }
-    if(numPop < 5) {
+    if(numPop < 2) {
         std::cerr << "[ERROR]: Insufficient number of solutions in population.\n";
         error = true;
     }
     if(xOver != 1 && xOver != 2 && xOver != 3) {
-        std::cerr << "[ERROR]: Invalid choice of crossover operator. Please choose either 1: GGA, 2: AGX, or 3: AGX'.\n";
+        std::cerr << "[ERROR]: Invalid choice of recombination operator. Please choose either 1: GGA, 2: AGX, or 3: AGX'.\n";
         error = true;
     }
     if(instType != 1 && instType != 2) {
