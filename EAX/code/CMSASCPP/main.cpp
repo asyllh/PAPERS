@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
     }
     xcLogStream << instance << "\t" << numItem << "\t" << instType << "\t" << stripWidth << "\t" << numPop
                   << "\t" << maxAge << "\t" << timeLimit << "\t" << xcTimeLimit << std::endl;
-    xcLogStream << "It\t#BStar\tbL\tbFitness\t#soln\tTime" << std::endl;
+    xcLogStream << "It\t#B\tbL\tbFitness\t#soln\tTime" << std::endl;
 
 
     Timer timer;

@@ -141,10 +141,10 @@ void OutputCMSA(int lowerBound) {
 
     std::string outputFileName;
     if(instType == 1) {
-        outputFileName = "CA" + std::to_string(n) + std::to_string(w) + std::to_string(numPop) + std::to_string(maxAge) + ".txt";
+        outputFileName = "CMSA" + std::to_string(n) + std::to_string(w) + std::to_string(numPop) + std::to_string(maxAge) + ".txt";
     }
     else {
-        outputFileName = "CR" + std::to_string(n) + std::to_string(w) + std::to_string(numPop) + std::to_string(maxAge) + ".txt";
+        outputFileName = "CMSR" + std::to_string(n) + std::to_string(w) + std::to_string(numPop) + std::to_string(maxAge) + ".txt";
     }
     outputStream.open(outputFileName.c_str(), std::ios::app);
     if(outputStream.fail()) {
