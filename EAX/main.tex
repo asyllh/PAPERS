@@ -424,47 +424,48 @@ f(\mathcal{S}) = \frac{\sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2}{|\mathcal{S}|}
 \noindent which assigns higher values to fitter solutions. Here, if $|\mathcal{S}_1| < |\mathcal{S}_2|$  then $f(\mathcal{S}_1) > f(\mathcal{S}_2)$, hence a global optimum for this fitness function is associated with the optimal solution containing the fewest number of bins. Note that this is dependent on the characteristic of the BPP where at most one bin in a solution is less or equal to half full, as the contents of two less than half-full bins can be combined into a single bin. However, this is not the case for the SCPP, as the items of two half-full bins may not be able to form a single feasible packing due to the vicinal sum constraint, hence solutions for the SCPP may contain multiple bins $S_j$ such that $A(S_j) \leq W/2$. As a result, we have observed a number of cases of the SCPP where although  $|\mathcal{S}_1| < |\mathcal{S}_2|$, the corresponding fitness values $f(\mathcal{S}_1) < f(\mathcal{S}_2)$. Therefore, we cannot rely on the fitness function alone to guide us towards an optimal solution, as this may lead to a final solution comprising more bins than necessary. Instead, we use the number of bins to determine the quality of a solution, only using the fitness function when comparing solutions of containing equal number of bins to select the solution with more efficient packing.
 
 
-\subsection{Experimental Results}
+\subsection{Experimental Results - EA}
 \label{sub:expea}
 \noindent Our EA was executed on a set of problem instances for the SCPP created using a problem instance generator available online \citep{hawa2019inst}. The set contains two types of problem instances: ``artificial'', in which the items are strongly heterogeneous (the items have varying widths and score widths); and ``real'', where items are weakly hetergeneous (many items have the same dimensions). Each type contains three subsets of 1000 instances for 100, 500, and 1000 items, giving a total of 6000 problem instances. All items have widths $w_i \in [150,1000]$ and score widths $a_i, b_i \in [1,70]$ selected uniform randomly, and equal height $H=1$. For the real instances, the number of item groups was chosen uniform randomly between 10 and 30, and the number of items within each group also assigned uniform randomly.
 
-Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was set to 70mm - the industry standard. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. The MFFD$^+$ heuristic descibed in Section~\ref{sec:heur} was also executed on the same set of problem instances to provide comparative results. Table~\ref{table:ea} displays the results obtained from the experiments using the different recombination operators and bin sizes. \cite{hawa2019ea}.
+Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used in the experiments to alter the number of items per bin, and the minimum scoring distance $\tau$ was set to 70mm - the industry standard. After preliminary experiments, we settled for an initial population containing 25 candidate solutions. Across all instances, the EA had a fixed time limit of 600 seconds. The MFFD$^+$ heuristic descibed in Section~\ref{sec:heur} was also executed on the same set of problem instances to provide comparative results. Table~\ref{table:ea} displays the results obtained from the experiments using the different recombination operators and bin sizes, which can be found online along with the source code \citep{hawa2019ea}.
 
 \begin{table}[h!]
-\setlength{\tabcolsep}{4.2pt}
+\setlength{\tabcolsep}{4pt}
 \centering
-\caption{\ea{Results obtained from EA using different recombination operators. Figures in bold indicate the best results for each instance type.}}
+\caption{Results obtained from the EA using the GGA, AGX, and AGX$'$ recombination operators, and from the MFFD$^+$ heuristic. Figures in bold indicate the best results for each instance class. Asterisks indicate statistical significance at $\leq 0.05 (^{*})$ and $\leq 0.01 (^{**})$ according to a two-tailed paired t-test and two-tailed McNemar's test for the $|\mathcal{S}|$ and $\%t$ columns respectively. \ea{stats tests only on xOvers, not MFFD$^+$.}}
 \scriptsize
 \begin{threeparttable}
 \begin{tabular}{crrcrrcrrcrrcrr}
 	\toprule
-	& & & & \multicolumn{2}{c}{GGA} &\phantom{a}& \multicolumn{2}{c}{AGX} &\phantom{a}& \multicolumn{2}{c}{AGX$'$} &\phantom{a}& \multicolumn{2}{c}{MFFD$^+$}\\
+	& & & & \multicolumn{2}{c}{GGA} &\phantom{}& \multicolumn{2}{c}{AGX} &\phantom{}& \multicolumn{2}{c}{AGX$'$} &\phantom{} & \multicolumn{2}{c}{MFFD$^+$}\\
 	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-15}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$}\\
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\% t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\% t$}\\
 	\midrule
-	a, 2500 & 100 & 23.32 && $23.36 \pm 4.6$ & 974 && $^{**}\textbf{23.34} \pm 4.5$ & \textbf{986} && $23.36 \pm 4.5$ & 972 && $28.46 \pm 10.4$ & 26 \\
-	& 500 & 114.94 && $116.36 \pm 2.2$ & 334 && $116.67 \pm 2.2$ & 274 && $^{**}\textbf{116.28} \pm 2.2$ &\textbf{350} && $132.65 \pm 4.9$ & 0 \\
-	& 1000 & 229.44 && $233.93 \pm 1.6$ & 15 && $234.58 \pm 1.6$ & 13 && $^{**}\textbf{233.73} \pm 1.6$ &\textbf{23} && $258.39 \pm 3.5$ & 0 \\
+	a, 2500 & 100 & 23.32 && $23.36 \pm 4.6$ & 97.4 && $^{**}\textbf{23.34} \pm 4.5$ & $^{**}\textbf{98.6}$ && $23.36 \pm 4.5$ & 97.2 && $28.46 \pm 10.4$ & 2.6 \\
+	& 500 & 114.94 && $116.36 \pm 2.2$ & 33.4 && $116.67 \pm 2.2$ & 27.4 && $^{**}\textbf{116.28} \pm 2.2$ &\textbf{35.0} && $132.65 \pm 4.9$ & 0.0 \\
+	& 1000 & 229.44 && $233.93 \pm 1.6$ & 1.5 && $234.58 \pm 1.6$ & 1.3 && $^{**}\textbf{233.73} \pm 1.6$ &\textbf{2.3} && $258.39 \pm 3.5$ & 0.0 \\
 	\midrule
-	a, 5000 & 100 & 11.92 && $^{**}\textbf{12.27} \pm 10.0$ & \textbf{845} && $12.31 \pm 10.2$ & 827 && $12.32 \pm 10.2$ & 820 && $19.88 \pm 18.3$ & 7 \\
-	& 500 & 57.72 && $^{**}\textbf{61.91} \pm 4.9$ & \textbf{60} && $62.44 \pm 5.1$ & 45 && $62.50 \pm 5.0$ & 49 && $89.54 \pm 9.3$ & 0 \\
-	& 1000 & 114.97 && $^{**}\textbf{126.37} \pm 4.0$ & 0 && $126.85 \pm 3.9$ & 0 && $127.08 \pm 4.0$ & 0 && $172.61 \pm 7.1$ & 0 \\
+	a, 5000 & 100 & 11.92 && $^{**}\textbf{12.27} \pm 10.0$ & $^{**}\textbf{84.5}$ && $12.31 \pm 10.2$ & 82.7 && $12.32 \pm 10.2$ & 82.0 && $19.88 \pm 18.3$ & 0.7 \\
+	& 500 & 57.72 && $^{**}\textbf{61.91} \pm 4.9$ & \textbf{6.0} && $62.44 \pm 5.1$ & 4.5 && $62.50 \pm 5.0$ & 4.9 && $89.54 \pm 9.3$ & 0.0 \\
+	& 1000 & 114.97 && $^{**}\textbf{126.37} \pm 4.0$ & 0.0 && $126.85 \pm 3.9$ & 0.0 && $127.08 \pm 4.0$ & 0.0 && $172.61 \pm 7.1$ & 0.0 \\
 	\midrule
 	\midrule
-	r, 2500 & 100 & 23.47 && $25.99 \pm 21.3$ & \textbf{573} && $26.07 \pm 21.5$ & 570 && $^{*}\textbf{25.95} \pm 21.1$ & 570 && $35.42 \pm 23.1$ & 16 \\
-	& 500 & 115.24 && $\textbf{133.94} \pm 21.3$ & 47 && $134.25 \pm 21.5$ & \textbf{59} && $133.99 \pm 21.2$ & 41 && $177.25 \pm 21.2$ & 0 \\
-	& 1000 & 229.95 && $\textbf{269.99} \pm 21.6$ & 1 && $270.17 \pm 21.7$ & \textbf{4} && $270.03 \pm 21.6$ & 1 && $355.04 \pm 21.2$ & 0 \\
+	r, 2500 & 100 & 23.47 && $25.99 \pm 21.3$ & \textbf{57.3} && $26.07 \pm 21.5$ & 57.0 && $^{*}\textbf{25.95} \pm 21.1$ & 57.0 && $35.42 \pm 23.1$ & 1.6 \\
+	& 500 & 115.24 && $\textbf{133.94} \pm 21.3$ & 4.7 && $134.25 \pm 21.5$ & \textbf{5.9} && $133.99 \pm 21.2$ & 4.1 && $177.25 \pm 21.2$ & 0.0 \\
+	& 1000 & 229.95 && $\textbf{269.99} \pm 21.6$ & 0.1 && $270.17 \pm 21.7$ & \textbf{0.4} && $270.03 \pm 21.6$ & 0.1 && $355.04 \pm 21.2$ & 0.0 \\
 	\midrule
-	r, 5000 & 100 & 11.98 && $\textbf{17.51} \pm 47.5$ & \textbf{480} && $17.54 \pm 47.3$ & 468 && $17.54 \pm 47.2$ & 462 && $29.61 \pm 32.7$ & 5 \\
-	& 500 & 57.87 && $^{**}\textbf{93.59} \pm 43.0$ & \textbf{87} && $94.18 \pm 43.0$ & 86 && $93.97 \pm 42.9$ & 80 && $153.42 \pm 28.9$ & 0 \\
-	& 1000 & 115.23 && $^{**}\textbf{192.38} \pm 42.7$ & \textbf{31} && $192.92 \pm 42.8$ & 26 && $192.79 \pm 42.7$ & 30 && $308.64 \pm 28.7$ & 0 \\
+	r, 5000 & 100 & 11.98 && $\textbf{17.51} \pm 47.5$ & $^{*}\textbf{48.0}$ && $17.54 \pm 47.3$ & 46.8 && $17.54 \pm 47.2$ & 46.2 && $29.61 \pm 32.7$ & 0.5 \\
+	& 500 & 57.87 && $^{**}\textbf{93.59} \pm 43.0$ & \textbf{8.7} && $94.18 \pm 43.0$ & 8.6 && $93.97 \pm 42.9$ & 8.0 && $153.42 \pm 28.9$ & 0.0 \\
+	& 1000 & 115.23 && $^{**}\textbf{192.38} \pm 42.7$ & \textbf{3.1} && $192.92 \pm 42.8$ & 2.6 && $192.79 \pm 42.7$ & 3.0 && $308.64 \pm 28.7$ & 0.0 \\
 	\bottomrule
 \end{tabular}	
 \vspace{0.2cm} %
 \begin{tablenotes}
+	\scriptsize
 	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 1000 instances).
-	\item[$b$] Number of bins per solution (mean from 1000 instances).
-	\item[$c$] Number of instances where the solution comprises $t$ bins (from 1000 instances).
+	\item[$b$] Number of bins per solution (mean from 1000 instances plus or minus the coefficient of variation (\%)).
+	\item[$c$] Percentage of instances in which the solution comprises $t$ bins.
 \end{tablenotes}
 \end{threeparttable}
 \label{table:ea}
@@ -474,41 +475,19 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 
 It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instance types using the larger bin size, where higher quality solutions contain 8.6 items per bin on average. The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
 
-On the other hand, when $W = 2500$ (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions.
+On the other hand, when $W = 2500$ \ea{for artificial only} (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions. \ea{lack of item diversity in real instances does not help AGX$'$.}
 
 AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 \ea{subclasses} in regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the \ea{subclasses}, suggesting a high variance in the quality of solutions produced.
 
-\begin{comment}
-{\color{myRed}
-\begin{itemize}[leftmargin=*]
-	\item Better than heuristics - compare.
-	\item Artificial
-	\begin{itemize}
-		\item AGX$'$ best for $W=2500$, GGA best for $W=5000$ -- what does this show?
-		\item NSA105, no recombination operator produced a single solution where $|\mathcal{S}| = t$.
-		\item As $n$ increases, difference between $t$ and average $|\mathcal{S}|$ increases, i.e. for NSA12, difference is between 0.045 -- 0.026, whereas for NSA105, difference is between 13.157 -- 12.708.
-		\item Number of solutions where $|\mathcal{S}| = t$ decreases as $n$ increases.
-		\item Number of solutions where $|\mathcal{S}| = t$ less when $W=5000$ than when $W=2500$ for same number of items $n$.
-		\item Difference between average $|\mathcal{S}|$ and $t$ smaller when $W=2500$ than when $W=5000$ for same number of items $n$.
-	\end{itemize}
-	\item Real
-	\begin{itemize}
-		\item GGA better when $W=5000$.
-	\end{itemize}	
-	\item Time graph output.
-	\item Number of EA iterations within time limit, how does it vary between recombination operators?
-\end{itemize}
-}
-\end{comment}
 
 %--------------------------------------------------------------------------------------
-\section{A Hybrid Metaheuristic Approach}
+\section{A Hybrid Metaheuristic Approach to the SCPP}
 \label{sec:cmsa}
 \noindent In this section, we explore an alternative approach to the SCPP using a hybrid metaheuristic method. To begin, let us define a particular type of set cover:
 
 \begin{definition}
 	\label{defn:exactcover}
-	Let $\mathcal{S}$ be a collection of subsets of a set $\mathcal{B}$. Then a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ is an exact cover if and only if each element in $\mathcal{B}$ is contained in exactly one subset in $\mathcal{S}^*$.
+	Let $\mathcal{S}$ be a collection of subsets of a set $\mathcal{B}$. Then, a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ is an \emph{exact cover} if and only if each element in $\mathcal{B}$ is contained in exactly one subset in $\mathcal{S}^*$.
 \end{definition}	
 
 \noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be reformulated as an optimisation problem with the objective of finding the smallest subcollection.
@@ -531,10 +510,10 @@ Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}
 
 \noindent Given a set of feasible bins this formulation can be used to find a solution for the SCPP, where each row $i \in M$ represents a bin and each column $j \in N$ represents a item. Since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the matrix however as $\mathcal{F}$ contains a large number of bins, it would not be possible to find the smallest subset in a realistic amount of time. Instead, we implemented the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
+Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the matrix, however as $\mathcal{F}$ contains a large number of bins, it may not be possible to find the smallest subset in a realistic amount of time. Instead, we implemented the exact cover method within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on a set $\mathcal{B}$ containing individual feasible bins. The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}.
 
 \begin{algorithm}
-\caption{\textsc{Construct, Merge, Solve \& Adapt} ($\mathcal{I}$, $p$, $maxAge$)}
+\caption{\textsc{Construct, Merge, Solve \& Adapt (CMSA) Algorithm} ($\mathcal{I}$, $p$, $maxAge$)}
 \begin{algorithmic}[1]
 	\State $\mathcal{S}_{\textup{bsf}} \gets \emptyset$, $\mathcal{B} \gets \emptyset$
 	\While{time limit not reached}
@@ -545,7 +524,7 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 					\State $\mathcal{B} \gets \mathcal{B} \cup \{b\}$
 				\EndFor
 		\EndFor
-		\State $\mathcal{S}^* \gets$ \textsc{ExactCover}($\mathcal{B}$)
+		\State $\mathcal{S}^* \gets$ \textsc{MinExactCover}($\mathcal{B}$)
 		\If{$\mathcal{S}^*$ is better than $\mathcal{S}_{\textup{bsf}}$}
 			\State $\mathcal{S}_{\textup{bsf}} \gets \mathcal{S}^*$
 		\EndIf
@@ -565,13 +544,13 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 \label{alg:cmsa}	
 \end{algorithm}	
 
-Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$, $age[b]$, set to zero (lines 3--7). The exact cover algorithm is executed, generating an optimal solution $\mathcal{S}^*$ which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). As with our EA, the number of bins in $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared first, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum, $maxAge$, are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that haven been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
+\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$ set to zero (lines 3--7). CMSA then calls upon the \textsc{MinExactCover} algorithm to find a minimum cardinality exact cover $\mathcal{S}^*$ in the set $\mathcal{B}$, which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). Note that in the first iteration, $\mathcal{S}^*$ is automatically set as $\mathcal{S}_{\textup{bsf}}$. As with our EA, $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared by the number of bins, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that have been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
-One method of solving the exact cover problem is by using a recursive depth-first backtracking process, referred to as ``Algorithm X'' by Donald \citet{knuth2000}, which is implemented using the ``dancing links'' technique to find all solutions to a given problem. As we are only interested in the solution with the fewest bins, we modified Algorithm X to only search for solutions that improve upon the best solution found so far. \cite{hawa2019cmsa}.
+To find an exact cover, we use a recursive depth-first backtracking process which is implemented using the ``dancing links'' technique to find all solutions to a given problem \citep{knuth2000}. As we are only interested in a minimum cardinality exact cover, i.e. the solution with the fewest bins, we modified this process to create \textsc{MinExactCover}, which only searches for solutions that improve upon the best solution found so far.
 
 \subsection{Experimental Results - CMSA}
 \label{sub:expcmsa}
-\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the CMSA algorithm, while the exact cover procedure was set to run for a maximum of 600 seconds. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. For a fair comparison, we ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA.
+\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the CMSA algorithm, while \textsc{MinExactCover} was set to run for a maximum of 600 seconds. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. For a fair comparison, we ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA. The source code for the CMSA algorithm including the modified \textsc{MinExactCover} procedure and the following results is available online \citep{hawa2019cmsa}.
 
 \begin{table}[h!]
 \centering
@@ -583,29 +562,29 @@ One method of solving the exact cover problem is by using a recursive depth-firs
 	\cmidrule{5-7} \cmidrule{9-11}
 	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
 	\midrule
-	a, 2500 & 100 & 23.36 && 24.02 & 21 & 0 && 23.36 & 50 & 29 (21)\\
-	& 500 & 114.74 && 118.48 & 0 & 0 && 115.50 & 24 & 49 (1)\\
-	& 1000 & 230.24 && 237.10 & 0 & 0 && 233.48 & 3 & 48 (2)\\
+	a, 2500 & 100 & 23.36 && $24.02 \pm 5.5$ & 21 & 0 && $^{**}\textbf{23.36} \pm 4.6$ & $^{**}$50 & 29 \\
+	& 500 & 114.74 && $118.48 \pm 2.3$ & 0 & 0 && $^{**}\textbf{115.50} \pm 1.9$ & $^{**}$24 & 49 \\
+	& 1000 & 230.24 && $237.10 \pm 1.8$ & 0 & 0 && $^{**}\textbf{233.48} \pm 1.7$ & 3 & 48 \\
 	\midrule
-	a, 5000 & 100 & 11.96 && 13.54 & 24 & 0 && 12.48 & 39 & 26 (24)\\
-	& 500 & 57.62 && 75.60 & 0 & 0 && 60.70 & 4 & 50 (0)\\
-	& 1000 & 115.42 && 169.04 & 0 & 0 && 124.26 & 0 & 50 (0)\\
+	a, 5000 & 100 & 11.96 && $13.54 \pm 17.4$ & 24 & 0 && $^{**}\textbf{12.48} \pm 11.2$ & $^{**}$39 & 26 \\
+	& 500 & 57.62 && $75.60 \pm 9.9$ & 0 & 0 && $^{**}\textbf{60.70} \pm 3.8$ & 4 & 50 \\
+	& 1000 & 115.42 && $169.04 \pm 8.5$ & 0 & 0 && $^{**}\textbf{124.26} \pm 4.5$ & 0 & 50 \\
 	\midrule
 	\midrule
-	r, 2500 & 100 & 23.34 && 27.94 & 15 & 4 && 27.34 & 23 & 19 (27)\\
-	& 500 & 115.76 && 148.04 & 0 & 7 && 141.72 & 6 & 36 (7)\\
-	& 1000 & 231.26 && 294.76 & 0 & 20 && 288.90 & 0 & 26 (4)\\
+	r, 2500 & 100 & 23.34 && $27.94 \pm 27.5$ & 15 & 4 && $^{*}\textbf{27.34} \pm 28.8$ & $^{*}$23 & 19 \\
+	& 500 & 115.76 && $148.04 \pm 27.1$ & 0 & 7 && $^{**}\textbf{141.72} \pm 26.9$ & $^{*}$6 & 36 \\
+	& 1000 & 231.26 && $294.76 \pm 27.1$ & 0 & 20 && $^{*}\textbf{288.90} \pm 26.4$ & 0 & 26 \\
 	\midrule
-	r, 5000 & 100 & 11.94 && 20.94 & 12 & 1 && 20.24 & 17 & 22 (27)\\
-	& 500 & 58.12 && 113.96 & 6 & 11 && 107.14 & 7 & 32 (7)\\
-	& 1000 & 115.92 && 239.28 & 0 & 12 && 221.72 & 0 & 34 (4)\\
+	r, 5000 & 100 & 11.94 && $20.94 \pm 52.0$ & 12 & 1 && $^{**}\textbf{20.24} \pm 54.2$ & 17 & 22 \\
+	& 500 & 58.12 && $113.96 \pm 46.5$ & 6 & 11 && $^{**}\textbf{107.14} \pm 47.7$ & 7 & 32 \\
+	& 1000 & 115.92 && $239.28 \pm 43.9$ & 0 & 12 && $^{**}\textbf{221.72} \pm 46.3$ & 0 & 34 \\
 	\bottomrule
 \end{tabular}
 \vspace{0.2cm} %
 \begin{tablenotes}
 	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 50 instances).
-	\item[$b$] Number of bins per solution (mean from 50 instances).
-	\item[$c$] Number of instances where a solution using $t$ bins was found (from 50 instances).
+	\item[$b$] Number of bins per solution (mean from 50 instances plus or minus the coefficient of variation (\%)).
+	\item[$c$] Number of instances in which the solution comprises $t$ bins.
 	\item[$d$] Number of instances where the solution generated by the algorithm consists of fewer bins than the solution generated by the alternative algorithm.
 \end{tablenotes}	
 \end{threeparttable}	
