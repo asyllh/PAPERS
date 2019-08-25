@@ -593,7 +593,17 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
+	\item CMSA does not perform as well as EA.
 	\item CMSA works better for smaller $n$ (100 items) and real instances.
+	\item For all six real instance classes, there is at least one instance (out of the 50) in which the best solution found by CMSA comprises fewer bins than the best soution found by EA (best of three recombination operators).
+	\item In R55 instance class, in two of the instances CMSA is able to find a solution using $t$ bins, while the best solution found by the EA for these instances uses more than $t$ bins.
+	\item CMSA has higher CV in all artificial instance classes, lower for real instance classes, smaller than the EA in four of the six real instance classes.
+	\item CMSA unable to find a solution comprising $t$ bins for any of the 50 instances in all instance classes using 1000 items, however the EA is also unable to find a solution comprising $t$ bins for any of the 50 instances for three of the instance classes using 1000 items (suggests that the optimal solution may not comprise $t$ bins).
+	\item CMSA unable to find solution using the same number of bins as solutions found by EA for any of the 50 instances for A55 and A105.
+	\item In 10 of the 12 instance classes, CMSA is able to find solution using the same number of bins as EA solution for at least one of the 50 instances.
+	\item CMSA is able to find solution using the same number of bins as EA or fewer for more instances in real instance classes than artificial.
+	\item CMSA performs fewer iterations than EA on average for 9 of the instance classes.
+	\item
 	\item CMSA unable to produce solution using fewer bins than EA in any of the artificial instance classes/types.
 	\item CMSA performs fewer iterations (on average) than EA within the same amount of time, 3600 seconds.
 	\item EA recombination operators and local search only applied to a two solutions/pair of partial solutions, can be executed quickly, whereas exact cover/algorithm X is applied to the entire set $\mathcal{B}$ which in some cases contains up to \textbf{insert value} bins.
