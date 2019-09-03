@@ -152,7 +152,7 @@ Determining whether a graph is Hamiltonian is NP-complete \citep{karp1972}, whil
 \label{alg:mcm}	
 \end{algorithm}
 
-\noindent The \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$. As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order, and are matched with the highest-weighted unmatched vertex adjacent in $R$. The set $R'$ consists of all edges from $R$ between matched vertices, i.e. $\{\{v_i, m(v_i)\} : v_i \in V \}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched provided $v_{i-1}$ has been matched successfully and is adjacent to $v_i$'s partner, $p(v_i)$. Then, $v_i$ is matched with $v_{i-1}$'s match, and $v_{i-1}$ is rematched with $p(v_i)$.
+\noindent The \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$. As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order, and are matched with the highest-weighted unmatched vertex adjacent in $R$. The set $R'$ consists of all edges from $R$ between matched vertices, i.e. $\{\{v_i, m(v_i)\} : v_i \in V \}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched provided $v_{i-1}$ has been matched successfully and is adjacent to $v_i$'s partner, $p(v_i)$. Then, $v_i$ is matched with $v_{i-1}$'s match, and $v_{i-1}$ is rematched with $p(v_i)$. \ahc{lines 8--12.}
 
 At this point, if $R'$ does not contain $n+1$ edges then there are too few edges to form an alternating Hamiltonian cycle, thus no feasible solution can exist. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ will be a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as illustrated in Figs.~\ref{fig:matching}and~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found; otherwise $G'$ comprises multiple cycles, so AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
 
@@ -554,7 +554,8 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 
 \begin{table}[h!]
 \centering
-\caption{\cmsa{CMSA, number in parentheses in end column is the number of instances where $|\mathcal{S}|$ in CMSA solution is equal to $|\mathcal{S}|$ in EA solution.}}
+\footnotesize
+\caption{\cmsa{CMSA}}
 \begin{threeparttable}
 \begin{tabular}{crrcrrrcrrr}
 	\toprule
@@ -593,25 +594,19 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	\item CMSA does not perform as well as EA.
-	\item CMSA works better for smaller $n$ (100 items) and real instances.
+	\item CMSA does not perform as well as EA, CMSA works better for smaller $n$ (100 items) and real instances.
+	\item CMSA is able to find solution using the same number of bins as EA or fewer for more instances in real instance classes than artificial.
 	\item For all six real instance classes, there is at least one instance (out of the 50) in which the best solution found by CMSA comprises fewer bins than the best soution found by EA (best of three recombination operators).
 	\item In R55 instance class, in two of the instances CMSA is able to find a solution using $t$ bins, while the best solution found by the EA for these instances uses more than $t$ bins.
-	\item CMSA has higher CV in all artificial instance classes, lower for real instance classes, smaller than the EA in four of the six real instance classes.
-	\item CMSA unable to find a solution comprising $t$ bins for any of the 50 instances in all instance classes using 1000 items, however the EA is also unable to find a solution comprising $t$ bins for any of the 50 instances for three of the instance classes using 1000 items (suggests that the optimal solution may not comprise $t$ bins).
-	\item CMSA unable to find solution using the same number of bins as solutions found by EA for any of the 50 instances for A55 and A105.
 	\item In 10 of the 12 instance classes, CMSA is able to find solution using the same number of bins as EA solution for at least one of the 50 instances.
-	\item CMSA is able to find solution using the same number of bins as EA or fewer for more instances in real instance classes than artificial.
-	\item CMSA performs fewer iterations than EA on average for 9 of the instance classes.
-	\item
 	\item CMSA unable to produce solution using fewer bins than EA in any of the artificial instance classes/types.
 	\item CMSA performs fewer iterations (on average) than EA within the same amount of time, 3600 seconds.
-	\item EA recombination operators and local search only applied to a two solutions/pair of partial solutions, can be executed quickly, whereas exact cover/algorithm X is applied to the entire set $\mathcal{B}$ which in some cases contains up to \textbf{insert value} bins.
+	\item EA recombination operators and local search only applied to a two solutions/pair of partial solutions, can be executed quickly, worst case would be one item per bin so $n$ bins, but even then recombination operators are quick, and local search using AHC can be done in worst case $O(n^2)$ (see theorem), whereas exact cover/algorithm X is applied to the entire set $\mathcal{B}$ which in some cases contains up to 2800 bins, NPC.
 	\item Therefore we set a time limit on exact cover also, 600 seconds, and the best solution found within this time frame is taken as $\mathcal{S}^*$, however it could be that a better solution exists if the exact cover algorithm was allowed to run for longer.
-	\item Another issue: if no solution found within 600 seconds, $\mathcal{S}^*$ automatically set to $\mathcal{S}_{\textup{bsf}}$. Again, could be that better solution exists, but not enough time to find it (unless first iteration of CMSA and $\mathcal{S}_{\textup{bsf}} = \emptyset$, then keep going until one solution found).
-	\item Number of iterations where time limit exact cover max (600s) and no solutions found.
-	\item Reason why CMSA better for real instances, no duplicates in $\mathcal{B}$, and many items same dimension, so fewer bins in $\mathcal{B}$? (check)
-	\item Zenodo citation \cite{hawa2019cmsa}
+	\item if no solution found within 600 seconds, $\mathcal{S}^*$ automatically set to $\mathcal{S}_{\textup{bsf}}$. Again, could be that better solution exists, but not enough time to find it (unless first iteration of CMSA and $\mathcal{S}_{\textup{bsf}} = \emptyset$, then keep going until one solution found).
+	\item Example, CMSA102 and CMSR102 for all 50 instances only XC during the first iteration of CMSA is able to find the best solution (min cardinality) within 600 seconds, but all subsequent iterations XC runs for the whole 600 seconds without finding a single solution, so $\mathcal{S}^*$ is set to $\mathcal{S}_{\textup{bsf}}$, and thus the average number of iterations are 7 and 6.98 respectively. In comparison, EA102 and ER102 run for 8603.66 and 5551.34 iterations respectively. This issue also occurs for CMSA52, CMSA105, CMSR52 and CMSR105.
+	\item Pros: CMSA is easier to implement, simple setup, can use different method to generate solutions/bins for $\mathcal{B}$, i.e. AGX' which focuses on well packed bins, no duplicates in $\mathcal{B}$, whereas in EA could have two (or more) identical parents solutions.
+	\item Removal of bins $\mathcal{B}$ after set period of time, having all bins in a pool, whereas could be bins in parent solutions in EA that remain after longer periods of time, in EA only two solutions are used from the population in each iteration, but CMSA uses entire pool.
 \end{itemize}
 }
 
