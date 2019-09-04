@@ -152,7 +152,7 @@ Determining whether a graph is Hamiltonian is NP-complete \citep{karp1972}, whil
 \label{alg:mcm}	
 \end{algorithm}
 
-\noindent The \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$. As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order, and are matched with the highest-weighted unmatched vertex adjacent in $R$. The set $R'$ consists of all edges from $R$ between matched vertices, i.e. $\{\{v_i, m(v_i)\} : v_i \in V \}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched provided $v_{i-1}$ has been matched successfully and is adjacent to $v_i$'s partner, $p(v_i)$. Then, $v_i$ is matched with $v_{i-1}$'s match, and $v_{i-1}$ is rematched with $p(v_i)$. \ahc{lines 8--12.}
+\noindent The \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$. As seen in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order and are matched with the highest-weighted unmatched vertex adjacent in $R$. The set $R'$ consists of all edges from $R$ between matched vertices, i.e. $\{\{v_i, m(v_i)\} : v_i \in V \}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched provided $v_{i-1}$ has been matched successfully and is adjacent to $v_i$'s partner, $p(v_i)$. Then, $v_i$ is matched with $v_{i-1}$'s match, and $v_{i-1}$ is rematched with $p(v_i)$ (lines 8--12).
 
 At this point, if $R'$ does not contain $n+1$ edges then there are too few edges to form an alternating Hamiltonian cycle, thus no feasible solution can exist. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ will be a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as illustrated in Figs.~\ref{fig:matching}and~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found; otherwise $G'$ comprises multiple cycles, so AHC must find a way of connecting these components together to form a single alternating Hamiltonian cycle.
 
@@ -524,7 +524,7 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 					\State $\mathcal{B} \gets \mathcal{B} \cup \{b\}$
 				\EndFor
 		\EndFor
-		\State $\mathcal{S}^* \gets$ \textsc{MinExactCover}($\mathcal{B}$)
+		\State $\mathcal{S}^* \gets$ \textsc{MinXC}($\mathcal{B}$)
 		\If{$\mathcal{S}^*$ is better than $\mathcal{S}_{\textup{bsf}}$}
 			\State $\mathcal{S}_{\textup{bsf}} \gets \mathcal{S}^*$
 		\EndIf
@@ -544,18 +544,18 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 \label{alg:cmsa}	
 \end{algorithm}	
 
-\noindent Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$ set to zero (lines 3--7). CMSA then calls upon the \textsc{MinExactCover} algorithm to find a minimum cardinality exact cover $\mathcal{S}^*$ in the set $\mathcal{B}$, which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). Note that in the first iteration, $\mathcal{S}^*$ is automatically set as $\mathcal{S}_{\textup{bsf}}$. As with our EA, $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared by the number of bins, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that have been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
+Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$ set to zero (lines 3--7). CMSA then calls upon the \textsc{MinXC} algorithm to find a minimum cardinality exact cover $\mathcal{S}^*$ in the set $\mathcal{B}$, which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). Note that in the first iteration, $\mathcal{S}^*$ is automatically set as $\mathcal{S}_{\textup{bsf}}$. As with our EA, $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared by the number of bins, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that have been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
-To find an exact cover, we use a recursive depth-first backtracking process which is implemented using the ``dancing links'' technique to find all solutions to a given problem \citep{knuth2000}. As we are only interested in a minimum cardinality exact cover, i.e. the solution with the fewest bins, we modified this process to create \textsc{MinExactCover}, which only searches for solutions that improve upon the best solution found so far.
+To find an exact cover, we use a recursive depth-first backtracking process which is implemented using the ``dancing links'' technique to find all solutions to a given problem \citep{knuth2000}. As we are only interested in a minimum cardinality exact cover, i.e. the solution with the fewest bins, we modified this process to create \textsc{MinXC}, which only searches for solutions that improve upon the best solution found so far.
 
 \subsection{Experimental Results - CMSA}
 \label{sub:expcmsa}
-\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the CMSA algorithm, while \textsc{MinExactCover} was set to run for a maximum of 600 seconds. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. For a fair comparison, we ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA. The source code for the CMSA algorithm including the modified \textsc{MinExactCover} procedure and the following results is available online \citep{hawa2019cmsa}.
+\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the CMSA algorithm, while \textsc{MinXC} was set to run for a maximum of 600 seconds. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. For a fair comparison, we ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA. The source code for the CMSA algorithm including the modified \textsc{MinXC} procedure and the following results is available online \citep{hawa2019cmsa}.
 
 \begin{table}[h!]
 \centering
-\footnotesize
 \caption{\cmsa{CMSA}}
+\footnotesize
 \begin{threeparttable}
 \begin{tabular}{crrcrrrcrrr}
 	\toprule
@@ -583,6 +583,7 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 \end{tabular}
 \vspace{0.2cm} %
 \begin{tablenotes}
+	\scriptsize
 	\item[$a$] $t = \ceil{\sum_{i=1}^{n} w_i / W}$ (mean from 50 instances).
 	\item[$b$] Number of bins per solution (mean from 50 instances plus or minus the coefficient of variation (\%)).
 	\item[$c$] Number of instances in which the solution comprises $t$ bins.
@@ -592,19 +593,20 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 \label{table:cmsa}
 \end{table}
 
+
+\noindent The results in Table~\ref{table:cmsa} show that CMSA does not perform as well as the EA overall, however it seems to be useful for the real instance classes. We can see that for all six real instances classes, there is at least one instance in which the best solution found by CMSA comprises fewer bins than the best solution found by the EA (across all three recombination operators). Furthermore, CMSA is able to find optimal solutions using $t$ bins for two instances when $|\mathcal{I}| = 500$ and $W = 5000$, for which the EA solutions for these instances uses more bins. 
+
+Although the CMSA framework is simple, fewer iterations are performed in comparison to the EA within the same time frame. The recombination operators used in the EA are performed on only two parent solutions in a population, which in the worst-case would each comprise $|\mathcal{I}|$ bins, and simply consists of selecting bins from each parent. The local search procedure which is applied on a pair of partial solutions can be seen to take longer, however using AHC is also used which takes at most $O(n^2)$ time. On the other hand, \textsc{MinXC} is executed on the entire set of bins $\mathcal{B}$, which in some cases contains over 2900 bins and involves recursion and backtracking through all bins, and could take an impractical amount of time to complete. Thus, a time limit is set for the procedure, and the best solution found is taken as $\mathcal{S}^*$. In the event that the time limit is reached and \textsc{MinXC} has not found a single solution, $\mathcal{S}^*$ is set to $\mathcal{S}_{\textup{bsf}}$. This causes issues in many of the experiments. For example, in both artificial and real classes with $|\mathcal{I}| = 1000$ and $W =2500$, \textsc{MinXC} only returned a solution $\mathcal{S}^*$ in the first iteration of CMSA for all 50 instances, with no solutions being found within the time limit in all subsequent iterations. As a result, the average number of iterations for these classes were just 7 and 6.98 respectively. In comparison, the corresponding figures for the EA counterparts were 8603.66 and 5551.34 iterations.
+
 {\color{myGreen}
 \begin{itemize}[leftmargin=*]
-	\item CMSA does not perform as well as EA, CMSA works better for smaller $n$ (100 items) and real instances.
-	\item CMSA is able to find solution using the same number of bins as EA or fewer for more instances in real instance classes than artificial.
-	\item For all six real instance classes, there is at least one instance (out of the 50) in which the best solution found by CMSA comprises fewer bins than the best soution found by EA (best of three recombination operators).
-	\item In R55 instance class, in two of the instances CMSA is able to find a solution using $t$ bins, while the best solution found by the EA for these instances uses more than $t$ bins.
-	\item In 10 of the 12 instance classes, CMSA is able to find solution using the same number of bins as EA solution for at least one of the 50 instances.
-	\item CMSA unable to produce solution using fewer bins than EA in any of the artificial instance classes/types.
-	\item CMSA performs fewer iterations (on average) than EA within the same amount of time, 3600 seconds.
-	\item EA recombination operators and local search only applied to a two solutions/pair of partial solutions, can be executed quickly, worst case would be one item per bin so $n$ bins, but even then recombination operators are quick, and local search using AHC can be done in worst case $O(n^2)$ (see theorem), whereas exact cover/algorithm X is applied to the entire set $\mathcal{B}$ which in some cases contains up to 2800 bins, NPC.
-	\item Therefore we set a time limit on exact cover also, 600 seconds, and the best solution found within this time frame is taken as $\mathcal{S}^*$, however it could be that a better solution exists if the exact cover algorithm was allowed to run for longer.
-	\item if no solution found within 600 seconds, $\mathcal{S}^*$ automatically set to $\mathcal{S}_{\textup{bsf}}$. Again, could be that better solution exists, but not enough time to find it (unless first iteration of CMSA and $\mathcal{S}_{\textup{bsf}} = \emptyset$, then keep going until one solution found).
-	\item Example, CMSA102 and CMSR102 for all 50 instances only XC during the first iteration of CMSA is able to find the best solution (min cardinality) within 600 seconds, but all subsequent iterations XC runs for the whole 600 seconds without finding a single solution, so $\mathcal{S}^*$ is set to $\mathcal{S}_{\textup{bsf}}$, and thus the average number of iterations are 7 and 6.98 respectively. In comparison, EA102 and ER102 run for 8603.66 and 5551.34 iterations respectively. This issue also occurs for CMSA52, CMSA105, CMSR52 and CMSR105.
+	\item This issue (600 seconds reached and no solution found) also occurs for CMSA52, CMSA105, CMSR52 and CMSR105.
+	\item (for CMSA102 and CMSR102) so the only solution found in these cases is the one found in the first iteration of CMSA, so there is no evolution of the pool of bins/set $\mathcal{B}$
+	\item \textsc{MinXC} is applied onto the entire set $\mathcal{B}$, whereas only two solutions selected at random from population are used in each iteration of EA, so solutions containing high quality bins in pop have to wait until they are chosen.
+	\item Solutions containing bad quality bins in EA bulk up the population and can only be removed is chosen which may take many iterations, however CMSA individual bins are removed and replaced frequently.
+	\item Could have duplicate solutions in EA population or duplicate bins in different solutions, whereas in CMSA $\mathcal{B}$ does not have any duplicates.
+	\item Can merge characteristics from EA with CMSA, CMSA is simple set up, better because all bins assessed simultaneously rather than only two solutions at a time, but only MFFR$^+$ used, could use mutation and local search from EA to produce better quality bins for $\mathcal{B}$. 
+	\item Also could limit the size of $\mathcal{B}$ so that more iterations can be performed and solutions can be found in each iteration, resulting in an evolution of the set $\mathcal{B}$.
 	\item Pros: CMSA is easier to implement, simple setup, can use different method to generate solutions/bins for $\mathcal{B}$, i.e. AGX' which focuses on well packed bins, no duplicates in $\mathcal{B}$, whereas in EA could have two (or more) identical parents solutions.
 	\item Removal of bins $\mathcal{B}$ after set period of time, having all bins in a pool, whereas could be bins in parent solutions in EA that remain after longer periods of time, in EA only two solutions are used from the population in each iteration, but CMSA uses entire pool.
 \end{itemize}
@@ -680,6 +682,7 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 	\item Capitalise Condition, Stage, Step, Figure/Fig., Equation/Eq. etc.
 	\item Recombination, not crossover.
 	\item Subclasses/subtypes/instance classes/instance types, keep consistent.
+	\item Change $n$ to $|\mathcal{I}|$
 \end{itemize}		
 }
 \end{comment}
