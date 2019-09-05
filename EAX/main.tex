@@ -440,7 +440,7 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 	\toprule
 	& & & & \multicolumn{2}{c}{GGA} &\phantom{}& \multicolumn{2}{c}{AGX} &\phantom{}& \multicolumn{2}{c}{AGX$'$} &\phantom{} & \multicolumn{2}{c}{MFFD$^+$}\\
 	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-15}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$\tnote{$b$}} & \multicolumn{1}{c}{$\% t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$}\\
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$|\mathcal{I}|$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$\tnote{$b$}} & \multicolumn{1}{c}{$\% t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$}\\
 	\midrule
 	a, 2500 & 100 & 23.32 && $23.36 \pm 4.6$ & 97.4 && $^{**}\textbf{23.34} \pm 4.5$ & $^{**}\textbf{98.6}$ && $23.36 \pm 4.5$ & 97.2 && $28.46 \pm 10.4$ & 2.6 \\
 	& 500 & 114.94 && $116.36 \pm 2.2$ & 33.4 && $116.67 \pm 2.2$ & 27.4 && $^{**}\textbf{116.28} \pm 2.2$ &\textbf{35.0} && $132.65 \pm 4.9$ & 0.0 \\
@@ -471,13 +471,13 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \label{table:ea}
 \end{table}
 
-\noindent It is immediately evident that the EA outperforms the MFFD$^+$ heuristic, producing solutions using $t$ bins in all but one of the 12 \ea{subclasses}. Fewer iterations of the EA were performed as $n$ and $W$ increased, with the average number of iterations ranging from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations.
+\noindent It is immediately evident that the EA outperforms the MFFD$^+$ heuristic, producing solutions using $t$ bins in all but one of the 12 instance classes. Fewer iterations of the EA were performed as $|\mathcal{I}|$ and $W$ increased, with the average number of iterations ranging from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations.
 
-It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instance types using the larger bin size, where higher quality solutions contain 8.6 items per bin on average. The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
+It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. GGA consistently produces the best results for both artificial and real instances using the larger bin size, where higher quality solutions contain 8.6 items per bin on average. The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
 
-On the other hand, when $W = 2500$ \ea{for artificial only} (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions. \ea{lack of item diversity in real instances does not help AGX$'$.}
+On the other hand, when $W = 2500$ (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce the more optimal solutions for artificial instances. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions.
 
-AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 \ea{subclasses} in regards to the average number of bins per solution $|\mathcal{S}^*|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the \ea{subclasses}, suggesting a high variance in the quality of solutions produced.
+AGX generates the least favourable results, particularly for real instances, where it is outperformed by GGA and AGX$'$ in all six instance classes with regards to the average number of bins per solution $|\mathcal{S}^*|$. Selecting bins based on fullness may mean choosing bins containing fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions comprising $t$ bins in three of the instance classes, suggesting a high variance in the quality of solutions produced.
 
 
 %--------------------------------------------------------------------------------------
@@ -561,7 +561,7 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 	\toprule
 	& & & & \multicolumn{3}{c}{CMSA} &\phantom{ab}& \multicolumn{3}{c}{EA}\\
 	\cmidrule{5-7} \cmidrule{9-11}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$|\mathcal{I}|$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
 	\midrule
 	a, 2500 & 100 & 23.36 && $24.02 \pm 5.5$ & 21 & 0 && $^{**}\textbf{23.36} \pm 4.6$ & $^{**}$50 & 29 \\
 	& 500 & 114.74 && $118.48 \pm 2.3$ & 0 & 0 && $^{**}\textbf{115.50} \pm 1.9$ & $^{**}$24 & 49 \\
