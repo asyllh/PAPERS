@@ -409,9 +409,9 @@ This method is based on the dominance criterion of \citet{martello1990l} for the
 
 \subsection{Evolutionary Algorithm Framework}
 \label{sub:eaframework}
-\noindent Our EA for the SCPP begins by producing candidate solutions to form an initial population, with one solution created using MFFD$^+$ and the rest using MFFR$^+$ (where items are in random order). Each solution is mutated before being inserted into the population. The mutation of a solution $\mathcal{S}$ consists of permuting the bins and inserting $1 < r < |\mathcal{S}|$ bins selected randomly from $\mathcal{S}$ into a set $\mathcal{S}'$, and then executing local search on these two partial solutions to produce a full feasible solution $\mathcal{S}$. The solution in the initial population containing the fewest number of bins is then stored as the best-so-far solution, $\mathcal{S}_{\textup{bsf}}$.
+\noindent Our EA for the SCPP begins by producing candidate solutions to form an initial population, with one solution created using MFFD$^+$ and the rest using MFFR$^+$ (where items are in random order). Each solution is mutated before being inserted into the population. The mutation of a solution $\mathcal{S}$ consists of permuting the bins and inserting $1 < r < |\mathcal{S}|$ bins selected randomly from $\mathcal{S}$ into a set $\mathcal{S}'$, and then executing local search on these two partial solutions to produce a full feasible solution $\mathcal{S}$. The solution in the initial population containing the fewest number of bins is then stored as the best-so-far solution, $\mathcal{S}^*$.
 
-Each iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a recombination operator to produce an offspring solution $\mathcal{S}$, then finally mutating $\mathcal{S}$ before replacing the least fit of the two parents in the population. The best-so-far solution, $\mathcal{S}_{\textup{bsf}}$, is updated (if required) at the end of each iteration.
+Each iteration of the EA involves selecting two parent solutions, $\mathcal{S}_1$ and $\mathcal{S}_2$, from the population at random, applying a recombination operator to produce an offspring solution $\mathcal{S}$, then finally mutating $\mathcal{S}$ before replacing the least fit of the two parents in the population. The best-so-far solution, $\mathcal{S}^*$, is updated (if required) at the end of each iteration.
 
 For the classical one-dimensional BPP, a tailored function can be used to determine the fitness of a solution, as opposed to simply relying on the number of bins within a solution. The reason for this is two-fold: firstly, it is difficult to distinguish between solutions as many of them will have the same number of bins, and secondly, we note that the fitness of a solution not only depends on the number of bins used, but also \emph{how} the items are packed into the bins. It is clear that if the bins' capacities are taken advantage of, fewer bins will be needed to pack all items compared to if the bins are only half full, requiring more bins than necessary to accommodate all of the items. A solution comprising fuller bins may also contain bins that are nearly empty, which is beneficial as it allows futher items to be packed, or the residual material could be used for other means.
 
@@ -433,14 +433,14 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \begin{table}[h!]
 \setlength{\tabcolsep}{4pt}
 \centering
-\caption{Results obtained from the EA using the GGA, AGX, and AGX$'$ recombination operators, and from the MFFD$^+$ heuristic. Figures in bold indicate the best results for each instance class. Asterisks indicate statistical significance at $\leq 0.05 (^{*})$ and $\leq 0.01 (^{**})$ according to a two-tailed paired t-test and two-tailed McNemar's test for the $|\mathcal{S}|$ and $\%t$ columns respectively. \ea{stats tests only on xOvers, not MFFD$^+$, $\mathcal{S}_{\textup{bsf}}$.}}
+\caption{Results obtained from the EA using the GGA, AGX, and AGX$'$ recombination operators, and from the MFFD$^+$ heuristic. Figures in bold indicate the best results for each instance class. Asterisks indicate statistical significance at $\leq 0.05 (^{*})$ and $\leq 0.01 (^{**})$ according to a two-tailed paired t-test and two-tailed McNemar's test for the $|\mathcal{S}^*|$ and $\%t$ columns respectively. \ea{stats tests only on xOvers, not MFFD$^+$.}}
 \scriptsize
 \begin{threeparttable}
 \begin{tabular}{crrcrrcrrcrrcrr}
 	\toprule
 	& & & & \multicolumn{2}{c}{GGA} &\phantom{}& \multicolumn{2}{c}{AGX} &\phantom{}& \multicolumn{2}{c}{AGX$'$} &\phantom{} & \multicolumn{2}{c}{MFFD$^+$}\\
 	\cmidrule{5-6} \cmidrule{8-9} \cmidrule{11-12} \cmidrule{14-15}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\% t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\% t$}\\
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$\tnote{$b$}} & \multicolumn{1}{c}{$\% t$\tnote{$c$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\% t$}\\
 	\midrule
 	a, 2500 & 100 & 23.32 && $23.36 \pm 4.6$ & 97.4 && $^{**}\textbf{23.34} \pm 4.5$ & $^{**}\textbf{98.6}$ && $23.36 \pm 4.5$ & 97.2 && $28.46 \pm 10.4$ & 2.6 \\
 	& 500 & 114.94 && $116.36 \pm 2.2$ & 33.4 && $116.67 \pm 2.2$ & 27.4 && $^{**}\textbf{116.28} \pm 2.2$ &\textbf{35.0} && $132.65 \pm 4.9$ & 0.0 \\
@@ -477,7 +477,7 @@ It can be seen that the EAs using the GGA and AGX$'$ recombination operators gen
 
 On the other hand, when $W = 2500$ \ea{for artificial only} (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce the more optimal solutions. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions. \ea{lack of item diversity in real instances does not help AGX$'$.}
 
-AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 \ea{subclasses} in regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the \ea{subclasses}, suggesting a high variance in the quality of solutions produced.
+AGX generates the least favourable results, particularly for the real instance types, where it is outperformed by GGA and AGX$'$ in all 6 \ea{subclasses} in regards to the average number of bins per solution $|\mathcal{S}^*|$. Selecting bins based on fullness may mean choosing bins that contain fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions containing $t$ bins in three of the \ea{subclasses}, suggesting a high variance in the quality of solutions produced.
 
 
 %--------------------------------------------------------------------------------------
@@ -487,12 +487,12 @@ AGX generates the least favourable results, particularly for the real instance t
 
 \begin{definition}
 	\label{defn:exactcover}
-	Let $\mathcal{S}$ be a collection of subsets of a set $\mathcal{B}$. Then, a subcollection $\mathcal{S}^*$ of $\mathcal{S}$ is an \emph{exact cover} if and only if each element in $\mathcal{B}$ is contained in exactly one subset in $\mathcal{S}^*$.
+	Let $\mathcal{B}$ be a collection of subsets of a set $\mathcal{I}$. Then, a subcollection $\mathcal{S}_{\textup{x}}$ of $\mathcal{B}$ is an \emph{exact cover} if and only if each element in $\mathcal{I}$ is contained in exactly one subset in $\mathcal{S}_{\textup{x}}$.
 \end{definition}	
 
-\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}^*$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be reformulated as an optimisation problem with the objective of finding the smallest subcollection.
+\noindent The exact cover problem, determining whether a subcollection $\mathcal{S}_{\textup{x}}$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. However, if it is known that an exact cover exists, the problem can be reformulated as an optimisation problem with the objective of finding the smallest subcollection.
 
-Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ are the rows and columns of the matrix respectively. Then, an element of the matrix $b_{ij} = 1$ if and only if row $i$ covers column $j$. The task involves finding a minimum cardinality subset of rows $\mathcal{S}^* \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in \mathcal{S}^*$. This problem can be formulated as the following integer linear program:
+Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}$ and $N = \{1,2,\dotsc,n\}$ are the rows and columns of the matrix respectively. Then, an element of the matrix $b_{ij} = 1$ if and only if row $i$ covers column $j$. The task involves finding a minimum cardinality subset of rows $\mathcal{S}_{\textup{x}} \subseteq M$ such that each column $j \in N$ is covered by exactly one row $i \in \mathcal{S}_{\textup{x}}$. This problem can be formulated as the following integer linear program:
 
 \begin{subequations}
 	\begin{alignat}{3}
@@ -503,7 +503,7 @@ Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}
 \end{subequations}
 \[x_i =
 \begin{cases} 
-1 & \text{if } i \in \mathcal{S}^* \\
+1 & \text{if } i \in \mathcal{S}_{\textup{x}} \\
 0 & \text{otherwise} 
 \end{cases}
 \]
@@ -515,23 +515,23 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 \begin{algorithm}
 \caption{\textsc{Construct, Merge, Solve \& Adapt (CMSA) Algorithm} ($\mathcal{I}$, $p$, $maxAge$)}
 \begin{algorithmic}[1]
-	\State $\mathcal{S}_{\textup{bsf}} \gets \emptyset$, $\mathcal{B} \gets \emptyset$
+	\State $\mathcal{S}^* \gets \emptyset$, $\mathcal{B} \gets \emptyset$
 	\While{time limit not reached}
 		\For{$i\gets 1 \To p$}
 			\State $\mathcal{S} \gets$ MFFR$^+$($\mathcal{I}$)
-				\ForAll{$b \in \mathcal{S}$ \textbf{and} $b \notin \mathcal{B}$}
-					\State $age[b] \gets 0$
-					\State $\mathcal{B} \gets \mathcal{B} \cup \{b\}$
-				\EndFor
+			\ForAll{$b \in \mathcal{S}$ \textbf{and} $b \notin \mathcal{B}$}
+				\State $age[b] \gets 0$
+				\State $\mathcal{B} \gets \mathcal{B} \cup \{b\}$
+			\EndFor
 		\EndFor
-		\State $\mathcal{S}^* \gets$ \textsc{MinXC}($\mathcal{B}$)
-		\If{$\mathcal{S}^*$ is better than $\mathcal{S}_{\textup{bsf}}$}
-			\State $\mathcal{S}_{\textup{bsf}} \gets \mathcal{S}^*$
+		\State $\mathcal{S}_{\textup{x}} \gets$ \textsc{MinXC}($\mathcal{B}$)
+		\If{$\mathcal{S}_{\textup{x}}$ is better than $\mathcal{S}^*$}
+			\State $\mathcal{S}^* \gets \mathcal{S}_{\textup{x}}$
 		\EndIf
 		\ForAll{$b \in \mathcal{B}$}
-			\If{$b \in \mathcal{S}^*$}
+			\If{$b \in \mathcal{S}_{\textup{x}}$}
 				\State $age[b] \gets 0$
-			\ElsIf{$b \notin \mathcal{S}^*$}
+			\ElsIf{$b \notin \mathcal{S}_{\textup{x}}$}
 				\State $age[b] \gets age[b] + 1$
 				\If{$age[b] = maxAge$}
 					\State $\mathcal{B} \gets \mathcal{B} - \{b\}$
@@ -539,12 +539,12 @@ Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form the
 			\EndIf		
 		\EndFor
 	\EndWhile
-	\Return $\mathcal{S}_{\textup{bsf}}$
+	\Return $\mathcal{S}^*$
 \end{algorithmic}
 \label{alg:cmsa}	
 \end{algorithm}	
 
-Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$ set to zero (lines 3--7). CMSA then calls upon the \textsc{MinXC} algorithm to find a minimum cardinality exact cover $\mathcal{S}^*$ in the set $\mathcal{B}$, which, if better than the best-so-far solution $\mathcal{S}_{\textup{bsf}}$, is stored as the new best-so-far solution (lines 8--10). Note that in the first iteration, $\mathcal{S}^*$ is automatically set as $\mathcal{S}_{\textup{bsf}}$. As with our EA, $\mathcal{S}^*$ and $\mathcal{S}_{\textup{bsf}}$ are compared by the number of bins, with fitness values only being used if $|\mathcal{S}^*| = |\mathcal{S}_{\textup{bsf}}|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}^*$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that have been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
+Firstly, a fixed number $p$ of solutions are produced using MFFR$^+$, and the bins of each solution are inserted into a set $\mathcal{B}$, with the age of every new bin $b$ set to zero (lines 3--7). CMSA then calls upon the \textsc{MinXC} algorithm to find a minimum cardinality exact cover $\mathcal{S}_{\textup{x}}$ in the set $\mathcal{B}$, which, if better than the best-so-far solution $\mathcal{S}^*$, is stored as the new best-so-far solution (lines 8--10). Note that in the first iteration, $\mathcal{S}_{\textup{x}}$ is automatically set as $\mathcal{S}^*$. As with our EA, $\mathcal{S}_{\textup{x}}$ and $\mathcal{S}^*$ are compared by the number of bins, with fitness values only being used if $|\mathcal{S}_{\textup{x}}| = |\mathcal{S}^*|$. The set $\mathcal{B}$ is then adapted by resetting the age of bins used in $\mathcal{S}_{\textup{x}}$ to zero and increasing the age of all other bins by one (lines 11--15). Finally, any bins in $\mathcal{B}$ whose age has reached the maximum are removed from the set (lines 16--17). This process is repeated until a set time limit has been reached. The adaptation stage aids the process by removing bins from $\mathcal{B}$ that have not contributed to an optimal solution for a period of time, controlling the size of $\mathcal{B}$ and thus the speed of the exact solver, and also by retaining bins in $\mathcal{B}$ that have been used in optimal solutions, which could prove to be useful in subsequent iterations of CMSA.
 
 To find an exact cover, we use a recursive depth-first backtracking process which is implemented using the ``dancing links'' technique to find all solutions to a given problem \citep{knuth2000}. As we are only interested in a minimum cardinality exact cover, i.e. the solution with the fewest bins, we modified this process to create \textsc{MinXC}, which only searches for solutions that improve upon the best solution found so far.
 
@@ -561,7 +561,7 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 	\toprule
 	& & & & \multicolumn{3}{c}{CMSA} &\phantom{ab}& \multicolumn{3}{c}{EA}\\
 	\cmidrule{5-7} \cmidrule{9-11}
-	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
+	\multicolumn{1}{c}{Type, $W$} & \multicolumn{1}{c}{$n$} & \multicolumn{1}{c}{$t$\tnote{$a$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$\tnote{$b$}} & \multicolumn{1}{c}{$\# t$\tnote{$c$}} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$\tnote{$d$}} && \multicolumn{1}{c}{$|\mathcal{S}^*|$} & \multicolumn{1}{c}{$\# t$} & \multicolumn{1}{c}{$\mathcal{S}_{\textup{best}}$}\\
 	\midrule
 	a, 2500 & 100 & 23.36 && $24.02 \pm 5.5$ & 21 & 0 && $^{**}\textbf{23.36} \pm 4.6$ & $^{**}$50 & 29 \\
 	& 500 & 114.74 && $118.48 \pm 2.3$ & 0 & 0 && $^{**}\textbf{115.50} \pm 1.9$ & $^{**}$24 & 49 \\
@@ -596,7 +596,7 @@ To find an exact cover, we use a recursive depth-first backtracking process whic
 
 \noindent The results in Table~\ref{table:cmsa} show that CMSA does not perform as well as the EA overall, however it seems to be useful for the real instance classes. We can see that for all six real instances classes, there is at least one instance in which the best solution found by CMSA comprises fewer bins than the best solution found by the EA (across all three recombination operators). Furthermore, CMSA is able to find optimal solutions using $t$ bins for two instances when $|\mathcal{I}| = 500$ and $W = 5000$, for which the EA solutions for these instances uses more bins. 
 
-Although the CMSA framework is simple, fewer iterations are performed in comparison to the EA within the same time frame. The recombination operators used in the EA are performed on only two parent solutions in a population, which in the worst-case would each comprise $|\mathcal{I}|$ bins, and simply consists of selecting bins from each parent. The local search procedure which is applied on a pair of partial solutions can be seen to take longer, however using AHC is also used which takes at most $O(n^2)$ time. On the other hand, \textsc{MinXC} is executed on the entire set of bins $\mathcal{B}$, which in some cases contains over 2900 bins and involves recursion and backtracking through all bins, and could take an impractical amount of time to complete. Thus, a time limit is set for the procedure, and the best solution found is taken as $\mathcal{S}^*$. In the event that the time limit is reached and \textsc{MinXC} has not found a single solution, $\mathcal{S}^*$ is set to $\mathcal{S}_{\textup{bsf}}$. This causes issues in some of the tests. For example, in both artificial and real classes with $|\mathcal{I}| = 1000$ and $W =2500$, \textsc{MinXC} only returned a solution $\mathcal{S}^*$ in the first iteration of CMSA for all 50 instances, with no solutions being found within the time limit in all subsequent iterations. As a result, the average number of iterations for these classes were just 7 and 6.98 respectively, and the best solution found is the one returned in the first iteration, restricting the evolution of the pool of bins in $\mathcal{B}$. In comparison, the corresponding figures for the EA counterparts were 8603.66 and 5551.34 iterations. This problem of not finding a solution within the time frame has also been observed in iterations of multiple instances in other instance classes.
+Although the CMSA framework is simple, fewer iterations are performed in comparison to the EA within the same time frame. The recombination operators used in the EA are performed on only two parent solutions in a population, which in the worst-case would each comprise $|\mathcal{I}|$ bins, and simply consists of selecting bins from each parent. The local search procedure which is applied on a pair of partial solutions can be seen to take longer, however using AHC is also used which takes at most $O(n^2)$ time. On the other hand, \textsc{MinXC} is executed on the entire set of bins $\mathcal{B}$, which in some cases contains over 2900 bins and involves recursion and backtracking through all bins, and could take an impractical amount of time to complete. Thus, a time limit is set for the procedure, and the best solution found is taken as $\mathcal{S}_{\textup{x}}$. In the event that the time limit is reached and \textsc{MinXC} has not found a single solution, $\mathcal{S}_{\textup{x}}$ is set to $\mathcal{S}^*$. This causes issues in some of the tests. For example, in both artificial and real classes with $|\mathcal{I}| = 1000$ and $W =2500$, \textsc{MinXC} only returned a solution $\mathcal{S}_{\textup{x}}$ in the first iteration of CMSA for all 50 instances, with no solutions being found within the time limit in all subsequent iterations. As a result, the average number of iterations for these classes were just 7 and 6.98 respectively, and the best solution found is the one returned in the first iteration, restricting the evolution of the pool of bins in $\mathcal{B}$. In comparison, the corresponding figures for the EA counterparts were 8603.66 and 5551.34 iterations. This problem of not finding a solution within the time frame has also been observed in iterations of multiple instances in other instance classes.
 
 Despite this, there are positive charactertistics in the CMSA approach. CMSA maintains the set $\mathcal{B}$ which does not contain duplicates, and every bin in $\mathcal{B}$ is used in \textsc{MinXC} and updated appropriately afterwards. Conversely, the EA selects just two parent solutions randomly from the population per iteration, of which only one is replaced with the offspring. There is also the possibility of identical bins appearing in multiple solutions in the population, or even entirely identical solutions. 
 
