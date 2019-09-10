@@ -140,7 +140,7 @@ In general, determining whether a graph is Hamiltonian is NP-complete \citep{kar
 				\Break
 			\EndIf
 		\EndFor
-		\If{$m(v_i) = \textsc{null}$ $\land$ $i \neq 1 \land m(v_{i-1}) \neq \textsc{null} \land \{v_{i-1}, p(v_i)\} \in R$}
+		\If{$m(v_i) = \textsc{null} \AAnd i \neq 1 \AAnd m(v_{i-1}) \neq \textsc{null} \AAnd \{v_{i-1}, p(v_i)\} \in R$}
 			\State $R' \gets R' \backslash \{\{v_{i-1}, m(v_{i-1})\}\}$
 			\State $m(v_i) \gets m(v_{i-1})$, $m(m(v_i)) \gets v_i$
 			\State $m(v_{i-1}) \gets p(v_i)$, $m(p(v_i)) \gets v_{i-1}$
