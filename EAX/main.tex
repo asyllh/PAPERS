@@ -9,14 +9,14 @@
 \author{Jonathan M. Thompson}
 \address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
 \begin{abstract}
-This paper investigates a packing problem related to the one-dimensional bin packing problem in which the order and orientation of items influences the feasibility of a solution. Initially, we detail an exact polynomial-time algorithm for the Constrained Ordering Problem, explaining how it can be used to find a feasible packing of items in a single bin. We then introduce an evolutionary algorithm for the multi-bin version of the problem, which incorporates the exact algorithm along with a local search procedure and various recombination operators. Finally, we explore a hybrid metaheuristic method combined with a set covering procedure, and discuss the circumstances in which each approach proves most advantageous.
+This paper investigates a packing problem related to the one-dimensional bin packing problem in which the order and orientation of items influences the feasibility of a solution. We give an exact polynomial-time algorithm for the Constrained Ordering Problem, explaining how it can be used to find a feasible packing of items in a single bin. We then introduce an evolutionary algorithm for the multi-bin version of the problem, which incorporates the exact algorithm along with a local search procedure and various recombination operators. Finally, we explore a metaheuristic method based on an exact covering procedure, and discuss the circumstances in which each approach proves most advantageous.
 \end{abstract}	
 \end{frontmatter}
 
 %--------------------------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
-\noindent Many problems in operational research and discrete mathematics involve the grouping of elements into subsets. These types of problems can be seen in areas such as scheduling \citep{thompson1998, carter1996}, frequency assignment \citep{aardal2007}, graph colouring \citep{lewis2015, malaguti2008}, and load balancing \citep{rekiek1999}, as well as in practical problems in computer science such as table formatting, prepaging, and file allocation \citep{garey1972}. Formally, given a set $\mathcal{I}$ of $n$ elements, the aim in such problems is to produce a partition of subsets $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
+\noindent Many problems in operational research and discrete mathematics involve the grouping of elements into subsets. These types of problems can be seen in areas such as scheduling \citep{thompson1998, carter1996}, frequency assignment \citep{aardal2007}, graph colouring \citep{lewis2015, malaguti2008}, and load balancing \citep{rekiek1999}, as well as in practical problems in computer science such as table formatting, prepaging, and file allocation \citep{garey1972}. Formally, given a set $\mathcal{I}$ of $n$ elements, the aim in such problems is to produce a partition $\mathcal{S} = \{S_1, S_2,\dotsc,S_k\}$ such that
 \begin{subequations}
 	\begin{alignat}{2}
 	\bigcup\nolimits_{j=1}^{k} S_j &= \mathcal{I}, & \label{eqn:allpacked}\\[3pt]
@@ -29,13 +29,13 @@ This paper investigates a packing problem related to the one-dimensional bin pac
 
 The focus of this paper is on a special type of packing problem that occurs in the packaging industry, where flat rectangular items of varying widths are to be cut and scored from fixed-length strips of cardboard which are then folded into boxes. This problem was originally introduced as an open-combinatorial problem by \citeauthor{goulimis2004} in 2004, and subsequently studied by \citet{lewis2011}, \citet{becker2015}, and \citet{hawa2018}.
 
-Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each item $i \in \mathcal{I}$ has width $w_i \in \mathbb{Z}^+$, and is marked with two vertical score lines in predetermined places. The distance between each score line and the nearest edge of the item are the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where w.l.o.g. $a_i \leq b_i$). An example of an item $i$ with these dimensions is provided in Fig.~\ref{fig:itemsdimknives}. In the industrial process described by Goulimis, pairs of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage; however due to the manner in which the machine is designed, the knives in each pair must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$ (approximately 70mm in practice). For the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must therefore equal or exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
+Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each item $i \in \mathcal{I}$ has width $w_i \in \mathbb{Z}^+$, and is marked with two vertical score lines in predetermined places. The distance between each score line and the nearest edge of the item are known as the score widths, $a_i, b_i \in \mathbb{Z}^+$ (where w.l.o.g. $a_i \leq b_i$). An example of an item $i$ with these dimensions is provided in Fig.~\ref{fig:itemsdimknives}. In the industrial process described by Goulimis, pairs of knives mounted on a bar simultaneously cut along the score lines of two adjacent items, making it easier to fold the cardboard at a later stage; however due to the manner in which the machine is designed, the knives in each pair must maintain a set distance from one another, a so-called ``minimum scoring distance'' $\tau \in \mathbb{Z}^+$ (approximately 70mm in practice). For the knives to score all of the items in the correct locations, the distance between two score lines of adjacent items must therefore equal or exceed the minimum scoring distance. Hence, the following \emph{vicinal sum constraint} must be fulfilled:
 \begin{equation}
 	\textbf{rhs}(i) + \textbf{lhs}(i+1) \geq \tau \quad \forall \hspace{1mm} i \in \{1,2,\dotsc,|S|- 1\},
 	\label{eqn:vsc}
 \end{equation}
 
-\noindent where \textbf{lhs}($i$) and \textbf{rhs}($i$) denote the left- and right-hand score widths of the $i$th item in bin $S$. Clearly if this constraint is satisfied the distance between the score lines will be sufficient for the knives to be able to cut appropriately. Figure~\ref{fig:itemsdimknives} shows how adjacent items are scored simultaneously by pairs of knives. Although the vicinal sum constraint is met between items A and B, the full alignment of all three items is infeasible as the sum of the adjacent score widths of items B and C is less than the minimum scoring distance $\tau$, and so the knives are unable to move close enough together to score the lines in the required locations.
+\noindent where \textbf{lhs}($i$) and \textbf{rhs}($i$) denote the left- and right-hand score widths of the $i$th item in bin $S$. Clearly if this constraint is satisfied the distance between the score lines will be sufficient for the knives to be able to cut appropriately. An example of this is shown in Fig.~\ref{fig:itemsdimknives}. Here, although the vicinal sum constraint is met between items A and B, the full alignment of all three items is infeasible as the sum of the adjacent score widths of items B and C is less than the minimum scoring distance $\tau$, and so the knives are unable to move close enough together to score the lines in the required locations.
 \begin{figure}[H]	
 	\centering
 	\includestandalone[width=0.7\textwidth]{figures/itemsdimknives}
@@ -43,7 +43,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	\label{fig:itemsdimknives}
 \end{figure}
 
-\noindent The remainder of this section will formally define the single bin problem and the corresponding multi-bin version, the Score-Constrained Packing Problem. In the next section, we will provide a brief overview of a polynomial-time algorithm used to solve the single bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse heuristics currently in literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a hybrid metaheuritic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA, and finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
+\noindent The remainder of this section will formally define both this single bin problem and the corresponding multi-bin problem known as the Score-Constrained Packing Problem (SCPP). In the next section, we will provide a brief overview of an exact polynomial-time algorithm used to solve the single bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse existing heuristics from literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a hybrid metaheuritic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
 
 \subsection{Problem Definitions}
 \label{sub:intro}
@@ -55,7 +55,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	\label{defn:scpp}
 \end{definition}	
 
-\noindent Each item $i \in \mathcal{I}$ can be packed into a bin in either a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or a rotated orientation $(b_i, a_i)$, where the larger score width $b_i$ is on the left-hand side. Thus, there is the additional packing problem within each individual bin, defined as follows:
+\noindent Each item $i \in \mathcal{I}$ can be packed into a bin in either a regular orientation, denoted $(a_i, b_i)$, where the smaller score width $a_i$ is on the left-hand side of item $i$, or a rotated orientation $(b_i, a_i)$, where the larger score width $b_i$ is on the left-hand side. Therefore, for the SCPP, $\mathcal{F}$ is the set of all item subsets that can be feasibly packed into a bin such that the vicinal sum constraint is fulfilled. Thus, there is the additional packing problem within each individual bin, defined as follows:
 
 \begin{definition}
 	Let $\mathcal{I}' \subseteq \mathcal{I}$ be a set of rectangular items whose total width $A(\mathcal{I}') = \sum_{i \in \mathcal{I}'} w_i$ is less than or equal to the bin width $W$. Then, given a minimum scoring distance $\tau$, the \emph{Score-Constrained Packing Sub-Problem (SubSCP)} consists of finding an ordering and orientation of the items in $\mathcal{I}'$ in the bin such that the vicinal sum constraint is satisfied.
@@ -63,7 +63,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 \end{definition}
 
 
-\noindent For example, in Fig.~\ref{fig:itemsdimknives}, observe that a feasible alignment of the three items in a single bin can be obtained by rotating item C.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} As there are $2^{n-1} n!$ distinct orderings of $n$ items, it is clear that enumerative methods are not suitable. Figure~\ref{fig:bppvscpp} shows feasible solutions for a set of items $\mathcal{I}$ as an instance of the BPP and the SCPP. For the SCPP, an extra bin is required to accommodate all items whilst fulfilling the vicinal sum constraint. Note that the solution produced for the BPP is not feasible for the SCPP in this case as the constraint is violated at least once in every bin. Thus the BPP can be seen as a special case of the SCPP when $\tau=0$, as the vicinal sum constraint will always be satisfied.
+\noindent In Fig.~\ref{fig:itemsdimknives}, observe that a feasible alignment of the three items in a single bin can be obtained by rotating item C.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} However, because there are $2^{n-1} n!$ distinct orderings of $n$ items in a single bin, it is clear that enumerative methods are not suitable. Figure~\ref{fig:bppvscpp} shows feasible solutions for a set of items $\mathcal{I}$ as an instance of the BPP and the SCPP. For the SCPP, an extra bin is required to accommodate all items whilst fulfilling the vicinal sum constraint. Note that the solution produced for the BPP is not feasible for the SCPP in this case as the constraint is violated at least once in every bin. Thus the BPP can be seen as a special case of the SCPP when $\tau=0$, as the vicinal sum constraint will always be satisfied.
 
 \begin{figure}[H]
 	\centering	
@@ -88,7 +88,7 @@ As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each
 %--------------------------------------------------------------------------------------
 \section{Solving the SubSCP}
 \label{sec:ahc}
-\noindent Firstly, consider the following sequencing problem originally defined by \citet{hawa2018}:
+\noindent In this section, we focus on the SubSCP, which involves packing items into a single bin. To begin, let us first consider the following sequencing problem originally defined by \citet{hawa2018}:
 
 \begin{definition} % COP
 	\label{defn:cop}
@@ -100,28 +100,28 @@ As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each
 In this section we present the Alternating Hamiltonian Construction (AHC) algorithm, a polynomial-time algorithm for solving the COP, and hence the SubSCP. The underlying algorithm was originally proposed by \citet{becker2010} and determines whether a feasible solution exists for a given instance. This was then extended by \citet{hawa2018} so that, if a solution does indeed exist AHC, is able to construct the final solution. Here, we further simplify and increase the efficiency of AHC.
 
 
-We begin by modelling an instance $\mathcal{M}$ of the COP graphically. For each pair $\{a_i, b_i\} \in \mathcal{M}$, two vertices $u, v$ with weights $w(u) = a_i$, $w(v) = b_i$ are created, together with a ``blue'' edge $\{u, v\}$. Such vertices formed from a pair in $\mathcal{M}$ are referred to as \textit{partners}. This gives a vertex-weighted graph $G$ comprising $n$ components. Without loss of generality, we assume that the vertices $\{v_1,\dotsc,v_{2n}\}$ are labelled in weight order such that $w(v_i) \leq w(v_{i+1})$.
+We begin by modelling an instance $\mathcal{M}$ of the COP graphically. For each pair $\{a_i, b_i\} \in \mathcal{M}$, two vertices $u, v$ with weights $w(u) = a_i$, $w(v) = b_i$ are created, together with a ``blue'' edge $\{u, v\}$. Vertices joined by a blue edge are referred to as \textit{partners}. This gives a vertex-weighted graph $G$ comprising $n$ components. Without loss of generality, we assume that the vertices $\{v_1,\dotsc,v_{2n}\}$ are labelled in weight order such that $w(v_i) \leq w(v_{i+1})$.
 
 To prevent executing the algorithm unnecessarily, a basic preliminary test is first performed. Of the $2n$ vertices, suppose vertices $v_1$ and $v_2$ are placed on the ends of the sequence. Clearly, if vertices $v_3$ and $v_{2n}$ do not meet the vicinal sum constraint, i.e. $w(v_3) + w(v_{2n}) < \tau$, then there cannot exist a feasible ordering of all elements in $\mathcal{M}$. Note that a positive outcome from this test does not necessarily imply that a feasible solution exists for the instance, however a negative outcome confirms the non-existence of a solution.
 
-If $\mathcal{M}$ has not yet been deemed infeasible an extra pair of partner vertices $v_{2n+1}, v_{2n+2}$ is then added to $G$ with weights $w(v_{2n+1}) = w(v_{2n+2}) = \tau$, together with a blue edge $\{v_{2n+1}, v_{2n+2}\}$. All blue edges between partners are contained in an edge set $B$. It is useful to denote the partner of a vertex $v_i$ as $p(v_i)$; thus the set $B$ can be written as $\{\{v_i, p(v_i)\} : v_i \in V\}$. Note that $|B| = n+1$, and so $B$ is a perfect matching in all cases. 
+If $\mathcal{M}$ has not yet been deemed infeasible, an extra pair of partner vertices $v_{2n+1}, v_{2n+2}$ is then added to $G$ with weights $w(v_{2n+1}) = w(v_{2n+2}) = \tau$, together with a blue edge $\{v_{2n+1}, v_{2n+2}\}$. All blue edges between partners are now said to belong to the edge set $B$. It is also useful to denote the partner of a vertex $v_i$ as $p(v_i)$; thus the set $B$ can be written as $\{\{v_i, p(v_i)\} : v_i \in V\}$. Note that $|B| = n+1$, thus so $B$ is a perfect matching. 
 
-Next, a second set of ``red'' edges, $R$, is added to $G$, containing edges between vertices that are not partners and whose combined weight equals or exceeds $\tau$. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. It can be seen that the additional vertices, $v_{2n+1}$ and $v_{2n+2}$, are in fact universal vertices with $\deg(v_{2n+1}) = \deg(v_{2n+2}) = 2n+1$, as their weights mean they are adjacent to every other vertex via an edge in $R$.
+Next, a second set of ``red'' edges, $R$, is added to $G$, containing edges between vertices that are not partners and whose combined weight equals or exceeds $\tau$. Figure~\ref{fig:threshold} illustrates the resulting graph $G = (V, B \cup R)$ produced from the example instance $\mathcal{M}$ of the COP provided above. The graph has a noticeable pattern, with the degree of each vertex increasing in accordance with the weight of the vertices. It can also be seen that the additional vertices $v_{2n+1}$ and $v_{2n+2}$ are, in fact, universal vertices with $\deg(v_{2n+1}) = \deg(v_{2n+2}) = 2n+1$ (their weights mean they are adjacent to every other vertex via an edge in $R$).
 
-Our task is to now seek a particular type of cycle on the graph $G$. Recall that a Hamiltonian cycle in a graph $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we define a specific type of Hamiltonian cycle:
+Our task is to now seek an alternating Hamiltonian cycle in the graph $G$. Recall that a Hamiltonian cycle in $G$ is a cycle that visits every vertex of $G$ exactly once. A graph containing such a cycle is said to be Hamiltonian. From this, we present the following definition:
 
 \begin{definition} % Alternating Hamiltonian Cycle
 	\label{defn:althamcycle}
-	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of exactly one of two sets, $B$ or $R$. $G$ contains an \emph{alternating Hamiltonian cycle} if there exists a Hamiltonian cycle whose successive edges alternate between sets $B$ and $R$.
+	Let $G = (V, B \cup R)$ be a simple, undirected graph where each edge is a member of exactly one of two sets, $B$ or $R$. An \emph{alternating Hamiltonian cycle} in $G$ is a Hamiltonian cycle whose successive edges alternate between sets $B$ and $R$.
 \end{definition}
 
-\noindent Observe that an alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint. The aim of the problem is therefore to find a suitable matching subset of edges $R' \subseteq R$ that, together with the edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices, $v_{2n+1}$ and $v_{2n+2}$, aid the construction of the alternating Hamiltonian cycle as they are able to connect to the lowest-weighted vertices; however once a cycle has been produced these vertices and any incident edges are removed, resulting in a path corresponding to a feasible COP solution $\mathcal{T}$.
+\noindent Observe that an alternating Hamiltonian cycle in $G$ corresponds to a legal sequence of the elements in $\mathcal{M}$, as the edges in $B$ represent each pair of values in $\mathcal{M}$, and edges from $R$ depict the values that meet the vicinal sum constraint. The aim of the problem is therefore to find a suitable matching subset of red edges $R' \subseteq R$ that, together with the blue edges in $B$, form an alternating Hamiltonian cycle in $G$. The universal vertices, $v_{2n+1}$ and $v_{2n+2}$, aid the construction of the alternating Hamiltonian cycle as they are able to connect to the lowest-weighted vertices; however once a cycle has been produced these vertices and any incident edges can be removed, resulting in a path corresponding to a feasible COP solution $\mathcal{T}$ (as described in Definition~\ref{defn:cop}).
 
-Determining whether a graph is Hamiltonian is NP-complete \citep{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the former \citep{haggkvist1977}. Despite this, due to the special structure of these graphs, we are able to determine the existence of an alternating Hamiltonian cycle in polynomial time \citep{hawa2018}. 
+In general, determining whether a graph is Hamiltonian is NP-complete \citep{karp1972}, whilst the problem of actually finding a Hamiltonian cycle is NP-hard. Consequently, the alternating Hamiltonian cycle problem is also NP-hard, as it is a generalisation of the former \citep{haggkvist1977}. Despite this, due to the special structure of these graphs, we are able to determine the existence of an alternating Hamiltonian cycle in polynomial time \citep{hawa2018}. 
 
 \subsection{The Alternating Hamiltonian Construction Algorithm}
 \label{sub:ahc}
-\noindent Our algorithm for finding an alternating Hamiltonian cycle on $G$ is the Alternating Hamiltonian Construction (AHC) algorithm. AHC comprises two subprocedures: one to produce an initial matching $R' \subseteq R$, and another to modify $R'$ so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ in $G$. We now describe these two methods in detail.
+\noindent Our algorithm for finding an alternating Hamiltonian cycle on $G$ is the Alternating Hamiltonian Construction (AHC) algorithm. AHC comprises two subprocedures: one to produce an initial matching $R' \subseteq R$, and another to modify $R'$, if necessary, so that it contains suitable edges that form an alternating Hamiltonian cycle with the fixed edges $B$ in $G$. We now describe these two methods.
 
 %----MCM
 \subsubsection{Finding a matching $R' \subseteq R$}
@@ -479,7 +479,6 @@ On the other hand, when $W = 2500$ (where the best solutions average 4.3 items p
 
 AGX generates the least favourable results, particularly for real instances, where it is outperformed by GGA and AGX$'$ in all six instance classes with regards to the average number of bins per solution $|\mathcal{S}^*|$. Selecting bins based on fullness may mean choosing bins containing fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions comprising $t$ bins in three of the instance classes, suggesting a high variance in the quality of solutions produced.
 
-
 %--------------------------------------------------------------------------------------
 \section{A Hybrid Metaheuristic Approach to the SCPP}
 \label{sec:cmsa}
@@ -604,6 +603,35 @@ One potential adaptation would be to implement the mutation procedure, which inc
 
 %--------------------------------------------------------------------------------------
 
+\begin{table}[h!]
+\setlength{\tabcolsep}{8pt}
+\centering
+\caption{\ea{EA Time Percentage.}}
+\small
+\begin{tabular}{cccrrrrrrr}
+	\toprule
+	Type, $W$ & $|\mathcal{I}|$ & Operator & 5s & 10s & 30s & 60s & 120s & 300s & 600s \\
+	\midrule
+	a, 2500 & 100 & AGX & 89.3 & 91.8 & 95.5 & 96.9 & 98.1 & 99.2 & 99.7 \\
+	& 500 & AGX$'$ & 13.2 & 17.0 & 25.5 & 32.5 & 43.9 & 62.8 & 80.0 \\
+	& 1000 & AGX$'$ & 16.6 & 18.5 & 23.2 & 27.8 & 36.0 & 50.2 & 70.7 \\
+	\midrule
+	a, 5000 & 100 & GGA & 61.5 & 67.8 & 77.1& 82.4 & 87.9 & 94.3 & 97.4 \\
+	& 500 & GGA & 1.1 & 1.7 & 4.8 & 8.2 & 15.9 & 42.6 & 72.2 \\
+	& 1000 & GGA & 5.5 & 5.6 & 6.9 & 8.9 & 13.5 & 29.4 & 54.7 \\
+	\midrule
+	\midrule
+	r, 2500 & 100 & AGX$'$ & 52.5 & 57.8 & 64.0 & 68.5 & 75.3 & 83.6 & 89.4 \\
+	& 500 & GGA & 45.4 & 46.8 & 50.2 & 52.3 & 56.4 & 66.2 & 77.4 \\
+	& 1000 & GGA & 63.6 & 63.9 & 64.6 & 65.5 & 67.5 & 72.8 & 80.1 \\
+	\midrule
+	r, 5000 & 100 & GGA & 49.5 & 53.9 & 63.3 & 69.7 & 75.6 & 84.6 & 91.8 \\
+	& 500 & GGA & 43.0 & 43.5 & 45.4 & 48.0 & 52.5 & 62.4 & 80.2 \\
+	& 1000 & GGA & 69.1 & 69.1 & 69.4 & 70.4 & 72.7 & 78.2 & 87.2 \\
+	\bottomrule
+\end{tabular}	
+\label{table:eatime}
+\end{table}
 
 \section{Conclusion and Further Work}
 \label{sec:conclusion}
