@@ -1,4 +1,9 @@
-\documentclass{standalone}
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+\usepackage{xcolor}
+%\definecolor{tLightGreen1}{HTML}{B7F385} %tikz color
+%\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
+\colorlet{tLightOrange}{Dandelion!65!White}
 \usepackage{tikz}
 \usepackage{standalone}
 \begin{document}
@@ -7,6 +12,7 @@
 %\draw [help lines] (-1,-2) grid (13,11);
 
 %359, 631 (26-37, 68,48)
+\path [fill=tLightGreen] (0,7.5) rectangle (9.9,8.5);
 \draw [thick] (0,7.5) rectangle (10, 8.5);
 \draw [thick] (3.59,7.5) -- (3.59, 8.5);
 \draw [thick] (9.9,7.5) -- (9.9, 8.5);
@@ -23,6 +29,7 @@
 \node [below] at (9.42,7.5) {48};
 
 %615, 336 (4-54, 47-43)
+\path [fill=tLightGreen] (0,6) rectangle (9.51,7);
 \draw [thick] (0,6) rectangle (10, 7);
 \draw [thick] (6.15,6) -- (6.15,7);
 \draw [thick] (9.51,6) -- (9.51,7);
@@ -40,6 +47,7 @@
 
 
 %328, 561 (16-31, 63-48)
+\path [fill=tLightGreen] (0,4.5) rectangle (8.89,5.5);
 \draw [thick] (0,4.5) rectangle (10, 5.5);
 \draw [thick] (3.28,4.5) -- (3.28,5.5);
 \draw [thick] (8.89,4.5) -- (8.89,5.5);
@@ -57,6 +65,7 @@
 
 
 %525, 327 (3-42, 44-17)
+\path [fill=tLightGreen] (0,3) rectangle (8.52,4);
 \draw [thick] (0,3) rectangle (10, 4);
 \draw [thick] (5.25,3) -- (5.25,4);
 \draw [thick] (8.52,3) -- (8.52,4);
@@ -74,6 +83,7 @@
 
 
 %305, 211, 321 (12-51, 23-33, 47-13)
+\path [fill=tLightGreen] (0,1.5) rectangle (8.37,2.5);
 \draw [thick] (0,1.5) rectangle (10, 2.5);
 \draw [thick] (3.05,1.5) -- (3.05,2.5);
 \draw [thick] (5.16,1.5) -- (5.16,2.5);
@@ -97,6 +107,7 @@
 
 
 %150, 192, 207, 200 (8-22, 68-22, 48-69, 18-14)
+\path [fill=tLightGreen] (0,0) rectangle (7.49,1);
 \draw [thick] (0,0) rectangle (10, 1);
 \draw [thick] (1.5,0) -- (1.5,1);
 \draw [thick] (3.42,0) -- (3.42,1);

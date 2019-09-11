@@ -1,4 +1,9 @@
-\documentclass{standalone}
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+\usepackage{xcolor}
+%\definecolor{tLightGreen1}{HTML}{B7F385} %tikz color
+%\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
+\colorlet{tLightOrange}{Dandelion!65!White}
 \usepackage{tikz}
 \usepackage{standalone}
 \begin{document}
@@ -11,6 +16,7 @@
 %FROM S2 (MFFRPLUS)
 
 %200, 615 (14-18, 54-4)
+\path [fill=tLightOrange] (0,9.5) rectangle (8.15,10.5);
 \draw [thick] (0,9.5) rectangle (10, 10.5);
 \draw [thick] (2,9.5) -- (2,10.5);
 \filldraw[fill=black!20!white, draw=black, thick] (8.15,9.5) rectangle (10,10.5);
@@ -26,6 +32,7 @@
 \node [below] at (8.1,9.5) {4};
 
 %150, 631, 207 (8-22, 68-48, 48-69)
+\path [fill=tLightOrange] (0,8) rectangle (9.88,9);
 \draw [thick] (0,8) rectangle (10, 9);
 \draw [thick] (1.5,8) -- (1.5,9);
 \draw [thick] (7.81,8) -- (7.81,9);
@@ -47,6 +54,7 @@
 \node [below] at (9.19,8) {69};
 
 %328, 561 (16-31, 48-63)
+\path [fill=tLightOrange] (0,6.5) rectangle (8.89,7.5);
 \draw [thick] (0,6.5) rectangle (10, 7.5);
 \draw [thick] (3.28,6.5) -- (3.28,7.5);
 \filldraw[fill=black!20!white, draw=black, thick] (8.89,6.5) rectangle (10,7.5);
@@ -64,6 +72,7 @@
 %FROM S1 (MFFDPLUS)
 
 %525, 327 (3-42, 44-17)
+\path [fill=tLightGreen] (0,5) rectangle (8.52,6);
 \draw [thick] (0,5) rectangle (10, 6);
 \draw [thick] (5.25,5) -- (5.25,6);
 \draw [thick] (8.52,5) -- (8.52,6);
@@ -80,6 +89,7 @@
 \node [below] at (8.35,5) {17};
 
 %305, 211, 321 (12-51, 23-33, 47-13)
+\path [fill=tLightGreen] (0,3.5) rectangle (8.37,4.5);
 \draw [thick] (0,3.5) rectangle (10, 4.5);
 \draw [thick] (3.05,3.5) -- (3.05,4.5);
 \draw [thick] (5.16,3.5) -- (5.16,4.5);
