@@ -67,17 +67,17 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 
 \begin{figure}[H]
 	\centering	
-	\begin{subfigure}[h]{0.37\textwidth}
-		\includestandalone[width=\textwidth]{figures/bpp}
+	\begin{subfigure}[h]{0.42\textwidth}
+		\includestandalone[width=\textwidth]{figures/bppnew}
 		\caption{BPP}
 		\label{fig:bpp}
-	\end{subfigure} \hspace{15mm}
-	\begin{subfigure}[h]{0.37\textwidth}
-		\includestandalone[width=\textwidth]{figures/scpp}
+	\end{subfigure} \hspace{10mm}
+	\begin{subfigure}[h]{0.42\textwidth}
+		\includestandalone[width=\textwidth]{figures/scppnew}
 		\caption{SCPP}
 		\label{fig:scpp}
 	\end{subfigure}
-	\caption{Solutions for the BPP and SCPP using the same set $\mathcal{I}$ of 10 items and $W = 10$. For the SCPP, $\tau = 70$. The red score lines on the solution for the BPP show the vicinal sum constraint violations if it were to be used as a solution for the SCPP.}	
+	\caption{Solutions for the BPP and SCPP using the same set $\mathcal{I}$ of 10 items and $W = 1000$. For the SCPP, $\tau = 70$. The red score lines on the solution for the BPP show the vicinal sum constraint violations if it were to be used as a solution for the SCPP.}	
 	\label{fig:bppvscpp}
 \end{figure}
 
@@ -392,7 +392,11 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \label{table:ea}
 \end{table}
 
-It is immediately evident that all EA versions outperform the MFFD$^+$ heuristic, with superior averages in all cases. Fewer iterations of the EA were performed as $|\mathcal{I}|$ and $W$ increased, with the average number of iterations ranging from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations. \ea{This is because more bins and more items per bin on average results in local search procedure taking longer as there are more applications of AHC.}
+It is immediately evident that all EA versions outperform the MFFD$^+$ heuristic, with superior averages in all cases. As $|\mathcal{I}|$ and $W$ increased, fewer iterations of the EA were performed as the rise in both the number of bins in solutions and the number of items per bin results in many more application of AHC within the local search procedure, thus taking longer to complete.
+
+%Fewer iterations of the EA were performed as $|\mathcal{I}|$ and $W$ increased, with the average number of iterations ranging from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations. \ea{This is because more bins and more items per bin on average results in local search procedure taking longer as there are more applications of AHC.}
+
+The different recombination operators seem to perform well with different types of problem instance. GGA consistently produces the best results for both artificial and real instances using the larger bin size, where high quality solutions contain approximately 8.6 items per bin on average. The lack of bias in choice of bins to inherit allows more of the solution space to be explored, resulting in better solutions being found.
 
 It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. \ea{The different recombination operators seem to perform well with different types of problem instances.} GGA consistently produces the best results for both artificial and real instances using the larger bin size, where higher quality solutions contain approximately 8.6 items per bin on average. \ea{It seems that lack of bias in choice of bins to inherit allows more of the solution space to be explored.} The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
 
@@ -591,6 +595,7 @@ One potential adaptation would be to implement the mutation procedure, which inc
 	\item Recombination, not crossover.
 	\item Subclasses/subtypes/instance classes/instance types, keep consistent.
 	\item Change $n$ to $|\mathcal{I}|$
+	\item What tense, i.e. ``Fewer iterations of the EA were/are performed''
 \end{itemize}		
 }
 
