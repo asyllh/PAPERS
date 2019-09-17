@@ -130,7 +130,7 @@ In general, determining whether a graph is Hamiltonian is NP-complete \citep{kar
 
 \begin{figure}[h!]	
 	\centering
-	\includegraphics[width=\textwidth]{figures/AlgorithmMCM}
+	\includegraphics[width=\textwidth]{figures/AlgMCM}
 	\caption{Pseudocode for the Maximum Cardinality Matching (MCM) algorithm used within AHC to obtaining a matching $R'$ from the edge set $R$. Here, the \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$.}	
 	\label{fig:algmcm}
 \end{figure}
@@ -392,11 +392,11 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \label{table:ea}
 \end{table}
 
-It is immediately evident that all EA versions outperform the MFFD$^+$ heuristic, with superior averages in all cases. As $|\mathcal{I}|$ and $W$ increased, fewer iterations of the EA were performed as the rise in both the number of bins in solutions and the number of items per bin results in many more applications of AHC within the local search procedure, thus taking longer to complete. Thus, the average number of iterations ranged from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively, and the corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations. Consequently, we see that the difference between $|\mathcal{S}|$ and the theoretical minimum $t$ also increases as the number of bins increases, more so for the larger bin size. The reduction in the number of EA iterations means that the evolution of the population is restricted, preventing better solutions from being achieved.
+It is immediately evident that all EA versions outperform the MFFD$^+$ heuristic, with superior averages in all cases. As $|\mathcal{I}|$ and $W$ are increased, fewer iterations of the EA are performed as the rise in both the number of bins in solutions and the number of items per bin results in many more applications of AHC within the local search procedure, thus taking longer for it to complete. For example, the average number of iterations ranged from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively, whilst the corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations. Consequently, we see that the difference between $|\mathcal{S}|$ and the theoretical minimum $t$ also increases as the number of items increases, more so for the larger bin size. The reduction in the number of EA iterations means that the evolution of the population is restricted which prevents better solutions from being achieved, suggesting that the algorithm is less accurate.
 
 The different recombination operators seem to perform well with different types of problem instance. GGA consistently produces the best results for both artificial and real instances using the larger bin size, where high quality solutions contain approximately 8.6 items per bin on average. The lack of bias in choice of bins to inherit allows more of the solution space to be explored, resulting in better solutions being found. AGX$'$ also appears to perform well when $W=2500$, where the best solutions average 4.3 items per bin. With regards to the average number of bins $|\mathcal{S}|$, AGX$'$ produces the best solutions for three of the six instance classes using the smaller bin size. For the remaining three classes, the result from AGX$'$ uses at most 0.05 bins more than the best result found. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions.
 
-Also observe the coefficient of variation is less for artificial instances than for real instances. This could be due to the theoretical minimum $t$ being less accurate for real instances because of the lack of diversity in item dimensions, i.e. items are weakly heterogeneous.
+\ea{Also observe the coefficient of variation is less for artificial instances than for real instances. This could be due to the theoretical minimum $t$ being less accurate for real instances because of the lack of diversity in item dimensions, i.e. items are weakly heterogeneous.}
 
 AGX generates the least favourable results, particularly for real instances, where it is outperformed by GGA and AGX$'$ in all six instance classes with regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins containing fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions comprising $t$ bins in three of the instance classes, suggesting a high variance in the quality of solutions produced.
 
@@ -412,13 +412,13 @@ AGX generates the least favourable results, particularly for real instances, whe
 
 \noindent For example, given a collection of subsets $\mathcal{B} = \{\{1,2,3\}, \{3,4,5\}, \{4\}, \{5\}\}$ of a set $\mathcal{I} = \{1,2,3,4,5\}$, the subcollection $\mathcal{S}^*_1 = \{\{1,2,3\}, \{3,4,5\}\}$ is a set cover as it contains every element of $\mathcal{I}$, whereas the subcollection $\mathcal{S}^*_2 = \{\{1,2,3\}, \{4\}, \{5\}\}$ is an \emph{exact cover} as it contains every element of $\mathcal{I}$ exactly once. The exact cover problem, determining whether a exact cover $\mathcal{S}^*$ of $\mathcal{B}$ exists, is a decision problem and one of \citeauthor{karp1972}'s 21 NP-complete problems \citeyearpar{karp1972}. If it is known that an exact cover exists, the problem can also be reformulated as an NP-hard optimisation problem with the objective of finding the smallest subcollection.
 
-Given a set of feasible bins $\mathcal{B}$ for an instance of the SCPP, it can be seen that finding a solution $\mathcal{S}^*$ is in fact an exact cover problem. Since the bins are already feasible, the complications associated with the vicinal sum constrain are eliminated.
+Given a set of feasible bins $\mathcal{B}$ for an instance of the SCPP, it can be seen that finding a solution $\mathcal{S}^*$ is in fact an exact cover problem. Since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
 Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form $\mathcal{B}$, however since the cardinality of $\mathcal{F}$ has the potential to grow at an exponential rate in relation to the problem size, it may not be possible to produce $\mathcal{B}$, let alone find an exact cover in a feasible amount of time. One option here would be to implement a method of finding an exact cover within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on the set $\mathcal{B}$ of individual feasible bins.
 
 \begin{figure}[h!]	
 	\centering
-	\includegraphics[width=\textwidth]{figures/AlgorithmCMSA}
+	\includegraphics[width=\textwidth]{figures/AlgCMSA}
 	\caption{Pseudocode for the Construct, Merge, Solve \& Adapt (CMSA) algorithm for the SCPP, which uses our \textsc{MinDLX} algorithm to find a minimum cardinality exact cover.}	
 	\label{fig:algcmsa}
 \end{figure}
@@ -429,7 +429,7 @@ To find an exact cover, we use a recursive depth-first backtracking process impl
 
 \subsection{Experimental Results - CMSA}
 \label{sub:expcmsa}
-\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the CMSA algorithm, while \textsc{MinDLX} was set to run for a maximum of 600 seconds. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. For a fair comparison, we ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA. The source code for the CMSA algorithm including the modified \textsc{MinDLX} procedure and the following results is available online \citep{hawa2019cmsa}.
+\noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the overall CMSA algorithm, while \textsc{MinDLX} was set to run for a maximum of 600 seconds in each iteration. Parameter settings of $p = 3$ and $maxAge = 3$ were decided after preliminary tests. For a fair comparison, we ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA. The source code for the CMSA algorithm including the modified \textsc{MinDLX} procedure is also available online \citep{hawa2019cmsa}.
 
 \begin{table}[h!]
 \centering
