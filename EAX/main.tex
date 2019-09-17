@@ -131,7 +131,7 @@ In general, determining whether a graph is Hamiltonian is NP-complete \citep{kar
 \begin{figure}[h!]	
 	\centering
 	\includegraphics[width=\textwidth]{figures/AlgorithmMCM}
-	\caption{Algorithm for obtaining a maximum cardinality matching $R'$ from the edge set $R$. Here, the \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$.}	
+	\caption{Pseudocode for the Maximum Cardinality Matching (MCM) algorithm used within AHC to obtaining a matching $R'$ from the edge set $R$. Here, the \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$.}	
 	\label{fig:algmcm}
 \end{figure}
 
@@ -392,19 +392,11 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \label{table:ea}
 \end{table}
 
-It is immediately evident that all EA versions outperform the MFFD$^+$ heuristic, with superior averages in all cases. As $|\mathcal{I}|$ and $W$ increased, fewer iterations of the EA were performed as the rise in both the number of bins in solutions and the number of items per bin results in many more application of AHC within the local search procedure, thus taking longer to complete.
+It is immediately evident that all EA versions outperform the MFFD$^+$ heuristic, with superior averages in all cases. As $|\mathcal{I}|$ and $W$ increased, fewer iterations of the EA were performed as the rise in both the number of bins in solutions and the number of items per bin results in many more applications of AHC within the local search procedure, thus taking longer to complete. Thus, the average number of iterations ranged from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively, and the corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations. Consequently, we see that the difference between $|\mathcal{S}|$ and the theoretical minimum $t$ also increases as the number of bins increases, more so for the larger bin size. The reduction in the number of EA iterations means that the evolution of the population is restricted, preventing better solutions from being achieved.
 
-%Fewer iterations of the EA were performed as $|\mathcal{I}|$ and $W$ increased, with the average number of iterations ranging from 360,000 to 1200 when $W=2500$ for artificial instances using 100 and 1000 items respectively. The corresponding figures for real instances using $W=5000$ were 55,000 and 65 iterations. \ea{This is because more bins and more items per bin on average results in local search procedure taking longer as there are more applications of AHC.}
+The different recombination operators seem to perform well with different types of problem instance. GGA consistently produces the best results for both artificial and real instances using the larger bin size, where high quality solutions contain approximately 8.6 items per bin on average. The lack of bias in choice of bins to inherit allows more of the solution space to be explored, resulting in better solutions being found. AGX$'$ also appears to perform well when $W=2500$, where the best solutions average 4.3 items per bin. With regards to the average number of bins $|\mathcal{S}|$, AGX$'$ produces the best solutions for three of the six instance classes using the smaller bin size. For the remaining three classes, the result from AGX$'$ uses at most 0.05 bins more than the best result found. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions.
 
-The different recombination operators seem to perform well with different types of problem instance. GGA consistently produces the best results for both artificial and real instances using the larger bin size, where high quality solutions contain approximately 8.6 items per bin on average. The lack of bias in choice of bins to inherit allows more of the solution space to be explored, resulting in better solutions being found.
-
-It can be seen that the EAs using the GGA and AGX$'$ recombination operators generate the best solutions overall. \ea{The different recombination operators seem to perform well with different types of problem instances.} GGA consistently produces the best results for both artificial and real instances using the larger bin size, where higher quality solutions contain approximately 8.6 items per bin on average. \ea{It seems that lack of bias in choice of bins to inherit allows more of the solution space to be explored.} The random selection of bins from parents results in entire solutions being evaluated, rather than individual bins, thus good combinations of bins can be found to form better solutions.
-
-On the other hand, when $W = 2500$ (where the best solutions average 4.3 items per bin) AGX$'$ can be see to produce \ea{more optimal solutions (is this true?)} for artificial instances. By selecting bins containing the most items, AGX$'$ aims to build solutions comprising fewer yet fuller bins, thus AGX$'$ is focused on higher quality individual bins as opposed to entire solutions.
-
-\ea{The difference between $|\mathcal{S}|$ and $t$ increase as $|\mathcal{I}|$ increases, more so for larger bin size. This could be because the EA is less accurate as $|\mathcal{I}|$ increases, and also fewer iterations of EA means less evolution of the population.}
-
-\ea{Difference in coefficient of variation between real and artificial instances. Is $t$ worse/less accurate for real instances due to lack of item diversity?}
+Also observe the coefficient of variation is less for artificial instances than for real instances. This could be due to the theoretical minimum $t$ being less accurate for real instances because of the lack of diversity in item dimensions, i.e. items are weakly heterogeneous.
 
 AGX generates the least favourable results, particularly for real instances, where it is outperformed by GGA and AGX$'$ in all six instance classes with regards to the average number of bins per solution $|\mathcal{S}|$. Selecting bins based on fullness may mean choosing bins containing fewer items, thus requiring extra bins to pack all items. However, note that AGX yields the highest number of solutions comprising $t$ bins in three of the instance classes, suggesting a high variance in the quality of solutions produced.
 
@@ -422,12 +414,12 @@ AGX generates the least favourable results, particularly for real instances, whe
 
 Given a set of feasible bins $\mathcal{B}$ for an instance of the SCPP, it can be seen that finding a solution $\mathcal{S}^*$ is in fact an exact cover problem. Since the bins are already feasible, the complications associated with the vicinal sum constrain are eliminated.
 
-Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form $\mathcal{B}$, however since the cardinality of $\mathcal{F}$ has the potential to grow at an exponential rate in relation to the problem size, it may not be possible to produce $\mathcal{B}$, let alone find the \cmsa{smallest} exact cover in a feasible amount of time. One option here would be to implement a method of finding \cmsa{a minimum cardinality?} an exact cover within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on the set $\mathcal{B}$ of individual feasible bins.
+Ideally, the entire set of feasible bins $\mathcal{F}$ would be used to form $\mathcal{B}$, however since the cardinality of $\mathcal{F}$ has the potential to grow at an exponential rate in relation to the problem size, it may not be possible to produce $\mathcal{B}$, let alone find an exact cover in a feasible amount of time. One option here would be to implement a method of finding an exact cover within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \citet{blum2016}. Rather than having a population of full solutions as used in our EA, CMSA operates on the set $\mathcal{B}$ of individual feasible bins.
 
 \begin{figure}[h!]	
 	\centering
 	\includegraphics[width=\textwidth]{figures/AlgorithmCMSA}
-	\caption{\cmsa{alg cmsa.}}	
+	\caption{Pseudocode for the Construct, Merge, Solve \& Adapt (CMSA) algorithm for the SCPP, which uses our \textsc{MinDLX} algorithm to find a minimum cardinality exact cover.}	
 	\label{fig:algcmsa}
 \end{figure}
 
@@ -491,35 +483,7 @@ One potential adaptation would be to implement the mutation procedure, which inc
 
 %--------------------------------------------------------------------------------------
 
-\begin{table}[h!]
-\setlength{\tabcolsep}{8pt}
-\centering
-\caption{\ea{EA Time Percentage.}}
-\small
-\begin{tabular}{cccrrrrrrr}
-	\toprule
-	Type, $W$ & $|\mathcal{I}|$ & Operator & 5s & 10s & 30s & 60s & 120s & 300s & 600s \\
-	\midrule
-	a, 2500 & 100 & AGX & 89.3 & 91.8 & 95.5 & 96.9 & 98.1 & 99.2 & 99.7 \\
-	& 500 & AGX$'$ & 13.2 & 17.0 & 25.5 & 32.5 & 43.9 & 62.8 & 80.0 \\
-	& 1000 & AGX$'$ & 16.6 & 18.5 & 23.2 & 27.8 & 36.0 & 50.2 & 70.7 \\
-	\midrule
-	a, 5000 & 100 & GGA & 61.5 & 67.8 & 77.1& 82.4 & 87.9 & 94.3 & 97.4 \\
-	& 500 & GGA & 1.1 & 1.7 & 4.8 & 8.2 & 15.9 & 42.6 & 72.2 \\
-	& 1000 & GGA & 5.5 & 5.6 & 6.9 & 8.9 & 13.5 & 29.4 & 54.7 \\
-	\midrule
-	\midrule
-	r, 2500 & 100 & AGX$'$ & 52.5 & 57.8 & 64.0 & 68.5 & 75.3 & 83.6 & 89.4 \\
-	& 500 & GGA & 45.4 & 46.8 & 50.2 & 52.3 & 56.4 & 66.2 & 77.4 \\
-	& 1000 & GGA & 63.6 & 63.9 & 64.6 & 65.5 & 67.5 & 72.8 & 80.1 \\
-	\midrule
-	r, 5000 & 100 & GGA & 49.5 & 53.9 & 63.3 & 69.7 & 75.6 & 84.6 & 91.8 \\
-	& 500 & GGA & 43.0 & 43.5 & 45.4 & 48.0 & 52.5 & 62.4 & 80.2 \\
-	& 1000 & GGA & 69.1 & 69.1 & 69.4 & 70.4 & 72.7 & 78.2 & 87.2 \\
-	\bottomrule
-\end{tabular}	
-\label{table:eatime}
-\end{table}
+
 
 \section{Conclusion and Further Work}
 \label{sec:conclusion}
@@ -674,6 +638,37 @@ Consider an $m\times n$ binary matrix $\mathcal{B}$, where $M = \{1,2,\dotsc,m\}
 \]
 
 \noindent Given a set of feasible bins this formulation can be used to find a solution for the SCPP, where each row $i \in M$ represents a bin and each column $j \in N$ represents a item. Since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
+
+\begin{table}[h!]
+\setlength{\tabcolsep}{8pt}
+\centering
+\caption{\ea{EA Time Percentage.}}
+\small
+\begin{tabular}{cccrrrrrrr}
+\toprule
+Type, $W$ & $|\mathcal{I}|$ & Operator & 5s & 10s & 30s & 60s & 120s & 300s & 600s \\
+\midrule
+a, 2500 & 100 & AGX & 89.3 & 91.8 & 95.5 & 96.9 & 98.1 & 99.2 & 99.7 \\
+& 500 & AGX$'$ & 13.2 & 17.0 & 25.5 & 32.5 & 43.9 & 62.8 & 80.0 \\
+& 1000 & AGX$'$ & 16.6 & 18.5 & 23.2 & 27.8 & 36.0 & 50.2 & 70.7 \\
+\midrule
+a, 5000 & 100 & GGA & 61.5 & 67.8 & 77.1& 82.4 & 87.9 & 94.3 & 97.4 \\
+& 500 & GGA & 1.1 & 1.7 & 4.8 & 8.2 & 15.9 & 42.6 & 72.2 \\
+& 1000 & GGA & 5.5 & 5.6 & 6.9 & 8.9 & 13.5 & 29.4 & 54.7 \\
+\midrule
+\midrule
+r, 2500 & 100 & AGX$'$ & 52.5 & 57.8 & 64.0 & 68.5 & 75.3 & 83.6 & 89.4 \\
+& 500 & GGA & 45.4 & 46.8 & 50.2 & 52.3 & 56.4 & 66.2 & 77.4 \\
+& 1000 & GGA & 63.6 & 63.9 & 64.6 & 65.5 & 67.5 & 72.8 & 80.1 \\
+\midrule
+r, 5000 & 100 & GGA & 49.5 & 53.9 & 63.3 & 69.7 & 75.6 & 84.6 & 91.8 \\
+& 500 & GGA & 43.0 & 43.5 & 45.4 & 48.0 & 52.5 & 62.4 & 80.2 \\
+& 1000 & GGA & 69.1 & 69.1 & 69.4 & 70.4 & 72.7 & 78.2 & 87.2 \\
+\bottomrule
+\end{tabular}	
+\label{table:eatime}
+\end{table}
+
 \end{comment}
 
 \bibliographystyle{model5-names}
