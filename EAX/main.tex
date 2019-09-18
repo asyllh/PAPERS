@@ -34,14 +34,15 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 \end{equation}
 
 \noindent where \textbf{lhs}($i$) and \textbf{rhs}($i$) denote the left- and right-hand score widths of the $i$th item in bin $S$. Clearly if this constraint is satisfied the distance between the score lines will be sufficient for the knives to be able to cut appropriately. An example of this is shown in Fig.~\ref{fig:itemsdimknives}. Here, although the vicinal sum constraint is met between items A and B, the full alignment of all three items is infeasible as the sum of the adjacent score widths of items B and C is less than the minimum scoring distance $\tau$, and so the knives are unable to move close enough together to score the lines in the required locations.
-\begin{figure}[H]	
+
+The remainder of this section will formally define both this single bin problem and the corresponding multi-bin problem known as the Score-Constrained Packing Problem (SCPP). In the next section, we will provide a brief overview of an exact polynomial-time algorithm used to solve the single bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse existing heuristics from literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a hybrid metaheuritic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
+
+\begin{figure}[h!]	
 	\centering
 	\includestandalone[width=0.45\textwidth]{figures/itemsdimknives2}
 	\caption{Dimensions of an item $i$ marked with dashed score lines, and an example packing showing both feasible and infeasible alignments of three items to be scored by pairs of knives. Here, the minimum scoring distance $\tau = 70$.}	
 	\label{fig:itemsdimknives}
 \end{figure}
-
-\noindent The remainder of this section will formally define both this single bin problem and the corresponding multi-bin problem known as the Score-Constrained Packing Problem (SCPP). In the next section, we will provide a brief overview of an exact polynomial-time algorithm used to solve the single bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse existing heuristics from literature. An evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from rigorous experiments. Section~\ref{sec:cmsa} details a hybrid metaheuritic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
 
 \subsection{Problem Definitions}
 \label{sub:intro}
@@ -62,22 +63,16 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 \noindent In Fig.~\ref{fig:itemsdimknives}, observe that a feasible alignment of the three items in a single bin can be obtained by rotating item C.\footnote{Note that the outermost score widths in each bin are disregarded as they are not adjacent to any other items.} However, because there are $2^{n-1} n!$ distinct orderings of $n$ items in a single bin, it is clear that enumerative methods are not suitable. Figure~\ref{fig:bppvscpp} shows feasible solutions for a set of items $\mathcal{I}$ as an instance of the BPP and the SCPP. For the SCPP, an extra bin is required to accommodate all items whilst fulfilling the vicinal sum constraint. Note that the solution produced for the BPP is not feasible for the SCPP in this case as the constraint is violated at least once in every bin. Thus the BPP can be seen as a special case of the SCPP when $\tau=0$, as the vicinal sum constraint will always be satisfied.
 \begin{figure}[h]
 	\centering	
-	\begin{subfigure}[h]{0.4\textwidth}
-		\includestandalone[width=\textwidth]{figures/bpp}
-		\caption{BPP}
-		\label{fig:bpp}
-		\vspace{5mm}
-	\end{subfigure} %\hspace{10mm}
-	\begin{subfigure}[h]{0.4\textwidth}
-		\includestandalone[width=\textwidth]{figures/scpp}
-		\caption{SCPP}
-		\label{fig:scpp}
-	\end{subfigure}
+	\subfloat[BPP]{\includestandalone[width=0.35\textwidth]{figures/bpp}
+	\label{fig:bpp}}
+	\vspace{3mm}
+	\subfloat[SCPP]{\includestandalone[width=0.35\textwidth]{figures/scpp}
+	\label{fig:scpp}}
 	\caption{Solutions for the BPP and SCPP using the same set $\mathcal{I}$ of 10 items and $W = 1000$. For the SCPP, $\tau = 70$. The red score lines on the solution for the BPP show the vicinal sum constraint violations if it were to be used as a solution for the SCPP.}	
 	\label{fig:bppvscpp}
 \end{figure}
 
-\noindent From the BPP stems numerous packing problems with various adaptations, such as items of different shapes or characteristics, containers with multiple dimensions or inconsistent capacities, or additional constraints and objectives \cite{haouari2009, kenmochi2009, xavier2008}. One interesting problem related to the BPP is the Trapezoid Packing Problem (TPP), initially investigated by \cite{lewis2011}, where trapezoids are to be packed into bins so as to minimise the number of bins required, whilst also attempting to reduce the amount of triangular waste between adjacent trapezoids. Another problem similar to the BPP is the cutting stock problem (CSP), which involves cutting large pieces of material into smaller piece whilst minimising material wasted. One particular case, described by \cite{garraffa2016}, considers sequence-dependent cut-losses (SDCL). Here, rectangular items of varying lengths are to be cut from strips of material of fixed lengths; however the type of cutting machine used results in material loss between items during the cutting process. The amount of loss can vary between different items, and is also dependent on the order of the items, i.e. a cut loss between two adjacent items A and B, with A packed first, may not necessarily be equal to the cut loss that arises when B is packed first. Hence, the CSP-SDCL involves packing the items into the fewest number of bins such that the sum of item lengths \emph{and} the sum of cut losses between all adjacent items in each bin does not exceed the bin capacity.
+From the BPP stems numerous packing problems with various adaptations, such as items of different shapes or characteristics, containers with multiple dimensions or inconsistent capacities, or additional constraints and objectives \cite{haouari2009, kenmochi2009, xavier2008}. One interesting problem related to the BPP is the Trapezoid Packing Problem (TPP), initially investigated by \cite{lewis2011}, where trapezoids are to be packed into bins so as to minimise the number of bins required, whilst also attempting to reduce the amount of triangular waste between adjacent trapezoids. Another problem similar to the BPP is the cutting stock problem (CSP), which involves cutting large pieces of material into smaller piece whilst minimising material wasted. One particular case, described by \cite{garraffa2016}, considers sequence-dependent cut-losses (SDCL). Here, rectangular items of varying lengths are to be cut from strips of material of fixed lengths; however the type of cutting machine used results in material loss between items during the cutting process. The amount of loss can vary between different items, and is also dependent on the order of the items, i.e. a cut loss between two adjacent items A and B, with A packed first, may not necessarily be equal to the cut loss that arises when B is packed first. Hence, the CSP-SDCL involves packing the items into the fewest number of bins such that the sum of item lengths \emph{and} the sum of cut losses between all adjacent items in each bin does not exceed the bin capacity.
 
 As with the TPP and CSP-SDCL, the SCPP not only involves deciding which bin each item should be packed into, but also, unlike the BPP, \emph{how} the items should be packed -- that is, determining the order and orientation of items within each bin. One specific difference, however, concerns the feasibility of individual bins. In the TPP, although clearly not optimal, it is still legal to place trapezoids with opposite angles, i.e. `$\backslash$' and `/', alongside one another. Likewise in the CSP-SDCL, two items with a large cut loss between them can still be packed alongside one another if necessary. Both of these problems allow items to be packed in \emph{any} order and orientation as long as the bins are not overfilled. In contrast, the SCPP possesses the strong vicinal sum constraint which, if violated, immediately causes an alignment of items in a bin to be invalid, thus rendering the entire solution infeasible. It is this significant distinction that leads us to seek unique methods capable of producing high quality solutions that fulfil the constraints of the SCPP in a reasonable amount of time.
 
@@ -125,7 +120,7 @@ In general, determining whether a graph is Hamiltonian is NP-complete \cite{karp
 \noindent The first subprocedure of AHC is the Maximum Cardinality Matching (MCM) algorithm, which seeks a matching $R'$ comprising $n+1$ edges on the graph induced by the set of red edges $R$. Note that this could actually be achieved via standard matching processes such as the Blossom algorithm (\cite{edmonds1965}); however due to the special structure of $G$, such a matching can also be achieved via more efficient methods, as proposed by \cite{mahadev1994} and \cite{becker2015}. 
 \begin{figure}[h!]	
 	\centering
-	\includegraphics[width=0.5\textwidth]{figures/AlgMCMcrop}
+	\includegraphics[width=0.48\textwidth]{figures/AlgMCMcrop1}
 	\caption{Pseudocode for the Maximum Cardinality Matching (MCM) algorithm used within AHC to obtaining a matching $R'$ from the edge set $R$. Here, the \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$.}	
 	\label{fig:algmcm}
 \end{figure}
@@ -136,28 +131,19 @@ At this point, if $R'$ does not contain $n+1$ edges then there are too few edges
 
 \begin{figure*}[h!]	
 	\centering
-	\begin{subfigure}[h]{0.33\textwidth}
-		\includestandalone[width=\textwidth]{figures/threshold}
-		\vspace{-2mm}
-		\caption{$G = (V, B \cup R)$}
-		\label{fig:threshold}
-	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.33\textwidth}
-		\includestandalone[width=\textwidth]{figures/matching}
-		\vspace{-2mm}
-		\caption{$G' = (V, B \cup R')$}
-		\label{fig:matching}
-	\end{subfigure} \hspace{7mm}
-	\begin{subfigure}[h]{0.2\textwidth}
-		\includestandalone[width=\textwidth]{figures/mps}
-		\caption{$G'$ in planar form}
-		\label{fig:mps}
-	\end{subfigure}
+	\subfloat[$G = (V, B \cup R)$]{\includestandalone[width=0.33\textwidth]{figures/threshold}
+	\label{fig:threshold}}
+	\hspace{5mm}
+	\subfloat[$G' = (V, B \cup R')$]{\includestandalone[width=0.33\textwidth]{figures/matching}
+	\label{fig:matching}}
+	\hspace{5mm}
+	\subfloat[$G'$ in planar form]{\includestandalone[width=0.2\textwidth]{figures/mps}
+	\label{fig:mps}}
 	\caption{(a) Graph $G$ modelling an example instance $\mathcal{M}$; (b) The subgraph $G'$ with $R' \subseteq R$ formed by MCM; (c) A planar embedding of $G'$ showing $z = 4$ components. Here, members of $B$ are shown by thick blue edges and $R$ by thin red edges, with vertex weights in parentheses.}
 	\label{fig:mcm}
 \end{figure*}
 
-\noindent To merge the components together, edges in $R'$ need to be replaced with new edges from $R \backslash R'$ that connect vertices from different components. The task involves deciding which particular edges to remove from $R'$, and which edges from $R \backslash R'$ to add to $R'$.
+To merge the components together, edges in $R'$ need to be replaced with new edges from $R \backslash R'$ that connect vertices from different components. The task involves deciding which particular edges to remove from $R'$, and which edges from $R \backslash R'$ to add to $R'$.
 
 \subsubsection{Modifying the matching $R' \subseteq R$}
 \label{subsub:bcr}
@@ -173,51 +159,35 @@ These edges form a subset $R''_i$, which BCR adds to $\mathcal{R}''$ before cont
 
 Once a feasible collection $\mathcal{R}''$ has been produced, BCR uses each subset $R''_i \subset \mathcal{R}''$ to procure the replacement edges from $R\backslash R'$ as follows: for each edge in $R''_i$ in turn, the edge from $R \backslash R'$ connecting the lower-weighted vertex of the edge to the higher-weighted vertex of the next edge is added to $R'$. These edges form bridges between vertices of different components (as shown in Fig.~\ref{fig:mpsconnect}). The edges in $\mathcal{R}''$ are then removed from $R'$, so that $R'$ remains a perfect matching of cardinality $n+1$. This modified matching $R'$ along with the edge set $B$ will form an alternating Hamiltonian cycle in $G'$. Finally, removing the universal vertices yields an alternating Hamiltonian path which corresponds to a feasible solution $\mathcal{T}$ (Fig.~\ref{fig:solutionpath}).
 
-\begin{figure*}[h!]	
+\begin{figure*}[h]	
 	\centering
-	\begin{subfigure}[h]{0.35\textwidth}
-		\includestandalone[width=\textwidth]{figures/bcr}
-		\caption{}
-		\label{fig:bcrlist}
-	\end{subfigure} \hspace{7mm} %
-	\begin{subfigure}[h]{0.25\textwidth}
-		\includestandalone[width=\textwidth]{figures/mpsconnect}
-		\caption{}
-		\label{fig:mpsconnect}
-	\end{subfigure} \hspace{7mm} %
-	\begin{subfigure}[h]{0.25\textwidth}
-		\includestandalone[width=\textwidth]{figures/mpscycle}
-		\caption{}
-		\label{fig:mpscycle}
-	\end{subfigure}
-	\begin{subfigure}[h]{0.75\textwidth}
-		\includestandalone[width=\textwidth]{figures/solutionpath}
-		\caption{}
-		\label{fig:solutionpath}
-	\end{subfigure}
+	\subfloat[]{\includestandalone[width=0.35\textwidth]{figures/bcr}
+	\label{fig:bcrlist}}
+	\hspace{5mm}
+	\subfloat[]{\includestandalone[width=0.25\textwidth]{figures/mpsconnect}
+	\label{fig:mpsconnect}}
+	\hspace{5mm}
+	\subfloat[]{\includestandalone[width=0.25\textwidth]{figures/mpscycle}
+	\label{fig:mpscycle}}
+	\hspace{3mm}
+	\subfloat[]{\includestandalone[width=0.65\textwidth]{figures/solutionpath}
+	\label{fig:solutionpath}}
 	\caption{BCR creates a collection $\mathcal{R}'' = \{R''_1, R''_2\}$ of subsets containing edges in $R'$ that when replaced by edges from $R\backslash R'$ connects the components of $G'$ into a single alternating Hamiltonian cycle. Dashed green edges and dotted orange edges are the bridges from $R''_1$ and $R''_2$ respectively. The resulting alternating Hamiltonian path corresponds to a solution $\mathcal{T}$.}
 	\label{fig:bcr}
 \end{figure*}
 
-\noindent In the first incarnation of this algorithm \cite{becker2010}, a procedure was used that searches through $\mathcal{L}$ just once to find edge subsets for the collection $\mathcal{R}''$. However, for some instances, although $\mathcal{R}''$ covers all components of $G'$ the components cannot be connected into a single alternating Hamiltonian cycle. This issue stems from the requirements for edges to form a subset, where originally Condition~\ref{item:overlap} allowed edges to be in multiple components already covered by $\mathcal{R}''$. This causes extra edges from $R \backslash R'$ to be added between components that have already been connected, resulting in multiple components being formed. Restricting Condition~\ref{item:overlap} such that only \emph{one} edge can be in a component covered by $\mathcal{R}''$ prevents these unnecessary additional edges from being included in $R'$, ensuring the components are linked to produce a single cycle. Figure~\ref{fig:overlaperror} shows the formation of $\mathcal{R}''$ using the original procedure, where the subset $R''_2$ contains edges in \emph{two} components that $\mathcal{R}''$ already covers. Although $\mathcal{R}'' = \{R''_1, R''_2\}$ covers all components of $G'$, the bridges obtained from these subsets link $C_2$ and $C_3$ twice, thus connecting the four components into two different components. A further procedure was implemented by \cite{hawa2018} that recitifies this issue, but we found that the combination of both procedures was unnecessary. Therefore, we replace the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner.
+In the first incarnation of this algorithm \cite{becker2010}, a procedure was used that searches through $\mathcal{L}$ just once to find edge subsets for the collection $\mathcal{R}''$. However, for some instances, although $\mathcal{R}''$ covers all components of $G'$ the components cannot be connected into a single alternating Hamiltonian cycle. This issue stems from the requirements for edges to form a subset, where originally Condition~\ref{item:overlap} allowed edges to be in multiple components already covered by $\mathcal{R}''$. This causes extra edges from $R \backslash R'$ to be added between components that have already been connected, resulting in multiple components being formed. Restricting Condition~\ref{item:overlap} such that only \emph{one} edge can be in a component covered by $\mathcal{R}''$ prevents these unnecessary additional edges from being included in $R'$, ensuring the components are linked to produce a single cycle. Figure~\ref{fig:overlaperror} shows the formation of $\mathcal{R}''$ using the original procedure, where the subset $R''_2$ contains edges in \emph{two} components that $\mathcal{R}''$ already covers. Although $\mathcal{R}'' = \{R''_1, R''_2\}$ covers all components of $G'$, the bridges obtained from these subsets link $C_2$ and $C_3$ twice, thus connecting the four components into two different components. A further procedure was implemented by \cite{hawa2018} that recitifies this issue, but we found that the combination of both procedures was unnecessary. Therefore, we replace the two procedures with a single algorithm, BCR, that produces the same results in a more efficient manner.
 
 \begin{figure*}[h!]
 	\centering	
-	\begin{subfigure}[h]{0.35\textwidth}
-		\includestandalone[width=\textwidth]{figures/bcrerror}
-		\caption{}
-		\label{fig:bcrerror}
-	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.25\textwidth}
-		\includestandalone[width=\textwidth]{figures/mpsconnecterror}
-		\caption{}
-		\label{fig:mpsconnecterror}
-	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.25\textwidth}
-		\includestandalone[width=\textwidth]{figures/mpscycleerror}
-		\caption{}
-		\label{fig:mpscycleerror}
-	\end{subfigure}
+	\subfloat[]{\includestandalone[width=0.35\textwidth]{figures/bcrerror}
+	\label{fig:bcrerror}}
+	\hspace{5mm}
+	\subfloat[]{\includestandalone[width=0.25\textwidth]{figures/mpsconnecterror}
+	\label{fig:mpsconnecterror}}
+	\hspace{5mm}
+	\subfloat[]{\includestandalone[width=0.25\textwidth]{figures/mpscycleerror}
+	\label{fig:mpscycleerror}}
 	\caption{The procedure proposed by \cite{becker2010} creates subsets in $\mathcal{R}''$ each containing edges in both $C_2$ and $C_3$, resulting in two cyclic components in $G'$ as opposed to a single alternating Hamiltonian cycle.}	
 	\label{fig:overlaperror}
 \end{figure*}
@@ -247,16 +217,11 @@ As the SCPP is a relatively new problem, few methods have been seen in literatur
 
 \begin{figure}[H]	
 	\centering
-	\begin{subfigure}[h]{0.33\textwidth}
-		\includestandalone[width=\textwidth]{figures/mffd}
-		\caption{MFFD}
-		\label{fig:mffd}
-	\end{subfigure} \hspace{15mm}
-	\begin{subfigure}[h]{0.33\textwidth}
-		\includestandalone[width=\textwidth]{figures/mffdplus}
-		\caption{MFFD$^+$}
-		\label{fig:mffdplus}
-	\end{subfigure}
+	\subfloat[MFFD]{\includestandalone[width=0.33\textwidth]{figures/mffd}
+		\label{fig:mffd}}
+	\hspace{15mm}
+	\subfloat[MFFD$^+$]{\includestandalone[width=0.33\textwidth]{figures/mffdplus}
+		\label{fig:mffdplus}}
 	\caption{Solutions formed using the MFFD and MFFD$^+$ heuristics. Here, $|\mathcal{I}| = 15$, $W = 1000$, and $\tau = 70$. As the theoretical minimum $t = 6$ bins, MFFD$^+$ has produced an optimal solution.}
 	\label{fig:mffdvsmffdplus}
 \end{figure}
@@ -278,7 +243,7 @@ Our final operator, AGX$'$, behaves in a similar manner to AGX; however rather t
 
 As explained in the previous section, removing an item from a bin in a solution for the SCPP may result in a violation of the vicinal sum constraint. Therefore, in order to maintain feasibility of each bin, the operators disregard entire bins in the parent solutions that contain items already in the offspring, rather than removing individual items. These excluded bins, however, may also hold items that are not yet present in the offspring $\mathcal{S}$. Consequently, on completion of the recombination, $\mathcal{S}$ will be a partial solution. To rectify this, the following repair procedure is implemented. Firstly,the MFFD$^+$ heuristic described in Section~\ref{sec:heur} is applied using just the missing items to form a second partial solution $\mathcal{S}'$. Then, both $\mathcal{S}$ and $\mathcal{S}'$ are used as input into a local search procedure, producing a full feasible offspring solution. Figure~\ref{fig:recomb} shows the partial offspring $\mathcal{S}$ produced from two parent solutions using each of the recombination operators, along with the individual items missing from each offspring.
 
-\begin{figure}[H]	
+\begin{figure*}[h!]	
 	\centering
 	\begin{minipage}{0.3\textwidth}
 		\includestandalone[width=\textwidth]{figures/parentS1}
@@ -286,28 +251,21 @@ As explained in the previous section, removing an item from a bin in a solution 
 	\begin{minipage}{0.3\textwidth}
 		\includestandalone[width=\textwidth]{figures/parentS2}
 	\end{minipage}
-\end{figure}
+\end{figure*}
 
-\begin{figure}[H]	
+\begin{figure*}[h!]	
 	\centering
-	\begin{subfigure}[h]{0.3\textwidth}
-		\includestandalone[width=\textwidth]{figures/gga}
-		\caption{GGA}
-		\label{fig:gga}
-	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.3\textwidth}
-		\includestandalone[width=\textwidth]{figures/agx}
-		\caption{AGX}
-		\label{fig:agx}
-	\end{subfigure} \hspace{5mm}
-	\begin{subfigure}[h]{0.3\textwidth}
-		\includestandalone[width=\textwidth]{figures/agxdash}
-		\caption{AGX$'$}
-		\label{fig:agxdash}
-	\end{subfigure}
+	\subfloat[GGA]{\includestandalone[width=0.3\textwidth]{figures/gga}
+		\label{fig:gga}}
+	\hspace{5mm}
+	\subfloat[AGX]{\includestandalone[width=0.3\textwidth]{figures/agx}
+		\label{fig:agx}}
+	\hspace{5mm}
+	\subfloat[AGX$'$]{\includestandalone[width=0.3\textwidth]{figures/agxdash}
+		\label{fig:agxdash}}
 	\caption{Partial offspring solutions and missing items created from parent solutions $\mathcal{S}_1$ and $\mathcal{S}_2$ using our different recombination operators. In (a), GGA has copied bins $S_2, S_3$ and $S_4$ from $\mathcal{S}_2$ to the offspring, and in (b) and (c) $\mathcal{S}_1$ is the initial parent for both AGX and AGX$'$ as it contains both the fullest bin and the bin with the most items.}
 	\label{fig:recomb}
-\end{figure}
+\end{figure*}
 
 \subsection{Local Search}
 \label{sub:localsearch}
@@ -345,7 +303,7 @@ Two different bin sizes, $W = 2500$ and 5000 (also of height $H=1$), were used i
 \setlength{\tabcolsep}{4pt}
 \centering
 \caption{Best solutions obtained from the EA using the GGA, AGX, and AGX$'$ recombination operators, and from the MFFD$^+$ heuristic. Figures in bold indicate the best results for each instance class. Asterisks indicate statistical significance at $\leq 0.05 (^{*})$ and $\leq 0.01 (^{**})$ according to a two-tailed paired t-test and two-tailed McNemar's test for the $|\mathcal{S}|$ and $\%t$ columns respectively. Note that the statistical tests were only performed on the recombination operators.}
-\scriptsize
+\small
 \begin{threeparttable}
 \begin{tabular}{crrcrrcrrcrrcrr}
 	\toprule
@@ -408,7 +366,7 @@ Ideally, every element in the set of feasible bins $\mathcal{F}$ would correspon
 
 \begin{figure}[h!]	
 	\centering
-	\includegraphics[width=\textwidth]{figures/AlgCMSA}
+	\includegraphics[width=0.3\textwidth]{figures/AlgCMSAcrop}
 	\caption{Pseudocode for the Construct, Merge, Solve \& Adapt (CMSA) algorithm for the SCPP, which uses our \textsc{MinDLX} algorithm to find a minimum cardinality exact cover.}	
 	\label{fig:algcmsa}
 \end{figure}
@@ -421,10 +379,11 @@ To find an exact cover, we use a recursive depth-first backtracking process impl
 \label{sub:expcmsa}
 \noindent Table~\ref{table:cmsa} compares the performance of the CMSA and EA algorithms on 50 randomly selected instances from each of the 12 instance classes. A time limit of 3600 seconds was used for the overall CMSA algorithm, while \textsc{MinDLX} was set to run for a maximum of 600 seconds in each iteration, which was deemed necessary in our initial trials. Parameter settings of $p = 3$ and $maxAge = 3$ were also decided after preliminary tests. For a fair comparison, we also ran our EA on the 50 instances for 3600 seconds each, selecting the best solution of the three recombination operators to compare the EA with CMSA. The source code for the CMSA algorithm including the modified \textsc{MinDLX} procedure is also available online \cite{hawa2019cmsa}.
 
-\begin{table}[h!]
+\begin{table*}[h!]
+\setlength{\tabcolsep}{10pt}
 \centering
 \caption{Results obtained from the CMSA algorithm and the EA using the best result from the three recombination operators. Figures in bold and asterisks should be interpreted as in Table~\ref{table:ea}.}
-\footnotesize
+\small
 \begin{threeparttable}
 \begin{tabular}{crrcrrrcrrr}
 	\toprule
@@ -460,7 +419,7 @@ To find an exact cover, we use a recursive depth-first backtracking process impl
 \end{tablenotes}	
 \end{threeparttable}	
 \label{table:cmsa}
-\end{table}
+\end{table*}
 
 
 \noindent The results in Table~\ref{table:cmsa} show that although CMSA does not perform as well as the EA overall, it appears to be useful for real instances. We can see that for all six real instance classes, there is at least one instance of the 50 in which the best solution found by CMSA comprises fewer bins than the best solution found by the EA (across all three recombination operators). Furthermore, CMSA is able to find optimal solutions using $t$ bins for two instances when $|\mathcal{I}| = 500$ and $W = 5000$ for which the corresponding solutions found by the EA for these instances are not optimal. 
