@@ -38,14 +38,52 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 
 \noindent where \textbf{lhs}($i$) and \textbf{rhs}($i$) denote the left- and right-hand score widths of the $i$th item in bin $S$. Clearly, if this constraint is satisfied, the distance between the score lines will be sufficient for the knives to be able to cut appropriately. An example of this is shown in Fig.~\ref{fig:itemsdimknives}. Here, although the vicinal sum constraint is met between items A and B, the full alignment of all three items is infeasible as the sum of the adjacent score widths of items B and C is less than the minimum scoring distance $\tau$, and so the knives are unable to move close enough together to score the lines in the required locations.
 
-The remainder of this section will formally define both this single-bin problem and the corresponding multi-bin problem known as the Score-Constrained Packing Problem (SCPP). In the next section, we will provide a brief overview of an updated exact polynomial-time algorithm used to solve the single-bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse existing heuristics from literature. A tailored evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from our experiments. Section~\ref{sec:cmsa} details a hybrid metaheuristic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work.
-
 \begin{figure}[H]	
 	\centering
 	\includestandalone[width=0.7\textwidth]{figures/itemsdimknives}
 	\caption{Dimensions of an item $i$ marked with dashed score lines, and an example packing showing both feasible and infeasible alignments of three items to be scored by pairs of knives. Here, the minimum scoring distance $\tau = 70$.}	
 	\label{fig:itemsdimknives}
 \end{figure}
+
+\noindent The remainder of this section will formally define both this single-bin problem and the corresponding multi-bin problem known as the Score-Constrained Packing Problem (SCPP). In the next section, we will provide a brief overview of an updated exact polynomial-time algorithm used to solve the single-bin problem. Section~\ref{sec:heur} will explain the difficulties associated with the SCPP and analyse existing heuristics from literature. A tailored evolutionary algorithm for the SCPP is presented in Section~\ref{sec:ea}, along with results from our experiments. Section~\ref{sec:cmsa} details a hybrid metaheuristic method combined with an exact procedure involving a recursive backtracking algorithm to improve upon results obtained from the EA. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcome and possible directions for further work. A summary of the notation used in this paper is provided in Table~\ref{table:notation}.
+
+
+\begin{table}[h]
+\centering
+\caption{Summary of the notation used for the problems considered in this paper.}
+\footnotesize
+\begin{tabular}{l p{12cm}}
+	\toprule
+	Term & Description \\
+	\midrule
+	$\mathcal{I}$ & A set containing $n$ items. \\
+	$W$ & Capacity of bins used.\\
+	$\mathcal{S}$ & Feasible solution to an instance of the SCPP comprising bins $S_1,\dotsc,S_k$.\\
+	$\mathcal{F}$ & Set of all item subsets that can be feasibly packed into a bin.\\
+	$w_i$ & Width of an item $i \in \mathcal{I}$.\\
+	$a_i, b_i$ & Score widths of an item $i \in \mathcal{I}$, with $a_i \leq b_i$.\\
+	$\tau$ & Minimum scoring distance.\\
+	$A(.)$ & Total width of the set of items between the parentheses.\\
+	& \\
+	$\mathcal{M}$ & Instance of the COP which is a multiset of unordered pairs of integers.\\
+	$\mathcal{T}$ & Solution to an instance $\mathcal{M}$ of the COP.\\
+	$V$ & Vertex set comprising $2n+2$ vertices.\\
+	$w(v_i)$ & Value of vertex $v_i$.\\
+	$p(v_i)$ & Partner of vertex $v_i$.\\
+	$B$ & Set comprising $n+1$ blue edges between partner vertices.\\
+	$R$ & Set comprising red edges between vertices that meet the vicinal sum constraint and are not partners.\\
+	$m(v_i)$ & Match of vertex $v_i$.\\
+	$R'$ & Set comprising red edges between matched vertices.\\
+	$C_1,\dotsc,C_z$ & Cyclic components of subgraph $G'$.\\
+	$\mathcal{L}$ & List of edges in $R'$.\\
+	$\mathcal{R}''$ & Collection of edge subsets $R''_1, R''_2,\dots$.\\
+	& \\
+	$t$ & Theoretical minimum $t = \ceil*{\sum_{i=1}^{n} w_i / W}$, which is a lower bound for $k$.\\
+	$f(\mathcal{S})$ & Fitness function $f(\mathcal{S}) = \sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2 / |\mathcal{S}|$ used to distinguish better packings between solutions containing equal number of bins.\\
+	\bottomrule
+\end{tabular}	
+\label{table:notation}
+\end{table}
 
 \subsection{Problem Definitions}
 \label{sub:intro}
@@ -532,7 +570,7 @@ The pseudocode for CMSA is provided in Algorithm~\ref{alg:cmsa}. Firstly, a fixe
 \begin{table}[h]
 \setlength{\tabcolsep}{3pt}
 \centering
-\caption{Results obtained from the CMSA algorithm and the EA using the best result from the three recombination operators. Figures in bold and asterisks should be interpreted as in Table~\ref{table:ea}.}
+\caption{Results obtained from the CMSA algorithm and the EA using the three recombination operators. Figures in bold and asterisks should be interpreted as in Table~\ref{table:ea}.}
 \scriptsize
 \begin{threeparttable}
 \begin{tabular}{crrcrrcrrcrrcrr}
