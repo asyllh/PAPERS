@@ -4,14 +4,29 @@
 	
 \begin{frontmatter}
 \title{Exact and Approximate Methods for the Score-Constrained Packing Problem}
-\author{Asyl L. Hawa}
+\author{Asyl L. Hawa\corref{cor1}}
+\ead{HawaA@cardiff.ac.uk}
+
 \author{Rhyd Lewis}
+\ead{LewisR9@cardiff.ac.uk}
+
 \author{Jonathan M. Thompson}
-\address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, UK}
+\ead{ThompsonJM1@cardiff.ac.uk}
+
+\cortext[cor1]{Corresponding author}
+\address{School of Mathematics, Cardiff University, Senghennydd Road, Cardiff, CF24 4AG, UK}
 \begin{abstract}
-This paper investigates a packing problem related to the one-dimensional bin packing problem in which the order and orientation of items influences the feasibility of a solution. We give an exact polynomial-time algorithm for the Constrained Ordering Problem, explaining how it can be used to find a feasible packing of items in a single bin. We then introduce an evolutionary algorithm for the multi-bin version of the problem, which incorporates the exact algorithm along with a local search procedure and various recombination operators. We also explore an alternative approach based on a Construct, Merge, Solve $\&$ Adapt procedure, and discuss the circumstances in which each approach proves most advantageous.
-\end{abstract}	
+This paper investigates a packing problem related to the one-dimensional bin packing problem in which the order and orientation of items influences the feasibility of a solution. We give an exact polynomial-time algorithm for the Constrained Ordering Problem, explaining how it can be used to find a feasible packing of items in a single bin. We then introduce an evolutionary algorithm for the multi-bin version of the problem, which incorporates the exact algorithm along with a local search procedure and various recombination operators. We also explore an alternative approach based on a Construct, Merge, Solve and Adapt procedure, and discuss the circumstances in which each approach proves most advantageous.
+\end{abstract}
+
+\begin{keyword}
+	Evolutionary computations \sep packing \sep combinatorial optimization
+\end{keyword}
+
+\newpageafter{abstract}
 \end{frontmatter}
+
+
 
 
 %--------------------------------------------------------------------------------------
@@ -47,7 +62,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	\label{fig:itemsdimknives}
 \end{figure}
 
-\noindent The remainder of this section will formally define both this single-bin problem and the corresponding multi-bin problem, known as the Score-Constrained Packing Problem (SCPP). In the next section, we will give an updated polynomial-time algorithm that exactly solves the single-bin problem. Section~\ref{sec:heur} then explains the difficulties associated with the SCPP and analyses existing heuristics from literature. A tailored evolutionary algorithm (EA) for the SCPP is then presented in Section~\ref{sec:ea}, along with results from our experiments. An alternative to the EA based on the Construct, Merge, Solve $\&$ Adapt (CMSA) algorithm is then considered in Section~\ref{sec:cmsa}. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcomes and possible directions for further work. A summary of the notation used in this paper is provided in Table~\ref{table:notation}.
+\noindent The remainder of this section will formally define both this single-bin problem and the corresponding multi-bin problem, known as the Score-Constrained Packing Problem (SCPP). In the next section, we will give an updated polynomial-time algorithm that exactly solves the single-bin problem. Section~\ref{sec:heur} then explains the difficulties associated with the SCPP and analyses existing heuristics from literature. A tailored evolutionary algorithm (EA) for the SCPP is then presented in Section~\ref{sec:ea}, along with results from our experiments. An alternative to the EA based on the Construct, Merge, Solve and Adapt (CMSA) algorithm is then considered in Section~\ref{sec:cmsa}. Finally Section~\ref{sec:conclusion} concludes the paper and discusses outcomes and possible directions for further work. A summary of the notation used in this paper is provided in Table~\ref{table:notation}.
 
 
 \begin{table}[h]
@@ -78,7 +93,7 @@ Consider a set $\mathcal{I}$ of $n$ rectangular items of fixed height $H$. Each 
 	$R'$ & Set comprising red edges between matched vertices.\\
 	$C_1,\dotsc,C_z$ & Cyclic components of subgraph $G'$.\\
 	$\mathcal{L}$ & List of edges in $R'$.\\
-	$\mathcal{R}''$ & Collection of edge subsets $R''_1, R''_2,\dots$.\\
+	$\mathcal{R}''$ & Collection of edge subsets $R''_1, R''_2,\dots$\\
 	& \\
 	$t$ & Theoretical minimum $t = \ceil*{\sum_{i=1}^{n} w_i / W}$, which is a lower bound for $k$.\\
 	$f(\mathcal{S})$ & Fitness function $f(\mathcal{S}) = \sum_{S_j \in \mathcal{S}} (A(S_j)/W)^2 / |\mathcal{S}|$, used to distinguish better packings between solutions containing an equal number of bins.\\
@@ -205,7 +220,7 @@ In general, determining whether a graph is Hamiltonian is NP-complete, whilst th
 \end{figure}
 \end{comment}
 
-As shown in the pseudocode in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order and are matched with the highest-weighted unmatched vertex adjacent in $R$. Here, the \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$. The set $R'$ then consists of all edges from $R$ between matched vertices, i.e. $\{\{v_i, m(v_i)\} : v_i \in V \}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched provided $v_{i-1}$ has been matched successfully and is adjacent to $v_i$'s partner, $p(v_i)$. Then, $v_i$ is matched with $v_{i-1}$'s match, and $v_{i-1}$ is rematched with $p(v_i)$ (lines 9--13).
+\noindent As shown in the pseudocode in Algorithm~\ref{alg:mcm}, vertices are considered in turn in weight-ascending order and are matched with the highest-weighted unmatched vertex adjacent in $R$. Here, the \emph{match} of a vertex $v_i$ is denoted as $m(v_i)$. The set $R'$ then consists of all edges from $R$ between matched vertices, i.e. $\{\{v_i, m(v_i)\} : v_i \in V \}$. In the event that a vertex $v_i$ is not adjacent to any other vertex via an edge in $R$, the previous vertex $v_{i-1}$ can be rematched provided $v_{i-1}$ has been matched successfully and is adjacent to $v_i$'s partner, $p(v_i)$. Then, $v_i$ is matched with $v_{i-1}$'s match, and $v_{i-1}$ is rematched with $p(v_i)$ (lines 9--13).
 
 At this point, if $R'$ does not contain $n+1$ edges then there are too few edges to form an alternating Hamiltonian cycle, thus no feasible solution can exist and computation terminates. Otherwise, the spanning subgraph $G'=(V, B \cup R')$ will be a 2-regular graph consisting of cyclic components $C_1,C_2,\dotsc,C_z$ (as illustrated in Figs.~\ref{fig:matching} and~\ref{fig:mps}). Clearly, if $z = 1$, then $G'$ is an alternating Hamiltonian cycle and a solution has been found; otherwise $G'$ comprises multiple cycles, so AHC must find a way of connecting these components to form a single alternating Hamiltonian cycle.
 
@@ -274,7 +289,7 @@ Once a feasible collection $\mathcal{R}''$ has been produced, BCR uses each subs
 	\label{fig:bcr}
 \end{figure}
 
-In the first incarnation of this algorithm \citep{becker2010}, a procedure was used that searches through $\mathcal{L}$ just once to find edge subsets for the collection $\mathcal{R}''$. However, for some instances, although $\mathcal{R}''$ covers all components of $G'$, these components cannot be connected into a single alternating Hamiltonian cycle. This issue stems from the requirements for edges to form a subset, where originally Condition~\ref{item:overlap} allowed edges to be in multiple components already covered by $\mathcal{R}''$. This causes extra edges from $R \backslash R'$ to be added between components that have already been connected, resulting in multiple components being formed. Restricting Condition~\ref{item:overlap} such that only \emph{one} edge can be in a component covered by $\mathcal{R}''$ prevents these unnecessary additional edges from being included in $R'$, ensuring the components are linked to produce a single cycle. Figure~\ref{fig:overlaperror} shows the formation of $\mathcal{R}''$ using the original procedure, where the subset $R''_2$ contains edges in \emph{two} components that $\mathcal{R}''$ already covers. Although $\mathcal{R}'' = \{R''_1, R''_2\}$ covers all components of $G'$, the bridges obtained from these subsets link $C_2$ and $C_3$ twice, thus connecting the four components into two different components. Therefore, we replaced this procedure with BCR, which rectifies the issue and operates in a more efficient manner.
+\noindent In the first incarnation of this algorithm \citep{becker2010}, a procedure was used that searches through $\mathcal{L}$ just once to find edge subsets for the collection $\mathcal{R}''$. However, for some instances, although $\mathcal{R}''$ covers all components of $G'$, these components cannot be connected into a single alternating Hamiltonian cycle. This issue stems from the requirements for edges to form a subset, where originally Condition~\ref{item:overlap} allowed edges to be in multiple components already covered by $\mathcal{R}''$. This causes extra edges from $R \backslash R'$ to be added between components that have already been connected, resulting in multiple components being formed. Restricting Condition~\ref{item:overlap} such that only \emph{one} edge can be in a component covered by $\mathcal{R}''$ prevents these unnecessary additional edges from being included in $R'$, ensuring the components are linked to produce a single cycle. Figure~\ref{fig:overlaperror} shows the formation of $\mathcal{R}''$ using the original procedure, where the subset $R''_2$ contains edges in \emph{two} components that $\mathcal{R}''$ already covers. Although $\mathcal{R}'' = \{R''_1, R''_2\}$ covers all components of $G'$, the bridges obtained from these subsets link $C_2$ and $C_3$ twice, thus connecting the four components into two different components. Therefore, we replaced this procedure with BCR, which rectifies the issue and operates in a more efficient manner.
 
 \begin{figure}[h!]
 	\centering	
@@ -482,7 +497,7 @@ On the whole, AGX generates the least favourable results, particularly for real 
 
 Given a set of feasible bins $\mathcal{B}$ for an instance of the SCPP, it can be seen that finding a solution $\mathcal{S}^*$ is in fact an exact cover problem. Indeed, since the bins are already feasible, the complications associated with the vicinal sum constraint are eliminated.
 
-Ideally, every element in the set of feasible bins $\mathcal{F}$ would correspond to a member of $\mathcal{B}$, however since the cardinality of $\mathcal{F}$ has the potential to grow at an exponential rate in relation to the problem size, it may not be possible to produce $\mathcal{B}$ in this manner, let alone find an exact cover in a feasible amount of time. One option is to implement a method of finding an exact cover within the Construct, Merge, Solve \& Adapt (CMSA) algorithm of \cite{blum2016}. 
+Ideally, every element in the set of feasible bins $\mathcal{F}$ would correspond to a member of $\mathcal{B}$, however since the cardinality of $\mathcal{F}$ has the potential to grow at an exponential rate in relation to the problem size, it may not be possible to produce $\mathcal{B}$ in this manner, let alone find an exact cover in a feasible amount of time. One option is to implement a method of finding an exact cover within the Construct, Merge, Solve and Adapt (CMSA) algorithm of \cite{blum2016}. 
 
 %Rather than having a population of full solutions as used in our EA, CMSA operates on the set $\mathcal{B}$ of individual feasible bins.
 \begin{comment}
