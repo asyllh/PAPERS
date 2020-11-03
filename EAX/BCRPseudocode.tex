@@ -1,0 +1,241 @@
+\documentclass[a4paper,11pt]{article}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmicbreak}{\State \textbf{break}}
+\newcommand{\Break}{\algorithmicbreak}
+\renewcommand{\algorithmicreturn}{\State \textbf{return}}
+\newcommand{\algorithmicto}{\textbf{ to }}
+\newcommand{\To}{\algorithmicto}
+\newcommand{\algorithmicrun}{\State \textbf{call }}
+\newcommand{\Run}{\algorithmicrun}
+\newcommand{\algorithmicoutput}{\textbf{output }}
+\newcommand{\Output}{\algorithmicoutput}
+\newcommand{\algorithmictrue}{\textbf{true}}
+\newcommand{\True}{\algorithmictrue}
+\newcommand{\algorithmicfalse}{\textbf{false}}
+\newcommand{\False}{\algorithmicfalse}
+\newcommand{\algorithmicand}{\textbf{ and }}
+\newcommand{\AAnd}{\algorithmicand}
+\newcommand{\algorithmicnot}{\textbf{not}}
+\newcommand{\Not}{\algorithmicnot}
+\newcommand{\algorithmicor}{\textbf{ or }}
+\newcommand{\Or}{\algorithmicor}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\usepackage{caption}
+\usepackage{comment}
+\usepackage[inline]{enumitem}
+\usepackage{float}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage[colorlinks]{hyperref} 
+\usepackage[dvipsnames]{xcolor}
+%Tikz colours, used in tikz figures only
+\colorlet{tBlue}{RoyalBlue!35!Cerulean} %tikz color
+\colorlet{tRed}{Red} %tikz color
+\definecolor{tGreen}{HTML}{569909} %tikz color
+\definecolor{tOrange}{HTML}{FA7602} %tikz color
+\definecolor{tLightGreen1}{HTML}{C1E685} %tikz color
+\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
+\colorlet{tLightOrange}{Dandelion!65!White}
+\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color
+%Text colours
+\colorlet{myRed}{Red!50!OrangeRed}
+\newcommand{\rev}[1]{{\color{myRed}#1}}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{soul}
+\usepackage{standalone}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usepackage{wrapfig}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+%-------------------------------------------------
+
+\begin{document}
+\title{Appendix\vspace{-5mm}}
+\date{}
+\maketitle
+\section{The Bridge-Cover Recognition Algorithm}
+
+\begin{algorithm}[H]
+\caption{BCR ($G'=(V, B \cup R')$)}
+\begin{algorithmic}[1]
+	\State create list $\mathcal{L}$ of edges in $R'$
+	\State let $v_k$ be the lower-indexed vertex of the $k$th edge in $\mathcal{L}$, and let $m(v_k)$ be the higher-indexed vertex of the $k$th edge in $\mathcal{L}$
+	\State $\mathcal{R}'' \gets \emptyset$
+	\State $\mathcal{C}[j] \gets 0$ $\forall j = 1,\dotsc,z$ \Comment Records the components that have been covered
+	\State $n\gets 0$ \Comment Number of components that have been covered
+	\State $i \gets 1$ \Comment Index of subsets $R''_i$
+	\While{$k < |\mathcal{L}|-2 \AAnd (\{v_k, m(v_{k+1})\} \notin R \Or (\{v_k,m(v_k)\} \in C_p \newline \hspace*{4mm} \AAnd \{v_{k+1},m(v_{k+1})\} \in C_p))$}
+		\State $k \gets k+1$
+	\EndWhile
+	\If{$\{v_k,m(v_{k+1})\} \in R \AAnd \{v_k,m(v_k)\} \in C_p \AAnd \{v_{k+1},m(v_{k+1})\} \in C_q$}
+		\State $R''_i \gets \{\{v_k,m(v_{k})\}\} \cup \{\{v_{k+1},m(v_{k+1})\}\}$
+		\State $\mathcal{C}[p] \gets 1$, $\mathcal{C}[q] \gets 1$
+		\State $n \gets n+2$
+		\State $k \gets k+1$
+		\While{$k < |\mathcal{L}|-1 \AAnd \{v_k,m(v_{k+1})\} \in R \newline \hspace*{10.2mm}\AAnd \{v_{k+1},m(v_{k+1})\} \in C_r : \mathcal{C}[r] = 0$}
+			\State $k \gets k+1$
+			\State $R''_i \gets R''_i \cup \{\{v_{k},m(v_{k})\}\}$
+			\State $\mathcal{C}[r] \gets 1$
+			\State $n \gets n+1$
+		\EndWhile
+		\State $\mathcal{R}'' \gets R''_i$
+	\EndIf
+	\If{$\mathcal{R}'' = \emptyset$}
+		\State infeasible, \textbf{end}
+	\ElsIf{$n = z$}
+		\State feasible, \textbf{go to} Line 93
+	\EndIf
+	\State remove edges that are in $\mathcal{R}''$ from $\mathcal{L}$
+	\State added $\gets \False$
+	\State $\overline{\mathcal{C}} \gets \mathcal{C}$
+	\State $\overline{n} \gets n$
+\algstore{bcr}
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\begin{algorithmic}[1]		
+\algrestore{bcr}
+	\While{$\Not$ added}
+		\State $k \gets 1$			
+		\Repeat
+			\State $\overline{R''} \gets \emptyset$
+			\While{$k < |\mathcal{L}|-2 \AAnd (\{v_k, m(v_{k+1})\} \notin R \Or (\{v_k,m(v_k)\} \in C_p \newline \hspace*{16mm}\AAnd \{v_{k+1},m(v_{k+1})\} \in C_p))$}		
+				\State $k \gets k+1$
+			\EndWhile			
+			\If{$\{v_k,m(v_{k+1})\} \in R \AAnd \{v_k,m(v_k)\} \in C_p \AAnd \{v_{k+1},m(v_{k+1})\} \in C_q \newline \hspace*{16mm} \AAnd ((\mathcal{C}[p] = 1 \AAnd \mathcal{C}[q] = 0) \Or (\mathcal{C}[p] = 0 \AAnd \mathcal{C}[q] = 1))$}
+				\State $R''_i \gets \{\{v_k,m(v_{k})\}\} \cup \{\{v_{k+1},m(v_{k+1})\}\}$
+				\State $\mathcal{C}[p] \gets 1$, $\mathcal{C}[q] \gets 1$
+				\State $n \gets n+1$
+				\If{$n < z$}
+					\State $k \gets k+1$
+					\While{$k < |\mathcal{L}|-1 \AAnd \{v_k,m(v_{k+1})\} \in R \newline \hspace*{27mm}\AAnd \{v_{k+1},m(v_{k+1})\} \in C_r : \mathcal{C}[r] = 0$}
+						\State $k \gets k+1$
+						\State $R''_i \gets R''_i \cup \{\{v_{k},m(v_{k})\}\}$
+						\State $\mathcal{C}[r] \gets 1$
+						\State $n \gets n+1$
+					\EndWhile 
+				\EndIf %End if not all cycles covered
+				\State $\mathcal{R}'' \gets \mathcal{R}'' \cup R''_i$
+				\State added $\gets \True$
+				\State $\overline{\mathcal{C}} \gets \mathcal{C}$, $\overline{n} \gets n$
+				\State $i \gets i+1$
+			\ElsIf{$\{v_k,m(v_{k+1})\} \in R \AAnd \{v_k,m(v_k)\} \in C_p \AAnd \newline \hspace*{17mm} \{v_{k+1},m(v_{k+1})\} \in C_q \AAnd ((\mathcal{C}[p] = 0 \AAnd \mathcal{C}[q] = 0))$}	
+				\State overlap $\gets \False$
+				\State $\overline{R''} \gets \{\{v_k,m(v_{k})\}\} \cup \{\{v_{k+1},m(v_{k+1})\}\}$
+				\State $\overline{\mathcal{C}}[p] \gets 1$, $\overline{\mathcal{C}}[q] \gets 1$
+				\State $\overline{n} \gets \overline{n}+2$
+				\State $k \gets k+1$
+				\While{$k < |\mathcal{L}|-1 \AAnd \{v_k,m(v_{k+1})\} \in R \newline \hspace*{21.3mm}\AAnd \{v_{k+1},m(v_{k+1})\} \in C_r : \overline{\mathcal{C}}[r] = 0$}
+					\State $k \gets k+1$
+					\State $\overline{R''} \gets \overline{R''} \cup \{\{v_{k},m(v_{k})\}\}$
+					\State $\overline{\mathcal{C}}[r] \gets 1$
+					\State $\overline{n} \gets \overline{n}+1$
+				\EndWhile
+				\If{$k < |\mathcal{L}|-1 \AAnd \{v_k,m(v_{k+1})\} \in R \newline \hspace*{21.3mm}\AAnd \{v_{k+1},m(v_{k+1})\} \in C_r : \overline{\mathcal{C}}[r] = 1$}
+					\If{$\mathcal{C}[r] = 1$}
+						\State overlap $\gets \True$
+						\State $k \gets k+1$
+						\State $\overline{R''} \gets \overline{R''} \cup \{\{v_{k},m(v_{k})\}\}$
+\algstore{bcr2}				
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}[H]
+\begin{algorithmic}[1]		
+\algrestore{bcr2}								
+						\If{$n < z$}
+							\State $k \gets k+1$
+							\While{$k < |\mathcal{L}|-1 \AAnd \{v_k,m(v_{k+1})\} \in R \newline \hspace*{38.7mm}\AAnd \{v_{k+1},m(v_{k+1})\} \in C_r : \overline{\mathcal{C}}[r] = 0$}
+								\State $k \gets k+1$
+								\State $\overline{R''} \gets \overline{R''} \cup \{\{v_{k},m(v_{k})\}\}$
+								\State $\overline{\mathcal{C}}[r] \gets 1$
+								\State $\overline{n} \gets \overline{n}+1$
+							\EndWhile
+						\EndIf
+					\ElsIf{$\mathcal{C}[r] = 0$}
+						\State overlap $\gets \False$
+					\EndIf %End if component covered
+				\EndIf %End if edge found that is in a component that is covered		
+				\If{overlap}
+					\State $R''_i \gets \overline{R''}$
+					\State $\mathcal{R}'' \gets \mathcal{R}'' \cup R''_i$
+					\State added $\gets \True$
+					\State $\mathcal{C} \gets \overline{\mathcal{C}}$, $n \gets \overline{n}$
+					\State $i \gets i+1$
+				\ElsIf{$\Not$ overlap}
+					\State $\overline{\mathcal{C}} \gets \mathcal{C}$, $\overline{n} \gets n$			
+				\EndIf %End if overlap
+			\EndIf %End if-elsif adj and diff cycles and one covered one not or none covered
+			\State $k \gets k+1$
+		\Until{$k \geq |\mathcal{L}|-1 \Or n = z$} %End do while loop
+		\If{$n = z$}
+			\State feasible, \textbf{go to} Line 93
+		\ElsIf{added}
+			\State remove edges that are in $\mathcal{R}''$ from $\mathcal{L}$
+			\State added $\gets \False$
+			\If{$|\mathcal{L}| < 2$}
+				\State infeasible, not enough edges left to make another set, \textbf{end}
+			\EndIf
+		\ElsIf{$\Not$ added}
+			\State infeasible, no new set created so no more sets exist, \textbf{end}
+		\EndIf
+	\EndWhile %End While !added
+	\State \textit{Connecting the components together}
+	\State let $v_j$ be the lower-indexed vertex of the $j$th edge in the set $R''_i$, and let $m(v_j)$ be the higher-indexed vertex of the $j$th edge in the set $R''_i$
+	\For{$i \gets 1 \To |\mathcal{R}''|$}
+		\For{$j \gets 1 \To |R''_i|$}
+			\State $R' \gets R' \cup \{\{v_j, m(v_{j+1})\}\}$
+		\EndFor
+		\State $j \gets |R''_i|$
+		\State $R' \gets R' \cup \{\{v_j, m(v_1)\}\}$
+		\State remove all edges in $R''_i$ from $R'$
+	\EndFor
+	\Return either modified set $R'$ or statement of infeasibility
+\end{algorithmic}
+\label{alg:bcr}	
+\end{algorithm}
+\newpage
+
+%--------------------------------------------------------------------------------------
+\noindent Firstly, the edges in $R'$ are sorted into a list $\mathcal{L}$ where the lower-indexed vertices of the edges are in lexicographical order. Initially, the collection $\mathcal{R}''$ is empty, and variables are defined for the procedure. The variables $\mathcal{C}[j]$ $\forall j=1,\dotsc,z$ keeps track of the cyclic components that have been covered (i.e. which components of $G'$ have an edge that is in a subset in $\mathcal{R}''$). Here, $\mathcal{C}[j] =1$ if $\mathcal{R}''$ covers the component $C_j$ of $G'$, and $\mathcal{C}[j] =0$ otherwise. The variable $n$ is the number of components that are covered by $\mathcal{R}''$, i.e. $\sum_{j=1}^{z} \mathcal{C}[j]$.
+
+The procedure begins by creating the first subset, $R''_1$, to be added to $\mathcal{R}''$. Firstly, BCR goes through the list of edges $\mathcal{L}$ to find two successive edges, $k$ and $k+1$, such that the lower-indexed vertex of the $k$th edge is adjacent to the higher-indexed vertex of the $k+1$th edge via an edge in $R$ (i.e. $\{v_k, m(v_{k+1})\} \in R$), and the two edges are in different components of $G'$ (Lines 7--8). If such edges are found, BCR adds these edges to the subset $R''_1$ (Lines 9--13). Then, BCR continues to add successive edges in $\mathcal{L}$ to $R''_1$ that meet the adjacency condition and are in different components of $G'$ (Lines 14--18). Once there are no more suitable edges to add to $R''_1$ that meet the conditions, $R''_1$ is added to the collection $\mathcal{R}''$ (Line 19). In the event that BCR has assessed all edges in $\mathcal{L}$ and has not produced a subset $R''_1$ (i.e. $\mathcal{R}'' = \emptyset$), then there is no way of connecting the components of $G'$ together; no solution exists and BCR terminates (Lines 20--21). However, if $\mathcal{R}''$ covers all $z$ components of $G'$ using just one subset $R''_1$, then no further subsets are needed and a feasible solution exists (Lines 22--23).
+
+Otherwise, BCR must seek additional subsets to add to $\mathcal{R}''$. Any edges that appear in the subset $\mathcal{R}''_1 \subseteq \mathcal{R}''$ are removed from $\mathcal{L}$, and BCR starts the process again from the beginning of $\mathcal{L}$ (Line 28). As before, BCR seeks two successive edges in $\mathcal{L}$ that meet the adjacency condition and are in different components of $G'$ (Lines 32--33). If such edges are found, there are two possible scenarios.
+
+The first is that one of the two edges is in a component of $G'$ that is already covered by $\mathcal{R}''$, whilst the other edge is in a component not yet covered by $\mathcal{R}''$ (Line 34). In this case, the two edges are added to a new subset, $R''_i$, and BCR adds successive edges in $\mathcal{L}$ to $R''_i$ provided the adjacency condition holds and the edges are in components of $G'$ not covered by $\mathcal{R}''$. (Lines 35--44). Then, $R''_i$ is added to $\mathcal{R}''$ (Line 45). 
+
+The second scenario arises when neither of the two edges are in a component covered by $\mathcal{R}''$ (Line 49). In this case, BCR makes use of a temporary subset $\overline{R''}$ with the aim of finding an edge that is in a component covered by $\mathcal{R}''$ (an ``overlap''). So, the two edges are added to the temporary subset $\overline{R''}$ (Line 51) and, as before, successive edges in $\mathcal{L}$ that meet the adjacency condition and are in components of $G'$ not yet covered by $\mathcal{R}''$ are added to $\overline{R''}$ (Lines 55--59). If, however, BCR comes upon an edge that is in a component that has been temporarily marked as covered (i.e. $\overline{\mathcal{C}}[r] = 1$), then BCR checks whether the edge is in a component that has actually been covered by $\mathcal{R}''$ previously (i.e. whether $\mathcal{C}[r] = 1$). If true, then an overlapping edge has been found, and the edge is added to $\overline{R''}$ (Lines 60--64). Then, BCR proceeds to add suitable successive edges in $\mathcal{L}$ to $\overline{R''}$ that are in components not covered by $\mathcal{R}''$ (Lines 65--71). This temporary subset then becomes a subset $R''_i$ which is added to $\mathcal{R}''$ (Lines 74--79). Otherwise, if the edge is not in a component that is covered by $\mathcal{R}''$ (i.e. $\mathcal{C}[r] = 0$), then the temporary subset $\overline{R''}$ does not meet the conditions for a feasible subset, and BCR ceases to add any further edges to $\overline{R''}$ (Lines 72--73). 
+
+This process of searching through $\mathcal{L}$ and creating edge subsets continues until either (a) the penultimate edge is reached, or (b) the collection $\mathcal{R}''$ covers all $z$ components of $G'$ (Line 83). If the latter, then a feasible solution exists (Lines 84--85). On the other hand, if BCR has added a subset to $\mathcal{R}''$ then the edges in $\mathcal{R}''$ are removed from $\mathcal{L}$. If less than two edges remain in $\mathcal{L}$, then there are not enough edges left in $\mathcal{L}$ to form another edge subset, and as $\mathcal{R}''$ does not cover all $z$ components of $G'$ no feasible solution exists, and so BCR terminates (Lines 89--90). Otherwise, BCR resumes the process of finding new subsets starting from the beginning of $\mathcal{L}$ (Line 28). If no new subset has been added to $\mathcal{R}''$, then no more suitable subsets can be formed from the edges in $\mathcal{L}$, and so no feasible solution exists (Lines 91--92). 
+
+From a feasible collection $\mathcal{R}''$ covering all $z$ components of $G'$, BCR uses each subset $R''_i \subseteq \mathcal{R}''$ to modify the subset $R'$ (Line 93). For each edge in $R''_i$ in turn, the edge from $R \backslash R'$ connecting the lower-indexed vertex of the edge to the higher-indexed vertex of the next edge is added to $R'$ (Lines 95--99). The edges in the subset $R''_i$ are then removed from $R'$ (Line 100). Once all subsets in $\mathcal{R}''$ have been operated on in this manner, the resulting modified matching $R'$ forms an alternating Hamiltonian cycle in $G$ with the edges in $B$. This process is illustrated in Fig. 6 of the article.
+
+
+
+
+
+
+
+
+	
+\end{document}	
