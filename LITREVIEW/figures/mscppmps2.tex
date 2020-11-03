@@ -1,0 +1,96 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+
+%SUB-MSCPP MPS GRAPH
+\begin{tikzpicture}
+%Values of vertices:
+% v1=2, v2=3, v3=5, v4=9, v5=11, v6=13, v7=16, v8=18, v9=21, v10=23, v11=27, v12=30, v13=35, v14=42, v15=46, v16=55, v17=70, v18=70 (v17/v18 universal vertices), \tau = 70.
+
+%partners: v1-v2, v3-v16, v4-v7, v5-v11, v6-v15, v8-v12, v9-v14, v10-v13, v17-v18.
+%\draw [help lines] (-1,-1) grid (20, 13);
+
+%C1 - blue edges
+\draw [ultra thick, tBlue] (4.25,0.5) -- (2,2); 
+\draw [ultra thick, tBlue] (1,4.5) -- (1,7.25); 
+\draw [ultra thick, tBlue] (2,9.5) -- (4.25,11); 
+\draw [ultra thick, tBlue] (7,11.5) -- (9.75,11); 
+\draw [ultra thick, tBlue] (12,9.5) -- (13,7.25); 
+\draw [ultra thick, tBlue] (13,4.5) -- (12,2); 
+\draw [ultra thick, tBlue] (9.75,0.5) -- (7,0); 
+
+%C1 - red edges
+\draw [tRed] (7,0) -- (4.25,0.5); 
+\draw [tRed] (2,2) -- (1,4.5); 
+\draw [tRed] (1,7.25) -- (2,9.5); 
+\draw [tRed] (4.25,11) -- (7,11.5); 
+\draw [tRed] (9.75,11) -- (12,9.5); 
+\draw [tRed] (13,7.25) -- (13,4.5); 
+\draw [tRed] (12,2) -- (9.75,0.5); 
+
+%C2 - blue edges
+\draw [ultra thick, tBlue] (16,4.5) -- (19,4.5); 
+\draw [ultra thick, tBlue] (16,7.25) -- (19,7.25);
+
+%C2 - red edges
+\draw [tRed] (16,4.5) -- (16,7.25); 
+\draw [tRed] (19,4.5) -- (19,7.25); 
+
+%C1 - vertices
+\draw [fill=white, thick] (7,0) circle [radius = 0.1]; %v6
+\draw [fill=white, thick] (4.25,0.5) circle [radius = 0.1]; %v13
+\draw [fill=white, thick] (2,2) circle [radius = 0.1]; %v10
+\draw [fill=white, thick] (1,4.5) circle [radius = 0.1]; %v9
+\draw [fill=white, thick] (1,7.25) circle [radius = 0.1]; %v14
+\draw [fill=white, thick] (2,9.5) circle [radius = 0.1]; %v5
+\draw [fill=white, thick] (4.25,11) circle [radius = 0.1]; %v11
+\draw [fill=white, thick] (7,11.5) circle [radius = 0.1]; %v8
+\draw [fill=white, thick] (9.75,11) circle [radius = 0.1]; %v12
+\draw [fill=white, thick] (12,9.5) circle [radius = 0.1]; %v7
+\draw [fill=white, thick] (13,7.25) circle [radius = 0.1]; %v4
+\draw [fill=white, thick] (13,4.5) circle [radius = 0.1]; %v16
+\draw [fill=white, thick] (12,2) circle [radius = 0.1]; %v3
+\draw [fill=white, thick] (9.75,0.5) circle [radius = 0.1]; %v15
+
+
+%C2 - vertices
+\draw [fill=white, thick] (16,4.5) circle [radius = 0.1]; %v2
+\draw [fill=white, thick] (16,7.25) circle [radius = 0.1]; %v17
+\draw [fill=white, thick] (19,4.5) circle [radius = 0.1]; %v1
+\draw [fill=white, thick] (19,7.25) circle [radius = 0.1]; %v18
+
+%C1 - labels
+\node [below] at (7,-0.1) {\LARGE{$v_6$}};
+\node [below] at (4.25,0.3) {\LARGE{$v_{13}$}};
+\node [left] at (1.9,2) {\LARGE{$v_{10}$}};
+\node [left] at (0.9,4.5) {\LARGE{$v_9$}};
+\node [left] at (0.9,7.25) {\LARGE{$v_{14}$}};
+\node [left] at (1.9,9.5) {\LARGE{$v_5$}};
+\node [above] at (4.25,11.1) {\LARGE{$v_{11}$}};
+\node [above] at (7,11.55) {\LARGE{$v_8$}};
+\node [above] at (9.75,11.1) {\LARGE{$v_{12}$}};
+\node [right] at (12.1,9.5) {\LARGE{$v_7$}};
+\node [right] at (13.1,7.25) {\LARGE{$v_4$}};
+\node [right] at (13.1,4.5) {\LARGE{$v_{16}$}};
+\node [right] at (12.1,2) {\LARGE{$v_3$}};
+\node [below] at (9.75,0.3) {\LARGE{$v_{15}$}};
+
+%C2 - labels
+\node [below] at (16,4.4) {\LARGE{$v_2$}};
+\node [above] at (16,7.3) {\LARGE{$v_{17}$}};
+\node [below] at (19,4.4) {\LARGE{$v_1$}};
+\node [above] at (19,7.3) {\LARGE{$v_{18}$}};
+
+
+%Component labels
+\node at (7,5.75) {\huge{$C_1$}};
+\node at (17.5,5.75) {\huge{$C_2$}};
+
+
+\end{tikzpicture}
+	
+\end{document}

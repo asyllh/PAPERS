@@ -1,0 +1,75 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+
+%NEW BPP ITEMS FOR EXAMPLE INSTANCE IN THESIS (had to change from the previous one because there were items with width less than 150).
+
+
+%Top row 278, 532, 171 (16-39, 2-27, 21-32, spacing between items is 0.605)
+
+\draw [thick, fill=tLightBlue] (0,3) rectangle (2.78, 4); 
+\node at (1.39,3.3) {$278$};
+\node at (1.39,3.7) {\large E};
+
+
+\draw [thick, fill=tLightPink] (3.385,3) rectangle (8.705, 4); 
+\node at (6.045,3.3) {$532$};
+\node at (6.045,3.7) {\large A};
+
+
+\draw [thick, fill=tDarkBlue] (9.31,3) rectangle (11.02, 4); 
+\node at (10.165,3.3) {$171$};
+\node at (10.165,3.7) {\large H};
+
+
+% Middle row 163, 393, 215, 154 (20-55, 4-31, 19-37, 5-34, spacing between items is 0.59)
+
+\draw [thick, fill=tPeach] (0,1.5) rectangle (1.63, 2.5);  
+\node at (0.815,1.8) {$163$};
+\node at (0.815,2.2) {\large I};
+
+\draw [thick, fill=tLightOrange] (2.22,1.5) rectangle (6.15, 2.5); 
+\node at (4.185,1.8) {$393$};
+\node at (4.185,2.2) {\large C};
+
+\draw [thick, fill=tLightPurple] (6.74,1.5) rectangle (8.89, 2.5); 
+\node at (7.815,1.8) {$215$};
+\node at (7.815,2.2) {\large F};
+
+\draw [thick, fill=tDarkGreen] (9.48,1.5) rectangle (11.02, 2.5); 
+\node at (10.25,1.8) {$154$};
+\node at (10.25,2.2) {\large J};
+
+% Bottom row 346, 209, 449 (11-28, 42-50, 9-43, spacing between items is 0.49)
+
+\draw [thick, fill=tTurquoise] (0,0) rectangle (3.46, 1); 
+\node at (1.73,0.3) {$346$};
+\node at (1.73,0.7) {\large D};
+
+\draw [thick, fill=tLightYellow] (3.95,0) rectangle (6.04, 1); 
+\node at (4.995,0.3) {$209$};
+\node at (4.995,0.7) {\large G};
+
+\draw [thick, fill=tLightGreen] (6.53,0) rectangle (11.02, 1); 
+\node at (8.775,0.3) {$449$};
+\node at (8.775,0.7) {\large B};
+
+
+\end{tikzpicture}
+	
+\end{document}

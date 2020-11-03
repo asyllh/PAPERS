@@ -1,0 +1,106 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (17,5);
+
+% item i
+\draw [thick] (0,0) rectangle (4,1.55);
+\draw [thick, dashed] (0.5,0) -- (0.5, 1.55);
+\draw [thick, dashed] (3,0) -- (3, 1.55);
+\node at (2,0.75) {\LARGE{$i$}};
+
+%arrow and label for width w_i
+\draw [<->, >=stealth] (0,-.2) -- (4,-.2);
+\node at (2, -.5) {\Large{$w_i$}};
+
+%arrow and label for score width a_i
+\draw [<->, >=stealth] (0, 1.75) -- (0.5, 1.75);
+\node at (0.25, 2) {\Large{$a_i$}};
+
+%arrow and label for score width b_i
+\draw [<->, >=stealth] (3, 1.75) -- (4, 1.75);
+\node at (3.5, 2.05) {\Large{$b_i$}};
+
+%arrow and label for height H
+\draw [<->, >=stealth] (4.2,0) -- (4.2,1.55);
+\node at (4.5,0.775) {\Large{$H$}};
+
+%-----------------
+%red line first so that they appear under black lines
+\draw [thick, tRed, dashed] (13.1,0) -- (13.1,1.55); %4
+\draw [thick, tRed, dashed] (13.7,0) -- (13.7,1.55); %2
+
+%3 items ordered
+\draw [thick] (7,0) rectangle (16.5,1.55);
+%between items A and B
+\draw [thick] (10,0) -- (10,1.55);
+%between items B and C
+\draw [thick] (13.5, 0) -- (13.5,1.55);
+
+%labels for items A, B and C
+\node at (8.5,0.775) {\Large{A}};
+\node at (11.75,0.775) {\Large{B}};
+\node at (14.85,0.775) {\Large{C}};
+
+%score lines and score width labels for item A
+\draw [thick, dashed] (7.15,0) -- (7.15,1.55); %1
+\draw [thick, dashed] (9.5,0) -- (9.5,1.55); %5
+%\node [below] at (7.075,0) {1};
+%\node [below] at (9.75,0) {5};
+\node [below] at (7.15,0) {$16$};
+\node [below] at (9.5,0) {$52$};
+
+%score lines and score width labels for item B
+\draw [thick, dashed] (10.3,0) -- (10.3,1.55); %3
+%\draw [thick, red, dashed] (13.1,0) -- (12.1,1.55); %4 moved to top
+%\node [below] at (10.15,0) {3};
+%\node [below] at (13.3,0) {\textcolor{tRed}{4}};
+\node [below] at (10.3,0) {$31$};
+\node [below] at (13.1,0) {\textcolor{tRed}{$43$}};
+
+%score lines and score width labels for item C
+%\draw [thick, red, dashed] (13.7,0) -- (12.7,1.55); %2 moved to top
+\draw [thick, dashed] (15.9,0) -- (15.9,1.55); %6
+%\node [below] at (13.6,0) {\textcolor{tRed}{2}};
+%\node [below] at (16.2,0) {6};
+\node [below] at (13.7,0) {\textcolor{tRed}{$25$}};
+\node [below] at (15.9,0) {$64$};
+
+%------------------
+
+%Bar with knives 
+\draw [thick] (6.9,2.05) -- (16.6,2.05);
+
+%knives for items A and B
+\filldraw[fill=white, draw=black, thin] (9.475,1.75) rectangle (9.525,2.35);
+\filldraw[fill=white, draw=black, thin] (10.275,1.75) rectangle (10.325,2.35);
+%\draw [thick] (9.5,1.75) -- (9.5,2.35);
+%\draw [thick] (10.3,1.75) -- (10.3,2.35);
+
+%knives for items B and C
+\filldraw[fill=white, draw=black, thin] (13.075,1.75) rectangle (13.125,2.35);
+\filldraw[fill=white, draw=black, thin] (13.675,1.75) rectangle (13.725,2.35);
+%\draw [thick] (13.1,1.75) -- (13.1,2.35);
+%\draw [thick] (13.7,1.75) -- (13.7,2.35);
+
+
+%constraint label for score widths between items A and B (feasible, >= tau)
+\draw [thick, <->, >=stealth, tBlue] (9.5, 2.45) -- (10.3, 2.45);
+\node [above] at (9.9,2.55) {\Large{$\geq \tau$}};
+
+%constraint label for score widths between items B and C (infeasible, < tau)
+\draw [thick, <->,>=stealth, tRed] (13.1, 2.45) -- (13.7, 2.45);
+\node [above] at (13.4,2.55) {\Large{$< \tau$}};
+
+%\draw [<->] (3.5,2.2) -- (4.5,2.2);
+%\node at (4, -.4) {\scriptsize $\geq \tau$};
+
+\end{tikzpicture}
+	
+\end{document}

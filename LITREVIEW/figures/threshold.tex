@@ -1,0 +1,90 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usetikzlibrary{shapes.geometric}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%Values of vertices:
+% v1=4, v2=9, v3=13, v4=17, v5=21, v6=26, v7=29, v8=32, v9=35, v10=39, v11=41, v12=44, v13=48, v14=53, v15=57, v16=61, v17=70, v18=70 (v17/v18 universal vertices), \tau = 70.
+
+
+\foreach \n/\value in {1/1, 2/1, 3/2, 4/2, 5/3, 6/4, 7/4, 8/5, 9/5, 10/6, 11/6, 12/6, 13/6, 14/7, 15/8, 16/9, 17/10, 18/10}
+	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1];
+	
+%\foreach \n/\value in {1/4, 17/70, 18/70}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:9.5pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%
+%\foreach \n/\value in {2/9, 8/32, 9/35}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:10pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%		
+%\foreach \n/\value in {3/13, 7/29}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:12.5pt) node {\Large{$v_{\n}$}\small{($\value$)}};		
+%		
+%\foreach \n/\value in {4/17, 5/21, 12/44}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:17pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%
+%\foreach \n/\value in {15/57}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:16pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%	
+%\foreach \n/\value in {6/26}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:15.5pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%		
+%\foreach \n/\value in {10/39}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:11pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%		
+%\foreach \n/\value in {11/41}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:14pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+%		
+%\foreach \n/\value in {13/48, 14/53}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:20pt) node {\Large{$v_{\n}$}\small{($\value$)}};	
+%
+%\foreach \n/\value in {16/61}
+%	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1]
+%		++(90-\n*20:12pt) node {\Large{$v_{\n}$}\small{($\value$)}};
+
+\node at (2,5) {\Large{$v_1$}\small($4$)};	
+\node at (3.6,4.1) {\Large{$v_2$}\small($9$)};	
+\node at (4.9,2.7) {\Large{$v_3$}\small($13$)};	
+\node at (5.6,0.85) {\Large{$v_4$}\small($17$)};	
+\node at (5.6,-0.95) {\Large{$v_5$}\small($21$)};	
+\node at (4.9,-2.8) {\Large{$v_6$}\small($26$)};	
+\node at (3.6,-4.2) {\Large{$v_7$}\small($29$)};	
+\node at (2,-5.05) {\Large{$v_8$}\small($32$)};	
+\node at (0,-5.37) {\Large{$v_9$}\small($35$)};	
+\node at (-1.95,-5.05) {\Large{$v_{10}$}\small($39$)};	
+\node at (-3.6,-4.17) {\Large{$v_{11}$}\small($41$)};	
+\node at (-4.9,-2.8) {\Large{$v_{12}$}\small($44$)};	
+\node at (-5.65,-1) {\Large{$v_{13}$}\small($48$)};	
+\node at (-5.65,0.9) {\Large{$v_{14}$}\small($53$)};	
+\node at (-4.9,2.77) {\Large{$v_{15}$}\small($57$)};	
+\node at (-3.6,4.17) {\Large{$v_{16}$}\small($61$)};	
+\node at (-2,5) {\Large{$v_{17}$}\small($70$)};	
+\node at (0,5.3) {\Large{$v_{18}$}\small($70$)};	
+	
+	
+%Edges and vertices
+\foreach \m/\n in {1/17, 1/18, 2/16, 2/17, 2/18, 3/15, 3/16, 3/17, 3/18, 4/14, 4/15, 4/16, 4/17, 4/18, 5/14, 5/15, 5/16, 5/17, 5/18, 6/12, 6/13, 6/14, 6/15, 6/16, 6/17, 6/18, 7/11, 7/12, 7/13, 7/14, 7/15, 7/16, 7/17, 7/18, 8/11, 8/12, 8/13, 8/14, 8/15, 8/16, 8/17, 8/18, 9/10, 9/12, 9/13, 9/14, 9/15, 9/16, 9/17, 9/18, 10/11, 10/12, 10/13, 10/14, 10/15, 10/16, 10/17, 10/18, 11/12, 11/13, 11/14, 11/15, 11/16, 11/17, 11/18, 12/13, 12/14, 12/16, 12/17, 12/18, 13/14, 13/15, 13/17, 13/18, 14/15, 14/16, 14/17, 14/18, 15/16, 15/17, 15/18, 16/17, 16/18}
+	\draw [tRed] (v\n) -- (v\m);
+\foreach \m/\n in {1/5, 2/14, 3/6, 4/7, 8/10, 9/11, 12/15, 13/16, 17/18}
+	\draw [ultra thick, tBlue] (v\n) -- (v\m);
+\foreach \n in {1,...,18}
+	\fill (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.13];
+\foreach \n in {1,...,18}
+	\fill [white] (90-\n*20:5cm) coordinate (v\n) circle [radius = 0.1];
+
+\end{tikzpicture}
+	
+\end{document}

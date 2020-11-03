@@ -1,0 +1,248 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+\usetikzlibrary{patterns}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+
+%\draw [help lines] (-1,-2) grid (13,11);
+
+
+%------------------------------
+
+
+\draw [thick] (0.1,5.1) -- (7.25,5.1);
+\draw [thick] (1,0.2) -- (1,5.7); 
+
+\node at (0.5, 4.7) {Al};
+\node at (0.5, 4.1) {An};
+\node at (0.5, 3.5) {C};
+\node at (0.5, 2.9) {G};
+\node at (0.5, 2.3) {M};
+\node at (0.5, 1.7) {N};
+\node at (0.5, 1.1) {O};
+\node at (0.5, 0.5) {S};
+
+%Algebra column
+\node at (1.5, 5.4) {Al};
+
+\node at (1.5, 4.7) {--};
+\node at (1.5, 4.1) {12};
+\node at (1.5, 3.5) {35};
+\node at (1.5, 2.9) {26};
+\node at (1.5, 2.3) {0};
+\node at (1.5, 1.7) {44};
+\node at (1.5, 1.1) {0};
+\node at (1.5, 0.5) {19};
+
+
+%Analysis column
+\node at (2.25, 5.4) {An};
+
+\node at (2.25, 4.7) {12};
+\node at (2.25, 4.1) {--};
+\node at (2.25, 3.5) {0};
+\node at (2.25, 2.9) {0};
+\node at (2.25, 2.3) {31};
+\node at (2.25, 1.7) {40};
+\node at (2.25, 1.1) {0};
+\node at (2.25, 0.5) {0};
+
+%Calculus column
+\node at (3, 5.4) {C};
+
+\node at (3, 4.7) {35};
+\node at (3, 4.1) {0};
+\node at (3, 3.5) {--};
+\node at (3, 2.9) {52};
+\node at (3, 2.3) {29};
+\node at (3, 1.7) {0};
+\node at (3, 1.1) {16};
+\node at (3, 0.5) {37};
+
+%Geometry column
+\node at (3.75, 5.4) {G};
+
+\node at (3.75, 4.7) {26};
+\node at (3.75, 4.1) {0};
+\node at (3.75, 3.5) {52};
+\node at (3.75, 2.9) {--};
+\node at (3.75, 2.3) {0};
+\node at (3.75, 1.7) {0};
+\node at (3.75, 1.1) {0};
+\node at (3.75, 0.5) {46};
+
+
+%Mechanics column
+\node at (4.5, 5.4) {M};
+
+\node at (4.5, 4.7) {0};
+\node at (4.5, 4.1) {31};
+\node at (4.5, 3.5) {29};
+\node at (4.5, 2.9) {0};
+\node at (4.5, 2.3) {--};
+\node at (4.5, 1.7) {0};
+\node at (4.5, 1.1) {54};
+\node at (4.5, 0.5) {0};
+
+%Number Theory column
+\node at (5.25, 5.4) {N};
+
+\node at (5.25, 4.7) {44};
+\node at (5.25, 4.1) {40};
+\node at (5.25, 3.5) {0};
+\node at (5.25, 2.9) {0};
+\node at (5.25, 2.3) {0};
+\node at (5.25, 1.7) {--};
+\node at (5.25, 1.1) {0};
+\node at (5.25, 0.5) {0};
+
+%Optimisation column
+\node at (6, 5.4) {O};
+
+\node at (6, 4.7) {0};
+\node at (6, 4.1) {0};
+\node at (6, 3.5) {16};
+\node at (6, 2.9) {0};
+\node at (6, 2.3) {54};
+\node at (6, 1.7) {0};
+\node at (6, 1.1) {--};
+\node at (6, 0.5) {38};
+
+
+%Statistics column
+\node at (6.75, 5.4) {S};
+
+\node at (6.75, 4.7) {19};
+\node at (6.75, 4.1) {0};
+\node at (6.75, 3.5) {37};
+\node at (6.75, 2.9) {46};
+\node at (6.75, 2.3) {0};
+\node at (6.75, 1.7) {0};
+\node at (6.75, 1.1) {38};
+\node at (6.75, 0.5) {--};
+
+%-------------------
+
+%\node at (0.5, 5.75) {Al};
+%\node at (0.5, 5) {An};
+%\node at (0.5, 4.25) {C};
+%\node at (0.5, 3.5) {G};
+%\node at (0.5, 2.75) {M};
+%\node at (0.5, 2) {N};
+%\node at (0.5, 1.25) {O};
+%\node at (0.5, 0.5) {S};
+%
+%%Algebra column
+%\node at (1.5, 6.75) {Al};
+%
+%\node at (1.5, 5.75) {-};
+%\node at (1.5, 5) {1};
+%\node at (1.5, 4.25) {1};
+%\node at (1.5, 3.5) {1};
+%\node at (1.5, 2.75) {0};
+%\node at (1.5, 2) {1};
+%\node at (1.5, 1.25) {0};
+%\node at (1.5, 0.5) {1};
+%
+%
+%%Analysis column
+%\node at (2.25, 6.75) {An};
+%
+%\node at (2.25, 5.75) {1};
+%\node at (2.25, 5) {-};
+%\node at (2.25, 4.25) {0};
+%\node at (2.25, 3.5) {0};
+%\node at (2.25, 2.75) {1};
+%\node at (2.25, 2) {1};
+%\node at (2.25, 1.25) {0};
+%\node at (2.25, 0.5) {0};
+%
+%%Calculus column
+%\node at (3, 6.75) {C};
+%
+%\node at (3, 5.75) {1};
+%\node at (3, 5) {0};
+%\node at (3, 4.25) {-};
+%\node at (3, 3.5) {1};
+%\node at (3, 2.75) {1};
+%\node at (3, 2) {0};
+%\node at (3, 1.25) {1};
+%\node at (3, 0.5) {1};
+%
+%%Geometry column
+%\node at (3.75, 6.75) {G};
+%
+%\node at (3.75, 5.75) {1};
+%\node at (3.75, 5) {0};
+%\node at (3.75, 4.25) {1};
+%\node at (3.75, 3.5) {-};
+%\node at (3.75, 2.75) {0};
+%\node at (3.75, 2) {0};
+%\node at (3.75, 1.25) {0};
+%\node at (3.75, 0.5) {1};
+%
+%
+%%Mechanics column
+%\node at (4.5, 6.75) {M};
+%
+%\node at (4.5, 5.75) {0};
+%\node at (4.5, 5) {1};
+%\node at (4.5, 4.25) {1};
+%\node at (4.5, 3.5) {0};
+%\node at (4.5, 2.75) {-};
+%\node at (4.5, 2) {0};
+%\node at (4.5, 1.25) {1};
+%\node at (4.5, 0.5) {0};
+%
+%%Number Theory column
+%\node at (5.25, 6.75) {N};
+%
+%\node at (5.25, 5.75) {1};
+%\node at (5.25, 5) {1};
+%\node at (5.25, 4.25) {0};
+%\node at (5.25, 3.5) {0};
+%\node at (5.25, 2.75) {0};
+%\node at (5.25, 2) {-};
+%\node at (5.25, 1.25) {0};
+%\node at (5.25, 0.5) {0};
+%
+%%Optimisation column
+%\node at (6, 6.75) {O};
+%
+%\node at (6, 5.75) {0};
+%\node at (6, 5) {0};
+%\node at (6, 4.25) {1};
+%\node at (6, 3.5) {0};
+%\node at (6, 2.75) {1};
+%\node at (6, 2) {0};
+%\node at (6, 1.25) {-};
+%\node at (6, 0.5) {1};
+%
+%
+%%Statistics column
+%\node at (6.75, 6.75) {S};
+%
+%\node at (6.75, 5.75) {1};
+%\node at (6.75, 5) {0};
+%\node at (6.75, 4.25) {1};
+%\node at (6.75, 3.5) {1};
+%\node at (6.75, 2.75) {0};
+%\node at (6.75, 2) {0};
+%\node at (6.75, 1.25) {1};
+%\node at (6.75, 0.5) {-};
+
+
+
+
+
+
+
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

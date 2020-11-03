@@ -1,0 +1,53 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usetikzlibrary{patterns}
+%\usepackage{amsmath,amssymb}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (6,10);
+
+%--------------------------------
+\draw [thick,white] (0,6.5) -- (4,6.5);
+
+\draw [thick, <->, >=stealth] (0,-0.2) -- (4,-0.2);
+\node at (2,-0.5) {\large $W$};
+
+\draw [thick, <->, >=stealth] (4.2,0) -- (4.2,4);
+\node at (4.45,2) {\large $H$};
+
+\draw [thick, white, <->, >=stealth] (-0.2,0) -- (-0.2,4);
+\node at (-0.45,2) {\textcolor{white}{\large $H$}};
+
+\draw [thick, fill=tLightPink] (0.75,0) rectangle (4,1.75); % A
+\node at (2.375,0.875) {A};
+\draw [thick,fill=tLightOrange] (0,0) rectangle (0.75,4); % B
+\node at (0.375,2) {B};
+\draw [thick, fill=tLightYellow] (0.75,1.75) rectangle (2,3); % C
+\node at (1.375, 2.375) {C};
+\draw [thick, fill=tLightGreen] (2,1.75) rectangle (4,2.25); % D
+\node at (3,2) {D};
+\draw [thick, fill=tLightBlue] (2,2.25) rectangle (4,3); % E
+\node at (3,2.625) {E};
+\draw [thick, fill=tLightPurple] (0.75,3) rectangle (3.75,4); % F
+\node at (2.25,3.5) {F};
+
+\draw [ultra thick] (0,6) -- (0,0) -- (4,0) -- (4,6);
+
+\end{tikzpicture}
+
+\end{document}

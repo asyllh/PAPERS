@@ -1,0 +1,120 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\definecolor{tLightGreen1}{HTML}{B7F385} %tikz color
+%\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+%\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
+%%\colorlet{tLightOrange}{Dandelion!65!White}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\usetikzlibrary{decorations.pathreplacing,decorations.markings}
+
+\tikzset{
+	% style to apply some styles to each segment of a path
+	on each segment/.style={
+		decorate,
+		decoration={
+			show path construction,
+			moveto code={},
+			lineto code={
+				\path [#1]
+				(\tikzinputsegmentfirst) -- (\tikzinputsegmentlast);
+			},
+			curveto code={
+				\path [#1] (\tikzinputsegmentfirst)
+				.. controls
+				(\tikzinputsegmentsupporta) and (\tikzinputsegmentsupportb)
+				..
+				(\tikzinputsegmentlast);
+			},
+			closepath code={
+				\path [#1]
+				(\tikzinputsegmentfirst) -- (\tikzinputsegmentlast);
+			},
+		},
+	},
+	% style to add an arrow in the middle of a path
+	mid arrow/.style={postaction={decorate,decoration={
+				markings,
+				mark=at position .5 with {\arrow[#1]{stealth}}
+	}}},
+}
+
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-1) grid (18,14);
+%\draw [ultra thick] (0.3,0) -- (0,0) -- (0,0.3); 
+%\draw [thick] (4,4) rectangle (11,5.5);
+%\draw [thick] (4,8) rectangle (11,9.5);
+%\draw [thick] (3,3) rectangle (12,10.5);
+
+\draw [thick] (2,4) rectangle (15,10);
+
+\draw [thick] (3,5) rectangle (7,9);
+\node at (5,8) {\textbf{Generator of}};
+\node at (5,7.5) {\textbf{Reduced Instances}}; 
+\node at (5,7) {\textbf{(GRI)}};
+\node at (5,6) {\textbf{Metaheuristic}};
+
+\draw [thick] (10,5) rectangle (14,9);
+\node at (12,8) {\textbf{Solver of}};
+\node at (12,7.5) {\textbf{Reduced Instances}}; 
+\node at (12,7) {\textbf{(SRI)}};
+\node at (12,6) {\textbf{Exact Method}};
+
+%\draw [thick, ->] (7,8) -- (8.5,8);
+%\draw [thick] (8.5,8) -- (10,8);
+\draw [thick, postaction={mid arrow}] (7,8) -- (10,8);
+%\draw [thick] (7,8) -- (10,8);
+%\draw [thick] (8.6,8) -- (8.4,8.1);
+%\draw [thick] (8.6,8) -- (8.4,7.9);
+\node at (8.5,8.8) {Sub-instance};
+\node at (8.5,8.35) {\large$\mathcal{B}$};
+
+%\draw [thick, ->] (10,6) -- (8.5,6);
+%\draw [thick] (8.5,6) -- (7,6);
+\draw [thick, postaction={mid arrow}] (10,6) -- (7,6);
+%\draw [thick] (7,6) -- (10,6);
+%\draw [thick] (8.4,6) -- (8.6,6.1);
+%\draw [thick] (8.4,6) -- (8.6,5.9); 
+\node at (8.5,5.6) {Feedback};
+
+\draw [thick] (7,1.25) rectangle (10,2.75);
+\node at (8.5,2.2) {\textbf{Original}};
+\node at (8.5,1.7) {\textbf{Problem}};
+
+%\draw [thick, ->] (7,2) -- (4,2);
+%\draw [thick] (4,2) -- (1,2) -- (1,7) -- (2,7);
+\draw [thick, postaction={mid arrow}] (7,2) -- (1,2);
+\draw [thick] (1,2) -- (1,7) -- (2,7);
+%\draw [thick] (3.9,2) -- (4.1,2.1);
+%\draw [thick] (3.9,2) -- (4.1,1.9);
+\node at (4,1.6) {General Data};
+
+%\draw [thick] (15,7) -- (16,7) -- (16,2);
+%\draw [thick, ->] (16,2) -- (13,2);
+%\draw [thick] (13,2) -- (10,2);
+\draw [thick, postaction={mid arrow}] (16,2) -- (10,2);
+\draw [thick] (15,7) -- (16,7) -- (16,2);
+%\draw [thick] (12.9,2) -- (13.1,2.1);
+%\draw [thick] (12.9,2) -- (13.1,1.9);
+\node at (13,1.6) {General Solution};
+
+
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

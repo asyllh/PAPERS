@@ -1,0 +1,94 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+
+% Top row: 320A, 150B, 272C, 181D
+% A
+\draw [thick] (0.05,2) rectangle (3.25, 3); 
+\draw [densely dashed] (0.26,2) -- (0.26,3); %21
+\draw [densely dashed] (2.83,2) -- (2.83,3); %42
+\node at (1.65,2.3) {$320$};
+\node at (1.65,2.7) {\large A};
+\node [below] at (0.26,2) {\small$21$};
+\node [below] at (2.83,2) {\small$42$};
+
+% B
+\draw [thick] (3.75,2) rectangle (5.25, 3);
+\draw [densely dashed] (3.8,2) -- (3.8,3); %2
+\draw [densely dashed] (5.2,2) -- (5.2,3); %3
+\node at (4.5,2.3) {$150$};
+\node at (4.5,2.7) {\large B};
+\node [below] at (3.8,2) {\small$2$};
+\node [below] at (5.2,2) {\small$3$};
+
+% C
+\draw [thick] (5.75,2) rectangle (8.47, 3);
+\draw [densely dashed] (5.8,2) -- (5.8,3); %5
+\draw [densely dashed] (7.92,2) -- (7.92,3); %55
+\node at (7.11,2.3) {$272$};
+\node at (7.11,2.7) {\large C};
+\node [below] at (5.8,2) {\small$5$};
+\node [below] at (7.92,2) {\small$55$};
+
+% D
+\draw [thick] (8.97,2) rectangle (10.78, 3);
+\draw [densely dashed] (9.08,2) -- (9.08,3); %11
+\draw [densely dashed] (10.51,2) -- (10.51,3); %27
+\node at (9.875,2.3) {$181$};
+\node at (9.875,2.7) {\large D};
+\node [below] at (9.08,2) {\small$11$};
+\node [below] at (10.51,2) {\small$27$};
+
+
+% Bottom row: 215E, 243F, 166G, 309H
+
+% E
+\draw [thick] (0,0) rectangle (2.15, 1); 
+\draw [densely dashed] (0.18,0) -- (0.18,1); %18
+\draw [densely dashed] (1.85,0) -- (1.85,1); %30
+\node at (1.075,0.3) {$215$};
+\node at (1.075,0.7) {\large E};
+\node [below] at (0.18,0) {\small$18$};
+\node [below] at (1.85,0) {\small$30$};
+
+% F
+\draw [thick] (2.65,0) rectangle (5.08, 1); 
+\draw [densely dashed] (2.78,0) -- (2.78,1); %13
+\draw [densely dashed] (4.62,0) -- (4.62,1); %46
+\node at (3.865,0.3) {$243$};
+\node at (3.865,0.7) {\large F};
+\node [below] at (2.78,0) {\small$13$};
+\node [below] at (4.62,0) {\small$46$};
+
+% G
+\draw [thick] (5.58,0) rectangle (7.24, 1); 
+\draw [densely dashed] (5.67,0) -- (5.67,1); %9
+\draw [densely dashed] (7.08,0) -- (7.08,1); %16
+\node at (6.41,0.3) {$166$};
+\node at (6.41,0.7) {\large G};
+\node [below] at (5.67,0) {\small$9$};
+\node [below] at (7.08,0) {\small$16$};
+
+
+% H
+\draw [thick] (7.74,0) rectangle (10.83, 1);
+\draw [densely dashed] (7.97,0) -- (7.97,1); %23
+\draw [densely dashed] (10.48,0) -- (10.48,1); %35
+\node at (9.285,0.3) {$309$};
+\node at (9.285,0.7) {\large H};
+\node [below] at (7.97,0) {\small$23$};
+\node [below] at (10.48,0) {\small$35$};
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

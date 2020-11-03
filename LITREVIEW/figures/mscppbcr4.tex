@@ -1,0 +1,227 @@
+\documentclass[11pt,usenames,dvipsnames,tikz]{standalone}
+%\usetikzlibrary{shapes.geometric}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\definecolor{tGreen2}{HTML}{569909}
+%\definecolor{tOrange}{HTML}{FA7602}
+%\definecolor{tPurple}{HTML}{7356AF} %tikz color %ECDBFF
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\usepackage{amsmath}
+%\usepackage{mathtools}
+\begin{document}	
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-1) grid (13, 10);
+%
+\draw [thick, tRed] (0,16) -- (0,17);
+\draw [thick, tRed] (1.5,16) -- (1.5,17);
+\draw [thick, tRed] (3,16) -- (3,17);
+\draw [thick, tRed] (4.5,16) -- (4.5,17);
+\draw [thick, tRed] (6,16) -- (6,17);
+\draw [thick, tRed] (7.5,16) -- (7.5,17);
+\draw [thick, tRed] (9,16) -- (9,17);
+\draw [thick, tRed] (10.5,16) -- (10.5,17);
+\draw [thick, tRed] (12,16) -- (12,17);
+
+\draw [fill=white, thick] (0,16) circle [radius = 0.08];
+\draw [fill=white, thick] (1.5,16) circle [radius = 0.08];
+\draw [fill=white, thick] (3,16) circle [radius = 0.08];
+\draw [fill=white, thick] (4.5,16) circle [radius = 0.08];
+\draw [fill=white, thick] (6,16) circle [radius = 0.08];
+\draw [fill=white, thick] (7.5,16) circle [radius = 0.08];
+\draw [fill=white, thick] (9,16) circle [radius = 0.08];
+\draw [fill=white, thick] (10.5,16) circle [radius = 0.08];
+\draw [fill=white, thick] (12,16) circle [radius = 0.08];
+
+\draw [fill=white, thick] (0,17) circle [radius = 0.08];
+\draw [fill=white, thick] (1.5,17) circle [radius = 0.08];
+\draw [fill=white, thick] (3,17) circle [radius = 0.08];
+\draw [fill=white, thick] (4.5,17) circle [radius = 0.08];
+\draw [fill=white, thick] (6,17) circle [radius = 0.08];
+\draw [fill=white, thick] (7.5,17) circle [radius = 0.08];
+\draw [fill=white, thick] (9,17) circle [radius = 0.08];
+\draw [fill=white, thick] (10.5,17) circle [radius = 0.08];
+\draw [fill=white, thick] (12,17) circle [radius = 0.08];
+
+\node at (0,15.7) {\large{$v_{18}$}};
+\node at (1.5,15.7) {\large{$v_{17}$}};
+\node at (3,15.7) {\large{$v_{16}$}};
+\node at (4.5,15.7) {\large{$v_{15}$}};
+\node at (6,15.7) {\large{$v_{14}$}};
+\node at (7.5,15.7) {\large{$v_{13}$}};
+\node at (9,15.7) {\large{$v_{12}$}};
+\node at (10.5,15.7) {\large{$v_{11}$}};
+\node at (12,15.7) {\large{$v_{10}$}};
+
+\node at (0,17.3) {\large{$v_1$}};
+\node at (1.5,17.3) {\large{$v_2$}};
+\node at (3,17.3) {\large{$v_3$}};
+\node at (4.5,17.3) {\large{$v_4$}};
+\node at (6,17.3) {\large{$v_5$}};
+\node at (7.5,17.3) {\large{$v_6$}};
+\node at (9,17.3) {\large{$v_7$}};
+\node at (10.5,17.3) {\large{$v_8$}};
+\node at (12,17.3) {\large{$v_9$}};
+
+\node at (0,15.2) {$C_1$};
+\node at (1.5,15.2) {$C_1$};
+\node at (3,15.2) {$C_2$};
+\node at (4.5,15.2) {$C_3$};
+\node at (6,15.2) {$C_1$};
+\node at (7.5,15.2) {$C_2$};
+\node at (9,15.2) {$C_3$};
+\node at (10.5,15.2) {$C_4$};
+\node at (12,15.2) {$C_4$};
+%---------------------------------------
+% Edge subsets old
+\node [right] at (-0.35, 14.2) {\underline{Subsets}};
+\node [right] at (-0.35,13.5) {\small$R''_1 = \{\{v_2, v_{17}\}, \{v_3, v_{16}\}\}$};
+\node [right] at (-0.35,12.75) {\small$R''_2 = \{\{v_2, v_{17}\}, \{v_3, v_{16}\}, \{v_4, v_{15}\}\}$};
+\node [right] at (-0.35,12) {\small$R''_3 = \{\{v_3, v_{16}\}, \{v_4, v_{15}\}\}$};
+\node [right] at (-0.35,11.25) {\small$R''_4 = \{\{v_3, v_{16}\}, \{v_4, v_{15}\}, \{v_5, v_{14}\}\}$};
+\node [right] at (-0.35,10.5) {\small$R''_5 = \{\{v_4, v_{15}\}, \{v_5, v_{14}\}\}$};
+\node [right] at (-0.35,9.75) {\small$R''_6 = \{\{v_4, v_{15}\}, \{v_5, v_{14}\}, \{v_6, v_{13}\}\}$};
+
+\node [right] at (5.5,13.5) {\small$R''_7 = \{\{v_5, v_{14}\}, \{v_6, v_{13}\}\}$};
+\node [right] at (5.5,12.75) {\small$R''_8 = \{\{v_5, v_{14}\}, \{v_6, v_{13}\}, \{v_7, v_{12}\}\}$};
+\node [right] at (5.5,12) {\small$R''_9 = \{\{v_5, v_{14}\}, \{v_6, v_{13}\}, \{v_7, v_{12}\}, \{v_8, v_{11}\}\}$};
+\node [right] at (5.5,11.25) {\small$R''_{10} = \{\{v_6, v_{13}\}, \{v_7, v_{12}\}\}$};
+\node [right] at (5.5,10.5) {\small$R''_{11} = \{\{v_6, v_{13}\}, \{v_7, v_{12}\}, \{v_8, v_{11}\}\}$};
+\node [right] at (5.5,9.75) {\small$R''_{12} = \{\{v_7, v_{12}\}, \{v_8, v_{11}\}\}$};
+
+%--------------------------------------------
+%Collections
+\node [right] at (-0.35,8.7) {\underline{Collections}};
+\node [right] at (-0.35,8) {\small$\mathcal{R}''_1 = \{R''_1, R''_5, R''_{12}\}$};
+\node [right] at (4,8) {\small{$w(R'_M) = 141$}};
+
+\node [right] at (-0.35,7.25) {\small$\mathcal{R}''_2 = \{R''_1, R''_{11}\}$};
+\node [right] at (4,7.25) {\small{$w(R'_M) = 141$}};
+
+\node [right] at (-0.35,6.5) {\small$\mathcal{R}''_3 = \{R''_2, R''_{12}\}$};
+\node [right] at (4,6.5) {\small{$w(R'_M) = 145$}};
+
+\node [right] at (-0.35,5.75) {\small$\mathcal{R}''_4 = \{R''_3, R''_7, R''_{12}\}$};
+\node [right] at (4,5.75) {\small{$w(R'_M) = 139$}};
+
+%-------------------------------------
+
+% R''_3
+\node at (1.5,4.7) {\small$R''_3$};
+\draw [thick, tRed] (0.75,2.5) -- (0.75,3.5);
+\draw [thick, tRed] (2.25,2.5) -- (2.25,3.5);
+
+\draw [very thick, densely dashed, tGreen2] (0.75,3.5) -- (2.25,2.5);
+\draw [very thick, densely dashed, tGreen2] (2.25,3.5) to[out=120,in=140, distance=2cm] (0.75,2.5);
+
+\draw [fill=white, thick] (0.75,2.5) circle [radius = 0.08];
+\draw [fill=white, thick] (2.25,2.5) circle [radius = 0.08];
+\draw [fill=white, thick] (0.75,3.5) circle [radius = 0.08];
+\draw [fill=white, thick] (2.25,3.5) circle [radius = 0.08];
+
+\node at (0.75,2.2) {\large{$v_{16}$}};
+\node at (2.3,2.2) {\large{$v_{15}$}};
+\node at (0.75,3.8) {\large{$v_3$}};
+\node at (2.3,3.8) {\large{$v_4$}};
+
+
+%-------------------------------------
+
+% R''_7
+\node at (6,4.7) {\small$R''_7$};
+\draw [thick, tRed] (5.25,2.5) -- (5.25,3.5);
+\draw [thick, tRed] (6.75,2.5) -- (6.75,3.5);
+
+\draw [very thick, dotted, tOrange] (5.25,3.5) -- (6.75,2.5);
+\draw [very thick, dotted, tOrange] (6.75,3.5) to[out=120,in=140, distance=2cm] (5.25,2.5);
+
+\draw [fill=white, thick] (5.25,2.5) circle [radius = 0.08];
+\draw [fill=white, thick] (6.75,2.5) circle [radius = 0.08];
+\draw [fill=white, thick] (5.25,3.5) circle [radius = 0.08];
+\draw [fill=white, thick] (6.75,3.5) circle [radius = 0.08];
+
+\node at (5.25,2.2) {\large{$v_{14}$}};
+\node at (6.8,2.2) {\large{$v_{13}$}};
+\node at (5.25,3.8) {\large{$v_5$}};
+\node at (6.8,3.8) {\large{$v_6$}};
+
+%-------------------------------------
+
+% R''_12
+\node at (10.5,4.7) {\small$R''_{12}$};
+\draw [thick, tRed] (9.75,2.5) -- (9.75,3.5);
+\draw [thick, tRed] (11.25,2.5) -- (11.25,3.5);
+
+\draw [very thick, dash dot, tPurple] (9.75,3.5) -- (11.25,2.5);
+\draw [very thick, dash dot, tPurple] (11.25,3.5) to[out=120,in=140, distance=2cm] (9.75,2.5);
+
+\draw [fill=white, thick] (9.75,2.5) circle [radius = 0.08];
+\draw [fill=white, thick] (11.25,2.5) circle [radius = 0.08];
+\draw [fill=white, thick] (9.75,3.5) circle [radius = 0.08];
+\draw [fill=white, thick] (11.25,3.5) circle [radius = 0.08];
+
+\node at (9.75,2.2) {\large{$v_{12}$}};
+\node at (11.3,2.2) {\large{$v_{11}$}};
+\node at (9.75,3.8) {\large{$v_7$}};
+\node at (11.3,3.8) {\large{$v_8$}};
+
+
+%--------------------------------------
+% New set of edges R'
+\draw [thick, tRed] (0,0) -- (0,1);
+\draw [thick, tRed] (1.5,0) -- (1.5,1);
+\draw [very thick, densely dashed, tGreen2] (3,0) -- (3,1);
+\draw [very thick, densely dashed, tGreen2] (4.5,0) -- (4.5,1);
+\draw [very thick, dotted, tOrange] (6,0) -- (6,1);
+\draw [very thick, dotted, tOrange] (7.5,0) -- (7.5,1);
+\draw [very thick, dash dot, tPurple] (9,0) -- (9,1);
+\draw [very thick, dash dot, tPurple] (10.5,0) -- (10.5,1);
+\draw [thick, tRed] (12,0) -- (12,1);
+%
+\draw [fill=white, thick] (0,0) circle [radius = 0.08];
+\draw [fill=white, thick] (1.5,0) circle [radius = 0.08];
+\draw [fill=white, thick] (3,0) circle [radius = 0.08];
+\draw [fill=white, thick] (4.5,0) circle [radius = 0.08];
+\draw [fill=white, thick] (6,0) circle [radius = 0.08];
+\draw [fill=white, thick] (7.5,0) circle [radius = 0.08];
+\draw [fill=white, thick] (9,0) circle [radius = 0.08];
+\draw [fill=white, thick] (10.5,0) circle [radius = 0.08];
+\draw [fill=white, thick] (12,0) circle [radius = 0.08];
+
+\draw [fill=white, thick] (0,1) circle [radius = 0.08];
+\draw [fill=white, thick] (1.5,1) circle [radius = 0.08];
+\draw [fill=white, thick] (3,1) circle [radius = 0.08];
+\draw [fill=white, thick] (4.5,1) circle [radius = 0.08];
+\draw [fill=white, thick] (6,1) circle [radius = 0.08];
+\draw [fill=white, thick] (7.5,1) circle [radius = 0.08];
+\draw [fill=white, thick] (9,1) circle [radius = 0.08];
+\draw [fill=white, thick] (10.5,1) circle [radius = 0.08];
+\draw [fill=white, thick] (12,1) circle [radius = 0.08];
+%
+\node at (0,-0.3) {\large{$v_{18}$}};
+\node at (1.5,-0.3) {\large{$v_{17}$}};
+\node at (3,-0.3) {\large{$v_{15}$}};
+\node at (4.5,-0.3) {\large{$v_{16}$}};
+\node at (6,-0.3) {\large{$v_{13}$}};
+\node at (7.5,-0.3) {\large{$v_{14}$}};
+\node at (9,-0.3) {\large{$v_{11}$}};
+\node at (10.5,-0.3) {\large{$v_{12}$}};
+\node at (12,-0.3) {\large{$v_{10}$}};
+%
+\node at (0,1.3) {\large{$v_1$}};
+\node at (1.5,1.3) {\large{$v_2$}};
+\node at (3,1.3) {\large{$v_3$}};
+\node at (4.5,1.3) {\large{$v_4$}};
+\node at (6,1.3) {\large{$v_5$}};
+\node at (7.5,1.3) {\large{$v_6$}};
+\node at (9,1.3) {\large{$v_7$}};
+\node at (10.5,1.3) {\large{$v_8$}};
+\node at (12,1.3) {\large{$v_9$}};
+
+
+
+\end{tikzpicture}
+	
+\end{document}

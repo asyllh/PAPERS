@@ -1,0 +1,63 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+%\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!30!White}
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\colorlet{tLightOrange}{Dandelion!65!White}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%Al: algebra, An: analysis, C: calculus, G: geometry, M: mechanics, N: number theory, O: optimisation, S: statistics.
+
+\draw [thick] (0,2) -- (2,4);
+\draw [thick] (0,2) -- (2,2);
+
+\draw [thick] (2,4) -- (2,2);
+\draw [thick] (2,4) -- (4,4);
+
+\draw [thick] (2,2) -- (4,2);
+\draw [thick] (2,2) -- (2,0);
+\draw [thick] (2,2) -- (4,0);
+
+\draw [thick] (4,4) -- (4,2);
+\draw [thick] (4,4) -- (6,2);
+
+\draw [thick] (4,2) -- (2,0);
+\draw [thick] (4,2) -- (4,0);
+\draw [thick] (4,2) -- (6,2);
+
+\draw [thick] (4,0) -- (2,0);
+\draw [thick] (4,0) -- (6,2);
+
+
+% Vertices
+\draw [fill=tLightGreen, thick] (2,4) circle [radius = 0.4]; % top row left (An)
+\draw [fill=tLightPink, thick] (4,4) circle [radius = 0.4]; % top row right (M)
+\draw [fill=tLightPink, thick] (0,2) circle [radius = 0.4];  % middle row far left (N)
+\draw [fill=tLightBlue, thick] (2,2) circle [radius = 0.4]; % middle row left middle (Al)
+\draw [fill=tLightGreen, thick] (4,2) circle [radius = 0.4]; % middle row right middle (C)
+\draw [fill=tLightBlue, thick] (6,2) circle [radius = 0.4]; % middle row far right (O)
+\draw [fill=tLightOrange, thick] (2,0) circle [radius = 0.4]; % bottom row left (G)
+\draw [fill=tLightPink, thick] (4,0) circle [radius = 0.4]; % bottom row right (S)
+
+\node at (2,4) {An};
+\node at (4,4) {M};
+\node at (0,2) {N};
+\node at (2,2) {Al};
+\node at (4,2) {C};
+\node at (6,2) {O};
+\node at (2,0) {G};
+\node at (4,0) {S};
+
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

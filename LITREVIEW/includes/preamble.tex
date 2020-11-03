@@ -1,0 +1,193 @@
+%---- PREAMBLE ----%
+
+\usepackage[english]{babel}     
+\usepackage[T1]{fontenc}        
+\usepackage[utf8]{inputenc}  
+
+% Allows separate files to be used in the main file
+\usepackage{subfiles}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmicbreak}{\State \textbf{break}}
+\newcommand{\Break}{\algorithmicbreak}
+\renewcommand{\algorithmicreturn}{\State \textbf{return}}
+\newcommand{\algorithmicto}{\textbf{ to }}
+\newcommand{\To}{\algorithmicto}
+\newcommand{\algorithmicrun}{\State \textbf{call }}
+\newcommand{\Run}{\algorithmicrun}
+\newcommand{\algorithmicoutput}{\textbf{output }}
+\newcommand{\Output}{\algorithmicoutput}
+\newcommand{\algorithmictrue}{\textbf{true}}
+\newcommand{\True}{\algorithmictrue}
+\newcommand{\algorithmicfalse}{\textbf{false}}
+\newcommand{\False}{\algorithmicfalse}
+\newcommand{\algorithmicand}{\textbf{ and }}
+\newcommand{\AAnd}{\algorithmicand}
+\newcommand{\algorithmicnot}{\textbf{not}}
+\newcommand{\Not}{\algorithmicnot}
+\newcommand{\algorithmicor}{\textbf{ or }}
+\newcommand{\Or}{\algorithmicor}
+
+% Contains advanced math extensions
+\usepackage{amsmath}
+
+% Introduces the *proof* environment and the \theoremstyle command
+\usepackage{amsthm}
+
+% Adds new symbols to be used in math mode, e.g. \mathbb
+\usepackage{amssymb}
+
+% To declare multiple authors
+%\usepackage{authblk}
+
+% Provides extra comands as well as optimisation for producing tables
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+% Allows customisation of appearance and placements for figures/tables etc.
+\usepackage{caption}
+
+\usepackage{comment}
+
+% Adds support for arbitrarily-deep nested lists
+\usepackage[inline]{enumitem}
+
+%Support for changing size of font in table footnotes
+%\usepackage{etoolbox}
+
+% Improves the interface for defining floating objects such as figures/tables
+\usepackage{float}
+
+%\usepackage{fullpage}
+
+% For easy management of document margins and the document page size
+\usepackage[top=25mm, bottom=35mm, left=30mm, right=30mm]{geometry}
+
+% Allows insertion of graphic files within a document
+\usepackage{graphicx}
+
+% Manage links within the document or to any URL when you compile in PDF
+\usepackage[colorlinks]{hyperref} 
+\usepackage[dvipsnames]{xcolor}
+
+% Tikz colours, used in tikz figures only
+\colorlet{tRed}{Red} %tikz color
+\definecolor{tOrange}{HTML}{FA7602} %tikz color
+\definecolor{tOrange1}{HTML}{FAA51C} %tikz color %FAA51C
+\definecolor{tLightOrange}{HTML}{FFE3B2}
+\definecolor{tYellow}{HTML}{FFFF7F}
+\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+\colorlet{tGreen}{LimeGreen!10!OliveGreen!70!White}
+\colorlet{tGreen1}{LimeGreen!20!OliveGreen!50!White}
+\definecolor{tGreen2}{HTML}{569909} %tikz color
+\definecolor{tLightGreen}{HTML}{D3ECAA}
+\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+\colorlet{tBlue}{RoyalBlue!35!Cerulean} %tikz color
+\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+\definecolor{tPurple}{HTML}{7356AF} %tikz color %ECDBFF
+\definecolor{tPurple1}{HTML}{A288F5} %tikz color %9F85F5
+\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+\definecolor{tPink}{HTML}{DF4979} %tikz color %F98F96
+\colorlet{tPink1}{OrangeRed!50!WildStrawberry!60!White}
+\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+
+
+
+% Text colours
+\colorlet{myRed}{Red!60!OrangeRed} 
+\definecolor{myDarkOrange}{HTML}{FF5500}
+\definecolor{myOrange}{HTML}{EE7001} %FA7602
+\definecolor{myYellow}{HTML}{F0CF11} %E6C612
+\definecolor{myGreen}{HTML}{569909} %569909
+\definecolor{myDarkGreen}{HTML}{008000}
+\definecolor{myAqua}{HTML}{00B1BA} %02BEB8 %00b1ba
+\definecolor{myBlue}{HTML}{0F88F1} %00B3FF %0095ff
+\definecolor{myDarkBlue}{HTML}{546EFF} 
+\colorlet{myPurple}{Orchid} 
+\definecolor{myPink}{HTML}{FF65C2} %FF65C2 %FF53AC
+\definecolor{myMagenta}{HTML}{FF427E} %FF53AC %%FF557F
+\colorlet{myGray}{Gray!90!White}
+
+\hypersetup{
+	linkcolor=myPurple,
+	citecolor=myAqua,
+	urlcolor=blue
+}
+\newcommand{\intro}[1]{{\color{myDarkBlue}#1}} % \intro{<text>}, makes <text> dark blue, use to highlight things to do, urgent, or revisit in Introduction section
+
+\newcommand{\lit}[1]{{\color{myOrange}#1}} % \lit{<text>}, makes <text> orange, use to highlight things to do, urgent, or revisit in Lit Review section
+
+\newcommand{\ahc}[1]{{\color{myBlue}#1}} % \ahc{<text>}, makes <text> blue, use to highlight things to do, urgent, or revisit in AHC section
+
+\newcommand{\heur}[1]{{\color{myPink}#1}} % \heur{<text>}, makes <text> pink, use to highlight things to do, urgent, or revisit in Heuristics section
+
+\newcommand{\ea}[1]{{\color{myRed}#1}} % \ea{<text>}, makes <text> red, use to highlight things to do, urgent, or revisit in EA section
+
+\newcommand{\cmsa}[1]{{\color{myGreen}#1}} % \hyip{<text>}, makes <text> green, use to highlight things to do, urgent, or revisit in Hybrid/IP section
+
+\newcommand{\msc}[1]{{\color{myPurple}#1}} % \msc{<text>}, makes <text> purple, use to highlight things to do, urgent, or revisit in Modified SCPP section
+
+\newcommand{\conc}[1]{{\color{myDarkBlue}#1}} % \conc{<text>}, makes <text> dark blue, use to highlight things to do, urgent, or revisit in Conclusion section
+
+\newcommand{\note}[1]{{\color{myMagenta}#1}} % \note{<text>}, makes <text> magenta, use to highlight things to do, urgent, or revisit in any section
+
+% Successor of amsmath
+\usepackage{mathtools}
+
+\usepackage{multirow}
+
+% No indentation, space between paragraphs
+%\usepackage{parskip}
+
+\usepackage[authoryear,round]{natbib}
+
+\usepackage{setspace}
+\onehalfspacing
+
+
+%Include standalone .tex files
+\usepackage{standalone}
+
+% Define multiple floats (figures/tables) within one environment with individual captions 1a, 1b etc
+\usepackage{subcaption}
+
+%\usepackage[caption=false,font=footnotesize]{subfig}
+
+\usepackage{tabularx}
+
+\usepackage{threeparttable}
+%\appto\TPTnoteSettings{\footnotesize} % Change font size of table footnotes to footnotesize
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows,decorations.markings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.pathreplacing,decorations.markings}
+\usepgflibrary{shapes.geometric}
+\usepackage{rotating}
+
+\usepackage{wrapfig}
+
+% Need \usepackage{mathtools} to use floor/ceil below.
+% Example: \floor*{\frac{x}{2}}, \ceil*{\frac{x}{2}}
+% The asterisk resizes floor/ceil brackets.
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+%Theorem style
+%\theoremstyle{plain}% default
+\newtheorem{theorem}{Theorem}
+%\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+%\newtheorem{proposition}{Proposition}
+%\newtheorem{exmp}{Example}[section]

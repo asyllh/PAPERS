@@ -1,0 +1,152 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{amsmath,amssymb}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (12,5);
+% 1=0.1, 2=0.15, 3=0.2, 4=0.25, 5=0.3
+
+%NEW SCPP SOLUTION FOR THESIS 14/04/2020 (had to change it because the previous one has items with width less than 150).
+
+\draw [thick] (0,0) rectangle (10,1);
+\draw [thick] (0,1.5) rectangle (10,2.5);
+\draw [thick] (0,3) rectangle (10,4);
+\draw [thick] (0,4.5) rectangle (10,5.5);
+
+% Bottom row, F, J, 215, 154 (19-37, 34-5)
+\path [fill=tLightPurple] (0,0) rectangle (2.15,1);
+\path [fill=tDarkGreen] (2.15,0) rectangle (3.69,1);
+
+\draw [thick] (2.15,0) -- (2.15,1);
+\draw [thick] (3.69,0) -- (3.69,1);
+\filldraw[fill=black!20!white, draw=black, thick] (3.69,0) rectangle (10,1);
+
+\draw [dashed] (0.19,0) -- (0.19,1);
+\draw [dashed] (1.78,0) -- (1.78,1);
+\node at (1.075,0.3) {$215$};
+\node at (1.075,0.7) {\large F};
+\node [below] at (0.19,0) {\footnotesize{$19$}};
+\node [below] at (1.78,0) {\footnotesize{$37$}};
+
+\draw [dashed] (2.49,0) -- (2.49,1);
+\draw [dashed] (3.64,0) -- (3.64,1);
+\node at (2.92,0.3) {$154$};
+\node at (2.92,0.7) {\large J};
+\node [below] at (2.49,0) {\footnotesize{$34$}};
+\node [below] at (3.64,0) {\footnotesize{$5$}};
+
+
+% Second from bottom row, D, G, H, 346, 209, 171 (11-28, 42-50, 32-21)
+\path [fill=tTurquoise] (0,1.5) rectangle (3.46,2.5);
+\path [fill=tLightYellow] (3.46,1.5) rectangle (5.55,2.5);
+\path [fill=tDarkBlue] (5.55,1.5) rectangle (7.26,2.5);
+
+\draw [thick] (3.46,1.5) -- (3.46,2.5);
+\draw [thick] (5.55,1.5) -- (5.55,2.5);
+\draw [thick] (7.26,1.5) -- (7.26,2.5);
+\filldraw[fill=black!20!white, draw=black, thick] (7.26,1.5) rectangle (10,2.5);
+
+\draw [dashed] (0.11,1.5) -- (0.11,2.5);
+\draw [dashed] (3.18,1.5) -- (3.18,2.5);
+\node at (1.73,1.8) {$346$};
+\node at (1.73,2.2) {\large D};
+\node [below] at (0.11,1.5) {\footnotesize{$11$}};
+\node [below] at (3.18,1.5) {\footnotesize{$28$}};
+
+\draw [dashed] (3.88,1.5) -- (3.88,2.5);
+\draw [dashed] (5.05,1.5) -- (5.05,2.5);
+\node at (4.505,1.8) {$209$};
+\node at (4.505,2.2) {\large G};
+\node [below] at (3.88,1.5) {\footnotesize{$42$}};
+\node [below] at (5.05,1.5) {\footnotesize{$50$}};
+
+\draw [dashed] (5.87,1.5) -- (5.87,2.5);
+\draw [dashed] (7.05,1.5) -- (7.05,2.5);
+\node at (6.405,1.8) {$171$};
+\node at (6.405,2.2) {\large H};
+\node [below] at (5.87,1.5) {\footnotesize{$32$}};
+\node [below] at (7.05,1.5) {\footnotesize{$21$}};
+
+
+% Second from top row, C, E, I, 393, 278, 163 (4-31, 39-16, 55-20)
+\path [fill=tLightOrange] (0,3) rectangle (3.93,4);
+\path [fill=tLightBlue] (3.93,3) rectangle (6.71,4);
+\path [fill=tPeach] (6.71,3) rectangle (8.34,4);
+
+\draw [thick] (3.93,3) -- (3.93,4);
+\draw [thick] (6.71,3) -- (6.71,4);
+\draw [thick] (8.34,3) -- (8.34,4);
+\filldraw[fill=black!20!white, draw=black, thick] (8.34,3) rectangle (10,4);
+
+\draw [dashed] (0.04,3) -- (0.04,4);
+\draw [dashed] (3.62,3) -- (3.62,4);
+\node at (1.965,3.3) {$393$};
+\node at (1.965,3.7) {\large C};
+\node [below] at (0.04,3) {\footnotesize{$4$}};
+\node [below] at (3.62,3) {\footnotesize{$31$}};
+
+\draw [dashed] (4.32,3) -- (4.32,4);
+\draw [dashed] (6.55,3) -- (6.55,4);
+\node at (5.32,3.3) {$278$};
+\node at (5.32,3.7) {\large E};
+\node [below] at (4.32,3) {\footnotesize{$39$}};
+\node [below] at (6.55,3) {\footnotesize{$16$}};
+
+\draw [dashed] (7.22,3) -- (7.22,4);
+\draw [dashed] (8.14,3) -- (8.14,4);
+\node at (7.525,3.3) {$163$};
+\node at (7.525,3.7) {\large I};
+\node [below] at (7.22,3) {\footnotesize{$55$}};
+\node [below] at (8.14,3) {\footnotesize{$20$}};
+
+
+% Top row, A, B, 532, 449 (2-27, 43-9)
+\path [fill=tLightPink] (0,4.5) rectangle (5.32,5.5);
+\path [fill=tLightGreen] (5.32,4.5) rectangle (9.81,5.5);
+
+\draw [thick] (5.32,4.5) -- (5.32,5.5);
+\filldraw[fill=black!20!white, draw=black, thick] (9.81,4.5) rectangle (10,5.5);
+
+\draw [dashed] (0.04,4.5) -- (0.04,5.5);
+\draw [dashed] (5.05,4.5) -- (5.05,5.5);
+\node at (2.66,4.8) {$532$};
+\node at (2.66,5.2) {\large A};
+\node [below] at (0.04,4.5) {\footnotesize{$2$}};
+\node [below] at (5.05,4.5) {\footnotesize{$27$}};
+
+\draw [dashed] (5.75,4.5) -- (5.75,5.5);
+\draw [dashed] (9.72,4.5) -- (9.72,5.5);
+\node at (7.565,4.8) {$449$};
+\node at (7.565,5.2) {\large B};
+\node [below] at (5.75,4.5) {\footnotesize{$43$}};
+\node [below] at (9.72,4.5) {\footnotesize{$9$}};
+
+
+
+
+\draw [thick] (0,0) rectangle (10,1);
+\draw [thick] (0,1.5) rectangle (10,2.5);
+\draw [thick] (0,3) rectangle (10,4);
+\draw [thick] (0,4.5) rectangle (10,5.5);
+
+
+
+\end{tikzpicture}
+
+\end{document}

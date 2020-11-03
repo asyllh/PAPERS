@@ -1,0 +1,88 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+	\begin{tikzpicture}
+	% COP instance:
+	% M = (4,21), (9,53), (13,26), (17,29), (32,39), (35,41), (44,57), (48,61)
+	%\draw [help lines] (-1,-2) grid (11,7);
+	
+	\draw [thick] (0,5) rectangle (2.75,6.5); % A (4,21)
+	\draw [thick, densely dashed] (0.25,5) -- (0.25,6.5);
+	\draw [thick, densely dashed] (2.45,5) -- (2.45,6.5);
+	\node [below] at (0.125, 5) {\large{4}};
+	\node [below] at (2.6, 5) {\large{21}};
+	\node at (1.375,5.95) {\Large{A}};
+	\node at (1.375,5.5) {\large{275}};
+	
+	\draw [thick] (3.75,5) rectangle (6.25,6.5); % B (9,53)
+	\draw [thick, densely dashed] (3.95,5) -- (3.95,6.5);
+	\draw [thick, densely dashed] (5.65,5) -- (5.65,6.5);
+	\node [below] at (3.85, 5) {\large{9}};
+	\node [below] at (5.95, 5) {\large{53}};
+	\node at (5,5.95) {\Large{B}};
+	\node at (5,5.5) {\large{250}};
+	
+	\draw [thick] (7.25,5) rectangle (10.25,6.5); % C (13,26)
+	\draw [thick, densely dashed] (7.55,5) -- (7.55,6.5);
+	\draw [thick, densely dashed] (9.75,5) -- (9.75,6.5);
+	\node [below] at (7.4, 5) {\large{13}};
+	\node [below] at (10, 5) {\large{26}};
+	\node at (8.75,5.95) {\Large{C}};
+	\node at (8.75,5.5) {\large{300}};
+	
+	%------------------------------
+	
+	\draw [thick] (1.25,2.5) rectangle (4.5,4); % D (17,29)
+	\draw [thick, densely dashed] (1.5,2.5) -- (1.5,4);
+	\draw [thick, densely dashed] (4.25,2.5) -- (4.25,4);
+	\node [below] at (1.5, 2.5) {\large{17}};
+	\node [below] at (4.25, 2.5) {\large{29}};
+	\node at (2.875,3.45) {\Large{D}};
+	\node at (2.875,3) {\large{325}};
+	
+	
+	\draw [thick] (5.5,2.5) rectangle (9,4); % E (32,39)
+	\draw [thick, densely dashed] (5.75,2.5) -- (5.75,4);
+	\draw [thick, densely dashed] (8.75,2.5) -- (8.75,4);
+	\node [below] at (5.75, 2.5) {\large{32}};
+	\node [below] at (8.75, 2.5) {\large{39}};
+	\node at (7.25,3.45) {\Large{E}};
+	\node at (7.25,3) {\large{350}};
+	
+	%------------------------------
+	\draw [thick] (0,0) rectangle (3,1.5); % F (35,41)
+	\draw [thick, densely dashed] (0.2,0) -- (0.2,1.5);
+	\draw [thick, densely dashed] (2.75,0) -- (2.75,1.5);
+	\node [below] at (0.1, 0) {\large{35}};
+	\node [below] at (2.875, 0) {\large{41}};
+	\node at (1.5,0.95) {\Large{F}};
+	\node at (1.5,0.5) {\large{300}};
+	
+	\draw [thick] (4,0) rectangle (6.5,1.5); % G (44,57)
+	\draw [thick, densely dashed] (4.4,0) -- (4.4,1.5);
+	\draw [thick, densely dashed] (6,0) -- (6,1.5);
+	\node [below] at (4.2, 0) {\large{44}};
+	\node [below] at (6.25, 0) {\large{57}};
+	\node at (5.25,0.95) {\Large{G}};
+	\node at (5.25,0.5) {\large{250}};
+	
+	\draw [thick] (7.5,0) rectangle (10.25,1.5); % H (48,61)
+	\draw [thick, densely dashed] (7.75,0) -- (7.75,1.5);
+	\draw [thick, densely dashed] (9.85,0) -- (9.85,1.5);
+	\node [below] at (7.625, 0) {\large{48}};
+	\node [below] at (10.05, 0) {\large{61}};
+	\node at (8.875,0.95) {\Large{H}};
+	\node at (8.875,0.5) {\large{275}};
+	
+	
+	
+	
+	
+	
+	\end{tikzpicture}
+\end{document}

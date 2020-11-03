@@ -1,0 +1,159 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+% 15 items, order from largest to smallest: 631, 615, 561, 525, 359, 336, 328, 327, 321, 305, 211, 207, 200, 192, 150.
+
+% Top row - 211, 631, 200
+% K
+\draw [thick] (0,6) rectangle (2.11, 7); %211 - K, 11th largest
+\draw [thick, densely dashed] (0.23,6) -- (0.23,7); %23
+\draw [thick, densely dashed] (1.78,6) -- (1.78,7); %33
+\node at (1.055,6.3) {$211$};
+\node at (1.055,6.7) {\large K};
+\node [below] at (0.23,6) {\small$23$};
+\node [below] at (1.78,6) {\small$33$};
+
+% A
+\draw [thick] (2.61,6) rectangle (8.92, 7); %631 - A, 1st largest
+\draw [thick, densely dashed] (3.09,6) -- (3.09,7); %48
+\draw [thick, densely dashed] (8.24,6) -- (8.24,7); %68
+\node at (5.765,6.3) {$631$};
+\node at (5.765,6.7) {\large A};
+\node [below] at (3.09,6) {\small$48$};
+\node [below] at (8.24,6) {\small$68$};
+
+% M
+\draw [thick] (9.42,6) rectangle (11.42, 7); %200 - M, 13th largest
+\draw [thick, densely dashed] (9.56,6) -- (9.56,7); %14
+\draw [thick, densely dashed] (11.24,6) -- (11.24,7);%18
+\node at (10.42,6.3) {$200$};
+\node at (10.42,6.7) {\large M};
+\node [below] at (9.56,6) {\small$14$};
+\node [below] at (11.24,6) {\small$18$};
+
+% Second row - 615, 150, 305
+% B
+\draw [thick] (0,4.5) rectangle (6.15, 5.5); %615 - B, 2nd largest
+\draw [thick, densely dashed] (0.1,4.5) -- (0.1,5.5); %4
+\draw [thick, densely dashed] (5.61,4.5) -- (5.61,5.5);%54
+\node at (3.075,4.8) {$615$};
+\node at (3.075,5.2) {\large B};
+\node [below] at (0.1,4.5) {\small$4$};
+\node [below] at (5.61,4.5) {\small$54$};
+
+% O
+\draw [thick] (6.65,4.5) rectangle (8.15, 5.5); %150 - O, 15th largest (smallest)
+\draw [thick, densely dashed] (6.75,4.5) -- (6.75,5.5); %8
+\draw [thick, densely dashed] (7.93,4.5) -- (7.93,5.5); %22
+\node at (7.4,4.8) {$150$};
+\node at (7.4,5.2) {\large O};
+\node [below] at (6.75,4.5) {\small$8$};
+\node [below] at (7.93,4.5) {\small$22$};
+
+% J
+\draw [thick] (8.65,4.5) rectangle (11.7, 5.5); %305 - J, 10th largest
+\draw [thick, densely dashed] (8.77,4.5) -- (8.77,5.5); %12
+\draw [thick, densely dashed] (11.19,4.5) -- (11.19,5.5); %51
+\node at (10.175,4.8) {$305$};
+\node at (10.175,5.2) {\large J};
+\node [below] at (8.77,4.5) {\small$12$};
+\node [below] at (11.19,4.5) {\small$51$};
+
+
+% Third row - 327, 192, 561
+% H
+\draw [thick] (0,3) rectangle (3.27, 4); %327 - H, 8th largest
+\draw [thick, densely dashed] (0.17,3) -- (0.17,4); %17
+\draw [thick, densely dashed] (2.83,3) -- (2.83,4); %44
+\node at (1.635,3.3) {$327$};
+\node at (1.635,3.7) {\large H};
+\node [below] at (0.17,3) {\small$17$};
+\node [below] at (2.83,3) {\small$44$};
+
+% N
+\draw [thick] (3.77,3) rectangle (5.69, 4); %192 - N, 14th largest (2nd smallest)
+\draw [thick, densely dashed] (3.99,3) -- (3.99,4); %22
+\draw [thick, densely dashed] (5.01,3) -- (5.01,4); %68
+\node at (4.73,3.3) {$192$};
+\node at (4.73,3.7) {\large N};
+\node [below] at (3.99,3) {\small$22$};
+\node [below] at (5.01,3) {\small$68$};
+
+% C
+\draw [thick] (6.19,3) rectangle (11.8, 4); %561 - C, 3rd largest
+\draw [thick, densely dashed] (6.67,3) -- (6.67,4); %48
+\draw [thick, densely dashed] (11.17,3) -- (11.17,4); %63
+\node at (8.995,3.3) {$561$};
+\node at (8.995,3.7) {\large C};
+\node [below] at (6.67,3) {\small$48$};
+\node [below] at (11.17,3) {\small$63$};
+
+
+% Fourth row - 525, 321, 207
+% D
+\draw [thick] (0,1.5) rectangle (5.25, 2.5); %525 - D, 4th largest
+\draw [thick, densely dashed] (0.1,1.5) -- (0.1,2.5); %4
+\draw [thick, densely dashed] (4.83,1.5) -- (4.83,2.5); %42
+\node at (2.625,1.8) {$525$};
+\node at (2.625,2.2) {\large D};
+\node [below] at (0.1,1.5) {\small$4$};
+\node [below] at (4.83,1.5) {\small$42$};
+
+% I
+\draw [thick] (5.75,1.5) rectangle (8.96, 2.5); %321 - I, 9th largest
+\draw [thick, densely dashed] (5.88,1.5) -- (5.88,2.5); %13
+\draw [thick, densely dashed] (8.49,1.5) -- (8.49,2.5); %47
+\node at (7.355,1.8) {$321$};
+\node at (7.355,2.2) {\large I};
+\node [below] at (5.88,1.5) {\small$13$};
+\node [below] at (8.49,1.5) {\small$47$};
+
+% L
+\draw [thick] (9.46,1.5) rectangle (11.53, 2.5); %207 - L, 12th largest
+\draw [thick, densely dashed] (9.94,1.5) -- (9.94,2.5); %48
+\draw [thick, densely dashed] (10.84,1.5) -- (10.84,2.5); %69
+\node at (10.495,1.8) {$207$};
+\node at (10.495,2.2) {\large L};
+\node [below] at (9.94,1.5) {\small$48$};
+\node [below] at (10.84,1.5) {\small$69$};
+
+
+% Bottom row - 328, 359, 336
+% G
+\draw [thick] (0,0) rectangle (3.28, 1); %328 - G, 7th largest
+\draw [thick, densely dashed] (0.16,0) -- (0.16,1); %16
+\draw [thick, densely dashed] (2.97,0) -- (2.97,1); %31
+\node at (1.64,0.3) {$328$};
+\node at (1.64,0.7) {\large G};
+\node [below] at (0.16,0) {\small$16$};
+\node [below] at (2.97,0) {\small$31$};
+
+% E
+\draw [thick] (3.78,0) rectangle (7.37, 1); %359 - E, 5th largest
+\draw [thick, densely dashed] (4.04,0) -- (4.04,1); %26
+\draw [thick, densely dashed] (7,0) -- (7,1); %37
+\node at (5.575,0.3) {$359$};
+\node at (5.575,0.7) {\large E};
+\node [below] at (4.04,0) {\small$26$};
+\node [below] at (7,0) {\small$37$};
+
+% F
+\draw [thick] (7.87,0) rectangle (11.23, 1); %336 - F, 6th largest
+\draw [thick, densely dashed] (8.3,0) -- (8.3,1); %43
+\draw [thick, densely dashed] (10.76,0) -- (10.76,1); %47
+\node at (9.55,0.3) {$336$};
+\node at (9.55,0.7) {\large F};
+\node [below] at (8.3,0) {\small$43$};
+\node [below] at (10.76,0) {\small$47$};
+
+
+\end{tikzpicture}
+	
+\end{document}

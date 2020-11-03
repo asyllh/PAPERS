@@ -1,0 +1,140 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+
+%extra strip in mffd, white out so same dimensions in figure
+\draw [thick, white] (0,9) rectangle (10, 10);
+\draw [thick, white] (6.31,9) -- (6.31,10);
+\draw [thick, white] (9.9,9) -- (9.9,10);
+\filldraw[fill=white, draw=white, thick] (9.9,9) rectangle (10,10);
+\draw [thick, white, densely dashed] (0.48,9) -- (0.48, 10);
+\draw [thick, white, densely dashed] (5.63,9) -- (5.63, 10);
+\draw [thick, white, densely dashed] (6.57,9) -- (6.57, 10);
+\draw [thick, white, densely dashed] (9.53,9) -- (9.53, 10);
+\node at (3.155,9.5) {\textcolor{white}{631}};
+\node at (8.105,9.5) {\textcolor{white}{359}};
+\node [below] at (0.24,9) {\textcolor{white}{48}};
+\node [below] at (5.97,9) {\textcolor{white}{68}};
+\node [below] at (6.44,9) {\textcolor{white}{26}};
+\node [below] at (9.77,9) {\textcolor{white}{37}};
+
+%327, 336, 211 (17-44, 43-47, 33-23)
+\draw [thick] (0,7.5) rectangle (10, 8.5);
+\draw [thick] (3.27,7.5) -- (3.27, 8.5);
+\draw [thick] (6.63,7.5) -- (6.63, 8.5);
+\filldraw[fill=black!20!white, draw=black, thick] (8.74,7.5) rectangle (10,8.5);
+\draw [densely dashed] (0.17,7.5) -- (0.17,8.5);
+\draw [densely dashed] (2.83,7.5) -- (2.83,8.5);
+\draw [densely dashed] (3.7,7.5) -- (3.7,8.5);
+\draw [densely dashed] (6.16,7.5) -- (6.16,8.5);
+\draw [densely dashed] (6.96,7.5) -- (6.96,8.5);
+\draw [densely dashed] (8.51,7.5) -- (8.51,8.5);
+\node at (1.635,8) {327};
+\node at (4.95,8) {336};
+\node at (7.685,8) {211};
+\node [below] at (0.17,7.5) {17};
+\node [below] at (2.83,7.5) {4};
+\node [below] at (3.7,7.5) {43};
+\node [below] at (6.16,7.5) {47};
+\node [below] at (6.96,7.5) {33};
+\node [below] at (8.51,7.5) {23};
+
+%200, 615 (14-18, 54-4)
+\draw [thick] (0,6) rectangle (10, 7);
+\draw [thick] (2,6) -- (2,7);
+\filldraw[fill=black!20!white, draw=black, thick] (8.15,6) rectangle (10,7);
+\draw [thick, densely dashed] (0.14,6) -- (0.14,7);
+\draw [thick, densely dashed] (1.82,6) -- (1.82,7);
+\draw [thick, densely dashed] (2.54,6) -- (2.54,7);
+\draw [thick, densely dashed] (8.1,6) -- (8.1,7);
+\node at (1,6.5) {200};
+\node at (5.075,6.5) {615};
+\node [below] at (0.14,6) {14};
+\node [below] at (1.82,6) {18};
+\node [below] at (2.54,6) {54};
+\node [below] at (8.1,6) {4};
+
+
+%525, 359 (3-42, 37-26)
+\draw [thick] (0,4.5) rectangle (10, 5.5);
+\draw [thick] (5.25,4.5) -- (5.25,5.5);
+\filldraw[fill=black!20!white, draw=black, thick] (8.84,4.5) rectangle (10,5.5);
+\draw [thick, densely dashed] (0.05,4.5) -- (0.05,5.5);
+\draw [thick, densely dashed] (4.83,4.5) -- (4.83,5.5);
+\draw [thick, densely dashed] (5.62,4.5) -- (5.62,5.5);
+\draw [thick, densely dashed] (8.58,4.5) -- (8.58,5.5);
+\node at (2.625,5) {525};
+\node at (7.045,5) {359};
+\node [below] at (0.04,4.5) {3};
+\node [below] at (4.83,4.5) {42};
+\node [below] at (5.62,4.5) {37};
+\node [below] at (8.58,4.5) {26};
+
+%150, 631, 207 (8-22, 68-48, 48-69)
+\draw [thick] (0,3) rectangle (10, 4);
+\draw [thick] (1.5,3) -- (1.5,4);
+\draw [thick] (7.81,3) -- (7.81,4);
+\filldraw[fill=black!20!white, draw=black, thick] (9.88,3) rectangle (10,4);
+\draw [thick, densely dashed] (0.08,3) -- (0.08,4);
+\draw [thick, densely dashed] (1.28,3) -- (1.28,4);
+\draw [thick, densely dashed] (2.18,3) -- (2.18,4);
+\draw [thick, densely dashed] (7.33,3) -- (7.33,4);
+\draw [thick, densely dashed] (8.29,3) -- (8.29,4);
+\draw [thick, densely dashed] (9.19,3) -- (9.19,4);
+\node at (0.75,3.5) {150};
+\node at (4.655,3.5) {631};
+\node at (8.845,3.5) {207};
+\node [below] at (0.08,3) {8};
+\node [below] at (1.28,3) {22};
+\node [below] at (2.18,3) {68};
+\node [below] at (7.33,3) {48};
+\node [below] at (8.29,3) {48};
+\node [below] at (9.19,3) {69};
+
+
+%305, 192, 321 (12-51, 22-68, 47-13)
+\draw [thick] (0,1.5) rectangle (10, 2.5);
+\draw [thick] (3.05,1.5) -- (3.05,2.5);
+\draw [thick] (4.97,1.5) -- (4.97,2.5);
+\filldraw[fill=black!20!white, draw=black, thick] (8.18,1.5) rectangle (10,2.5);
+\draw [thick, densely dashed] (0.12,1.5) -- (0.12,2.5);
+\draw [thick, densely dashed] (2.54,1.5) -- (2.54,2.5);
+\draw [thick, densely dashed] (3.27,1.5) -- (3.27,2.5);
+\draw [thick, densely dashed] (4.29,1.5) -- (4.29,2.5);
+\draw [thick, densely dashed] (5.44,1.5) -- (5.44,2.5);
+\draw [thick, densely dashed] (8.05,1.5) -- (8.05,2.5);
+\node at (1.525,2) {305};
+\node at (4.01,2) {192};
+\node at (6.575,2) {321};
+\node [below] at (0.12,1.5) {12};
+\node [below] at (2.54,1.5) {51};
+\node [below] at (3.27,1.5) {22};
+\node [below] at (4.29,1.5) {68};
+\node [below] at (5.44,1.5) {47};
+\node [below] at (8.05,1.5) {13};
+
+
+%328, 561 (16-31, 48-63)
+\draw [thick] (0,0) rectangle (10, 1);
+\draw [thick] (3.28,0) -- (3.28,1);
+\filldraw[fill=black!20!white, draw=black, thick] (8.89,0) rectangle (10,1);
+\draw [thick, densely dashed] (0.16,0) -- (0.16,1);
+\draw [thick, densely dashed] (2.97,0) -- (2.97,1);
+\draw [thick, densely dashed] (3.76,0) -- (3.76,1);
+\draw [thick, densely dashed] (8.26,0) -- (8.26,1);
+\node at (1.64,0.5) {328};
+\node at (6.085,0.5) {561};
+\node [below] at (0.16,0) {16};
+\node [below] at (2.97,0) {31};
+\node [below] at (3.76,0) {48};
+\node [below] at (8.26,0) {63};
+
+
+
+\end{tikzpicture}
+	
+\end{document}

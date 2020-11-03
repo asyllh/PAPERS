@@ -1,0 +1,351 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\definecolor{tLightGreen1}{HTML}{B7F385} %tikz color
+%\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+%\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
+%\colorlet{tLightOrange}{Dandelion!65!White}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+%%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+
+%---------- SET B OF BINS ----------%
+
+\node at (5, -1) {\huge{$\mathcal{B}$}};
+%----------------------------------------------
+\draw [thick] (0,0) rectangle (10,1);
+\draw [thick] (0,1.5) rectangle (10,2.5);
+\draw [thick] (0,3) rectangle (10,4);
+\draw [thick] (0,4.5) rectangle (10,5.5);
+\draw [thick] (0,6) rectangle (10,7);
+\draw [thick] (0,7.5) rectangle (10,8.5);
+\draw [thick] (0,9) rectangle (10, 10);
+
+% Top row, H, E, 171, 278 (21-32, 39-16)
+\path [fill=tDarkBlue] (0,9) rectangle (1.71,10);
+\path [fill=tLightBlue] (1.71,9) rectangle (4.49,10);
+
+\draw [thick] (1.71,9) -- (1.71,10);
+\draw [thick] (4.49,9) -- (4.49,10);
+\filldraw[fill=black!20!white, draw=black, thick] (4.49,9) rectangle (10,10);
+
+\draw [dashed] (0.21,9) -- (0.21,10);
+\draw [dashed] (1.39,9) -- (1.39,10);
+\node at (0.855,9.3) {$171$};
+\node at (0.855,9.7) {\large H};
+\node [below] at (0.21,9) {\small{$21$}};
+\node [below] at (1.39,9) {\small{$32$}};
+
+\draw [dashed] (2.1,9) -- (2.1,10);
+\draw [dashed] (4.33,9) -- (4.33,10);
+\node at (3.1,9.3) {$278$};
+\node at (3.1,9.7) {\large E};
+\node [below] at (2.1,9) {\small{$39$}};
+\node [below] at (4.33,9) {\small{$16$}};
+
+% Second row from top, D, G, H, 346, 209, 171 (11-28, 42-50, 32-21)
+\path [fill=tTurquoise] (0,7.5) rectangle (3.46,8.5);
+\path [fill=tLightYellow] (3.46,7.5) rectangle (5.55,8.5);
+\path [fill=tDarkBlue] (5.55,7.5) rectangle (7.26,8.5);
+
+\draw [thick] (3.46,7.5) -- (3.46,8.5);
+\draw [thick] (5.55,7.5) -- (5.55,8.5);
+\draw [thick] (7.26,7.5) -- (7.26,8.5);
+\filldraw[fill=black!20!white, draw=black, thick] (7.26,7.5) rectangle (10,8.5);
+
+\draw [dashed] (0.11,7.5) -- (0.11,8.5);
+\draw [dashed] (3.18,7.5) -- (3.18,8.5);
+\node at (1.73,7.8) {$346$};
+\node at (1.73,8.2) {\large D};
+\node [below] at (0.11,7.5) {\small{$11$}};
+\node [below] at (3.18,7.5) {\small{$28$}};
+
+\draw [dashed] (3.88,7.5) -- (3.88,8.5);
+\draw [dashed] (5.05,7.5) -- (5.05,8.5);
+\node at (4.505,7.8) {$209$};
+\node at (4.505,8.2) {\large G};
+\node [below] at (3.88,7.5) {\small{$42$}};
+\node [below] at (5.05,7.5) {\small{$50$}};
+
+\draw [dashed] (5.87,7.5) -- (5.87,8.5);
+\draw [dashed] (7.05,7.5) -- (7.05,8.5);
+\node at (6.405,7.8) {$171$};
+\node at (6.405,8.2) {\large H};
+\node [below] at (5.87,7.5) {\small{$32$}};
+\node [below] at (7.05,7.5) {\small{$21$}};
+
+% Third row from top, F, J, 215, 154 (19-37, 34-5)
+\path [fill=tLightPurple] (0,6) rectangle (2.15,7);
+\path [fill=tDarkGreen] (2.15,6) rectangle (3.69,7);
+
+\draw [thick] (2.15,6) -- (2.15,7);
+\draw [thick] (3.69,6) -- (3.69,7);
+\filldraw[fill=black!20!white, draw=black, thick] (3.69,6) rectangle (10,7);
+
+\draw [dashed] (0.19,6) -- (0.19,7);
+\draw [dashed] (1.78,6) -- (1.78,7);
+\node at (1.075,6.3) {$215$};
+\node at (1.075,6.7) {\large F};
+\node [below] at (0.19,6) {\small{$19$}};
+\node [below] at (1.78,6) {\small{$37$}};
+
+\draw [dashed] (2.49,6) -- (2.49,7);
+\draw [dashed] (3.64,6) -- (3.64,7);
+\node at (2.92,6.3) {$154$};
+\node at (2.92,6.7) {\large J};
+\node [below] at (2.49,6) {\small{$34$}};
+\node [below] at (3.69,6) {\small{$5$}};
+
+
+% Fourth row from top,A, B, 532, 449 (2-27, 43-9)
+\path [fill=tLightPink] (0,4.5) rectangle (5.32,5.5);
+\path [fill=tLightGreen] (5.32,4.5) rectangle (9.81,5.5);
+
+\draw [thick] (5.32,4.5) -- (5.32,5.5);
+\filldraw[fill=black!20!white, draw=black, thick] (9.81,4.5) rectangle (10,5.5);
+
+\draw [dashed] (0.04,4.5) -- (0.04,5.5);
+\draw [dashed] (5.05,4.5) -- (5.05,5.5);
+\node at (2.66,4.8) {$532$};
+\node at (2.66,5.2) {\large A};
+\node [below] at (0.04,4.5) {\small{$2$}};
+\node [below] at (5.05,4.5) {\small{$27$}};
+
+\draw [dashed] (5.75,4.5) -- (5.75,5.5);
+\draw [dashed] (9.72,4.5) -- (9.72,5.5);
+\node at (7.565,4.8) {$449$};
+\node at (7.565,5.2) {\large B};
+\node [below] at (5.75,4.5) {\small{$43$}};
+\node [below] at (9.72,4.5) {\small{$9$}};
+
+% Fifth row from top, G, C, 209, 393 (42-50, 31-4)
+\path [fill=tLightYellow] (0,3) rectangle (2.09,4);
+\path [fill=tLightOrange] (2.09,3) rectangle (6.02,4);
+
+\draw [thick] (2.09,3) -- (2.09,4);
+\filldraw[fill=black!20!white, draw=black, thick] (6.02,3) rectangle (10,4);
+
+\draw [dashed] (0.42,3) -- (0.42,4);
+\draw [dashed] (1.59,3) -- (1.59,4);
+\node at (1.045,3.3) {$209$};
+\node at (1.045,3.7) {\large G};
+\node [below] at (0.04,3) {\small{$42$}};
+\node [below] at (5.05,3) {\small{$50$}};
+
+\draw [dashed] (2.4,3) -- (2.4,4);
+\draw [dashed] (5.98,3) -- (5.98,4);
+\node at (4.055,3.3) {$393$};
+\node at (4.055,3.7) {\large C};
+\node [below] at (2.4,3) {\small{$31$}};
+\node [below] at (5.98,3) {\small{$4$}};
+
+
+% Sixth row from top, I, D, 163, 346 (20-55, 28-11)
+\path [fill=tPeach] (0,1.5) rectangle (1.63,2.5);
+\path [fill=tTurquoise] (1.63,1.5) rectangle (5.09,2.5);
+
+\draw [thick] (1.63,1.5) -- (1.63,2.5);
+\draw [thick] (5.09,1.5) -- (5.09,2.5);
+\filldraw[fill=black!20!white, draw=black, thick] (5.09,1.5) rectangle (10,2.5);
+
+\draw [dashed] (0.2,1.5) -- (0.2,2.5);
+\draw [dashed] (1.08,1.5) -- (1.08,1.5);
+\node at (0.815,1.8) {$163$};
+\node at (0.815,2.2) {\large I};
+\node [below] at (0.2,1.5) {\small{$20$}};
+\node [below] at (1.08,1.5) {\small{$55$}};
+
+\draw [dashed] (1.91,1.5) -- (1.91,2.5);
+\draw [dashed] (4.98,1.5) -- (4.98,2.5);
+\node at (3.36,1.8) {$346$};
+\node at (3.36,2.2) {\large D};
+\node [below] at (1.91,1.5) {\small{$28$}};
+\node [below] at (4.98,1.5) {\small{$11$}};
+
+
+% Bottom row, C, E, I, 393, 278, 163 (4-31, 39-16, 55-20)
+\path [fill=tLightOrange] (0,0) rectangle (3.93,1);
+\path [fill=tLightBlue] (3.93,0) rectangle (6.71,1);
+\path [fill=tPeach] (6.71,0) rectangle (8.34,1);
+
+\draw [thick] (3.93,0) -- (3.93,1);
+\draw [thick] (6.71,0) -- (6.71,1);
+\draw [thick] (8.34,0) -- (8.34,1);
+\filldraw[fill=black!20!white, draw=black, thick] (8.34,0) rectangle (10,1);
+
+\draw [dashed] (0.04,0) -- (0.04,1);
+\draw [dashed] (3.62,0) -- (3.62,1);
+\node at (1.965,0.3) {$393$};
+\node at (1.965,0.7) {\large C};
+\node [below] at (0.04,0) {\small{$4$}};
+\node [below] at (3.62,0) {\small{$31$}};
+
+\draw [dashed] (4.32,0) -- (4.32,1);
+\draw [dashed] (6.55,0) -- (6.55,1);
+\node at (5.32,0.3) {$278$};
+\node at (5.32,0.7) {\large E};
+\node [below] at (4.32,0) {\small{$39$}};
+\node [below] at (6.55,0) {\small{$16$}};
+
+\draw [dashed] (7.22,0) -- (7.22,1);
+\draw [dashed] (8.14,0) -- (8.14,1);
+\node at (7.525,0.3) {$163$};
+\node at (7.525,0.7) {\large I};
+\node [below] at (7.22,0) {\small{$55$}};
+\node [below] at (8.14,0) {\small{$20$}};
+
+
+
+
+\draw [thick] (0,0) rectangle (10,1);
+\draw [thick] (0,1.5) rectangle (10,2.5);
+\draw [thick] (0,3) rectangle (10,4);
+\draw [thick] (0,4.5) rectangle (10,5.5);
+\draw [thick] (0,6) rectangle (10,7);
+\draw [thick] (0,7.5) rectangle (10,8.5);
+\draw [thick] (0,9) rectangle (10, 10);
+
+
+
+
+%---------- BINS IN EXACT COVER ----------%
+
+\node at (17, -1) {\huge{$\mathcal{S}^*$}};
+%---------------------------------------------------------
+
+\draw [thick] (12,0) rectangle (22,1);
+\draw [thick] (12,1.5) rectangle (22,2.5);
+\draw [thick] (12,3) rectangle (22,4);
+\draw [thick] (12,4.5) rectangle (22,5.5);
+
+% Bottom row, F, J, 215, 154 (19-37, 34-5)
+\path [fill=tLightPurple] (12,0) rectangle (14.15,1);
+\path [fill=tDarkGreen] (14.15,0) rectangle (15.69,1);
+
+\draw [thick] (14.15,0) -- (14.15,1);
+\draw [thick] (15.69,0) -- (15.69,1);
+\filldraw[fill=black!20!white, draw=black, thick] (15.69,0) rectangle (22,1);
+
+\draw [dashed] (12.19,0) -- (12.19,1);
+\draw [dashed] (13.78,0) -- (13.78,1);
+\node at (13.075,0.3) {$215$};
+\node at (13.075,0.7) {\large F};
+\node [below] at (12.19,0) {\small{$19$}};
+\node [below] at (13.78,0) {\small{$37$}};
+
+\draw [dashed] (14.49,0) -- (14.49,1);
+\draw [dashed] (15.64,0) -- (15.64,1);
+\node at (14.92,0.3) {$154$};
+\node at (14.92,0.7) {\large J};
+\node [below] at (14.49,0) {\small{$34$}};
+\node [below] at (15.64,0) {\small{$5$}};
+
+
+% Second from bottom row, D, G, H, 346, 209, 171 (11-28, 42-50, 32-21)
+\path [fill=tTurquoise] (12,1.5) rectangle (15.46,2.5);
+\path [fill=tLightYellow] (15.46,1.5) rectangle (17.55,2.5);
+\path [fill=tDarkBlue] (17.55,1.5) rectangle (19.26,2.5);
+
+\draw [thick] (15.46,1.5) -- (15.46,2.5);
+\draw [thick] (17.55,1.5) -- (17.55,2.5);
+\draw [thick] (19.26,1.5) -- (19.26,2.5);
+\filldraw[fill=black!20!white, draw=black, thick] (19.26,1.5) rectangle (22,2.5);
+
+\draw [dashed] (12.11,1.5) -- (12.11,2.5);
+\draw [dashed] (15.18,1.5) -- (15.18,2.5);
+\node at (13.73,1.8) {$346$};
+\node at (13.73,2.2) {\large D};
+\node [below] at (12.11,1.5) {\small{$11$}};
+\node [below] at (15.18,1.5) {\small{$28$}};
+
+\draw [dashed] (15.88,1.5) -- (15.88,2.5);
+\draw [dashed] (17.05,1.5) -- (17.05,2.5);
+\node at (16.505,1.8) {$209$};
+\node at (16.505,2.2) {\large G};
+\node [below] at (15.88,1.5) {\small{$42$}};
+\node [below] at (17.05,1.5) {\small{$50$}};
+
+\draw [dashed] (17.87,1.5) -- (17.87,2.5);
+\draw [dashed] (19.05,1.5) -- (19.05,2.5);
+\node at (18.405,1.8) {$171$};
+\node at (18.405,2.2) {\large H};
+\node [below] at (17.87,1.5) {\small{$32$}};
+\node [below] at (19.05,1.5) {\small{$21$}};
+
+
+% Second from top row, C, E, I, 393, 278, 163 (4-31, 39-16, 55-20)
+\path [fill=tLightOrange] (12,3) rectangle (15.93,4);
+\path [fill=tLightBlue] (15.93,3) rectangle (18.71,4);
+\path [fill=tPeach] (18.71,3) rectangle (20.34,4);
+
+\draw [thick] (15.93,3) -- (15.93,4);
+\draw [thick] (18.71,3) -- (18.71,4);
+\draw [thick] (20.34,3) -- (20.34,4);
+\filldraw[fill=black!20!white, draw=black, thick] (20.34,3) rectangle (22,4);
+
+\draw [dashed] (12.04,3) -- (12.04,4);
+\draw [dashed] (15.62,3) -- (15.62,4);
+\node at (13.965,3.3) {$393$};
+\node at (13.965,3.7) {\large C};
+\node [below] at (12.04,3) {\small{$4$}};
+\node [below] at (15.62,3) {\small{$31$}};
+
+\draw [dashed] (16.32,3) -- (16.32,4);
+\draw [dashed] (18.55,3) -- (18.55,4);
+\node at (17.32,3.3) {$278$};
+\node at (17.32,3.7) {\large E};
+\node [below] at (16.32,3) {\small{$39$}};
+\node [below] at (18.55,3) {\small{$16$}};
+
+\draw [dashed] (19.22,3) -- (19.22,4);
+\draw [dashed] (20.14,3) -- (20.14,4);
+\node at (19.525,3.3) {$163$};
+\node at (19.525,3.7) {\large I};
+\node [below] at (19.22,3) {\small{$55$}};
+\node [below] at (20.14,3) {\small{$20$}};
+
+
+% Top row, A, B, 532, 449 (2-27, 43-9)
+\path [fill=tLightPink] (12,4.5) rectangle (17.32,5.5);
+\path [fill=tLightGreen] (17.32,4.5) rectangle (21.81,5.5);
+
+\draw [thick] (17.32,4.5) -- (17.32,5.5);
+\filldraw[fill=black!20!white, draw=black, thick] (21.81,4.5) rectangle (22,5.5);
+
+\draw [dashed] (12.04,4.5) -- (12.04,5.5);
+\draw [dashed] (17.05,4.5) -- (17.05,5.5);
+\node at (14.66,4.8) {$532$};
+\node at (14.66,5.2) {\large A};
+\node [below] at (12.04,4.5) {\small{$2$}};
+\node [below] at (17.05,4.5) {\small{$27$}};
+
+\draw [dashed] (17.75,4.5) -- (17.75,5.5);
+\draw [dashed] (21.72,4.5) -- (21.72,5.5);
+\node at (19.565,4.8) {$449$};
+\node at (19.565,5.2) {\large B};
+\node [below] at (17.75,4.5) {\small{$43$}};
+\node [below] at (21.72,4.5) {\small{$9$}};
+
+\draw [thick] (12,0) rectangle (22,1);
+\draw [thick] (12,1.5) rectangle (22,2.5);
+\draw [thick] (12,3) rectangle (22,4);
+\draw [thick] (12,4.5) rectangle (22,5.5);
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

@@ -1,0 +1,76 @@
+\documentclass[dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\usetikzlibrary{decorations.pathreplacing,decorations.markings}
+
+\begin{document}
+	
+\begin{tikzpicture}
+
+%\draw [help lines] (0,-0.5) grid (10, 5);
+
+%edges
+\draw [thick] (5,0) -- (3,0.25);
+\draw [thick] (3,0.25) -- (3,1.75);
+\draw [thick] (3,1.75) -- (4,2.5);
+\draw [thick] (4,2.5) -- (6,2.5);
+\draw [thick] (6,2.5) -- (7,1.75);
+\draw [thick] (7,1.75) -- (7,0.25);
+\draw [thick] (7,0.25) -- (5,0);
+
+\node at (3.9,-0.1) {0};
+\node at (2.8, 1) {-1};
+\node at (3.4, 2.3) {0};
+\node at (5,2.7) {-1};
+\node at (6.6, 2.3) {0};
+\node at (7.2, 1) {-1};
+\node at (6.1, -0.1) {0};
+
+
+
+% Vertices
+\draw [fill=white, thick] (5,0) circle [radius = 0.15]; %dummy, vertex v_0
+\node at (5,-0.4) {\small$v_0$};
+
+\draw [fill=tLightPink, thick] (3,0.25) circle [radius = 0.15]; %16 a_1
+\node at (2.7,0.25) {\small$a_1$};
+
+\draw [fill=tLightPink, thick] (3,1.75) circle [radius = 0.15]; %52 b_1
+\node at (2.7,1.75) {\small$b_1$};
+
+\draw [fill=tLightGreen, thick] (4,2.5) circle [radius = 0.15]; %31 a_2
+\node at (4,2.8) {\small$a_2$};
+
+\draw [fill=tLightGreen, thick] (6,2.5) circle [radius = 0.15]; %43 b_2
+\node at (6,2.8) {\small$b_2$};
+
+\draw [fill=tLightBlue, thick] (7,1.75) circle [radius = 0.15]; %64 b_3
+\node at (7.35,1.75) {\small$b_3$};
+
+\draw [fill=tLightBlue, thick] (7,0.25) circle [radius = 0.15]; %25 a_3
+\node at (7.35,0.25) {\small$a_3$};
+
+
+
+
+
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

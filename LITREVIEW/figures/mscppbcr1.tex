@@ -1,0 +1,107 @@
+\documentclass[11pt,usenames,dvipsnames,tikz]{standalone}
+%\usetikzlibrary{shapes.geometric}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\definecolor{tGreen2}{HTML}{569909}
+%\definecolor{tOrange}{HTML}{FA7602}
+%\definecolor{tPurple}{HTML}{7356AF} %tikz color %ECDBFF
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\usepackage{amsmath}
+%\usepackage{mathtools}
+\begin{document}	
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-1) grid (15, 10);
+%\node at (0,-0.5) {0};
+%\node at (5,-0.5) {5};
+%\node at (10,-0.5) {10};
+%\node at (13,-0.5) {13};
+
+%% LIST OF EDGES FOR BCR.
+
+%-------------------------
+\draw [thick, tRed] (0,6) -- (0,7);
+\draw [thick, tRed] (1.5,6) -- (1.5,7);
+\draw [thick, tRed] (3,6) -- (3,7);
+\draw [thick, tRed] (4.5,6) -- (4.5,7);
+\draw [thick, tRed] (6,6) -- (6,7);
+\draw [thick, tRed] (7.5,6) -- (7.5,7);
+\draw [thick, tRed] (9,6) -- (9,7);
+\draw [thick, tRed] (10.5,6) -- (10.5,7);
+\draw [thick, tRed] (12,6) -- (12,7);
+
+\draw [fill=white, thick] (0,6) circle [radius = 0.08];
+\draw [fill=white, thick] (1.5,6) circle [radius = 0.08];
+\draw [fill=white, thick] (3,6) circle [radius = 0.08];
+\draw [fill=white, thick] (4.5,6) circle [radius = 0.08];
+\draw [fill=white, thick] (6,6) circle [radius = 0.08];
+\draw [fill=white, thick] (7.5,6) circle [radius = 0.08];
+\draw [fill=white, thick] (9,6) circle [radius = 0.08];
+\draw [fill=white, thick] (10.5,6) circle [radius = 0.08];
+\draw [fill=white, thick] (12,6) circle [radius = 0.08];
+
+\draw [fill=white, thick] (0,7) circle [radius = 0.08];
+\draw [fill=white, thick] (1.5,7) circle [radius = 0.08];
+\draw [fill=white, thick] (3,7) circle [radius = 0.08];
+\draw [fill=white, thick] (4.5,7) circle [radius = 0.08];
+\draw [fill=white, thick] (6,7) circle [radius = 0.08];
+\draw [fill=white, thick] (7.5,7) circle [radius = 0.08];
+\draw [fill=white, thick] (9,7) circle [radius = 0.08];
+\draw [fill=white, thick] (10.5,7) circle [radius = 0.08];
+\draw [fill=white, thick] (12,7) circle [radius = 0.08];
+
+\node at (0,5.7) {\large{$v_{18}$}};
+\node at (1.5,5.7) {\large{$v_{17}$}};
+\node at (3,5.7) {\large{$v_{16}$}};
+\node at (4.5,5.7) {\large{$v_{15}$}};
+\node at (6,5.7) {\large{$v_{14}$}};
+\node at (7.5,5.7) {\large{$v_{13}$}};
+\node at (9,5.7) {\large{$v_{12}$}};
+\node at (10.5,5.7) {\large{$v_{11}$}};
+\node at (12,5.7) {\large{$v_{10}$}};
+
+\node at (0,7.3) {\large{$v_1$}};
+\node at (1.5,7.3) {\large{$v_2$}};
+\node at (3,7.3) {\large{$v_3$}};
+\node at (4.5,7.3) {\large{$v_4$}};
+\node at (6,7.3) {\large{$v_5$}};
+\node at (7.5,7.3) {\large{$v_6$}};
+\node at (9,7.3) {\large{$v_7$}};
+\node at (10.5,7.3) {\large{$v_8$}};
+\node at (12,7.3) {\large{$v_9$}};
+
+\node at (0,5.2) {$C_1$};
+\node at (1.5,5.2) {$C_1$};
+\node at (3,5.2) {$C_2$};
+\node at (4.5,5.2) {$C_3$};
+\node at (6,5.2) {$C_1$};
+\node at (7.5,5.2) {$C_2$};
+\node at (9,5.2) {$C_3$};
+\node at (10.5,5.2) {$C_4$};
+\node at (12,5.2) {$C_4$};
+%---------------------------------------
+% Edge subsets
+\node [right] at (-0.35,4) {\small$R''_1 = \{\{v_2, v_{17}\}, \{v_3, v_{16}\}\}$};
+\node [right] at (-0.35,3.25) {\small$R''_2 = \{\{v_2, v_{17}\}, \{v_3, v_{16}\}, \{v_4, v_{15}\}\}$};
+\node [right] at (-0.35,2.5) {\small$R''_3 = \{\{v_3, v_{16}\}, \{v_4, v_{15}\}\}$};
+\node [right] at (-0.35,1.75) {\small$R''_4 = \{\{v_3, v_{16}\}, \{v_4, v_{15}\}, \{v_5, v_{14}\}\}$};
+\node [right] at (-0.35,1) {\small$R''_5 = \{\{v_4, v_{15}\}, \{v_5, v_{14}\}\}$};
+\node [right] at (-0.35,0.25) {\small$R''_6 = \{\{v_4, v_{15}\}, \{v_5, v_{14}\}, \{v_6, v_{13}\}\}$};
+
+\node [right] at (5.5,4) {\small$R''_7 = \{\{v_5, v_{14}\}, \{v_6, v_{13}\}\}$};
+\node [right] at (5.5,3.25) {\small$R''_8 = \{\{v_5, v_{14}\}, \{v_6, v_{13}\}, \{v_7, v_{12}\}\}$};
+\node [right] at (5.5,2.5) {\small$R''_9 = \{\{v_5, v_{14}\}, \{v_6, v_{13}\}, \{v_7, v_{12}\}, \{v_8, v_{11}\}\}$};
+\node [right] at (5.5,1.75) {\small$R''_{10} = \{\{v_6, v_{13}\}, \{v_7, v_{12}\}\}$};
+\node [right] at (5.5,1) {\small$R''_{11} = \{\{v_6, v_{13}\}, \{v_7, v_{12}\}, \{v_8, v_{11}\}\}$};
+\node [right] at (5.5,0.25) {\small$R''_{12} = \{\{v_7, v_{12}\}, \{v_8, v_{11}\}\}$};
+
+%---------------------------------------
+
+
+
+
+\end{tikzpicture}
+	
+\end{document}

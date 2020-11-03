@@ -1,0 +1,159 @@
+\documentclass[11pt,usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\usetikzlibrary{patterns}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+%\usepackage{tikz}
+%\usepackage{standalone}
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+
+\draw [white] (0,2.5) -- (19.95,2.5);
+
+\draw [thick] (0,0) rectangle (19.95,1);
+
+\draw [thick] (1.5,0) -- (1.5,1);
+\draw [thick] (1.74,0) -- (1.74,1);
+\draw [thick] (4.83,0) -- (4.83,1);
+\draw [thick] (4.89,0) -- (4.89,1);
+\draw [thick] (6.7,0) -- (6.7,1);
+\draw [thick] (6.97,0) -- (6.97,1);
+\draw [thick] (9.69,0) -- (9.69,1);
+\draw [thick] (9.95,0) -- (9.95,1);
+\draw [thick] (12.1,0) -- (12.1,1);
+\draw [thick] (12.32,0) -- (12.32,1);
+\draw [thick] (15.52,0) -- (15.52,1);
+\draw [thick] (15.71,0) -- (15.71,1);
+\draw [thick] (17.37,0) -- (17.37,1);
+\draw [thick] (17.52,0) -- (17.52,1);
+
+%B
+\path [fill=tLightOrange] (0,0) rectangle (1.5,1);
+\draw [densely dashed] (0.05,0) -- (0.05,1);
+\draw [densely dashed] (1.39,0) -- (1.39,1);
+\node at (0.75,0.3) {$150$};
+\node at (0.75,0.7) {\large B};
+\node [below] at (0.05,0) {\small$2$};
+\node [below] at (1.39,0) {\small$11$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (1.5,0) rectangle (1.74,1); 
+
+%H
+\path [fill=tPeach] (1.74,0) rectangle (4.83,1);
+\draw [densely dashed] (2.09,0) -- (2.09,1);
+\draw [densely dashed] (4.28,0) -- (4.28,1);
+\node at (3.285,0.3) {$309$};
+\node at (3.285,0.7) {\large H};
+\node [below] at (2.09,0) {\small$35$};
+\node [below] at (4.28,0) {\small$55$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (4.83,0) rectangle (4.89,1); 
+
+%C (was D)
+\path [fill=tLightYellow] (4.89,0) rectangle (6.7,1);
+\draw [densely dashed] (4.98,0) -- (4.98,1);
+\draw [densely dashed] (6.54,0) -- (6.54,1);
+\node at (5.795,0.3) {$181$};
+\node at (5.795,0.7) {\large C};
+\node [below] at (4.98,0) {\small$9$};
+\node [below] at (6.54,0) {\small$16$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (6.7,0) rectangle (6.97,1); 
+
+%D (was C)
+\path [fill=tLightGreen] (6.97,0) rectangle (9.69,1);
+\draw [densely dashed] (7.24,0) -- (7.24,1);
+\draw [densely dashed] (9.48,0) -- (9.48,1);
+\node at (8.33,0.3) {$272$};
+\node at (8.33,0.7) {\large D};
+\node [below] at (7.24,0) {\small$27$};
+\node [below] at (9.48,0) {\small$21$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (9.69,0) rectangle (9.95,1); 
+
+%F (was E)
+\path [fill=tTurquoise] (9.95,0) rectangle (12.1,1);
+\draw [densely dashed] (10.18,0) -- (10.18,1);
+\draw [densely dashed] (11.92,0) -- (11.92,1);
+\node at (11.025,0.3) {$215$};
+\node at (11.025,0.7) {\large F};
+\node [below] at (10.18,0) {\small$23$};
+\node [below] at (11.92,0) {\small$18$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (12.1,0) rectangle (12.32,1); 
+
+%A
+\path [fill=tLightPink] (12.32,0) rectangle (15.52,1);
+\draw [densely dashed] (12.62,0) -- (12.62,1);
+\draw [densely dashed] (15.06,0) -- (15.06,1);
+\node at (13.9,0.3) {$320$};
+\node at (13.9,0.7) {\large A};
+\node [below] at (12.62,0) {\small$30$};
+\node [below] at (15.06,0) {\small$46$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (15.52,0) rectangle (15.71,1); 
+
+%G
+\path [fill=tLightPurple] (15.71,0) rectangle (17.37,1);
+\draw [densely dashed] (15.76,0) -- (15.76,1);
+\draw [densely dashed] (17.24,0) -- (17.24,1);
+\node at (16.52,0.3) {$166$};
+\node at (16.52,0.7) {\large G};
+\node [below] at (15.76,0) {\small$5$};
+\node [below] at (17.24,0) {\small$13$};
+
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (17.37,0) rectangle (17.52,1); 
+
+%E (was F)
+\path [fill=tLightBlue] (17.52,0) rectangle (19.95,1);
+\draw [densely dashed] (17.94,0) -- (17.94,1);
+\draw [densely dashed] (19.9,0) -- (19.9,1);
+\node at (18.735,0.3) {$243$};
+\node at (18.735,0.7) {\large E};
+\node [below] at (17.94,0) {\small$42$};
+\node [below] at (19.9,0) {\small$3$};
+
+% Inter-item widths
+\node [above] at (1.62,1) {\small$24$};
+\node [above] at (4.86,1) {\small$6$};
+\node [above] at (6.835,1) {\small$27$};
+\node [above] at (9.82,1) {\small$26$};
+\node [above] at (12.21,1) {\small$22$};
+\node [above] at (15.615,1) {\small$19$};
+\node [above] at (17.445,1) {\small$15$};
+
+
+\draw [thick] (1.5,0) -- (1.5,1);
+\draw [thick] (1.74,0) -- (1.74,1);
+\draw [thick] (4.83,0) -- (4.83,1);
+\draw [thick] (4.89,0) -- (4.89,1);
+\draw [thick] (6.7,0) -- (6.7,1);
+\draw [thick] (6.97,0) -- (6.97,1);
+\draw [thick] (9.69,0) -- (9.69,1);
+\draw [thick] (9.95,0) -- (9.95,1);
+\draw [thick] (12.1,0) -- (12.1,1);
+\draw [thick] (12.32,0) -- (12.32,1);
+\draw [thick] (15.52,0) -- (15.52,1);
+\draw [thick] (15.71,0) -- (15.71,1);
+\draw [thick] (17.37,0) -- (17.37,1);
+\draw [thick] (17.52,0) -- (17.52,1);
+
+
+\draw [thick] (0,0) rectangle (19.95,1);
+
+
+\end{tikzpicture}
+	
+\end{document}

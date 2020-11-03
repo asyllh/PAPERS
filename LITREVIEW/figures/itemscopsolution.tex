@@ -1,0 +1,221 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+\begin{document}
+	
+\begin{tikzpicture}
+% COP instance:
+% M = (4,21), (9,53), (13,26), (17,29), (32,39), (35,41), (44,57), (48,61)
+%\draw [help lines] (-1,-1.5) grid (21,3);
+
+\draw [thick] (0,0) rectangle (20,1.2);
+\draw [thick] (3.12,0) -- (3.12, 1.2); % A
+\draw [thick] (5,0) -- (5, 1.2); % B
+\draw [thick] (8.04,0) -- (8.04, 1.2); % H
+\draw [thick] (10.65,0) -- (10.65, 1.2); % C
+\draw [thick] (12.61,0) -- (12.61, 1.2); % G
+\draw [thick] (15.08,0) -- (15.08, 1.2); % E
+\draw [thick] (17.61,0) -- (17.61, 1.2); % F
+
+%A
+\path [fill=tLightPink] (0,0) rectangle (3.12,1.2);
+\draw [thick, densely dashed] (0.05,0) -- (0.05,1.2);
+\draw [thick, densely dashed] (2.91,0) -- (2.91,1.2);
+\node at (1.56,0.8) {\Large{A}};
+\node at (1.56,0.3) {\large{$312$}};
+\node [below] at (0.05, 0) {\small{$4$}};
+\node [below] at (2.91, 0) {\small{$21$}};
+
+%B
+\path [fill=tLightGreen] (3.12,0) rectangle (5,1.2);
+\draw [thick, densely dashed] (3.65,0) -- (3.65,1.2);
+\draw [thick, densely dashed] (4.91,0) -- (4.91,1.2);
+\node at (4.06,0.8) {\Large{B}};
+\node at (4.06,0.3) {\large{$188$}};
+\node [below] at (3.65, 0) {\small{$53$}};
+\node [below] at (4.91, 0) {\small{$9$}};
+
+%H
+\path [fill=tDarkGreen] (5,0) rectangle (8.04,1.2);
+\draw [thick, densely dashed] (5.61,0) -- (5.61,1.2);
+\draw [thick, densely dashed] (7.56,0) -- (7.56,1.2);
+\node at (6.52,0.8) {\Large{H}};
+\node at (6.52,0.3) {\large{$304$}};
+\node [below] at (5.61, 0) {\small{$61$}};
+\node [below] at (7.56, 0) {\small{$48$}};
+
+%C
+\path [fill=tLightOrange] (8.04,0) rectangle (10.65,1.2);
+\draw [thick, densely dashed] (8.3,0) -- (8.3,1.2);
+\draw [thick, densely dashed] (10.52,0) -- (10.52,1.2);
+\node at (9.345,0.8) {\Large{C}};
+\node at (9.345,0.3) {\large{$261$}};
+\node [below] at (8.3, 0) {\small{$26$}};
+\node [below] at (10.52, 0) {\small{$13$}};
+
+%G
+\path [fill=tLightPurple] (10.65,0) rectangle (12.61,1.2);
+\draw [thick, densely dashed] (11.22,0) -- (11.22,1.2);
+\draw [thick, densely dashed] (12.17,0) -- (12.17,1.2);
+\node at (11.63,0.8) {\Large{G}};
+\node at (11.63,0.3) {\large{$196$}};
+\node [below] at (11.22, 0) {\small{$57$}};
+\node [below] at (12.17, 0) {\small{$44$}};
+
+%E
+\path [fill=tTurquoise] (12.61,0) rectangle (15.08,1.2);
+\draw [thick, densely dashed] (12.93,0) -- (12.93,1.2);
+\draw [thick, densely dashed] (14.69,0) -- (14.69,1.2);
+\node at (13.845,0.8) {\Large{E}};
+\node at (13.845,0.3) {\large{$247$}};
+\node [below] at (12.93, 0) {\small{$32$}};
+\node [below] at (14.69, 0) {\small{$39$}};
+
+%F
+\path [fill=tLightYellow] (15.08,0) rectangle (17.61,1.2);
+\draw [thick, densely dashed] (15.43,0) -- (15.43,1.2);
+\draw [thick, densely dashed] (17.2,0) -- (17.2,1.2);
+\node at (16.345,0.8) {\Large{F}};
+\node at (16.345,0.3) {\large{$253$}};
+\node [below] at (15.43, 0) {\small{$35$}};
+\node [below] at (17.2, 0) {\small{$41$}};
+
+%D
+\path [fill=tLightBlue] (17.61,0) rectangle (20,1.2);
+\draw [thick, densely dashed] (17.89,0) -- (17.89,1.2);
+\draw [thick, densely dashed] (19.83,0) -- (19.83,1.2);
+\node at (18.805,0.8) {\Large{D}};
+\node at (18.805,0.3) {\large{$239$}};
+\node [below] at (17.89, 0) {\small{$29$}};
+\node [below] at (19.83, 0) {\small{$17$}};
+
+\draw [thick] (0,0) rectangle (20,1.2);
+\draw [thick] (3.12,0) -- (3.12, 1.2); % A
+\draw [thick] (5,0) -- (5, 1.2); % B
+\draw [thick] (8.04,0) -- (8.04, 1.2); % H
+\draw [thick] (10.65,0) -- (10.65, 1.2); % C
+\draw [thick] (12.61,0) -- (12.61, 1.2); % G
+\draw [thick] (15.08,0) -- (15.08, 1.2); % E
+\draw [thick] (17.61,0) -- (17.61, 1.2); % F
+
+%\draw [ultra thick, tBlue] (0.04,3) -- (2.91,3);
+%\draw [ultra thick, tBlue] (3.65,3) -- (4.91,3);
+%\draw [ultra thick, tBlue] (5.61,3) -- (7.56,3);
+%\draw [ultra thick, tBlue] (8.3,3) -- (10.52,3);
+%\draw [ultra thick, tBlue] (11.22,3) -- (12.17,3);
+%\draw [ultra thick, tBlue] (12.93,3) -- (14.69,3);
+%\draw [ultra thick, tBlue] (15.43,3) -- (17.2,3);
+%\draw [ultra thick, tBlue] (17.89,3) -- (19.83,3);
+
+%\draw [tRed] (2.91,3) -- (3.65,3);
+%\draw [tRed] (4.91,3) -- (5.61,3);
+%\draw [tRed] (7.56,3) -- (8.3,3);
+%\draw [tRed] (10.52,3) -- (11.22,3);
+%\draw [tRed] (12.17,3) -- (12.93,3);
+%\draw [tRed] (14.69,3) -- (15.43,3);
+%\draw [tRed] (17.2,3) -- (17.89,3);
+
+%\draw [fill=white, thick] (0.04,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (2.91,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (3.65,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (4.91,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (5.61,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (7.56,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (8.3,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (10.52,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (11.22,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (12.17,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (12.93,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (14.69,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (15.43,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (17.2,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (17.89,3) circle [radius = 0.08];
+%\draw [fill=white, thick] (19.83,3) circle [radius = 0.08];
+
+%\node [above] at (0.04,3.05) {\large{$v_1$}};
+%\node [above] at (2.91,3.05) {\large{$v_5$}};
+%\node [above] at (3.65,3.05) {\large{$v_{14}$}};
+%\node [above] at (4.91,3.05) {\large{$v_2$}};
+%\node [above] at (5.61,3.05) {\large{$v_{16}$}};
+%\node [above] at (7.56,3.05) {\large{$v_{13}$}};
+%\node [above] at (8.3,3.05) {\large{$v_6$}};
+%\node [above] at (10.52,3.05) {\large{$v_3$}};
+%\node [above] at (11.22,3.05) {\large{$v_{15}$}};
+%\node [above] at (12.17,3.05) {\large{$v_{12}$}};
+%\node [above] at (12.93,3.05) {\large{$v_8$}};
+%\node [above] at (14.69,3.05) {\large{$v_{10}$}};
+%\node [above] at (15.43,3.05) {\large{$v_9$}};
+%\node [above] at (17.2,3.05) {\large{$v_{11}$}};
+%\node [above] at (17.89,3.05) {\large{$v_7$}};
+%\node [above] at (19.83,3.05) {\large{$v_4$}};
+
+%\node at (1.025,2.5) {\large{4}};
+%\node at (1.775,2.5) {\large{21}};
+%\node at (2.825,2.5) {\large{53}};
+%\node at (3.575,2.5) {\large{9}};
+%\node at (4.625,2.5) {\large{61}};
+%\node at (5.375,2.5) {\large{48}};
+%\node at (6.425,2.5) {\large{26}};
+%\node at (7.175,2.5) {\large{13}};
+%\node at (8.225,2.5) {\large{57}};
+%\node at (8.975,2.5) {\large{44}};
+%\node at (10.025,2.5) {\large{32}};
+%\node at (10.775,2.5) {\large{39}};
+%\node at (11.825,2.5) {\large{35}};
+%\node at (12.575,2.5) {\large{41}};
+%\node at (13.625,2.5) {\large{29}};
+%\node at (14.375,2.5) {\large{17}};
+
+%\node at (1.4,2.37) {,};
+%%\node at (2.5,2.37) {,};
+%\node at (3.2,2.37) {,};
+%%\node at (4.5,2.37) {,};
+%\node at (5,2.37) {,};
+%%\node at (6.5,2.37) {,};
+%\node at (6.8,2.37) {,};
+%%\node at (8.5,2.37) {,};
+%\node at (8.6,2.37) {,};
+%%\node at (10.5,2.37) {,};
+%\node at (10.4,2.37) {,};
+%\node at (12.2,2.37) {,};
+%\node at (14,2.37) {,};
+
+%\node at (0.85,2.5) {\large{(}};
+%\node at (2.025,2.5) {\large{)}};
+%\node at (2.575,2.5) {\large{(}};
+%\node at (3.75,2.5) {\large{)}};
+%\node at (4.375,2.5) {\large{(}};
+%\node at (5.625,2.5) {\large{)}};
+%\node at (6.175,2.5) {\large{(}};
+%\node at (7.425,2.5) {\large{)}};
+%\node at (7.975,2.5) {\large{(}};
+%\node at (9.225,2.5) {\large{)}};
+%\node at (9.775,2.5) {\large{(}};
+%\node at (11.025,2.5) {\large{)}};
+%\node at (11.575,2.5) {\large{(}};
+%\node at (12.825,2.5) {\large{)}};
+%\node at (13.375,2.5) {\large{(}};
+%\node at (14.625,2.5) {\large{)}};
+
+%\node at (0.7, 2.5) {\large{$\langle$}};
+%\node at (14.775, 2.5) {\large{$\rangle$}};
+
+%\node at (0.15, 2.5) {\large{$\mathcal{T} =$}};
+
+
+
+\end{tikzpicture}
+\end{document}

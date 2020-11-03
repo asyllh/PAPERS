@@ -1,0 +1,154 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usetikzlibrary{patterns}
+%\usepackage{amsmath,amssymb}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (11,5);
+% 1=0.1, 2=0.15, 3=0.2, 4=0.25, 5=0.3
+% 6 (3-27), 5 (8-42), 4 (33-65), 4 (16-22), 3 (13-28), 3 (11-40), 2 (35-50), 1 (15-30), 1 (14-38), 1 (4-57).
+
+% ALTERNATIVE SCPP SOLUTION COMPRISING THREE BINS RATHER THAN FOUR (original SCPP problem comprises four bins).
+
+\draw [thick] (0,0) rectangle (10,1); %bottom row
+\draw [thick] (0,1.5) rectangle (10,2.5); %middle row
+\draw [thick] (0,3) rectangle (10,4); %top row
+\draw [thick, white] (0,4.5) rectangle (10,5.5); %blank top row.
+
+% Bottom row, J, H, G, E, I, 154, 171, 209, 278, 163 (5-34, alpha=4, 32-21, 50-42, 39-16, 55-20)
+\path [fill=tDarkGreen] (0,0) rectangle (1.54,1);
+\path [fill=tDarkBlue] (1.58,0) rectangle (3.29,1);
+\path [fill=tLightYellow] (3.29,0) rectangle (5.38,1);
+\path [fill=tLightBlue] (5.38,0) rectangle (8.16,1);
+\path [fill=tPeach] (8.16,0) rectangle (9.79,1);
+
+\draw [thick] (1.54,0) -- (1.54,1);
+\draw [thick] (1.58,0) -- (1.58,1);
+\draw [thick] (3.29,0) -- (3.29,1);
+\draw [thick] (5.38,0) -- (5.38,1);
+\draw [thick] (8.16,0) -- (8.16,1);
+\draw [thick, fill=black!20!white] (9.79,0) rectangle (10,1);
+
+\draw [dashed] (0.05,0) -- (0.05,1); 
+\draw [dashed] (1.2,0) -- (1.2,1);
+\node at (0.77, 0.3) {$154$};
+\node at (0.77, 0.7) {\large J};
+\node [below] at (0.05,0) {\footnotesize{$5$}};
+\node [below] at (1.2,0) {\footnotesize{$34$}};
+
+%\draw [thick, fill=black!20!white] (1.53,0) rectangle (1.59,1);
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (1.53,0) rectangle (1.59,1); 
+
+\draw [dashed] (1.9,0) -- (1.9,1);
+\draw [dashed] (3.08,0) -- (3.08,1);
+\node at (2.435, 0.3) {$171$};
+\node at (2.435, 0.7) {\large H};
+\node [below] at (1.9,0) {\footnotesize{$32$}};
+\node [below] at (3.08,0) {\footnotesize{$21$}};
+
+\draw [dashed] (3.79,0) -- (3.79,1);
+\draw [dashed] (4.96,0) -- (4.96,1);
+\node at (4.335, 0.3) {$209$};
+\node at (4.335, 0.7) {\large G};
+\node [below] at (3.79,0) {\footnotesize{$50$}};
+\node [below] at (4.96,0) {\footnotesize{$42$}};
+
+\draw [dashed] (5.77,0) -- (5.77,1);
+\draw [dashed] (8.00,0) -- (8.00,1);
+\node at (6.77, 0.3) {$278$};
+\node at (6.77, 0.7) {\large E};
+\node [below] at (5.77,0) {\footnotesize{$39$}};
+\node [below] at (8.00,0) {\footnotesize{$16$}};
+
+\draw [dashed] (8.69,0) -- (8.69,1);
+\draw [dashed] (9.59,0) -- (9.59,1);
+\node at (8.975, 0.3) {$163$};
+\node at (8.975, 0.7) {\large I};
+\node [below] at (8.69,0) {\footnotesize{$55$}};
+\node [below] at (9.59,0) {\footnotesize{$20$}};
+
+
+% Middle row, C, F, D, 393, 215, 346 (4-31, alpha=20, 19-37, alpha=5, 28-11)
+\path [fill=tLightOrange] (0,1.5) rectangle (3.93,2.5);
+\path [fill=tLightPurple] (4.13,1.5) rectangle (6.28,2.5);
+\path [fill=tTurquoise] (6.33,1.5) rectangle (9.79,2.5);
+
+\draw [thick] (3.93,1.5) -- (3.93,2.5);
+\draw [thick] (4.13,1.5) -- (4.13,2.5);
+\draw [thick] (6.28,1.5) -- (6.28,2.5);
+\draw [thick] (6.33,1.5) -- (6.33,2.5);
+\draw [thick, fill=black!20!white] (9.79,1.5) rectangle (10,2.5);
+
+\draw [dashed] (0.04,1.5) -- (0.04,2.5);
+\draw [dashed] (3.62,1.5) -- (3.62,2.5);
+\node at (1.965, 1.8) {$393$};
+\node at (1.965, 2.2) {\large C};
+\node [below] at (0.04,1.5) {\footnotesize{$4$}};
+\node [below] at (3.62,1.5) {\footnotesize{$31$}};
+
+%\draw [thick, fill=black!20!white] (3.93,1.5) rectangle (4.13,2.5);
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (3.93,1.5) rectangle (4.13,2.5); 
+
+\draw [dashed] (4.32,1.5) -- (4.32,2.5);
+\draw [dashed] (5.91,1.5) -- (5.91,2.5);
+\node at (5.205, 1.8) {$215$};
+\node at (5.205, 2.2) {\large F};
+\node [below] at (4.32,1.5) {\footnotesize{$19$}};
+\node [below] at (5.91,1.5) {\footnotesize{$37$}};
+
+%\draw [thick, fill=black!20!white] (6.28,1.5) rectangle (6.33,2.5);
+\draw [thick, pattern = north west lines, pattern color=black!50!white] (6.28,1.5) rectangle (6.33,2.5); 
+
+\draw [dashed] (6.61,1.5) -- (6.61,2.5);
+\draw [dashed] (9.68,1.5) -- (9.68,2.5);
+\node at (8.06, 1.8) {$346$};
+\node at (8.06, 2.2) {\large D};
+\node [below] at (6.61,1.5) {\footnotesize{$28$}};
+\node [below] at (9.68,1.5) {\footnotesize{$11$}};
+
+
+% Top row, A, B, 532, 449 (2-27, 43-9)
+\path [fill=tLightPink] (0,3) rectangle (5.32,4);
+\path [fill=tLightGreen] (5.32,3) rectangle (9.81,4);
+
+\draw [thick] (5.32,3) -- (5.32,4);
+\draw [thick, fill=black!20!white] (9.81,3) rectangle (10,4);
+
+\draw [dashed] (0.04,3) -- (0.04,4);
+\draw [dashed] (5.05,3) -- (5.05,4);
+\node at (2.66, 3.3) {$532$};
+\node at (2.66, 3.7) {\large A};
+\node [below] at (0.04,3) {\footnotesize{$2$}};
+\node [below] at (5.05,3) {\footnotesize{$27$}};
+
+\draw [dashed] (5.75,3) -- (5.75,4);
+\draw [dashed] (9.72,3) -- (9.72,4);
+\node at (7.565, 3.3) {$449$};
+\node at (7.565, 3.7) {\large B};
+\node [below] at (5.75,3) {\footnotesize{$43$}};
+\node [below] at (9.72,3) {\footnotesize{$9$}};
+
+
+
+\draw [thick] (0,0) rectangle (10,1); %bottom row
+\draw [thick] (0,1.5) rectangle (10,2.5); %middle row
+\draw [thick] (0,3) rectangle (10,4); %top row
+
+
+
+\end{tikzpicture}
+
+\end{document}

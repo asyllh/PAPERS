@@ -1,0 +1,96 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+\begin{document}
+	
+\begin{tikzpicture}
+% COP instance:
+% M = (4,21), (9,53), (13,26), (17,29), (32,39), (35,41), (44,57), (48,61)
+%\draw [help lines] (-1,-2) grid (11,5);
+
+\draw [thick, fill=tLightPink] (0,2) rectangle (3.12,3.2); % A (4,21)
+\draw [thick, densely dashed] (0.05,2) -- (0.05,3.2);
+\draw [thick, densely dashed] (2.91,2) -- (2.91,3.2);
+\node [below] at (0.05, 2) {\small{$4$}};
+\node [below] at (2.91, 2) {\small{$21$}};
+\node at (1.56,2.8) {\Large{A}};
+\node at (1.56,2.3) {\large{$312$}};
+
+\draw [thick, fill=tLightGreen] (4.12,2) rectangle (6,3.2); % B (9,53)
+\draw [thick, densely dashed] (4.21,2) -- (4.21,3.2);
+\draw [thick, densely dashed] (5.47,2) -- (5.47,3.2);
+\node [below] at (4.21, 2) {\small{$9$}};
+\node [below] at (5.47, 2) {\small{$53$}};
+\node at (5.06,2.8) {\Large{B}};
+\node at (5.06,2.3) {\large{$188$}};
+
+\draw [thick, fill=tLightOrange] (7,2) rectangle (9.61,3.2); % C (13,26)
+\draw [thick, densely dashed] (7.13,2) -- (7.13,3.2);
+\draw [thick, densely dashed] (9.35,2) -- (9.35,3.2);
+\node [below] at (7.13, 2) {\small{$13$}};
+\node [below] at (9.35, 2) {\small{$26$}};
+\node at (8.305,2.8) {\Large{C}};
+\node at (8.305,2.3) {\large{$261$}};
+
+\draw [thick, fill=tLightBlue] (10.61,2) rectangle (13,3.2); % D (17,29)
+\draw [thick, densely dashed] (10.78,2) -- (10.78,3.2);
+\draw [thick, densely dashed] (12.71,2) -- (12.71,3.2);
+\node [below] at (10.78, 2) {\small{$17$}};
+\node [below] at (12.71, 2) {\small{$29$}};
+\node at (11.805,2.8) {\Large{D}};
+\node at (11.805,2.3) {\large{$239$}};
+
+%------------------------------------------------
+
+\draw [thick, fill=tTurquoise] (0,0) rectangle (2.47,1.2); % E (32,39)
+\draw [thick, densely dashed] (0.32,0) -- (0.32,1.2);
+\draw [thick, densely dashed] (2.08,0) -- (2.08,1.2);
+\node [below] at (0.32, 0) {\small{$32$}};
+\node [below] at (2.08, 0) {\small{$39$}};
+\node at (1.235,0.8) {\Large{E}};
+\node at (1.235,0.3) {\large{$247$}};
+
+\draw [thick, fill=tLightYellow] (3.47,0) rectangle (6,1.2); % F (35,41)
+\draw [thick, densely dashed] (3.82,0) -- (3.82,1.2);
+\draw [thick, densely dashed] (5.59,0) -- (5.59,1.2);
+\node [below] at (3.82, 0) {\small{$35$}};
+\node [below] at (5.59, 0) {\small{$41$}};
+\node at (4.735,0.8) {\Large{F}};
+\node at (4.735,0.3) {\large{$253$}};
+
+\draw [thick, fill=tLightPurple] (7,0) rectangle (8.96,1.2); % G (44,57)
+\draw [thick, densely dashed] (7.44,0) -- (7.44,1.2);
+\draw [thick, densely dashed] (8.39,0) -- (8.39,1.2);
+\node [below] at (7.44, 0) {\small{$44$}};
+\node [below] at (8.39, 0) {\small{$57$}};
+\node at (7.98,0.8) {\Large{G}};
+\node at (7.98,0.3) {\large{$196$}};
+
+\draw [thick, fill=tDarkGreen] (9.96,0) rectangle (13,1.2); % H (48,61)
+\draw [thick, densely dashed] (10.44,0) -- (10.44,1.2);
+\draw [thick, densely dashed] (12.39,0) -- (12.39,1.2);
+\node [below] at (10.44, 0) {{$48$}};
+\node [below] at (12.39, 0) {{$61$}};
+\node at (11.48,0.8) {\Large{H}};
+\node at (11.48,0.3) {\large{$304$}};
+
+
+
+
+
+
+\end{tikzpicture}
+\end{document}

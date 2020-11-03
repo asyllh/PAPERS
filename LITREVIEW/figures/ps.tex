@@ -1,0 +1,199 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\usepackage{xcolor}
+%\colorlet{tRed}{Red} %tikz color
+%\definecolor{tOrange}{HTML}{FA7602} %tikz color
+%\definecolor{tOrange1}{HTML}{FAA51C} %tikz color %FAA51C
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tYellow}{HTML}{FFFF7F}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\colorlet{tGreen}{LimeGreen!10!OliveGreen!70!White}
+%\colorlet{tGreen1}{LimeGreen!20!OliveGreen!50!White}
+%\definecolor{tGreen2}{HTML}{569909} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean} %tikz color
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tPurple}{HTML}{7356AF} %tikz color %ECDBFF %7356AF
+%\definecolor{tPurple1}{HTML}{A288F5} %tikz color %9F85F5
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPink}{HTML}{DF4979} %tikz color %F98F96
+%\colorlet{tPink1}{OrangeRed!50!WildStrawberry!60!White}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (13,11);
+
+%extra strip in mffd, white out so same dimensions in figure
+%\draw [thick, white] (0,9) rectangle (10, 10);
+%\draw [thick, white] (6.31,9) -- (6.31,10);
+%\draw [thick, white] (9.9,9) -- (9.9,10);
+%\filldraw[fill=white, draw=white, thick] (9.9,9) rectangle (10,10);
+%\draw [thick, white, densely dashed] (0.48,9) -- (0.48, 10);
+%\draw [thick, white, densely dashed] (5.63,9) -- (5.63, 10);
+%\draw [thick, white, densely dashed] (6.57,9) -- (6.57, 10);
+%\draw [thick, white, densely dashed] (9.53,9) -- (9.53, 10);
+%\node at (3.155,9.5) {\textcolor{white}{631}};
+%\node at (8.105,9.5) {\textcolor{white}{359}};
+%\node [below] at (0.24,9) {\textcolor{white}{48}};
+%\node [below] at (5.97,9) {\textcolor{white}{68}};
+%\node [below] at (6.44,9) {\textcolor{white}{26}};
+%\node [below] at (9.77,9) {\textcolor{white}{37}};
+
+%525, 328 (3-42, 31-16)
+\path [fill=tTurquoise] (0,7.5) rectangle (5.25,8.5);
+\path [fill=tLightYellow] (5.25,7.5) rectangle (8.53,8.5);
+\draw [thick] (0,7.5) rectangle (10, 8.5);
+\draw [thick] (5.25,7.5) -- (5.25, 8.5);
+\draw [thick] (8.53,7.5) -- (8.53, 8.5);
+\filldraw[fill=black!20!white, draw=black, thick] (8.53,7.5) rectangle (10,8.5);
+\draw [densely dashed] (0.1,7.5) -- (0.03,8.5);
+\draw [densely dashed] (4.83,7.5) -- (4.83,8.5);
+\draw [densely dashed] (5.56,7.5) -- (5.56,8.5);
+\draw [densely dashed] (8.37,7.5) -- (8.37,8.5);
+\node at (2.625,7.8) {$525$};
+\node at (6.89,7.8) {$328$};
+\node at (2.625,8.2) {\large D};
+\node at (6.89,8.2) {\large G};
+\node [below] at (0.1,7.5) {\small$3$};
+\node [below] at (4.83,7.5) {\small$42$};
+\node [below] at (5.56,7.5) {\small$31$};
+\node [below] at (8.37,7.5) {\small$16$};
+
+%615, 327 (4-54, 17-44)
+\path [fill=tLightGreen] (0,6) rectangle (6.15,7);
+\path [fill=tDarkBlue] (6.15,6) rectangle (9.42,7);
+\draw [thick] (0,6) rectangle (10, 7);
+\draw [thick] (6.15,6) -- (6.15,7);
+\draw [thick] (9.42,6) -- (9.42,7);
+\filldraw[fill=black!20!white, draw=black, thick] (9.42,6) rectangle (10,7);
+\draw [densely dashed] (0.1,6) -- (0.1,7);
+\draw [densely dashed] (5.61,6) -- (5.61,7);
+\draw [densely dashed] (6.32,6) -- (6.32,7);
+\draw [densely dashed] (8.98,6) -- (8.98,7);
+\node at (3.075,6.3) {$615$};
+\node at (7.785,6.3) {$327$};
+\node at (3.075,6.7) {\large B};
+\node at (7.785,6.7) {\large H};
+\node [below] at (0.1,6) {\small$4$};
+\node [below] at (5.61,6) {\small$54$};
+\node [below] at (6.32,6) {\small$17$};
+\node [below] at (8.98,6) {\small$44$};
+
+
+%328, 561 (16-31, 63-48)
+\path [fill=tPurple1] (0,4.5) rectangle (1.5,5.5);
+\path [fill=tYellow] (1.5,4.5) rectangle (3.57,5.5);
+\path [fill=tDarkGreen] (3.57,4.5) rectangle (6.62,5.5);
+\path [fill=tBlue] (6.62,4.5) rectangle (8.54,5.5);
+\draw [thick] (0,4.5) rectangle (10, 5.5);
+\draw [thick] (1.5,4.5) -- (1.5,5.5);
+\draw [thick] (3.57,4.5) -- (3.57,5.5);
+\draw [thick] (6.62,4.5) -- (6.62,5.5);
+\draw [thick] (8.54,4.5) -- (8.54,5.5);
+\filldraw[fill=black!20!white, draw=black, thick] (8.54,4.5) rectangle (10,5.5);
+\draw [densely dashed] (0.1,4.5) -- (0.1,5.5);
+\draw [densely dashed] (1.28,4.5) -- (1.28,5.5);
+\draw [densely dashed] (1.98,4.5) -- (1.98,5.5);
+\draw [densely dashed] (2.88,4.5) -- (2.88,5.5);
+\draw [densely dashed] (3.69,4.5) -- (3.69,5.5);
+\draw [densely dashed] (6.11,4.5) -- (6.11,5.5);
+\draw [densely dashed] (6.84,4.5) -- (6.84,5.5);
+\draw [densely dashed] (7.86,4.5) -- (7.86,5.5);
+\node at (0.75,4.8) {$150$};
+\node at (2.535,4.8) {$207$};
+\node at (5.095,4.8) {$305$};
+\node at (7.58,4.8) {$192$};
+\node at (0.75,5.2) {\large O};
+\node at (2.535,5.2) {\large L};
+\node at (5.095,5.2) {\large J};
+\node at (7.58,5.2) {\large N};
+\node [below] at (0.1,4.5) {\small$8$};
+\node [below] at (1.28,4.5) {\small$22$};
+\node [below] at (1.98,4.5) {\small$48$};
+\node [below] at (2.88,4.5) {\small$69$};
+\node [below] at (3.69,4.5) {\small$12$};
+\node [below] at (6.11,4.5) {\small$51$};
+\node [below] at (6.84,4.5) {\small$22$};
+\node [below] at (7.86,4.5) {\small$68$};
+
+
+%525, 327 (3-42, 44-17)
+\path [fill=tPeach] (0,3) rectangle (3.21,4);
+\path [fill=tOrange1] (3.21,3) rectangle (5.32,4);
+\path [fill=tLightBlue] (5.32,3) rectangle (8.91,4);
+\draw [thick] (0,3) rectangle (10, 4);
+\draw [thick] (3.21,3) -- (3.21,4);
+\draw [thick] (5.32,3) -- (5.32,4);
+\draw [thick] (8.91,3) -- (8.91,4);
+\filldraw[fill=black!20!white, draw=black, thick] (8.91,3) rectangle (10,4);
+\draw [densely dashed] (0.13,3) -- (0.13,4);
+\draw [densely dashed] (2.74,3) -- (2.74,4);
+\draw [densely dashed] (3.44,3) -- (3.44,4);
+\draw [densely dashed] (4.99,3) -- (4.99,4);
+\draw [densely dashed] (5.69,3) -- (5.69,4);
+\draw [densely dashed] (8.65,3) -- (8.65,4);
+\node at (1.605,3.3) {$321$};
+\node at (4.265,3.3) {$211$};
+\node at (7.115,3.3) {$359$};
+\node at (1.605,3.7) {\large I};
+\node at (4.265,3.7) {\large K};
+\node at (7.115,3.7) {\large E};
+\node [below] at (0.13,3) {\small$13$};
+\node [below] at (2.74,3) {\small$47$};
+\node [below] at (3.44,3) {\small$23$};
+\node [below] at (4.99,3) {\small$33$};
+\node [below] at (5.69,3) {\small$37$};
+\node [below] at (8.65,3) {\small$26$};
+
+
+%305, 211, 321 (12-51, 23-33, 47-13)
+\path [fill=tPink1] (0,1.5) rectangle (2,2.5);
+\path [fill=tLightOrange] (2,1.5) rectangle (7.61,2.5);
+\draw [thick] (0,1.5) rectangle (10, 2.5);
+\draw [thick] (2.00,1.5) -- (2.00,2.5);
+\draw [thick] (7.61,1.5) -- (7.61,2.5);
+\filldraw[fill=black!20!white, draw=black, thick] (7.61,1.5) rectangle (10,2.5);
+\draw [densely dashed] (0.14,1.5) -- (0.14,2.5);
+\draw [densely dashed] (1.82,1.5) -- (1.82,2.5);
+\draw [densely dashed] (2.63,1.5) -- (2.63,2.5);
+\draw [densely dashed] (7.13,1.5) -- (7.13,2.5);
+\node at (1.00,1.8) {$200$};
+\node at (4.805,1.8) {$561$};
+\node at (1.00,2.2) {\large M};
+\node at (4.805,2.2) {\large C};
+\node [below] at (0.14,1.5) {\small$14$};
+\node [below] at (1.82,1.5) {\small$18$};
+\node [below] at (2.63,1.5) {\small$63$};
+\node [below] at (7.13,1.5) {\small$48$};
+
+
+%150, 192, 207, 200 (8-22, 68-22, 48-69, 18-14)
+\path [fill=tLightPurple] (0,0) rectangle (3.36,1);
+\path [fill=tLightPink] (3.36,0) rectangle (9.67,1);
+\draw [thick] (0,0) rectangle (10, 1);
+\draw [thick] (3.36,0) -- (3.36,1);
+\draw [thick] (9.67,0) -- (9.67,1);
+\filldraw[fill=black!20!white, draw=black, thick] (9.67,0) rectangle (10,1);
+\draw [densely dashed] (0.43,0) -- (0.43,1);
+\draw [densely dashed] (2.89,0) -- (2.89,1);
+\draw [densely dashed] (3.84,0) -- (3.84,1);
+\draw [densely dashed] (8.99,0) -- (8.99,1);
+\node at (1.68,0.3) {$336$};
+\node at (6.515,0.3) {$631$};
+\node at (1.68,0.7) {\large F};
+\node at (6.515,0.7) {\large A};
+\node [below] at (0.43,0) {\small$43$};
+\node [below] at (2.89,0) {\small$47$};
+\node [below] at (3.84,0) {\small$48$};
+\node [below] at (8.99,0) {\small$68$};
+
+
+\end{tikzpicture}
+	
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[usenames,dvipsnames,tikz]{standalone}
+%\usepackage{amsmath,amssymb}
+%\usepackage{xcolor}
+%\colorlet{tBlue}{RoyalBlue!35!Cerulean}
+%\colorlet{tRed}{Red}
+%\usepackage{tikz}
+%\usepackage{standalone}
+%\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+%\definecolor{tLightOrange}{HTML}{FFE3B2}
+%\definecolor{tLightYellow}{HTML}{FFFBBD} %tikz color
+%\definecolor{tLightGreen}{HTML}{D3ECAA}
+%\definecolor{tDarkGreen}{HTML}{9BBF86} %tikz color %9BBF86
+%\definecolor{tTurquoise}{HTML}{ACFFEF} %tikz color %6FC4DD %7FE8F3
+%\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color %CEF0FF
+%\definecolor{tDarkBlue}{HTML}{95B5FF} %tikz color %95B5FF
+%\definecolor{tLightPurple}{HTML}{D8CFFD} %tikz color %ECDBFF
+%\definecolor{tPeach}{HTML}{F98F96} %tikz color %F98F96
+
+\begin{document}
+	
+\begin{tikzpicture}
+%\draw [help lines] (-1,-2) grid (11,5);
+% 1=0.1, 2=0.15, 3=0.2, 4=0.25, 5=0.3
+% 6 (3-27), 5 (8-42), 4 (33-65), 4 (16-22), 3 (13-28), 3 (11-40), 2 (35-50), 1 (15-30), 1 (14-38), 1 (4-57).
+
+%NEW BPP SOLUTION FOR THESIS 14/04/2020 (had to change it because the previous one has items with width less than 150).
+
+% BPP
+\draw [thick] (0,0) rectangle (10,1); %bottom row
+\draw [thick] (0,1.5) rectangle (10,2.5); %middle row
+\draw [thick] (0,3) rectangle (10,4); %top row
+ 
+% Bottom row, 278, 209, 171, 163, 154 (16-39, 42-50, 21-32 X 20-55 X 5-34)
+\path [fill=tLightBlue] (0,0) rectangle (2.78,1);
+\path [fill=tLightYellow] (2.78,0) rectangle (4.87,1);
+\path [fill=tDarkBlue] (4.87,0) rectangle (6.58,1);
+\path [fill=tPeach] (6.58,0) rectangle (8.21,1);
+\path [fill=tDarkGreen] (8.21,0) rectangle (9.75,1);
+
+\draw [thick] (2.78,0) -- (2.78,1);
+\draw [thick] (4.87,0) -- (4.87,1);
+\draw [thick] (6.58,0) -- (6.58,1);
+\draw [thick] (8.21,0) -- (8.21,1);
+\draw [thick, fill=black!20!white] (9.75,0) rectangle (10,1);
+
+\node at (1.39, 0.3) {$278$};
+\node at (1.39, 0.7) {\large E};
+
+\node at (3.825, 0.3) {$209$};
+\node at (3.825, 0.7) {\large G};
+
+\node at (5.725, 0.3) {$171$};
+\node at (5.725, 0.7) {\large H};
+
+\node at (7.395, 0.3) {$163$};
+\node at (7.395, 0.7) {\large I};
+
+\node at (8.98, 0.3) {$154$};
+\node at (8.98, 0.7) {\large J};
+
+
+% Middle row, 393, 346, 215 (4-31 X 11-28 X 19-37)
+\path [fill=tLightOrange] (0,1.5) rectangle (3.93,2.5);
+\path [fill=tTurquoise] (3.93,1.5) rectangle (7.39,2.5);
+\path [fill=tLightPurple] (7.39,1.5) rectangle (9.54,2.5);
+
+\draw [thick] (3.93,1.5) -- (3.93,2.5);
+\draw [thick] (7.39,1.5) -- (7.39,2.5);
+\draw [thick, fill=black!20!white] (9.54,1.5) rectangle (10,2.5);
+
+\node at (1.965, 1.8) {$393$};
+\node at (1.965, 2.2) {\large C};
+
+\node at (5.66, 1.8) {$346$};
+\node at (5.66, 2.2) {\large D};
+
+\node at (8.465, 1.8) {$215$};
+\node at (8.465, 2.2) {\large F};
+
+% Top row, 532, 449 (2-27 X 9-43)
+\path [fill=tLightPink] (0,3) rectangle (5.32,4);
+\path [fill=tLightGreen] (5.32,3) rectangle (9.81,4);
+
+\draw [thick] (5.32,3) -- (5.32,4);
+\draw [thick, fill=black!20!white] (9.81,3) rectangle (10,4);
+\node at (2.66, 3.3) {$532$};
+\node at (2.66, 3.7) {\large A};
+\node at (7.565, 3.3) {$449$};
+\node at (7.565, 3.7) {\large B};
+
+\draw [thick] (0,0) rectangle (10,1); %bottom row
+\draw [thick] (0,1.5) rectangle (10,2.5); %middle row
+\draw [thick] (0,3) rectangle (10,4); %top row
+
+
+
+%--------------------------
+
+
+
+\end{tikzpicture}
+
+\end{document}
