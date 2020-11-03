@@ -23,6 +23,10 @@
 \newcommand{\False}{\algorithmicfalse}
 \newcommand{\algorithmicand}{\textbf{ and }}
 \newcommand{\AAnd}{\algorithmicand}
+\newcommand{\algorithmicnot}{\textbf{not}}
+\newcommand{\Not}{\algorithmicnot}
+\newcommand{\algorithmicor}{\textbf{ or }}
+\newcommand{\Or}{\algorithmicor}
 
 % Contains advanced math extensions
 \usepackage{amsmath}
@@ -42,6 +46,8 @@
 
 % Allows customisation of appearance and placements for figures/tables etc.
 \usepackage{caption}
+
+\usepackage{comment}
 
 % Adds support for arbitrarily-deep nested lists
 \usepackage[inline]{enumitem}
@@ -72,6 +78,8 @@
 \definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
 \colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
 \colorlet{tLightOrange}{Dandelion!65!White}
+\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color
 
 %Text colours
 \colorlet{myRed}{Red!50!OrangeRed}
@@ -141,6 +149,7 @@
 %\appto\TPTnoteSettings{\footnotesize} % Change font size of table footnotes to footnotesize
 
 \usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
 
 \usepackage{wrapfig}
 
