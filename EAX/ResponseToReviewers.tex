@@ -1,0 +1,232 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[inline]{enumitem}
+\usepackage{parskip}
+\pagenumbering{gobble}
+\usepackage[top=20mm, bottom=20mm, left=25mm, right=25mm]{geometry}
+\usepackage{listings}
+\usepackage[colorlinks]{hyperref} 
+\usepackage[dvipsnames]{xcolor}
+\urlstyle{same}
+\hypersetup{
+	urlcolor=blue
+}
+\colorlet{myRed}{Red!50!OrangeRed}
+\definecolor{myOrange}{HTML}{FA7602}
+\definecolor{myGreen}{HTML}{569909}
+\definecolor{myAqua}{HTML}{00B1BA} %02BEB8
+\definecolor{myBlue}{HTML}{0095FF} %00B3FF
+\colorlet{myPurple}{Orchid} 
+\colorlet{myPink}{Rhodamine!65!Lavender}
+\colorlet{myGray}{Gray!90!White}
+\definecolor{myPurple1}{HTML}{8E58CF} %tikz color %9F85F5
+\definecolor{myDarkBlue}{HTML}{546EFF}
+\definecolor{myDarkBlue1}{HTML}{0055FF} 
+\definecolor{myDarkBlue2}{HTML}{2D3DBA} 
+\definecolor{myDarkGreen}{HTML}{008000}
+\definecolor{myPeach}{HTML}{F98F96} %tikz color %F98F96
+\definecolor{myMagenta}{HTML}{FF427E} %FF53AC %%FF557F
+%\definecolor{myDarkOrange}{HTML}{FF5500}
+%\definecolor{myOrange}{HTML}{EE7001} %FA7602
+\newcommand{\intro}[1]{{\color{myOrange}#1}}
+\newcommand{\ahc}[1]{{\color{myBlue}#1}}
+\newcommand{\heur}[1]{{\color{myPink}#1}}
+\newcommand{\ea}[1]{{\color{myRed}#1}}
+\newcommand{\cmsa}[1]{{\color{myGreen}#1}}
+\newcommand{\conc}[1]{{\color{myDarkGreen}#1}}
+%\newcommand{\note}[1]{{\color{myAqua}#1}}
+\newcommand{\note}[1]{{\color{myDarkBlue2}#1}}
+\newcommand{\other}[1]{{\color{myPurple1}#1}}
+\newcommand{\resp}[1]{{\color{myDarkBlue2}#1}} % response to reviewers
+\newcommand{\old}[1]{{\color{myGray}#1}} % old rough idea for response/what to change in paper
+
+\begin{document}
+
+\note{Dear Editor, 
+
+Thank you for taking the time to arrange the reviews of this paper. Please find below our responses to all of the comments made by the reviewers. We would like to send our appreciation to them for taking the time to review this paper and for making their helpful suggestions for our revised submission. We believe their feedback has strengthened the paper.
+
+Where possible, we have indicated the page number and paragraph of the revised manuscript where changes have been made. We have also highlighted the corresponding text in our revised manuscript in red.
+
+Please do not hesitate to contact us if you require anything further.
+
+Yours sincerely,
+
+A. L. Hawa, R, Lewis, and J. M. Thompson (28th October 2020)}
+
+
+\section*{Reviewer \#2}
+The authors tackle a variant of the one dimensional Bin Packing Problem (BPP): the Score-Constrained Packing Problem (SCPP). They propose a number of exact and approximate algorithms to solve the SCPP, which are evaluated across some sets of randomly generated instances. The code of the algorithms and the random instances generator are publicly available.
+The paper is generally very well written and all the proposals are very well explained and justified. Besides, the confronted problem is really interesting. The experimental study establishes a comparison of the proposed methods, but there is not a comparison to other results from the literature. Overall, the paper makes a good contribution to the state of the art, but some points could be improved. More detailed comments and suggestions are in the following:
+
+\note{Thank you for your positive comments regarding this work.}
+
+%---------------------------------------------------------------------------------
+
+1.- The recombination operator works on solutions instead of on encodings (which is the most usual in EA). This fact deserves some comment and maybe some cite to similar approaches.
+
+%\ea{Encoding is a set of sets, eliminates redundancy, is suitable for describing operators.}
+
+\resp{Thank you for this suggestion. We have now introduced an additional subsection, ``Representation'', in Section 4, which explains our reasoning behind using the description of a solution $\mathcal{S}$ for an instance of the SCPP in our EA framework as opposed to a standard encoding. \textit{Page 16, Section 4.1.}}
+
+%---------------------------------------------------------------------------------
+
+2.- The LS seems to use hill-climbing as acceptation criteria; this should be clarified. Besides, some theoretical or experimental analysis of the neighbourhood size could be included. %\ea{p15.}
+
+%\ea{Alternatives are tabu search or SA, advantage of our LS is quick termination at local optimum.}
+
+\resp{Yes, you are correct. We have amended the local search procedure explanation by clarifying the acception criteria. \textit{Page 19, paragraph 1.}}
+
+%---------------------------------------------------------------------------------
+
+3.- The preliminary tests described in lines 40-48 (page 6) requires more detailed explanation. I think that some illustrating example would be good here. %\ahc{p6, lines 40--48.}
+
+%\ahc{Edit slightly, add figure explaining, ``We have further explained the preliminary tests and have included a diagram to illustrate the tests.''}
+
+\resp{We have re-written the description of the preliminary tests to avoid confusion and have provided an example. We feel that the addition of an example dismisses the requirement for an illustration, however one can be included if the reviewer prefers. \textit{Page 6, paragraph 6.}}
+
+%---------------------------------------------------------------------------------
+
+4.- In definition 3, the statement `` .. each pair is a tuple'' sounds rather informal. It could be rewritten in more formal way. %\ahc{p6, line 12, in COP definition.}
+
+%\ahc{Re-write as ``ordered pair'' or ``2-tuple''.}
+\resp{The statement in the COP definition ``... in which each pair is a tuple.'' has been re-written as ``... in which each element is an ordered pair.'' We hope that this is acceptable. \textit{Page 6, Definition 3.}}
+
+%---------------------------------------------------------------------------------
+
+5.- In the description of MCM algorithm, the statement ``At this point, … terminates.'' (lines 36-39 in page 8) requires some formal proof. In the same paragraph, It should be clarified if AHC is always capable of forming a single alternating Hamiltonian cycle. %\ahc{p8, lines 36--39.}
+
+%\ahc{Reference thesis and Becker2010 in the paper, ``if the reviewer prefers we can add the full proof into the paper.''}
+
+\resp{The proof for the MCM algorithm is lengthy (over a page) and so we have added a statement to the manuscript regarding the proof for the procedure, namely that the matching $R'$ returned by MCM is of maximum cardinality, along with a reference to a publication by the main author of this manuscript which contains the full proof. Nevertheless, if the reviewer would prefer that the full proof is included in the manuscript then we would be more than happy to accommodate the request. \textit{Page 10, paragraph 2.}}
+
+%---------------------------------------------------------------------------------
+
+6.- the statement ``$R'$' is said to cover … an edge in $C_j$'' (lines 23-24 page 9) may be misleading if the notion of component is that induced from Fig. 3bc. %\ahc{p9, lines 23--24.}
+
+%\ahc{Rephrase the sentence. ``We have rephrased the sentence ...''}
+
+\resp{We have rephrased this sentence to clarify the explanation. It now reads ``... if an edge from a component $C_j$ of $G'$ is in a subset in the collection $\mathcal{R}''$, then $\mathcal{R}''$ is said to \emph{cover} the component $C_j$.'' We have also updated the description of BCR to help the reader understand the aim of the procedure. \textit{Page 11, paragraph 1.}}
+
+%---------------------------------------------------------------------------------
+
+7.- Maybe algorithm BCR requires a pseudocode in the same way as MCM. Also, its completeness property could be justified. %\ahc{p9.}
+
+%\ahc{Pseudocode in appendix, quite lengthy so state that it can be removed if deemed not necessary. Also, cite thesis and becker for BCR completeness property, and state to reviewers that the full formal proof can be added to the paper if prefered.}
+
+\resp{The pseudocode for the BCR is very long, and so we have included it in this submission as Supplementary Material. This pseudocode may be omitted if the reviewer feels it is not required. The proof for the BCR procedure is also long; thus we have added a reference to a publication by the main author of this manuscript which details the full proof. As with the MCM proof, this too can be added to the manuscript if preferred. \textit{Page 11, paragraph 3.}}
+
+%---------------------------------------------------------------------------------
+
+8.- All the instances used in the experiments should be made available for the purpose of fair comparison to other methods. Even though the instance generator is of public use, different sets of random instances could give rise to different results.
+
+%\other{Make changes to citations for all experiments and problem instances. Also need to check with Rhyd if I can change the cmsa algorithms and results.}
+
+\resp{Thank you for this observation. The problem instances used in the experiments are also available for public use along with the problem instance generator, however this was not made clear in the manuscript. We have amended the text to clarify that both the generator \emph{and} the problem instances used are available online. \textit{Page 20, paragraph 1.}}
+
+%---------------------------------------------------------------------------------
+
+9.- The convergence of the algorithms could be analysed in some way. Giving all of them the same time is good for the purpose of comparison, but to get insight on the capability of a given algorithm it is good to leave then running until it converges.
+
+%\ea{3--4 sentences stating that certain ones converge early in runs whereas others take much longer and may even benefit with extended run times (EA and CMSA).}
+
+\resp{To obtain this information we would have to re-run 36,000 experiments for the EA. To run the experiments for the original manuscript we had access to a dozen computers, which allowed us to run a large number of trials in months as opposed to over 4 years on a single machine. Unfortunately, due to the current pandemic we no longer have access to the additional machines, and so we are unable to re-run our experiments to assess the convergence of the algorithms. Instead, we have commented on the convergence of the algorithms using information from our original results. \textit{Page 21, paragraph 5.}}
+
+%---------------------------------------------------------------------------------
+
+10.- The authors have considered a complete set of references, many of them quite recent. In spite of that, and given that the confronted problem is actually a variant of the well-known cutting stock problem, the could consider some references about this problem.
+
+%\intro{Add more references about CSP and refer to similarities of the two problems (SCPP and CSP).}
+
+\resp{Thank you for this remark. We have added more information regarding the CSP in Section 1 along with references. \textit{Page 5, paragraph 2.}}
+
+%---------------------------------------------------------------------------------
+
+11.- If possible, the authors should compare their results with those from other methods in the state of the art. Otherwise, they should justify why it is not possible.
+
+%\ea{No benchmarks or comparison algorithms are available -- we can compare with lower bounds instead. (EA and CMSA).}
+
+\resp{On page 4 we have mentioned that there exists very little literature on the SCPP. We have also emphasised this on page 20, where we have stated that no benchmark instances exist for the SCPP and therefore we analyse our results with respect to the theoretical minimum $t$. \textit{Page 4, paragraph 2, and page 20, paragraph 2.}}
+
+%---------------------------------------------------------------------------------
+
+12.- Even though that the English style is excellent in my opinion, the authors should revise the use of ``consist of'' along the paper, if I am not wrong sometimes should be ``consists in'' instead.
+
+%\other{Go through paper and change where necessary, ``we have changed this in the necessary instances according to the description of the phrases provided by ...'' (link to dictionary definition url).}
+
+\resp{Yes, you are correct. Thank you for highlighting this error. We have rectified this appropriately according to the definitions from Collins Dictionary (\url{https://www.collinsdictionary.com/dictionary/english/consist}). \textit{Page 4, Definition 2, and page 6, Definition 3.}}
+
+%\note{Again, we would like to thank Reviewer \#2 for their useful suggestions to improve this paper.}
+
+%---------------------------------------------------------------------------------
+
+\section*{Reviewer \#3}
+
+This paper studies a variant of the classical bin packing problem (BPP) where items have a width and a border of different widths on both sides. The objective is to minimize the number of used bins such that the sum of items' width in each bin respect the bin size. Also, items have to be orderly placed inside the bin so that borders' width of two items beside each other is greater than a threshold. Verifying this constraint isn't trivial and a polynomial algorithm is proposed. Several heuristics are presented to solve the problem.
+
+In my opinion, the authors introduce an interesting variant of the BPP. Given all what is developed for its resolution, I think this paper is worthy of being published considering the following comments are taken care of. 
+
+\note{Thank you for reviewing our work; we have addressed the comments below.}
+
+%---------------------------------------------------------------------------------
+
+First, section 2 should be greatly improved. It contains the most important contribution of the paper. Many parts need to have more details or be explained better. 
+
+%\ahc{Edit section and give a summary of the changes in reviewer response here. ``We have edited this and tightened the text. For example, we have ... and also ...''}
+
+\resp{We have edited Section 2 and tightened the text. Some of the changes made are as follows:
+\begin{itemize}[itemsep=-0.4em, leftmargin=*]
+	\item Updated the explanation of how the COP and the sub-SCPP are related. \textit{Page 6, paragraph 4.}
+	\item Clarified the preliminary test and added an example. \textit{Page 6, paragraph 6.}
+	\item Moved paragraphs describing the modelling of an instance $\mathcal{M}$ of the COP graphically into a separate subsection. \textit{Page 7, Section 2.1.}
+	\item Added figures to the above subsection illustrating the process of modelling $\mathcal{M}$ into a graph $G$. \textit{Page 7, paragraph 3 and Fig. 3.}
+	\item Confirmed that the edge sets $B$ and $R$ are disjoint. \textit{Page 7, paragraph 4.}
+	\item Improved the description regarding how an alternating Hamiltonian cycle corresponds to a feasible solution $\mathcal{T}$, and added relevant figures. \textit{Page 8, paragraphs 2 and 3 and Fig. 4.}
+	\item Further explained the structure of the subgraph $G'=(V, B \cup R')$. \textit{Page 10, paragraph 2.}
+	\item Expanded the BCR section by detailing what needs to happen to the cyclic components of $G'$ in order to form a single alternating Hamiltonian cycle. \textit{Page 10, paragraph 3, and page 11, paragraphs 1 and 4.}
+	\item Added pseudocode for the BCR algorithm (Supplementary Material).
+	\item Added pseudocode for the overall AHC algorithm. \textit{Page 14, Algorithm 2.}
+	\item At the end of the section: restated the purpose of AHC, introduced Theorem 1, and explained the benefit of AHC for the sub-SCPP. \textit{Page 12, paragraphs 3 and 4, and page 13, paragraph 4.}
+\end{itemize}
+}
+
+%---------------------------------------------------------------------------------
+
+Second, I recommend modeling as a MIP the covering problem of section 5. MIP solvers are probably much faster than MinDLX for solving these problems. 
+
+%\cmsa{Need to discuss in the paper that an MIP/ILP could be used. ``We agree that in some cases MIP could give better results than \textsc{MinDLX}. However, the underlying algorithm for \textsc{MinDLX} is very highly regarded (groundbreaking method designed by Donald Knuth) and is known to be very good. It also allows us to design our C++ code using the same data structures and compiler options as the rest of the CMSA algorithms. We could indeed replace \textsc{MinDLX} with an MIP, but this would require re-running over x thousand separate experiments, which would take an extremely long time, plus we no longer have access to multiple machines which were used to run the experiments concurrently to save time. We have discussed in the paper the alternative.''}
+
+\resp{We agree that in some cases, an ILP solver could give better results than \textsc{MinDLX}. However, the \textsc{MinDLX} procedure is based on an algorithm by Donald Knuth, using the highly regarded ``dancing links'' method. Another advantage of using \textsc{MinDLX} is that we were able to design the procedure directly within our C++ code using our pre-existing data structure and running the program using the same compiler options as the rest of the CMSA algorithm. We could indeed replace \textsc{MinDLX} with an ILP solver, however this would require re-running the 600 experiments on the same computers used to obtain the EA results, which we no longer have access to due to the current pandemic. We have, however, made a note of this in the manuscript. \textit{Page 23, paragraph 1.}}
+
+%---------------------------------------------------------------------------------
+
+Third, I recommend using another bound than the continuous bin packing bound for estimating the optimal solution value. The literature contains many bounds. This would give a better idea of the optimal value. The linear relaxation of the set partition formulation typically gives the best bound. 
+
+%\heur{Add paragraphs referencing different lower bound that can be used and that using a different lower bound would not affect how the results are interpreted. ``Yes, we agree, and have now referred to these in the paper in section x, and made a point that in our results the other lower bounds could be used. Note that using a different lower bound would not alter the interpretation of strengths and weaknesses of different algorithms.''}
+
+\resp{Yes, we agree, and have updated the manuscript to state the existence of other lower bounds in the literature and explained our reasoning behind using the continuous lower bound $t$. We have also noted that using a different lower bound does not affect the analysis of the algorithms' performance. \textit{Page 15, paragraph 3.}}
+
+%---------------------------------------------------------------------------------
+Finally, I would move all algorithms into one section and perform all tests in another section. This means that CSMA should be explained before any test is performed. 
+
+%\other{``We have looked at this very carefully and still feel that ... progression ... We hope that this is satisfactory.. will abide if Reviewer \# 3 feels strongly about this.''}
+
+\resp{We have considered this suggestion carefully and, with respect, still feel that the structure of the original manuscript is best for describing the progression of the procedures. Although we understand the reasoning behind this suggestion, we feel that having all algorithm descriptions in one section would be a large amount of information for the reader to consume before reaching the experimental analysis of the first algorithm (EA). The analysis of each algorithm may also appear to be disjoint and the reader may have a difficult time linking the results back to each algorithm. Furthermore, without the analysis of the EA results, it may not make sense as to why we opt for the CMSA algorithm. We have added further information to Section 5 of the manuscript clarifying that the task is to find a minimum cardinality exact cover $\mathcal{S}^*$ of $\mathcal{B}$, and also explained that CMSA has potential as it focuses on collecting groups of high quality bins, which was seen to be a successful approach in our EA with the GGA recombination operator. We hope that this is satisfactory, and we will comply if the reviewer still feels strongly regarding this suggestion. \textit{Page 22, Definition 6 and paragraphs 3, 5, and 6.}}
+
+%---------------------------------------------------------------------------------
+
+Remarks : 
+On page 17 ``descibed''
+
+\resp{This has been rectified. \textit{Page 20, paragraph 2.}}\vspace{8mm}
+
+%---------------------------------------------------------------------------------
+
+%\note{Again, we would like to thank Reviewer \#3 for their useful suggestions to improve this paper. (Change this, identical to Reviewer \# 2)}
+
+%---------------------------------------------------------------------------------
+
+\note{Again, we would like to thank the reviewers for their useful suggestions for improving this paper. Thank you very much for taking the time to go over both the initial submission and this revised submission, and we look forward to hearing your positive responses soon.}
+
+
+
+\end{document}
