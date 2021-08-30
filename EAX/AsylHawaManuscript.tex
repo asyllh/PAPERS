@@ -1,5 +1,73 @@
 \documentclass[a4paper,11pt,authoryear]{elsarticle}
-\input{includes/preamble.tex}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmicbreak}{\State \textbf{break}}
+\newcommand{\Break}{\algorithmicbreak}
+\renewcommand{\algorithmicreturn}{\State \textbf{return}}
+\newcommand{\algorithmicto}{\textbf{ to }}
+\newcommand{\To}{\algorithmicto}
+\newcommand{\algorithmicrun}{\State \textbf{call }}
+\newcommand{\Run}{\algorithmicrun}
+\newcommand{\algorithmicoutput}{\textbf{output }}
+\newcommand{\Output}{\algorithmicoutput}
+\newcommand{\algorithmictrue}{\textbf{true}}
+\newcommand{\True}{\algorithmictrue}
+\newcommand{\algorithmicfalse}{\textbf{false}}
+\newcommand{\False}{\algorithmicfalse}
+\newcommand{\algorithmicand}{\textbf{ and }}
+\newcommand{\AAnd}{\algorithmicand}
+\newcommand{\algorithmicnot}{\textbf{not}}
+\newcommand{\Not}{\algorithmicnot}
+\newcommand{\algorithmicor}{\textbf{ or }}
+\newcommand{\Or}{\algorithmicor}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\usepackage{caption}
+\usepackage{comment}
+\usepackage[inline]{enumitem}
+\usepackage{float}
+\usepackage[a4paper]{geometry}
+\usepackage{graphicx}
+\usepackage[colorlinks]{hyperref} 
+\usepackage[dvipsnames]{xcolor}
+%Tikz colours, used in tikz figures only
+\colorlet{tBlue}{RoyalBlue!35!Cerulean} %tikz color
+\colorlet{tRed}{Red} %tikz color
+\definecolor{tGreen}{HTML}{569909} %tikz color
+\definecolor{tOrange}{HTML}{FA7602} %tikz color
+\definecolor{tLightGreen1}{HTML}{C1E685} %tikz color
+\definecolor{tLightOrange1}{HTML}{FFCD4F} %tikz color
+\colorlet{tLightGreen}{LimeGreen!70!OliveGreen!45!White}
+\colorlet{tLightOrange}{Dandelion!65!White}
+\definecolor{tLightPink}{HTML}{FFD4EB} %tikz color
+\definecolor{tLightBlue}{HTML}{CEF0FF} %tikz color
+%Text colours
+\colorlet{myRed}{Red!50!OrangeRed}
+\newcommand{\rev}[1]{{\color{myRed}#1}}
+\newcommand{\chng}[1]{{\color{myRed}#1}}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{soul}
+\usepackage{standalone}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usepackage{wrapfig}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
 \begin{document}
 	
 \begin{frontmatter}
